@@ -1,0 +1,18 @@
+﻿using System;
+using System.Collections.Generic;
+using ProspectManagement.Core.Models;
+using System.Threading.Tasks;
+
+namespace ProspectManagement.Core.Interfaces.Services
+{
+	public interface IProspectService
+	{        
+		Task<List<Prospect>> GetProspectsAsync(int salespersonId, bool unassigned, int page, int pageSize, string searchTerm);
+
+		Task<Prospect> GetProspectAsync(int prospectId);
+
+		Task<bool> UpdateProspectAsync(Prospect prospect);
+
+		Task<bool> AssignProspectToSalespersonAsync(string communityNumber, int prospectId, int salespersonId);
+	}
+}

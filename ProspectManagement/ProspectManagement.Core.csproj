@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B6DA674F-598E-4AD8-8791-ACC08C9E27DC}</ProjectGuid>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>ProspectManagement.Core</RootNamespace>
+    <AssemblyName>ProspectManagement.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Profile7</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Converters\DefaultCommunityConverter.cs" />
+    <Compile Include="Converters\InverseValueConverter.cs" />
+    <Compile Include="Converters\LoggedInAsConverter.cs" />
+    <Compile Include="Converters\PhoneNumberValueConverter.cs" />
+    <Compile Include="Converters\TrafficSourceDetailConverter.cs" />
+    <Compile Include="EventArgs\RetrievingDataFailureEventArgs.cs" />
+    <Compile Include="Interfaces\Repositories\IBaseRepository.cs" />
+    <Compile Include="Interfaces\Repositories\ICobuyerRepository.cs" />
+    <Compile Include="Interfaces\Repositories\ICommunityRepository.cs" />
+    <Compile Include="Interfaces\Repositories\IDefaultCommunityRepository.cs" />
+    <Compile Include="Interfaces\Repositories\IProspectRepository.cs" />
+    <Compile Include="Interfaces\Repositories\ITrafficCardResponseRepository.cs" />
+    <Compile Include="Interfaces\Repositories\ITrafficSourceRepository.cs" />
+    <Compile Include="Interfaces\Repositories\IUserRepository.cs" />
+    <Compile Include="Interfaces\Services\IAuthenticator.cs" />
+    <Compile Include="Interfaces\Services\ICobuyerService.cs" />
+    <Compile Include="Interfaces\Services\ICommunityService.cs" />
+    <Compile Include="Interfaces\Services\IDefaultCommunityService.cs" />
+    <Compile Include="Interfaces\Services\IDialogService.cs" />
+    <Compile Include="Interfaces\Services\IEmailValidationService.cs" />
+    <Compile Include="Interfaces\Services\IPhoneNumberValidationService.cs" />
+    <Compile Include="Interfaces\Services\IProspectService.cs" />
+    <Compile Include="Interfaces\Services\IStreetValidationService.cs" />
+    <Compile Include="Interfaces\Services\ITrafficCardResponseService.cs" />
+    <Compile Include="Interfaces\Services\ITrafficSourceService.cs" />
+    <Compile Include="Interfaces\Services\IUserService.cs" />
+    <Compile Include="Models\Community.cs" />
+    <Compile Include="Models\Email.cs" />
+    <Compile Include="Models\FollowUpSettings.cs" />
+    <Compile Include="Models\PhoneNumber.cs" />
+    <Compile Include="Models\Prospect.cs" />
+    <Compile Include="Models\StreetAddress.cs" />
+    <Compile Include="Models\TrafficCardAnswer.cs" />
+    <Compile Include="Models\TrafficCardQuestion.cs" />
+    <Compile Include="Models\TrafficCardResponse.cs" />
+    <Compile Include="Models\TrafficSource.cs" />
+    <Compile Include="Models\TrafficSourceDetail.cs" />
+    <Compile Include="Models\User.cs" />
+    <Compile Include="Models\VisitInformation.cs" />
+    <Compile Include="Models\App\EmailParts.cs" />
+    <Compile Include="Models\App\EmailValidationResult.cs" />
+    <Compile Include="Models\App\ServiceError.cs" />
+    <Compile Include="Repositories\BaseRepository.cs" />
+    <Compile Include="Repositories\CommunityRepository.cs" />
+    <Compile Include="Repositories\DefaultCommunityRepository.cs" />
+    <Compile Include="Repositories\TrafficCardResponseRepository.cs" />
+    <Compile Include="Repositories\TrafficSourceRepository.cs" />
+    <Compile Include="Repositories\UserRepository.cs" />
+    <Compile Include="Services\BaseAuthenticator.cs" />
+    <Compile Include="Services\CommunityService.cs" />
+    <Compile Include="Services\DefaultCommunityService.cs" />
+    <Compile Include="Services\EmailValidationService.cs" />
+    <Compile Include="Services\PhoneNumberValidationService.cs" />
+    <Compile Include="Services\TrafficCardResponseService.cs" />
+    <Compile Include="Services\TrafficSourceService.cs" />
+    <Compile Include="Services\UserService.cs" />
+    <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="Models\Cobuyer.cs" />
+    <Compile Include="Repositories\ProspectRepository.cs" />
+    <Compile Include="Repositories\CobuyerRepository.cs" />
+    <Compile Include="Services\CobuyerService.cs" />
+    <Compile Include="Services\ProspectService.cs" />
+    <Compile Include="Services\StreetValidationService.cs" />
+    <Compile Include="Models\App\Components.cs" />
+    <Compile Include="Models\App\Metadata.cs" />
+    <Compile Include="Models\App\Analysis.cs" />
+    <Compile Include="Models\App\StreetAddressValidationResult.cs" />
+    <Compile Include="ViewModels\SettingsViewModel.cs" />
+    <Compile Include="Extensions\ListExtensions.cs" />
+    <Compile Include="App.cs" />
+    <Compile Include="AppStart.cs" />
+    <Compile Include="ViewModels\SplitDetailViewModel.cs" />
+    <Compile Include="ViewModels\SplitMasterViewModel.cs" />
+    <Compile Include="ViewModels\SplitRootViewModel.cs" />
+    <Compile Include="Models\ProspectCommunity.cs" />
+    <Compile Include="Converters\ImageValueConverter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\portable-net45+win8+wpa81+wp8\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Clients.ActiveDirectory">
+      <HintPath>..\packages\Microsoft.IdentityModel.Clients.ActiveDirectory.3.13.9\lib\portable-net45+win\Microsoft.IdentityModel.Clients.ActiveDirectory.dll</HintPath>
+    </Reference>
+    <Reference Include="MvvmValidation">
+      <HintPath>..\packages\MvvmValidation.2.0.2\lib\portable-win8+net45+sl5+wp8\MvvmValidation.dll</HintPath>
+    </Reference>
+    <Reference Include="SQLitePCL.raw">
+      <HintPath>..\packages\SQLitePCL.raw.0.9.2\lib\portable-net45+netcore45+wp8+MonoAndroid10+MonoTouch10+Xamarin.iOS10\SQLitePCL.raw.dll</HintPath>
+    </Reference>
+    <Reference Include="SQLitePCL.batteries">
+      <HintPath>..\packages\SQLitePCL.bundle_green.0.9.2\lib\portable-net45+netcore45+wpa81+wp8+MonoAndroid10+MonoTouch10+Xamarin.iOS10\SQLitePCL.batteries.dll</HintPath>
+    </Reference>
+    <Reference Include="SQLite-net">
+      <HintPath>..\packages\sqlite-net-pcl.1.1.2\lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10\SQLite-net.dll</HintPath>
+    </Reference>
+    <Reference Include="MvvmCross.Plugins.Sqlite">
+      <HintPath>..\packages\MvvmCross.Plugin.SQLitePCL.4.4.0\lib\portable-win+net45+wp8+win8+wpa81+win81+dotnet\MvvmCross.Plugins.Sqlite.dll</HintPath>
+    </Reference>
+    <Reference Include="Sequence.Plugins.InfiniteScroll">
+      <HintPath>..\packages\Sequence.Plugins.InfiniteScroll.1.0.1\lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10+UAP10\Sequence.Plugins.InfiniteScroll.dll</HintPath>
+    </Reference>
+    <Reference Include="MvvmCross.Platform">
+      <HintPath>..\packages\MvvmCross.Platform.5.0.2\lib\portable-net45+win+wpa81+wp80\MvvmCross.Platform.dll</HintPath>
+    </Reference>
+    <Reference Include="MvvmCross.Core">
+      <HintPath>..\packages\MvvmCross.Core.5.0.2\lib\portable-net45+win+wpa81+wp80\MvvmCross.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="MvvmCross.Binding">
+      <HintPath>..\packages\MvvmCross.Binding.5.0.2\lib\portable-net45+win+wpa81+wp80\MvvmCross.Binding.dll</HintPath>
+    </Reference>
+    <Reference Include="MvvmCross.Localization">
+      <HintPath>..\packages\MvvmCross.Binding.5.0.2\lib\portable-net45+win+wpa81+wp80\MvvmCross.Localization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Collections.Immutable">
+      <HintPath>..\packages\System.Collections.Immutable.1.2.0\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
+    </Reference>
+    <Reference Include="MvvmCross.Plugins.DownloadCache">
+      <HintPath>..\packages\MvvmCross.Plugin.DownloadCache.5.0.2\lib\portable-net45+win+wpa81+wp80\MvvmCross.Plugins.DownloadCache.dll</HintPath>
+    </Reference>
+    <Reference Include="MvvmCross.Plugins.File">
+      <HintPath>..\packages\MvvmCross.Plugin.File.5.0.2\lib\portable-net45+win+wpa81+wp80\MvvmCross.Plugins.File.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Extensions\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+</Project>

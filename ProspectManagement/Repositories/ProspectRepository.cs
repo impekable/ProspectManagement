@@ -1,0 +1,34 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using ProspectManagement.Core.Interfaces.Repositories;
+using ProspectManagement.Core.Models;
+
+namespace ProspectManagement.Core.Repositories
+{
+    public class ProspectRepository: BaseRepository, IProspectRepository
+    {
+
+        public async Task<object> AssignProspectToSalespersonAsync(string communityNumber, int prospectId, int salespersonId, string accessToken)
+        {
+            return await PostDataObjectToAPI(string.Format(_devUri + "Communities/{0}/Prospects/{1}/Salesperson/{2}", communityNumber, prospectId, salespersonId), null as object, accessToken);
+        }
+
+        public async Task<Prospect> GetProspectAsync(int prospectId)
+        {
+            return await GetDataObjectFromAPI<Prospect>(string.Format(_devUri + "Prospects/{0}", prospectId));
+        }
+
+        public async Task<List<Prospect>> GetProspectsAsync(int? salespersonId, List<Community> communities, int page = 1, int pageSize = 20, string searchTerm = null)
+        {
+            var communityList = string.Join(",",communities.Select(c => c.CommunityNumber));
+            return await GetDataObjectFromAPI <List<Prospect>>(string.Format(_devUri + "Prospects?CommunityList={0}&SalespersonId={1}&Page={2}&PageSize={3}&SearchTerm={4}", communityList, salespersonId == null ? "" : salespersonId.Value.ToString(), page, pageSize, searchTerm));
+        }
+
+        public async Task<bool> UpdateProspectAsync(Prospect prospect, string accessToken)
+        {
+            return await PutDataObjectToAPI(string.Format(_devUri + "Prospects/{0}", prospect.ProspectAddressNumber), prospect, accessToken);
+        }
+    }
+}
