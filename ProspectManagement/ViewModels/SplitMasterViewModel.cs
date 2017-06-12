@@ -110,11 +110,10 @@ namespace ProspectManagement.Core.ViewModels
             }
         }
 
-        public SplitMasterViewModel(IUserService userService, IProspectService prospectService, IIncrementalCollectionFactory collectionFactory)
+        public SplitMasterViewModel(IProspectService prospectService, IIncrementalCollectionFactory collectionFactory)
         {
             _prospectService = prospectService;
             _collectionFactory = collectionFactory;
-            _userService = userService;
         }
 
         public override async void Start()
@@ -123,13 +122,10 @@ namespace ProspectManagement.Core.ViewModels
             await ReloadDataAsync();
         }
 
-        protected override async Task InitializeAsync()
-        {
-            while (User == null || User.AddressNumber == 0)
-            {
-                User = await _userService.GetLoggedInUser();
-            }
-        }
+		public async void Init(User user)
+		{
+			User = user;
+		}
 
 		public void OnLoadingDataFromBackendStarted()
 		{

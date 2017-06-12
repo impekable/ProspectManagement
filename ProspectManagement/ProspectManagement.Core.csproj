@@ -104,6 +104,7 @@
     <Compile Include="ViewModels\SplitRootViewModel.cs" />
     <Compile Include="Models\ProspectCommunity.cs" />
     <Compile Include="Converters\ImageValueConverter.cs" />
+    <Compile Include="ViewModels\RootViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">

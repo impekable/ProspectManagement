@@ -218,6 +218,10 @@
     <Compile Include="Bootstrap\InfiniteScrollPluginBootstrap.cs" />
     <Compile Include="Bootstrap\DownloadCachePluginBootstrap.cs" />
     <Compile Include="Bootstrap\FilePluginBootstrap.cs" />
+    <Compile Include="Views\RootView.cs" />
+    <Compile Include="Views\RootView.designer.cs">
+      <DependentUpon>RootView.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ProspectManagement\ProspectManagement.Core.csproj">

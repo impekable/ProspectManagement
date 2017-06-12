@@ -7,6 +7,7 @@ using ProspectManagement.Core.ViewModels;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Binding.iOS.Views;
 using Sequence.Plugins.InfiniteScroll.iOS;
+using ProspectManagement.iOS.Utility;
 
 namespace ProspectManagement.iOS.Views
 {
@@ -77,6 +78,13 @@ namespace ProspectManagement.iOS.Views
 			};
 
             InvokeOnMainThread(() => refreshControl.BeginRefreshing());
+            //this.Title = ViewModel.User.UserId;
+            //this.NavigationItem.TitleView = new UIImageView(UIImage.FromBundle("ic-unassigned"));
+            //UINavigationBar.Appearance.SetTitleTextAttributes(new UITextAttributes()
+            //{
+            //    Font = UIFont.FromName("Raleway-Bold",20),
+            //    TextColor = ProspectManagementColors.DarkColor
+            //});
         }
     }
 }

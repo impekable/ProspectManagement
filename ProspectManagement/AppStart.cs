@@ -8,7 +8,7 @@ namespace ProspectManagement.Core
     {
         public void Start(object hint = null)
         {
-            ShowViewModel<SplitRootViewModel>();
+            ShowViewModel<RootViewModel>();
         }
     }
 }
