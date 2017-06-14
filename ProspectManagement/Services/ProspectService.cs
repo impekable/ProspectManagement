@@ -16,11 +16,9 @@ namespace ProspectManagement.Core.Services
         private IDialogService _dialogService;
 
         private readonly IProspectRepository _prospectRepository;
-        private readonly ICommunityRepository _communityRepository;
 
-        public ProspectService(ICommunityRepository communityRepository, IProspectRepository prospectRepository, IAuthenticator authenticator, IDialogService dialogService)
+        public ProspectService(IProspectRepository prospectRepository, IAuthenticator authenticator, IDialogService dialogService)
         {
-            _communityRepository = communityRepository;
             _prospectRepository = prospectRepository;
             _authenticator = authenticator;
             _dialogService = dialogService;
@@ -51,11 +49,10 @@ namespace ProspectManagement.Core.Services
             return await _prospectRepository.GetProspectAsync(prospectId);
         }
 
-        public async Task<List<Prospect>> GetProspectsAsync(int salespersonId, bool unassigned, int page, int pageSize, string searchTerm)
+        public async Task<List<Prospect>> GetProspectsAsync(List<Community> communities, bool unassigned, int page, int pageSize, string searchTerm)
         {
             try
             {
-                var communities = await _communityRepository.GetCommunitiesBySalespersonAsync(salespersonId);
                 var prospects = await _prospectRepository.GetProspectsAsync(unassigned ? 0 : (int?)null, communities, page, pageSize, searchTerm);
                 var p = prospects.Join(communities, p2 => p2.ProspectCommunity.CommunityNumber, c => c.CommunityNumber, (p2, c) =>
                 {
@@ -87,6 +84,6 @@ namespace ProspectManagement.Core.Services
                 return false;
             }
         }
-        		
+
     }
 }

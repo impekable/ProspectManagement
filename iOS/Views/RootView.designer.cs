@@ -14,5 +14,8 @@ namespace ProspectManagement.iOS.Views
     [Register ("RootView")]
     partial class RootView
     {
+        void ReleaseDesignerOutlets ()
+        {
+        }
     }
 }

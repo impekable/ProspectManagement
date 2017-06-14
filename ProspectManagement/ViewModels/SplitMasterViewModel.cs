@@ -14,9 +14,10 @@ namespace ProspectManagement.Core.ViewModels
 {
     public class SplitMasterViewModel : BaseViewModel
     {
-		public event EventHandler LoadingDataFromBackendStarted;
-		public event EventHandler LoadingDataFromBackendCompleted;
+        public event EventHandler LoadingDataFromBackendStarted;
+        public event EventHandler LoadingDataFromBackendCompleted;
 
+        private readonly ICommunityService _communityService;
         private readonly IUserService _userService;
         private readonly IProspectService _prospectService;
         private readonly IIncrementalCollectionFactory _collectionFactory;
@@ -27,16 +28,17 @@ namespace ProspectManagement.Core.ViewModels
         private int _pageSize = 10;
         private string _searchTerm;
         private User _user;
+        private List<Community> _communities;
 
-		public User User
-		{
-			get { return _user; }
-			set
-			{
-				_user = value;
-				RaisePropertyChanged(() => User);
-			}
-		}
+        public User User
+        {
+            get { return _user; }
+            set
+            {
+                _user = value;
+                RaisePropertyChanged(() => User);
+            }
+        }
 
         public int Page
         {
@@ -77,15 +79,18 @@ namespace ProspectManagement.Core.ViewModels
             get
             {
                 if (_prospects == null)
-                {
+                {                    
                     _prospects = _collectionFactory.GetCollection(async (count, pageSize) =>
                                     {
                                         var newProspects = new ObservableCollection<Prospect>();
-
+										if (_communities == null)
+										{
+											_communities = await _communityService.GetCommunitiesBySalesperson(User.AddressNumber);
+										}
                                         await Task.Run(async () =>
                                         {
-                                            Page++;                                            
-                                            var prospectList = await _prospectService.GetProspectsAsync(User.AddressNumber, SelectedSegment == 1, Page, pageSize, SearchTerm);
+                                            Page++;
+                                            var prospectList = await _prospectService.GetProspectsAsync(_communities, SelectedSegment == 1, Page, pageSize, SearchTerm);
                                             newProspects = prospectList.ToObservableCollection();
                                             OnLoadingDataFromBackendCompleted();
                                         });
@@ -110,8 +115,9 @@ namespace ProspectManagement.Core.ViewModels
             }
         }
 
-        public SplitMasterViewModel(IProspectService prospectService, IIncrementalCollectionFactory collectionFactory)
+        public SplitMasterViewModel(ICommunityService communityService, IProspectService prospectService, IIncrementalCollectionFactory collectionFactory)
         {
+            _communityService = communityService;
             _prospectService = prospectService;
             _collectionFactory = collectionFactory;
         }
@@ -122,19 +128,19 @@ namespace ProspectManagement.Core.ViewModels
             await ReloadDataAsync();
         }
 
-		public async void Init(User user)
-		{
-			User = user;
-		}
+        public async void Init(User parameter)
+        {
+            User = parameter;
+        }
 
-		public void OnLoadingDataFromBackendStarted()
-		{
-			LoadingDataFromBackendStarted?.Invoke(null, EventArgs.Empty);
-		}
+        public void OnLoadingDataFromBackendStarted()
+        {
+            LoadingDataFromBackendStarted?.Invoke(null, EventArgs.Empty);
+        }
 
-		public void OnLoadingDataFromBackendCompleted()
-		{
-			LoadingDataFromBackendCompleted?.Invoke(null, EventArgs.Empty);
-		}
+        public void OnLoadingDataFromBackendCompleted()
+        {
+            LoadingDataFromBackendCompleted?.Invoke(null, EventArgs.Empty);
+        }
     }
 }

@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 namespace ProspectManagement.Core.Interfaces.Services
 {
 	public interface IProspectService
-	{        
-		Task<List<Prospect>> GetProspectsAsync(int salespersonId, bool unassigned, int page, int pageSize, string searchTerm);
+	{
+		Task<List<Prospect>> GetProspectsAsync(List<Community> communities, bool unassigned, int page, int pageSize, string searchTerm);
 
 		Task<Prospect> GetProspectAsync(int prospectId);
 
