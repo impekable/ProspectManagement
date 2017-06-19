@@ -16,13 +16,16 @@ namespace ProspectManagement.Core.ViewModels
     {
         public event EventHandler LoadingDataFromBackendStarted;
         public event EventHandler LoadingDataFromBackendCompleted;
+        public event EventHandler LoginCompleted;
 
+        private readonly IAuthenticator _authService;
         private readonly ICommunityService _communityService;
         private readonly IUserService _userService;
         private readonly IProspectService _prospectService;
         private readonly IIncrementalCollectionFactory _collectionFactory;
         private ObservableCollection<Prospect> _prospects;
         private ICommand _selectionChangedCommand;
+        private ICommand _logoutCommand;
         private int _selectedSegment;
         private int _page = 0;
         private int _pageSize = 10;
@@ -90,7 +93,8 @@ namespace ProspectManagement.Core.ViewModels
                                         await Task.Run(async () =>
                                         {
                                             Page++;
-                                            var prospectList = await _prospectService.GetProspectsAsync(_communities, SelectedSegment == 1, Page, pageSize, SearchTerm);
+                                            var salespersonId = SelectedSegment == 0 ? (int?)null : SelectedSegment == 1 ? 0 : User.AddressNumber;
+                                            var prospectList = await _prospectService.GetProspectsAsync(_communities, salespersonId , Page, pageSize, SearchTerm);
                                             newProspects = prospectList.ToObservableCollection();
                                             OnLoadingDataFromBackendCompleted();
                                         });
@@ -107,6 +111,21 @@ namespace ProspectManagement.Core.ViewModels
             }
         }
 
+		public ICommand LogoutCommand
+		{
+			get
+			{
+                return _logoutCommand ?? (_logoutCommand = new MvxCommand(async () => 
+                {
+                    _communities = null;
+                    _prospects = null;
+                    _authService.Logout(); 
+                    User = await _userService.GetLoggedInUser(); 
+                    OnLoginCompleted();
+                } ));
+			}
+		}
+
         public ICommand SelectionChangedCommand
         {
             get
@@ -115,8 +134,10 @@ namespace ProspectManagement.Core.ViewModels
             }
         }
 
-        public SplitMasterViewModel(ICommunityService communityService, IProspectService prospectService, IIncrementalCollectionFactory collectionFactory)
+        public SplitMasterViewModel(IUserService userService, IAuthenticator authService, ICommunityService communityService, IProspectService prospectService, IIncrementalCollectionFactory collectionFactory)
         {
+            _userService = userService;
+            _authService = authService;
             _communityService = communityService;
             _prospectService = prospectService;
             _collectionFactory = collectionFactory;
@@ -142,5 +163,10 @@ namespace ProspectManagement.Core.ViewModels
         {
             LoadingDataFromBackendCompleted?.Invoke(null, EventArgs.Empty);
         }
+
+		public void OnLoginCompleted()
+		{
+			LoginCompleted?.Invoke(null, EventArgs.Empty);
+		}
     }
 }

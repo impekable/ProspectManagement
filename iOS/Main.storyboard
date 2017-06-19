@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="160">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
@@ -17,7 +17,7 @@
                         <viewControllerLayoutGuide type="bottom" id="3"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="6">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9">
@@ -47,7 +47,7 @@
                         <viewControllerLayoutGuide type="bottom" id="53"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="56">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -65,49 +65,53 @@
                         <viewControllerLayoutGuide type="bottom" id="60"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="63">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="YRD-d8-8gC" misplaced="YES">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="YRD-d8-8gC">
+                                <rect key="frame" x="2" y="20" width="371" height="647"/>
                                 <subviews>
-                                    <segmentedControl opaque="NO" contentMode="center" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="MSk-at-had" fixedFrame="YES">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="29"/>
+                                    <segmentedControl opaque="NO" contentMode="center" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bordered" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="MSk-at-had">
+                                        <rect key="frame" x="0.0" y="0.0" width="371" height="30"/>
+                                        <edgeInsets key="layoutMargins" top="8" left="16" bottom="8" right="16"/>
                                         <segments>
                                             <segment title="All"/>
                                             <segment title="Unassigned"/>
+                                            <segment title="Mine"/>
                                         </segments>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="tintColor" red="0.4549019608" green="0.68235294120000001" blue="0.70588235290000001" alpha="1" colorSpace="calibratedRGB"/>
                                     </segmentedControl>
-                                    <searchBar contentMode="redraw" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Fdz-uU-872" fixedFrame="YES">
-                                        <rect key="frame" x="0.0" y="88" width="375" height="44"/>
+                                    <searchBar contentMode="redraw" showsCancelButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Fdz-uU-872">
+                                        <rect key="frame" x="0.0" y="39" width="371" height="44"/>
                                         <textInputTraits key="textInputTraits"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </searchBar>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="139" fixedFrame="YES">
-                                        <rect key="frame" x="0.0" y="191" width="375" height="456"/>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="50" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="139">
+                                        <rect key="frame" x="0.0" y="93" width="371" height="554"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="140">
-                                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                                <rect key="frame" x="0.0" y="28" width="371" height="50"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="140" id="141">
-                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="371" height="50"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </tableViewCellContentView>
                                             </tableViewCell>
                                         </prototypes>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </tableView>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstItem="Fdz-uU-872" firstAttribute="top" secondItem="MSk-at-had" secondAttribute="bottom" constant="10" id="EBE-eo-hmv"/>
+                                    <constraint firstItem="139" firstAttribute="top" secondItem="Fdz-uU-872" secondAttribute="bottom" constant="10" id="UgO-tC-fvY"/>
+                                </constraints>
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="60" firstAttribute="top" secondItem="YRD-d8-8gC" secondAttribute="bottom" id="PGz-Bi-Gpi"/>
                             <constraint firstItem="YRD-d8-8gC" firstAttribute="top" secondItem="59" secondAttribute="bottom" id="bUM-AE-e1i"/>
-                            <constraint firstAttribute="trailing" secondItem="YRD-d8-8gC" secondAttribute="trailing" id="lNP-94-FoQ"/>
-                            <constraint firstItem="YRD-d8-8gC" firstAttribute="leading" secondItem="63" secondAttribute="leading" id="yEZ-BT-K61"/>
+                            <constraint firstAttribute="trailing" secondItem="YRD-d8-8gC" secondAttribute="trailing" constant="2" id="lNP-94-FoQ"/>
+                            <constraint firstItem="YRD-d8-8gC" firstAttribute="leading" secondItem="63" secondAttribute="leading" constant="2" id="yEZ-BT-K61"/>
                         </constraints>
                     </view>
                     <connections>
@@ -129,7 +133,7 @@
                         <viewControllerLayoutGuide type="bottom" id="67"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="70">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="148">
@@ -150,15 +154,16 @@
             </objects>
             <point key="canvasLocation" x="370" y="-547"/>
         </scene>
+        <!--Root View-->
         <scene sceneID="159">
             <objects>
-                <viewController id="160" sceneMemberID="viewController" customClass="RootView" storyboardIdentifier="RootView">
+                <viewController storyboardIdentifier="RootView" id="160" customClass="RootView" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="157"/>
                         <viewControllerLayoutGuide type="bottom" id="158"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="161">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -168,26 +173,4 @@
             <point key="canvasLocation" x="-1595" y="-554"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="ITunesArtwork" width="512" height="512"/>
-        <image name="ITunesArtwork@2x" width="512" height="512"/>
-        <image name="unknown-person1.jpg" width="280" height="280"/>
-        <image name="timthumb.jpeg" width="300" height="260"/>
-        <image name="arrow-down" width="17" height="9"/>
-        <image name="arrow-left" width="9" height="17"/>
-        <image name="arrow-right" width="9" height="17"/>
-        <image name="arrow-up" width="17" height="9"/>
-        <image name="ic-home-active" width="22" height="21"/>
-        <image name="ic-home-normal" width="22" height="21"/>
-        <image name="ic-logo" width="373" height="89"/>
-        <image name="ic-saved-active" width="22" height="21"/>
-        <image name="ic-saved-normal" width="22" height="21"/>
-        <image name="ic-search-active" width="20" height="20"/>
-        <image name="ic-search-normal" width="20" height="20"/>
-        <image name="ic-settings-active" width="20" height="20"/>
-        <image name="ic-settings-normal" width="20" height="20"/>
-        <image name="splash" width="188" height="204"/>
-        <image name="ic-assigned" width="300" height="260"/>
-        <image name="ic-unassigned" width="280" height="280"/>
-    </resources>
 </document>

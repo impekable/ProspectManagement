@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 
@@ -8,5 +8,6 @@ namespace ProspectManagement.Core.Interfaces.Services
 	{
 		Task<AuthenticationResult> AuthenticateUser(string resource);
 		Task<AuthenticationResult> AuthenticateClient(string resource);
+        void Logout();
 	}
 }

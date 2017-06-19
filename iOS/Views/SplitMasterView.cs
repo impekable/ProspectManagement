@@ -8,6 +8,7 @@ using MvvmCross.Binding.BindingContext;
 using MvvmCross.Binding.iOS.Views;
 using Sequence.Plugins.InfiniteScroll.iOS;
 using ProspectManagement.iOS.Utility;
+using System.Threading.Tasks;
 
 namespace ProspectManagement.iOS.Views
 {
@@ -21,70 +22,85 @@ namespace ProspectManagement.iOS.Views
         {
         }
 
-        private void setTableViewSource()
+        private void setTableViewSource(MvxFluentBindingDescriptionSet<SplitMasterView, SplitMasterViewModel> set)
         {
-			source = new IncrementalTableViewSource(MasterTableView, ProspectViewCell.Key); // new MvxSimpleTableViewSource(MasterTableView, ProspectViewCell.Key, ProspectViewCell.Key, null);
-			source.CreateBinding<SplitMasterViewModel>(this, vm => vm.Prospects);
-			MasterTableView.Source = source;
-			MasterTableView.ReloadData();
+			ViewModel.Page = 0;
+			ViewModel.Prospects = null;
+
+            source = new IncrementalTableViewSource(MasterTableView, ProspectViewCell.Key); // new MvxSimpleTableViewSource(MasterTableView, ProspectViewCell.Key, ProspectViewCell.Key, null);
+            source.CreateBinding<SplitMasterViewModel>(this, vm => vm.Prospects);
+            MasterTableView.Source = source;
+            MasterTableView.ReloadData();
+			set.Bind(source).For(s => s.SelectionChangedCommand).To(vm => vm.SelectionChangedCommand);
+			set.Apply();
         }
 
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
-            setTableViewSource();			
 
             var set = this.CreateBindingSet<SplitMasterView, SplitMasterViewModel>();
             set.Bind(FilterSearchBar).To(vm => vm.SearchTerm);
             set.Bind(FilterSegmentControl).To(vm => vm.SelectedSegment);
-            set.Bind(source).For(s => s.SelectionChangedCommand).To(vm => vm.SelectionChangedCommand);
-            set.Apply();
 
-			var refreshControl = new UIRefreshControl();
-			refreshControl.ValueChanged += (sender, e) =>
-			{
-                ViewModel.Page = 0;
-				ViewModel.Prospects = null;
-				setTableViewSource();
-				set.Bind(source).For(s => s.SelectionChangedCommand).To(vm => vm.SelectionChangedCommand);
-				set.Apply();
-			};
+			setTableViewSource(set);
 
-			ViewModel.LoadingDataFromBackendStarted += (sender, e) =>
-			{
-                InvokeOnMainThread(() => refreshControl.BeginRefreshing()); 
-			};
+            var refreshControl = new UIRefreshControl();
+            refreshControl.ValueChanged += (sender, e) =>
+            {
+                setTableViewSource(set);
+            };
+			MasterTableView.RefreshControl = refreshControl;
 
-            ViewModel.LoadingDataFromBackendCompleted += (sender, e) => {
+            ViewModel.LoadingDataFromBackendStarted += (sender, e) =>
+            {
+                InvokeOnMainThread(() => refreshControl.BeginRefreshing());
+            };
+
+            ViewModel.LoadingDataFromBackendCompleted += (sender, e) =>
+            {
                 InvokeOnMainThread(() => refreshControl.EndRefreshing());
             };
 
-			MasterTableView.RefreshControl = refreshControl;
-
-			FilterSearchBar.TextChanged += (sender, e) =>
+			ViewModel.LoginCompleted += (sender, e) =>
 			{
-				ViewModel.Prospects = null;
-				setTableViewSource();
-				set.Bind(source).For(s => s.SelectionChangedCommand).To(vm => vm.SelectionChangedCommand);
-				set.Apply();
+				setTableViewSource(set);
 			};
 
-			FilterSegmentControl.ValueChanged += (sender, e) =>
-			{
-                ViewModel.Prospects = null;
-                setTableViewSource();
-				set.Bind(source).For(s => s.SelectionChangedCommand).To(vm => vm.SelectionChangedCommand);
-				set.Apply();
-			};
+            FilterSearchBar.CancelButtonClicked += (sender, e) =>
+           {
+               ViewModel.SearchTerm = null;
+                setTableViewSource(set);
+               ((UISearchBar)sender).ResignFirstResponder();
+           };
+
+            FilterSearchBar.SearchButtonClicked += (sender, e) =>
+           {
+               ((UISearchBar)sender).ResignFirstResponder();
+           };
+
+            FilterSearchBar.TextChanged += (sender, e) =>
+            {
+                setTableViewSource(set);
+            };
+
+            FilterSegmentControl.ValueChanged += (sender, e) =>
+            {
+                setTableViewSource(set);
+            };
 
             InvokeOnMainThread(() => refreshControl.BeginRefreshing());
-            //this.Title = ViewModel.User.UserId;
-            //this.NavigationItem.TitleView = new UIImageView(UIImage.FromBundle("ic-unassigned"));
-            //UINavigationBar.Appearance.SetTitleTextAttributes(new UITextAttributes()
-            //{
-            //    Font = UIFont.FromName("Raleway-Bold",20),
-            //    TextColor = ProspectManagementColors.DarkColor
-            //});
+
+            var b = new UIBarButtonItem("Logout", UIBarButtonItemStyle.Plain, (sender, e) =>
+            {
+                ViewModel.LogoutCommand.Execute(null);
+            });
+
+            this.NavigationItem.SetRightBarButtonItem(b, true);
+            UINavigationBar.Appearance.SetTitleTextAttributes(new UITextAttributes()
+            {
+                Font = UIFont.FromName("Raleway-Bold", 20)
+            });
         }
     }
 }

@@ -49,11 +49,11 @@ namespace ProspectManagement.Core.Services
             return await _prospectRepository.GetProspectAsync(prospectId);
         }
 
-        public async Task<List<Prospect>> GetProspectsAsync(List<Community> communities, bool unassigned, int page, int pageSize, string searchTerm)
+        public async Task<List<Prospect>> GetProspectsAsync(List<Community> communities, int? salespersonId, int page, int pageSize, string searchTerm)
         {
             try
             {
-                var prospects = await _prospectRepository.GetProspectsAsync(unassigned ? 0 : (int?)null, communities, page, pageSize, searchTerm);
+                var prospects = await _prospectRepository.GetProspectsAsync(salespersonId, communities, page, pageSize, searchTerm);
                 var p = prospects.Join(communities, p2 => p2.ProspectCommunity.CommunityNumber, c => c.CommunityNumber, (p2, c) =>
                 {
                     p2.ProspectCommunity.Community = c;

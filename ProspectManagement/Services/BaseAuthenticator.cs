@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
@@ -27,6 +27,11 @@ namespace ProspectManagement.Core.Services
 		}
 
 		public abstract Task<AuthenticationResult> AuthenticateUser(string resource);
-		
+
+		public async void Logout()
+		{
+			var authContext = new AuthenticationContext(authority);
+			authContext.TokenCache.Clear();
+		}
 	}
 }
