@@ -11,8 +11,8 @@ using UIKit;
 
 namespace ProspectManagement.iOS.Views
 {
-    [Register ("SplitDetailView")]
-    partial class SplitDetailView
+    [Register ("TrafficCardView")]
+    partial class TrafficCardView
     {
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]

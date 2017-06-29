@@ -11,9 +11,13 @@ using UIKit;
 
 namespace ProspectManagement.iOS.Views
 {
-    [Register ("SplitDetailView")]
-    partial class SplitDetailView
+    [Register ("CobuyerView")]
+    partial class CobuyerView
     {
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIButton CobuyerDetailButton { get; set; }
+
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UILabel NameLabel { get; set; }
@@ -24,6 +28,11 @@ namespace ProspectManagement.iOS.Views
 
         void ReleaseDesignerOutlets ()
         {
+            if (CobuyerDetailButton != null) {
+                CobuyerDetailButton.Dispose ();
+                CobuyerDetailButton = null;
+            }
+
             if (NameLabel != null) {
                 NameLabel.Dispose ();
                 NameLabel = null;
