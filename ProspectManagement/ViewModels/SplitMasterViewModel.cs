@@ -119,9 +119,14 @@ namespace ProspectManagement.Core.ViewModels
                 {
                     _communities = null;
                     _prospects = null;
+                    User = null;
                     _authService.Logout(); 
-                    User = await _userService.GetLoggedInUser(); 
+					while (User == null || User.AddressNumber == 0)
+					{
+						User = await _userService.GetLoggedInUser();
+					}
                     OnLoginCompleted();
+                    ShowViewModel<SplitDetailViewModel>(parameterValuesObject: null);
                 } ));
 			}
 		}

@@ -10,6 +10,7 @@ namespace ProspectManagement.Core.ViewModels
         private Prospect _prospect;
         private ICommand _showCobuyerTab;
         private ICommand _showTrafficCardTab;
+        private bool _prospectSelected;
 
         public ICommand ShowCobuyerTab
         {
@@ -32,11 +33,22 @@ namespace ProspectManagement.Core.ViewModels
             set
             {
                 _prospect = value;
+                ProspectSelected = _prospect != null && _prospect.ProspectAddressNumber > 0;
                 RaisePropertyChanged(() => Prospect);
             }
         }
 
-        public override async void Start()
+		public bool ProspectSelected
+        {
+            get { return _prospectSelected; }
+            set
+            {
+                _prospectSelected = value;
+                RaisePropertyChanged(() => ProspectSelected);
+            }
+        }
+
+		public override async void Start()
         {
             base.Start();
             await ReloadDataAsync();
