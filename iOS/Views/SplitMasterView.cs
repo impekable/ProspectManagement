@@ -62,9 +62,22 @@ namespace ProspectManagement.iOS.Views
                 InvokeOnMainThread(() => refreshControl.EndRefreshing());
             };
 
+			ViewModel.LogoutCompleted += (sender, e) =>
+			{
+                FilterSearchBar.Hidden = true;
+                FilterSegmentControl.Hidden = true;
+                MasterTableView.Hidden = true;
+				setTableViewSource(set);
+                this.NavigationItem.RightBarButtonItem.Title = "Login";
+			};
+
 			ViewModel.LoginCompleted += (sender, e) =>
 			{
+                FilterSearchBar.Hidden = false;
+				FilterSegmentControl.Hidden = false;
+				MasterTableView.Hidden = false;
 				setTableViewSource(set);
+                this.NavigationItem.RightBarButtonItem.Title = "Logout";
 			};
 
             FilterSearchBar.CancelButtonClicked += (sender, e) =>

@@ -13,27 +13,30 @@ namespace ProspectManagement.Core.Services
         const string resource = "http://ProspectManagementRestService.azure-mobile.net";
 
         private readonly IAuthenticator _authenticator;
+        private readonly IUserService _userService;
         private IDialogService _dialogService;
 
         private readonly IProspectRepository _prospectRepository;
 
-        public ProspectService(IProspectRepository prospectRepository, IAuthenticator authenticator, IDialogService dialogService)
+        public ProspectService(IUserService userService, IProspectRepository prospectRepository, IAuthenticator authenticator, IDialogService dialogService)
         {
             _prospectRepository = prospectRepository;
             _authenticator = authenticator;
             _dialogService = dialogService;
+            _userService = userService;
             _prospectRepository.RetrievingDataFailed += (sender, e) =>
             {
                 _dialogService.ShowAlertAsync("Seems like there was a problem." + e.RetrievingDataFailureMessage, "Oops", "Close");
             };
         }
 
-        public async Task<bool> AssignProspectToSalespersonAsync(string communityNumber, int prospectId, int salespersonId)
+        public async Task<bool> AssignProspectToLoggedInUserAsync(string communityNumber, int prospectId)
         {
             try
             {
                 var authResult = await _authenticator.AuthenticateUser(resource);
-                var result = await _prospectRepository.AssignProspectToSalespersonAsync(communityNumber, prospectId, salespersonId, authResult.AccessToken);
+                var user = await _userService.GetUserById(authResult.UserInfo.DisplayableId);
+                var result = await _prospectRepository.AssignProspectToSalespersonAsync(communityNumber, prospectId, user.AddressNumber, authResult.AccessToken);
                 return true;
             }
             catch (Exception ex)

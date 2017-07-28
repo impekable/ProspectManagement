@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using MvvmCross.Core.ViewModels;
 using ProspectManagement.Core.Extensions;
+using ProspectManagement.Core.Interfaces.Repositories;
 using ProspectManagement.Core.Interfaces.Services;
 using ProspectManagement.Core.Models;
 using Sequence.Plugins.InfiniteScroll;
@@ -17,11 +18,14 @@ namespace ProspectManagement.Core.ViewModels
         public event EventHandler LoadingDataFromBackendStarted;
         public event EventHandler LoadingDataFromBackendCompleted;
         public event EventHandler LoginCompleted;
+        public event EventHandler LogoutCompleted;
 
+        private readonly IDialogService _dialogService;
         private readonly IAuthenticator _authService;
         private readonly ICommunityService _communityService;
         private readonly IUserService _userService;
         private readonly IProspectService _prospectService;
+        private readonly IProspectCache _prospectCache;
         private readonly IIncrementalCollectionFactory _collectionFactory;
         private ObservableCollection<Prospect> _prospects;
         private ICommand _selectionChangedCommand;
@@ -49,6 +53,7 @@ namespace ProspectManagement.Core.ViewModels
             set
             {
                 _page = value;
+                OnLoadingDataFromBackendStarted();
                 RaisePropertyChanged(() => Page);
             }
         }
@@ -86,10 +91,10 @@ namespace ProspectManagement.Core.ViewModels
                     _prospects = _collectionFactory.GetCollection(async (count, pageSize) =>
                                     {
                                         var newProspects = new ObservableCollection<Prospect>();
-										if (_communities == null)
-										{
-											_communities = await _communityService.GetCommunitiesBySalesperson(User.AddressNumber);
-										}
+                                        if (_communities == null)
+                                        {
+                                            _communities = await _communityService.GetCommunitiesBySalesperson(User.AddressNumber);
+                                        }
                                         await Task.Run(async () =>
                                         {
                                             Page++;
@@ -111,31 +116,49 @@ namespace ProspectManagement.Core.ViewModels
             }
         }
 
-		public ICommand LogoutCommand
-		{
-			get
-			{
+
+        public ICommand LogoutCommand
+        {
+            get
+            {
                 return _logoutCommand ?? (_logoutCommand = new MvxCommand(async () => 
                 {
-                    _communities = null;
-                    _prospects = null;
-                    _authService.Logout(); 
-                    User = await _userService.GetLoggedInUser(); 
-                    OnLoginCompleted();
+                    if (User == null)
+                    {
+                        while (User == null)
+                        {
+                            User = await _userService.GetLoggedInUser();
+                        }
+                        OnLoginCompleted();
+                    }
+                    else
+                    {
+                        var result = await _dialogService.ShowAlertAsync("Confirm", "Logout?", "Yes", "No");
+                        if (result == 0)
+                        {
+                            _communities = null;
+                            _prospects = null;
+                            _authService.Logout();
+                            User = null;
+                            OnLogoutCompleted();
+                        }
+                    }
                 } ));
-			}
-		}
+            }
+        }
 
         public ICommand SelectionChangedCommand
         {
             get
             {
-                return _selectionChangedCommand ?? (_selectionChangedCommand = new MvxCommand<Prospect>((prospect) => ShowViewModel<SplitDetailViewModel>(prospect)));
+                return _selectionChangedCommand ?? (_selectionChangedCommand = new MvxCommand<Prospect>((prospect) => { _prospectCache.SaveProspectToCache(prospect); ShowViewModel<SplitDetailViewModel>(prospect); }));
             }
         }
 
-        public SplitMasterViewModel(IUserService userService, IAuthenticator authService, ICommunityService communityService, IProspectService prospectService, IIncrementalCollectionFactory collectionFactory)
+        public SplitMasterViewModel(IProspectCache prospectCache, IDialogService dialogService, IUserService userService, IAuthenticator authService, ICommunityService communityService, IProspectService prospectService, IIncrementalCollectionFactory collectionFactory)
         {
+            _prospectCache = prospectCache;
+            _dialogService = dialogService;
             _userService = userService;
             _authService = authService;
             _communityService = communityService;
@@ -164,9 +187,14 @@ namespace ProspectManagement.Core.ViewModels
             LoadingDataFromBackendCompleted?.Invoke(null, EventArgs.Empty);
         }
 
-		public void OnLoginCompleted()
-		{
-			LoginCompleted?.Invoke(null, EventArgs.Empty);
-		}
+        public void OnLogoutCompleted()
+        {
+            LogoutCompleted?.Invoke(null, EventArgs.Empty);
+        }
+
+        public void OnLoginCompleted()
+        {
+            LoginCompleted?.Invoke(null, EventArgs.Empty);
+        }
     }
 }

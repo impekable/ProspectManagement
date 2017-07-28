@@ -9,8 +9,8 @@ namespace ProspectManagement.Core.Services
 	public abstract class BaseAuthenticator: IAuthenticator
 	{
 		protected static string authority = "https://login.windows.net/khovmobileapptest.onmicrosoft.com/oauth2/token";
-		protected static string nativeClientId = "1845270f-fa5e-4de7-9a49-ef1cc26e4c3a";
-		protected static string returnUri = "http://ProspectRegistrationNativeClient.azure-mobile.net";
+		protected static string nativeClientId = "735f81ee-a2b8-4282-bce9-e8ca0337f0f8";
+		protected static string returnUri = "http://ProspectManagementClient.azure-mobile.net";
 		static string restClientId = "87910174-0c14-4780-af58-c9834ef1c13b";
 		static string clientSecret = "vdTTwPpHS9gVW0G5chnBotCXv9Mf+DK+3A2B+YMkUiw=";
 

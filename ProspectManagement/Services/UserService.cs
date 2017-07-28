@@ -11,7 +11,7 @@ namespace ProspectManagement.Core.Services
 {
 	public class UserService : IUserService
 	{
-		const string resource = "1845270f-fa5e-4de7-9a49-ef1cc26e4c3a";
+		const string resource = "http://ProspectManagementRestService.azure-mobile.net";
 		private readonly IUserRepository _userRepository;
 		private readonly IAuthenticator _authenticator;
 

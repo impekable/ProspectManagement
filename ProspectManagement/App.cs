@@ -14,6 +14,10 @@ namespace ProspectManagement.Core
         public override void Initialize()
         {
             base.Initialize();
+			CreatableTypes()
+				.EndingWith("Cache")
+				.AsInterfaces()
+				.RegisterAsLazySingleton();
             CreatableTypes()
                 .EndingWith("Repository")
                 .AsInterfaces()
