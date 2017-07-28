@@ -52,10 +52,35 @@ namespace ProspectManagement.iOS.Views
 
 			this.NavigationItem.SetRightBarButtonItem(b, true);
 
-			UINavigationBar.Appearance.SetTitleTextAttributes(new UITextAttributes()
-			{
-				Font = UIFont.FromName("Raleway-Bold", 20)
-			});
+            foreach (UITabBarItem item in ProspectTabBar.Items)
+            {
+                if (item.Tag == 0)
+                {
+                    item.SetTitleTextAttributes(new UITextAttributes()
+                    {
+                        Font = UIFont.FromName("Raleway-Bold", 10),
+                        TextColor = UIColor.Black
+                    }, UIControlState.Normal);
+
+                }
+                else
+                {
+                    item.SetTitleTextAttributes(new UITextAttributes()
+                    {
+                        Font = UIFont.FromName("Raleway-Regular", 10),
+                        TextColor = UIColor.Black
+                    }, UIControlState.Normal);
+                }
+            }
+
+            ProspectTabBar.SelectedItem = ProspectTabBar.Items[0];
+            ProspectTabBar.ItemSelected += (sender, e) =>
+            {
+                if (e.Item.Tag == 1)
+                    ViewModel.ShowCobuyerTab.Execute(null);
+                else if (e.Item.Tag == 2)
+                    ViewModel.ShowTrafficCardTab.Execute(null);
+            };
         }
     }
 }

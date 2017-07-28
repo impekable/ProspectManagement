@@ -25,6 +25,28 @@ namespace ProspectManagement.iOS.Views
             set.Bind(CobuyerDetailButton).To(vm => vm.ShowCobuyerDetail);
             set.Apply();
 
+			foreach (UITabBarItem item in ProspectTabBar.Items)
+			{
+				if (item.Tag == 1)
+				{
+					item.SetTitleTextAttributes(new UITextAttributes()
+					{
+						Font = UIFont.FromName("Raleway-Bold", 10),
+						TextColor = UIColor.Black
+					}, UIControlState.Normal);
+
+				}
+				else
+				{
+					item.SetTitleTextAttributes(new UITextAttributes()
+					{
+						Font = UIFont.FromName("Raleway-Regular", 10),
+						TextColor = UIColor.Black
+					}, UIControlState.Normal);
+				}
+			}
+
+            ProspectTabBar.SelectedItem = ProspectTabBar.Items[1];
             ProspectTabBar.ItemSelected += (sender, e) =>
             {
                 if (e.Item.Tag == 0)

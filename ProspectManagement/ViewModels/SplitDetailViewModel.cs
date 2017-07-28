@@ -108,7 +108,7 @@ namespace ProspectManagement.Core.ViewModels
             }
         }
 
-        public override async void Start()
+		public override async void Start()
         {
             base.Start();
             await ReloadDataAsync();
