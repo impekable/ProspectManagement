@@ -5,9 +5,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using MvvmCross.Core.ViewModels;
+using MvvmCross.Plugins.Messenger;
 using ProspectManagement.Core.Extensions;
+using ProspectManagement.Core.Interactions;
 using ProspectManagement.Core.Interfaces.Repositories;
 using ProspectManagement.Core.Interfaces.Services;
+using ProspectManagement.Core.Messages;
 using ProspectManagement.Core.Models;
 using Sequence.Plugins.InfiniteScroll;
 
@@ -26,16 +29,23 @@ namespace ProspectManagement.Core.ViewModels
         private readonly IUserService _userService;
         private readonly IProspectService _prospectService;
         private readonly IProspectCache _prospectCache;
+        protected IMvxMessenger Messenger;
+
         private readonly IIncrementalCollectionFactory _collectionFactory;
         private ObservableCollection<Prospect> _prospects;
+
         private ICommand _selectionChangedCommand;
         private ICommand _logoutCommand;
+
         private int _selectedSegment;
         private int _page = 0;
         private int _pageSize = 10;
         private string _searchTerm;
         private User _user;
         private List<Community> _communities;
+
+        private MvxInteraction<TableRow> _updateRowInteraction = new MvxInteraction<TableRow>();
+        public IMvxInteraction<TableRow> UpdateRowInteraction => _updateRowInteraction;
 
         public User User
         {
@@ -87,7 +97,7 @@ namespace ProspectManagement.Core.ViewModels
             get
             {
                 if (_prospects == null)
-                {                    
+                {
                     _prospects = _collectionFactory.GetCollection(async (count, pageSize) =>
                                     {
                                         var newProspects = new ObservableCollection<Prospect>();
@@ -99,7 +109,7 @@ namespace ProspectManagement.Core.ViewModels
                                         {
                                             Page++;
                                             var salespersonId = SelectedSegment == 0 ? (int?)null : SelectedSegment == 1 ? 0 : User.AddressNumber;
-                                            var prospectList = await _prospectService.GetProspectsAsync(_communities, salespersonId , Page, pageSize, SearchTerm);
+                                            var prospectList = await _prospectService.GetProspectsAsync(_communities, salespersonId, Page, pageSize, SearchTerm);
                                             newProspects = prospectList.ToObservableCollection();
                                             OnLoadingDataFromBackendCompleted();
                                         });
@@ -121,7 +131,7 @@ namespace ProspectManagement.Core.ViewModels
         {
             get
             {
-                return _logoutCommand ?? (_logoutCommand = new MvxCommand(async () => 
+                return _logoutCommand ?? (_logoutCommand = new MvxCommand(async () =>
                 {
                     if (User == null)
                     {
@@ -143,7 +153,7 @@ namespace ProspectManagement.Core.ViewModels
                             OnLogoutCompleted();
                         }
                     }
-                } ));
+                }));
             }
         }
 
@@ -155,8 +165,9 @@ namespace ProspectManagement.Core.ViewModels
             }
         }
 
-        public SplitMasterViewModel(IProspectCache prospectCache, IDialogService dialogService, IUserService userService, IAuthenticator authService, ICommunityService communityService, IProspectService prospectService, IIncrementalCollectionFactory collectionFactory)
+        public SplitMasterViewModel(IMvxMessenger messenger, IProspectCache prospectCache, IDialogService dialogService, IUserService userService, IAuthenticator authService, ICommunityService communityService, IProspectService prospectService, IIncrementalCollectionFactory collectionFactory)
         {
+            Messenger = messenger;
             _prospectCache = prospectCache;
             _dialogService = dialogService;
             _userService = userService;
@@ -164,6 +175,30 @@ namespace ProspectManagement.Core.ViewModels
             _communityService = communityService;
             _prospectService = prospectService;
             _collectionFactory = collectionFactory;
+
+            Messenger.Subscribe<ProspectChangedMessage>(async message => ProspectUpdated(message.UpdatedProspect), MvxReference.Strong);
+            Messenger.Subscribe<ProspectAssignedMessage>(async message => ProspectAssigned(message.AssignedProspect), MvxReference.Strong);
+
+        }
+
+        public async void ProspectUpdated(Prospect prospect)
+        {
+            var request = new TableRow { TableRowToUpdate = Prospects.IndexOf(prospect) };
+            _updateRowInteraction.Raise(request);
+        }
+
+        public async void ProspectAssigned(Prospect prospect)
+        {
+            var request = new TableRow { TableRowToUpdate = Prospects.IndexOf(prospect) };
+            if (SelectedSegment == 1) //Unassigned
+            {
+                Prospects.Remove(prospect);
+            }
+            else
+            {
+                _updateRowInteraction.Raise(request);
+            }
+
         }
 
         public override async void Start()

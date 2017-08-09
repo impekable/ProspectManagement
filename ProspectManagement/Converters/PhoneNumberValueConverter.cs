@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using MvvmCross.Platform.Converters;
@@ -16,12 +16,12 @@ namespace ProspectManagement.Core.Converters
 			if (numbers.Length <= 7)
 				return string.Format("{0}-{1}", numbers.Substring(0, 3), numbers.Substring(3));
 
-			return string.Format("({0}) {1}-{2}", numbers.Substring(0, 3), numbers.Substring(3, 3), numbers.Substring(6));
+			return string.Format("{0}-{1}-{2}", numbers.Substring(0, 3), numbers.Substring(3, 3), numbers.Substring(6));
 		}
 
 		public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			return Regex.Replace(value.ToString(), @"\D", "");
+            return value; //Regex.Replace(value.ToString(), @"\D", "");
 		}
 	}
 }

@@ -6,6 +6,7 @@ using MvvmCross.iOS.Views.Presenters.Attributes;
 using ProspectManagement.Core.ViewModels;
 using MvvmCross.Binding.BindingContext;
 using ProspectManagement.Core.Converters;
+using MvvmCross.Core.ViewModels;
 
 namespace ProspectManagement.iOS.Views
 {
@@ -13,6 +14,53 @@ namespace ProspectManagement.iOS.Views
     [MvxDetailSplitViewPresentation(WrapInNavigationController = true)]
     public partial class SplitDetailView : MvxViewController<SplitDetailViewModel>
     {
+		private IMvxInteraction _showAlertInteraction;
+		public IMvxInteraction ShowAlertInteraction
+		{
+			get => _hideAlertInteraction;
+			set
+			{
+				if (_showAlertInteraction != null)
+					_showAlertInteraction.Requested -= OnShowAlertInteractionRequested;
+
+				_showAlertInteraction = value;
+				_showAlertInteraction.Requested += OnShowAlertInteractionRequested;
+			}
+		}
+
+		private async void OnShowAlertInteractionRequested(object sender, EventArgs eventArgs)
+		{
+			UIAlertController myAlert = UIAlertController.Create("", "", UIAlertControllerStyle.Alert);
+			var activity = new UIActivityIndicatorView() { ActivityIndicatorViewStyle = UIActivityIndicatorViewStyle.WhiteLarge };
+			activity.Frame = myAlert.View.Bounds;
+			activity.AutoresizingMask = UIViewAutoresizing.FlexibleDimensions;
+			activity.Color = UIColor.Black;
+			activity.StartAnimating();
+			myAlert.Add(activity);
+			this.PresentViewController(myAlert, true, null);
+
+		}
+
+		private IMvxInteraction _hideAlertInteraction;
+		public IMvxInteraction HideAlertInteraction
+		{
+			get => _hideAlertInteraction;
+			set
+			{
+				if (_hideAlertInteraction != null)
+					_hideAlertInteraction.Requested -= OnHideAlertInteractionRequested;
+
+				_hideAlertInteraction = value;
+				_hideAlertInteraction.Requested += OnHideAlertInteractionRequested;
+			}
+		}
+
+
+		private async void OnHideAlertInteractionRequested(object sender, EventArgs eventArgs)
+		{
+			DismissViewController(true, null);
+		}
+
         public SplitDetailView(IntPtr handle) : base(handle)
         {
         }
@@ -36,7 +84,10 @@ namespace ProspectManagement.iOS.Views
             set.Bind(ContactPreferenceLabel).To(vm => vm.Prospect.FollowUpSettings.PreferredContactMethod);
             set.Bind(AssignButton).For(c => c.Hidden).To(vm => vm.ProspectAssigned);
             set.Bind(AssignButton).To(vm => vm.AssignCommand);
-            set.Apply();
+
+			set.Bind(this).For(view => view.HideAlertInteraction).To(viewModel => viewModel.HideAlertInteraction).OneWay();
+			set.Bind(this).For(view => view.ShowAlertInteraction).To(viewModel => viewModel.ShowAlertInteraction).OneWay();
+			set.Apply();
             			
             ProspectTabBar.ItemSelected += (sender, e) => {
                 if (e.Item.Tag == 1)
@@ -47,7 +98,7 @@ namespace ProspectManagement.iOS.Views
 
 			var b = new UIBarButtonItem("Edit", UIBarButtonItemStyle.Plain, (sender, e) =>
 			{
-				//ViewModel..Execute(null);
+				ViewModel.EditProspectCommand.Execute(null);
 			});
 
 			this.NavigationItem.SetRightBarButtonItem(b, true);

@@ -1,8 +1,10 @@
 ﻿using System.Windows.Input;
 using MvvmCross.Core.Navigation;
 using MvvmCross.Core.ViewModels;
+using MvvmCross.Plugins.Messenger;
 using ProspectManagement.Core.Interfaces.Repositories;
 using ProspectManagement.Core.Interfaces.Services;
+using ProspectManagement.Core.Messages;
 using ProspectManagement.Core.Models;
 
 namespace ProspectManagement.Core.ViewModels
@@ -14,16 +16,27 @@ namespace ProspectManagement.Core.ViewModels
         private string _workPhoneLabel;
         private string _homePhoneLabel;
         private string _mobilePhoneLabel;
+        private ICommand _editProspectCommand;
         private ICommand _assignCommand;
         private ICommand _showCobuyerTab;
         private ICommand _showTrafficCardTab;
         private readonly IProspectService _prospectService;
         private readonly IProspectCache _prospectCache;
+        protected IMvxMessenger Messenger;
 
-        public SplitDetailViewModel(IProspectCache prospectCache, IProspectService prospectService)
+		private MvxInteraction _showAlertInteraction = new MvxInteraction();
+		public IMvxInteraction ShowAlertInteraction => _showAlertInteraction;
+
+		private MvxInteraction _hideAlertInteraction = new MvxInteraction();
+		public IMvxInteraction HideAlertInteraction => _hideAlertInteraction;
+
+		public SplitDetailViewModel(IMvxMessenger messenger, IProspectCache prospectCache, IProspectService prospectService)
         {
+            Messenger = messenger;
             _prospectService = prospectService;
             _prospectCache = prospectCache;
+
+            Messenger.Subscribe<ProspectChangedMessage>(async message => Init(message.UpdatedProspect), MvxReference.Strong);
         }
 
         public ICommand AssignCommand
@@ -32,11 +45,27 @@ namespace ProspectManagement.Core.ViewModels
             {
                 return _assignCommand ?? (_assignCommand = new MvxCommand(async () =>
                 {
-                    await _prospectService.AssignProspectToLoggedInUserAsync(_prospect.ProspectCommunity.CommunityNumber, _prospect.ProspectAddressNumber);
-                    ProspectAssigned = true;
-                }));
+					_showAlertInteraction.Raise();
+					var _assignedTo = await _prospectService.AssignProspectToLoggedInUserAsync(_prospect.ProspectCommunity.CommunityNumber, _prospect.ProspectAddressNumber);
+					_hideAlertInteraction.Raise();
+
+					if (_assignedTo > 0)
+                    {
+                        ProspectAssigned = true;
+                        Prospect.ProspectCommunity.SalespersonAddressNumber = _assignedTo;
+                        Messenger.Publish(new ProspectAssignedMessage(this) { AssignedProspect = Prospect });
+                    }
+				}));
             }
         }
+
+		public ICommand EditProspectCommand
+		{
+			get
+			{
+                return _editProspectCommand ?? (_editProspectCommand = new MvxCommand(() => { ShowViewModel<EditProspectViewModel>(_prospect); }));
+			}
+		}
 
         public ICommand ShowCobuyerTab
         {

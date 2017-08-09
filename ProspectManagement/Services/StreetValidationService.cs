@@ -25,10 +25,14 @@ namespace ProspectManagement.Core.Services
                 streetAddress.State = results[0].components.state_abbreviation;
                 streetAddress.PostalCode = results[0].components.zipcode + "-" + results[0].components.plus4_code;
                 streetAddress.County = results[0].metadata.county_name;
+                streetAddress.StreetAddressVerified = true;
                 return true;
             }
             else
+            {
+                streetAddress.StreetAddressVerified = false;
                 return false;
+            }
         }
     }
 }

@@ -51,13 +51,6 @@ namespace ProspectManagement.Core.Models
         {
             return string.Format("{0}", Name);
         }
-		public Prospect()
-		{
-			this.FollowUpSettings = new FollowUpSettings();
-			this.MobilePhoneNumber = new PhoneNumber();
-			this.Email = new Email();
-			this.VisitInformation = new VisitInformation();
-		}
 	}
 
 }

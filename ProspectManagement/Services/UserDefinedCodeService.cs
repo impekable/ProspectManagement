@@ -1,0 +1,64 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using ProspectManagement.Core.Interfaces.Repositories;
+using ProspectManagement.Core.Interfaces.Services;
+using ProspectManagement.Core.Models;
+
+namespace ProspectManagement.Core.Services
+{
+    public class UserDefinedCodeService : IUserDefinedCodeService
+    {
+        private readonly IUserDefinedCodeRepository _userDefinedCodeRepository;
+        private List<UserDefinedCode> _prefixes;
+        private List<UserDefinedCode> _suffixes;
+        private List<UserDefinedCode> _contactPreferences;
+        private List<UserDefinedCode> _excludeReasons;
+        private List<UserDefinedCode> _states;
+
+        public UserDefinedCodeService(IUserDefinedCodeRepository userDefinedCodeRepository)
+        {
+            _userDefinedCodeRepository = userDefinedCodeRepository;
+        }
+
+        public async Task<List<UserDefinedCode>> GetContactPreferenceUserDefinedCodes()
+        {
+            if (_contactPreferences == null)
+                _contactPreferences = await getUserDefinedCodes("01", "CQ");
+            return _contactPreferences;
+        }
+
+        public async Task<List<UserDefinedCode>> GetExcludeReasonUserDefinedCodes()
+        {
+            if (_excludeReasons == null)
+                _excludeReasons = await getUserDefinedCodes("01", "26");
+            return _excludeReasons;
+        }
+
+        public async Task<List<UserDefinedCode>> GetPrefixUserDefinedCodes()
+        {
+            if (_prefixes == null)
+                _prefixes = await getUserDefinedCodes("01", "W3");
+            return _prefixes;
+        }
+
+        public async Task<List<UserDefinedCode>> GetStateUserDefinedCodes()
+        {
+            if (_states == null)
+                _states = await getUserDefinedCodes("00", "S");
+            return _states;
+        }
+
+        public async Task<List<UserDefinedCode>> GetSuffixUserDefinedCodes()
+        {
+            if (_suffixes == null)
+                _suffixes = await getUserDefinedCodes("01", "W4");
+            return _suffixes;
+        }
+
+        private async Task<List<UserDefinedCode>> getUserDefinedCodes(string productCode, string group)
+        {
+            return await _userDefinedCodeRepository.GetUserDefinedCodesAsync(productCode, group);
+        }
+    }
+}
