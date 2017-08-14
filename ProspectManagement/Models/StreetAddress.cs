@@ -21,6 +21,8 @@ namespace ProspectManagement.Core.Models
         public string PostalCode { get; set; }
         [JsonProperty("county")]
         public string County { get; set; }
+		[JsonProperty("country")]
+		public string Country { get; set; }
         [JsonProperty("streetAddressVerified")]
         public bool StreetAddressVerified { get; set; }
     }

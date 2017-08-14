@@ -11,6 +11,7 @@ namespace ProspectManagement.Core.Interfaces.Services
         Task<List<UserDefinedCode>> GetSuffixUserDefinedCodes();
         Task<List<UserDefinedCode>> GetContactPreferenceUserDefinedCodes();
         Task<List<UserDefinedCode>> GetStateUserDefinedCodes();
+        Task<List<UserDefinedCode>> GetCountryUserDefinedCodes();
         Task<List<UserDefinedCode>> GetExcludeReasonUserDefinedCodes();
     }
 }

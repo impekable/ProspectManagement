@@ -121,11 +121,14 @@
     <Compile Include="Messages\ProspectChangedMessage.cs" />
     <Compile Include="Interactions\TableRow.cs" />
     <Compile Include="Messages\ProspectAssignedMessage.cs" />
+    <Compile Include="Models\App\StreetAddressInternationalValidationResult.cs" />
+    <Compile Include="Models\App\AnalysisInternational.cs" />
+    <Compile Include="Models\App\ComponentsInternational.cs" />
+    <Compile Include="Models\App\MetadataInternational.cs" />
+    <Compile Include="Converters\CountyConverter.cs" />
+    <Compile Include="Converters\StateCountryConverter.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="MvvmValidation">
-      <HintPath>..\packages\MvvmValidation.2.0.2\lib\portable-win8+net45+sl5+wp8\MvvmValidation.dll</HintPath>
-    </Reference>
     <Reference Include="MvvmCross.Plugins.Sqlite">
       <HintPath>..\packages\MvvmCross.Plugin.SQLitePCL.4.4.0\lib\portable-win+net45+wp8+win8+wpa81+win81+dotnet\MvvmCross.Plugins.Sqlite.dll</HintPath>
     </Reference>
@@ -182,6 +185,9 @@
     </Reference>
     <Reference Include="MvvmCross.Plugins.DownloadCache">
       <HintPath>..\packages\MvvmCross.Plugin.DownloadCache.5.1.0\lib\portable-net45+win+wpa81+wp80\MvvmCross.Plugins.DownloadCache.dll</HintPath>
+    </Reference>
+    <Reference Include="MvvmValidation">
+      <HintPath>..\packages\MvvmValidation.3.0.0\lib\netstandard1.0\MvvmValidation.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

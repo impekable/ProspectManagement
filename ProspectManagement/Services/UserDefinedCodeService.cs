@@ -15,6 +15,7 @@ namespace ProspectManagement.Core.Services
         private List<UserDefinedCode> _contactPreferences;
         private List<UserDefinedCode> _excludeReasons;
         private List<UserDefinedCode> _states;
+		private List<UserDefinedCode> _countries;
 
         public UserDefinedCodeService(IUserDefinedCodeRepository userDefinedCodeRepository)
         {
@@ -48,6 +49,13 @@ namespace ProspectManagement.Core.Services
                 _states = await getUserDefinedCodes("00", "S");
             return _states;
         }
+
+		public async Task<List<UserDefinedCode>> GetCountryUserDefinedCodes()
+		{
+			if (_countries == null)
+				_countries = await getUserDefinedCodes("00", "CN");
+			return _countries;
+		}
 
         public async Task<List<UserDefinedCode>> GetSuffixUserDefinedCodes()
         {

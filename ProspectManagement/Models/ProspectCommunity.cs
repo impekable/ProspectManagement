@@ -7,6 +7,8 @@ namespace ProspectManagement.Core.Models
     {
         [JsonProperty("prospectCommunityId")]
         public int ProspectCommunityId { get; set; }
+		[JsonProperty("leadId")]
+		public int LeadId { get; set; }
         [JsonProperty("division")]
         public string Division { get; set; }
         [JsonProperty("communityNumber")]

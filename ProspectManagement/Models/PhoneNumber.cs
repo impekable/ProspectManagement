@@ -13,5 +13,7 @@ namespace ProspectManagement.Core.Models
         public string Phone { get; set; }
         [JsonProperty("phoneVerified")]
         public bool PhoneVerified { get; set; }
+		[JsonProperty("phoneExtension")]
+		public string PhoneExtension { get; set; }
     }
 }

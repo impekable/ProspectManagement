@@ -22,6 +22,8 @@ namespace ProspectManagement.iOS.Views
     {
         private UIPickerView _defaultPrefixPickerView;
         private MvxPickerViewModel _defaultPrefixPickerViewModel;
+		private UIPickerView _defaultCountryPickerView;
+		private MvxPickerViewModel _defaultCountryPickerViewModel;
         private UIPickerView _defaultSuffixPickerView;
         private MvxPickerViewModel _defaultSuffixPickerViewModel;
         private UIPickerView _defaultContactPreferencePickerView;
@@ -96,9 +98,6 @@ namespace ProspectManagement.iOS.Views
             var set = this.CreateBindingSet<EditProspectView, EditProspectViewModel>();
             CreatePickerViewBindings(set);
 
-            set.Bind(DataActivityIndicator).For(v => v.IsAnimating).To(vm => vm.IsActivityIndicatorActive);
-            set.Bind(DataActivityIndicator).For(v => v.Hidden).To(vm => vm.IsActivityIndicatorActive).WithConversion(new InverseValueConverter());
-
             set.Bind(PrefixTextField).To(vm => vm.ActivePrefix.Description1);
             set.Bind(FirstNameTextField).To(vm => vm.FirstName);
             set.Bind(MiddleNameTextField).To(vm => vm.MiddleName);
@@ -108,19 +107,23 @@ namespace ProspectManagement.iOS.Views
             set.Bind(MobilePhoneTextField).To(vm => vm.MobilePhoneNumber).WithConversion(new PhoneNumberValueConverter());
             set.Bind(WorkPhoneTextField).To(vm => vm.WorkPhoneNumber).WithConversion(new PhoneNumberValueConverter());
             set.Bind(HomePhoneTextField).To(vm => vm.HomePhoneNumber).WithConversion(new PhoneNumberValueConverter());
+            set.Bind(WorkExtentionTextField).To(vm => vm.WorkPhone.PhoneExtension);
             set.Bind(EmailTextField).To(vm => vm.Email.EmailAddress);
 
             set.Bind(AddressLine1TextField).To(vm => vm.StreetAddress.AddressLine1);
             set.Bind(AddressLine2TextField).To(vm => vm.StreetAddress.AddressLine2);
             set.Bind(CityTextField).To(vm => vm.StreetAddress.City);
-            set.Bind(StateTextField).To(vm => vm.StreetAddress.State);
+            set.Bind(StateTextField).To(vm => vm.ActiveState.Description1);
             set.Bind(CountyTextField).To(vm => vm.StreetAddress.County);
             set.Bind(ZipTextField).To(vm => vm.StreetAddress.PostalCode);
+            set.Bind(CountryTextField).To(vm => vm.ActiveCountry.Description1);
+            set.Bind(CountyLabel).To(vm => vm.ActiveCountry).WithConversion(new CountyConverter());
+            set.Bind(StateCountryLabel).To(vm => vm.ActiveCountry).WithConversion(new StateCountryConverter());
 
             set.Bind(ConsentEmailSwitch).To(vm => vm.FollowUpSettings.ConsentToEmail);
             set.Bind(ConsentPhoneSwitch).To(vm => vm.FollowUpSettings.ConsentToPhone);
             set.Bind(ConsentMailSwitch).To(vm => vm.FollowUpSettings.ConsentToMail);
-            set.Bind(ExcludeFollowUpSwitch).To(vm => vm.FollowUpSettings.ExcludeFromFollowup);
+            set.Bind(ExcludeFollowUpSwitch).To(vm => vm.ExcludeFromFollowup);
 
             set.Bind(FirstNameErrorLabel).To(vm => vm.FirstNameError);
             set.Bind(LastNameErrorLabel).To(vm => vm.LastNameError);
@@ -133,15 +136,19 @@ namespace ProspectManagement.iOS.Views
 
             set.Bind(TrafficDetailTextField).To(vm => vm.Prospect.TrafficSourceCodeId).OneWayToSource();
             set.Bind(TrafficDetailTextField).For(v => v.Enabled).To(vm => vm.IsSelectedTrafficSource);
+            set.Bind(ExcludeReasonTextField).For(v => v.Enabled).To(vm => vm.ExcludeFromFollowup);
+			set.Bind(StateTextField).For(v => v.Hidden).To(vm => vm.ForeignState);
 
-            set.Bind(SaveProspectButton).To(vm => vm.SaveCommand);
-            set.Bind(CancelEditButton).To(vm => vm.CloseCommand);
-
+            set.Bind(TrafficSourceLabel).For(v => v.Hidden).To(vm => vm.FromLead);
+            set.Bind(TrafficSourceDetailLabel).For(v => v.Hidden).To(vm => vm.FromLead);
+            set.Bind(TrafficDetailTextField).For(v => v.Hidden).To(vm => vm.FromLead);
+            set.Bind(TrafficSourceTextField).For(v => v.Hidden).To(vm => vm.FromLead);
 			set.Bind(this).For(view => view.HideAlertInteraction).To(viewModel => viewModel.HideAlertInteraction).OneWay();
 
 			CustomizeTextField(PrefixTextField, _defaultPrefixPickerView, "Prefix");
             CustomizeTextField(SuffixTextField, _defaultSuffixPickerView, "Suffix");
             CustomizeTextField(StateTextField, _defaultStatePickerView, "State");
+			CustomizeTextField(CountryTextField, _defaultCountryPickerView, "Country");
             CustomizeTextField(ContactPreferenceTextField, _defaultContactPreferencePickerView, "ContactPreference");
             CustomizeTextField(ExcludeReasonTextField, _defaultExcludeReasonPickerView, "ExcludeReason");
             CustomizeTextField(TrafficSourceTextField, _defaultTrafficSourcePickerView, "Source");
@@ -167,6 +174,7 @@ namespace ProspectManagement.iOS.Views
             AddressLine2TextField.ShouldReturn = shouldReturn;
             CityTextField.ShouldReturn = shouldReturn;
             StateTextField.ShouldReturn = shouldReturn;
+            CountryTextField.ShouldReturn = shouldReturn;
             CountyTextField.ShouldReturn = shouldReturn;
             ZipTextField.ShouldReturn = shouldReturn;
 
@@ -189,6 +197,12 @@ namespace ProspectManagement.iOS.Views
 				if (EditProspectViewModel.ActiveState == null)
 					EditProspectViewModel.ActiveState = EditProspectViewModel.States.FirstOrDefault();
             };
+			CountryTextField.EditingDidBegin += (sender, e) =>
+			{
+				EditProspectViewModel.OriginalPickerValue = EditProspectViewModel.ActiveCountry;
+				if (EditProspectViewModel.ActiveCountry == null)
+					EditProspectViewModel.ActiveCountry = EditProspectViewModel.Countries.FirstOrDefault();
+			};
             ContactPreferenceTextField.EditingDidBegin += (sender, e) =>
             {
                 EditProspectViewModel.OriginalPickerValue = EditProspectViewModel.ActiveContactPreference;
@@ -284,6 +298,12 @@ namespace ProspectManagement.iOS.Views
                             EditProspectViewModel.ActiveState = null; //EditProspectViewModel.OriginalPickerValue;
 							break;
                         };
+					case "Country":
+						{
+							row = EditProspectViewModel.Countries.IndexOf(EditProspectViewModel.OriginalPickerValue);
+							EditProspectViewModel.ActiveCountry = null; //EditProspectViewModel.OriginalPickerValue;
+							break;
+						};
                     case "Suffix":
                         {
                             row = EditProspectViewModel.Suffixes.IndexOf(EditProspectViewModel.OriginalPickerValue);
@@ -377,7 +397,18 @@ namespace ProspectManagement.iOS.Views
             set.Bind(_defaultStatePickerViewModel).For(p => p.ItemsSource).To(vm => vm.States).OneWay();
             set.Bind(_defaultStatePickerViewModel).For(p => p.SelectedItem).To(vm => vm.ActiveState).OneWayToSource();
 
-            set.Bind(ExcludeReasonTextField).To(vm => vm.ActiveExcludeReason.Description1).OneWay();
+
+			set.Bind(CountryTextField).To(vm => vm.ActiveCountry.Description1).OneWay();
+			_defaultCountryPickerView = new UIPickerView
+			{
+				ShowSelectionIndicator = true
+			};
+			_defaultCountryPickerViewModel = new CustomPickerView(_defaultCountryPickerView);
+			_defaultCountryPickerView.Model = _defaultCountryPickerViewModel;
+			set.Bind(_defaultCountryPickerViewModel).For(p => p.ItemsSource).To(vm => vm.Countries).OneWay();
+			set.Bind(_defaultCountryPickerViewModel).For(p => p.SelectedItem).To(vm => vm.ActiveCountry).OneWayToSource();
+
+			set.Bind(ExcludeReasonTextField).To(vm => vm.ActiveExcludeReason.Description1).OneWay();
             _defaultExcludeReasonPickerView = new UIPickerView
             {
                 ShowSelectionIndicator = true

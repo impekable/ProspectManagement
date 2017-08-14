@@ -32,10 +32,6 @@ namespace ProspectManagement.iOS.Views
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UIButton CancelEditButton { get; set; }
-
-        [Outlet]
-        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UIStackView CityStateCountryStackView { get; set; }
 
         [Outlet]
@@ -68,15 +64,19 @@ namespace ProspectManagement.iOS.Views
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UITextField CountryTextField { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UILabel CountyLabel { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UITextField CountyTextField { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UIStackView CountyZipStackView { get; set; }
-
-        [Outlet]
-        [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UIActivityIndicatorView DataActivityIndicator { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
@@ -164,7 +164,7 @@ namespace ProspectManagement.iOS.Views
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UIButton SaveProspectButton { get; set; }
+        UIKit.UILabel StateCountryLabel { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
@@ -189,6 +189,10 @@ namespace ProspectManagement.iOS.Views
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UILabel TrafficSourceDetailLabel { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UILabel TrafficSourceLabel { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
@@ -240,11 +244,6 @@ namespace ProspectManagement.iOS.Views
                 AliasTextField = null;
             }
 
-            if (CancelEditButton != null) {
-                CancelEditButton.Dispose ();
-                CancelEditButton = null;
-            }
-
             if (CityStateCountryStackView != null) {
                 CityStateCountryStackView.Dispose ();
                 CityStateCountryStackView = null;
@@ -285,6 +284,16 @@ namespace ProspectManagement.iOS.Views
                 ContactPreferenceTextField = null;
             }
 
+            if (CountryTextField != null) {
+                CountryTextField.Dispose ();
+                CountryTextField = null;
+            }
+
+            if (CountyLabel != null) {
+                CountyLabel.Dispose ();
+                CountyLabel = null;
+            }
+
             if (CountyTextField != null) {
                 CountyTextField.Dispose ();
                 CountyTextField = null;
@@ -293,11 +302,6 @@ namespace ProspectManagement.iOS.Views
             if (CountyZipStackView != null) {
                 CountyZipStackView.Dispose ();
                 CountyZipStackView = null;
-            }
-
-            if (DataActivityIndicator != null) {
-                DataActivityIndicator.Dispose ();
-                DataActivityIndicator = null;
             }
 
             if (EmailErrorLabel != null) {
@@ -405,9 +409,9 @@ namespace ProspectManagement.iOS.Views
                 PrefixTextField = null;
             }
 
-            if (SaveProspectButton != null) {
-                SaveProspectButton.Dispose ();
-                SaveProspectButton = null;
+            if (StateCountryLabel != null) {
+                StateCountryLabel.Dispose ();
+                StateCountryLabel = null;
             }
 
             if (StateTextField != null) {
@@ -438,6 +442,11 @@ namespace ProspectManagement.iOS.Views
             if (TrafficSourceDetailLabel != null) {
                 TrafficSourceDetailLabel.Dispose ();
                 TrafficSourceDetailLabel = null;
+            }
+
+            if (TrafficSourceLabel != null) {
+                TrafficSourceLabel.Dispose ();
+                TrafficSourceLabel = null;
             }
 
             if (TrafficSourceTextField != null) {

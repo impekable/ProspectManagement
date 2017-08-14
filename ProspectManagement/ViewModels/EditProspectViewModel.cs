@@ -16,10 +16,10 @@ namespace ProspectManagement.Core.ViewModels
 {
     public class EditProspectViewModel : BaseViewModel
     {
-		private MvxInteraction _hideAlertInteraction = new MvxInteraction();
-		public IMvxInteraction HideAlertInteraction => _hideAlertInteraction;
+        private MvxInteraction _hideAlertInteraction = new MvxInteraction();
+        public IMvxInteraction HideAlertInteraction => _hideAlertInteraction;
 
-		private UserDefinedCode _originalPickerValue;
+        private UserDefinedCode _originalPickerValue;
         private TrafficSource _originalTrafficSource;
         private TrafficSourceDetail _originalTrafficSourceDetail;
 
@@ -55,11 +55,11 @@ namespace ProspectManagement.Core.ViewModels
         private ICommand _closeCommand;
 
         private bool _isSelectedTrafficSource;
-        private bool _isActivityIndicatorActive;
 
         private ObservableCollection<UserDefinedCode> _prefixes;
         private ObservableCollection<UserDefinedCode> _suffixes;
         private ObservableCollection<UserDefinedCode> _states;
+        private ObservableCollection<UserDefinedCode> _countries;
         private ObservableCollection<UserDefinedCode> _contactPreferences;
         private ObservableCollection<UserDefinedCode> _excludeReasons;
         private ObservableCollection<TrafficSource> _trafficSources;
@@ -67,6 +67,7 @@ namespace ProspectManagement.Core.ViewModels
         private UserDefinedCode _activePrefix;
         private UserDefinedCode _activeSuffix;
         private UserDefinedCode _activeState;
+        private UserDefinedCode _activeCountry;
         private UserDefinedCode _activeContactPreference;
         private UserDefinedCode _activeExcludeReason;
         private TrafficSource _activeTrafficSource;
@@ -163,6 +164,18 @@ namespace ProspectManagement.Core.ViewModels
             }
         }
 
+        public UserDefinedCode ActiveCountry
+        {
+            get { return _activeCountry; }
+            set
+            {
+                _activeCountry = value;
+                StreetAddress.Country = _activeCountry == null ? String.Empty : _activeCountry.Code;
+                RaisePropertyChanged(() => ActiveCountry);
+                RaisePropertyChanged(() => ForeignState);
+            }
+        }
+
         public ObservableCollection<UserDefinedCode> ExcludeReasons
         {
             get { return _excludeReasons; }
@@ -210,6 +223,16 @@ namespace ProspectManagement.Core.ViewModels
             {
                 _states = value;
                 RaisePropertyChanged(() => States);
+            }
+        }
+
+        public ObservableCollection<UserDefinedCode> Countries
+        {
+            get { return _countries; }
+            set
+            {
+                _countries = value;
+                RaisePropertyChanged(() => Countries);
             }
         }
 
@@ -293,16 +316,6 @@ namespace ProspectManagement.Core.ViewModels
             }
         }
 
-        public bool IsActivityIndicatorActive
-        {
-            get { return _isActivityIndicatorActive; }
-            set
-            {
-                _isActivityIndicatorActive = value;
-                RaisePropertyChanged(() => IsActivityIndicatorActive);
-            }
-        }
-
         public TrafficSourceDetail ActiveTrafficSourceDetail
         {
             get { return _activeTrafficSourceDetail; }
@@ -342,7 +355,6 @@ namespace ProspectManagement.Core.ViewModels
                 return _saveCommand ?? (_saveCommand = new MvxCommand(async () =>
                 {
                     var prospectUpdated = false;
-                    IsActivityIndicatorActive = true;
                     await ValidateAsync();
                     if (IsValid.GetValueOrDefault())
                     {
@@ -353,7 +365,11 @@ namespace ProspectManagement.Core.ViewModels
                         Prospect.NickName = NickName;
                         Prospect.NamePrefix = _activePrefix != null ? _activePrefix.Description1 : String.Empty;
                         Prospect.NameSuffix = _activeSuffix != null ? _activeSuffix.Description1 : String.Empty;
-                        Prospect.StreetAddress = StreetAddress;
+                        Prospect.StreetAddress = !String.IsNullOrEmpty(StreetAddress.AddressLine1) ||
+                                                       !String.IsNullOrEmpty(StreetAddress.AddressLine2) ||
+                                                       !String.IsNullOrEmpty(StreetAddress.City) ||
+                                                       !String.IsNullOrEmpty(StreetAddress.State) ||
+                                                        !String.IsNullOrEmpty(StreetAddress.PostalCode) ? StreetAddress : null;
                         Prospect.FollowUpSettings = FollowUpSettings;
                         Prospect.MobilePhoneNumber = MobilePhone;
                         Prospect.WorkPhoneNumber = WorkPhone;
@@ -363,7 +379,6 @@ namespace ProspectManagement.Core.ViewModels
 
                         prospectUpdated = await _prospectService.UpdateProspectAsync(Prospect);
                     }
-                    IsActivityIndicatorActive = false;
                     _hideAlertInteraction.Raise();
 
                     if (prospectUpdated)
@@ -390,6 +405,7 @@ namespace ProspectManagement.Core.ViewModels
             set
             {
                 _prospect = value;
+                RaisePropertyChanged(() => FromLead);
                 RaisePropertyChanged(() => Prospect);
             }
         }
@@ -448,6 +464,16 @@ namespace ProspectManagement.Core.ViewModels
             }
         }
 
+        public bool ForeignState
+        {
+            get { return !(ActiveCountry == null || String.IsNullOrEmpty(ActiveCountry.Code) || ActiveCountry.Code.Equals("US")); }
+        }
+
+        public bool FromLead
+        {
+            get { return Prospect.ProspectCommunity.LeadId > 0; }
+        }
+
         public FollowUpSettings FollowUpSettings
         {
             get { return _followUpSettings; }
@@ -456,6 +482,19 @@ namespace ProspectManagement.Core.ViewModels
                 _followUpSettings = value;
                 RaisePropertyChanged(() => FollowUpSettings);
                 Validator.ValidateAsync(nameof(FollowUpSettings));
+            }
+        }
+
+        public bool ExcludeFromFollowup
+        {
+            get { return _followUpSettings.ExcludeFromFollowup; }
+            set
+            {
+                _followUpSettings.ExcludeFromFollowup = value;
+                if (!_followUpSettings.ExcludeFromFollowup)
+                    ActiveExcludeReason = null;
+                RaisePropertyChanged(() => ExcludeFromFollowup);
+                Validator.ValidateAsync(nameof(ExcludeFromFollowup));
             }
         }
 
@@ -566,15 +605,18 @@ namespace ProspectManagement.Core.ViewModels
             StreetAddress.State = Prospect.StreetAddress == null ? String.Empty : Prospect.StreetAddress.State;
             StreetAddress.County = Prospect.StreetAddress == null ? String.Empty : Prospect.StreetAddress.County;
             StreetAddress.PostalCode = Prospect.StreetAddress == null ? String.Empty : Prospect.StreetAddress.PostalCode;
-            _savedStreetAddress = new StreetAddress();
-			_savedStreetAddress.AddressLine1 = StreetAddress.AddressLine1;
-			_savedStreetAddress.AddressLine2 = StreetAddress.AddressLine2;
-			_savedStreetAddress.City = StreetAddress.City;
-			_savedStreetAddress.State = StreetAddress.State;
-			_savedStreetAddress.County = StreetAddress.County;
-			_savedStreetAddress.PostalCode = StreetAddress.PostalCode;
+            StreetAddress.Country = Prospect.StreetAddress == null ? String.Empty : Prospect.StreetAddress.Country;
 
-			FollowUpSettings = new FollowUpSettings();
+            _savedStreetAddress = new StreetAddress();
+            _savedStreetAddress.AddressLine1 = StreetAddress.AddressLine1;
+            _savedStreetAddress.AddressLine2 = StreetAddress.AddressLine2;
+            _savedStreetAddress.City = StreetAddress.City;
+            _savedStreetAddress.State = StreetAddress.State;
+            _savedStreetAddress.County = StreetAddress.County;
+            _savedStreetAddress.PostalCode = StreetAddress.PostalCode;
+            _savedStreetAddress.Country = StreetAddress.Country;
+
+            FollowUpSettings = new FollowUpSettings();
             FollowUpSettings.ConsentToEmail = Prospect.FollowUpSettings.ConsentToEmail;
             FollowUpSettings.ConsentToMail = Prospect.FollowUpSettings.ConsentToMail;
             FollowUpSettings.ConsentToPhone = Prospect.FollowUpSettings.ConsentToPhone;
@@ -586,13 +628,14 @@ namespace ProspectManagement.Core.ViewModels
             MobilePhone.Phone = Prospect.MobilePhoneNumber == null ? String.Empty : Prospect.MobilePhoneNumber.Phone;
             MobilePhone.PhoneVerified = Prospect.MobilePhoneNumber == null ? false : Prospect.MobilePhoneNumber.PhoneVerified;
             _savedMobilePhoneNumber = MobilePhone.Phone;
-			
-			WorkPhone = new PhoneNumber();
+
+            WorkPhone = new PhoneNumber();
             WorkPhone.Phone = Prospect.WorkPhoneNumber == null ? String.Empty : Prospect.WorkPhoneNumber.Phone;
             WorkPhone.PhoneVerified = Prospect.WorkPhoneNumber == null ? false : Prospect.WorkPhoneNumber.PhoneVerified;
+            WorkPhone.PhoneExtension = Prospect.WorkPhoneNumber == null ? String.Empty : Prospect.WorkPhoneNumber.PhoneExtension;
             _savedWorkPhoneNumber = WorkPhone.Phone;
-			
-			HomePhone = new PhoneNumber();
+
+            HomePhone = new PhoneNumber();
             HomePhone.Phone = Prospect.HomePhoneNumber == null ? String.Empty : Prospect.HomePhoneNumber.Phone;
             HomePhone.PhoneVerified = Prospect.HomePhoneNumber == null ? false : Prospect.HomePhoneNumber.PhoneVerified;
             _savedHomePhoneNumber = HomePhone.Phone;
@@ -616,6 +659,9 @@ namespace ProspectManagement.Core.ViewModels
 
             States = (await _userDefinedCodeService.GetStateUserDefinedCodes()).ToObservableCollection();
             ActiveState = Prospect.StreetAddress != null ? States.FirstOrDefault(p => p.Code == Prospect.StreetAddress.State) : null;
+
+            Countries = (await _userDefinedCodeService.GetCountryUserDefinedCodes()).ToObservableCollection();
+            ActiveCountry = Prospect.StreetAddress != null ? Countries.FirstOrDefault(p => p.Code == Prospect.StreetAddress.Country) : null;
 
             TrafficSources = (await _trafficSourceService.GetTrafficSourcesByDivision(Prospect.ProspectCommunity.Division)).ToObservableCollection();
             ActiveTrafficSource = TrafficSources.FirstOrDefault(t => t.TrafficSourceDetails.Any(td => td.CodeId == Prospect.TrafficSourceCodeId));
@@ -643,9 +689,9 @@ namespace ProspectManagement.Core.ViewModels
             FirstNameError = Validator.GetResult(nameof(FirstName)).ToString();
             LastNameError = Validator.GetResult(nameof(LastName)).ToString();
             EmailAddressError = Validator.GetResult(nameof(Email)).ToString();
-            MobilePhoneNumberError = Validator.GetResult(nameof(MobilePhoneNumber)).ToString();
-            HomePhoneNumberError = Validator.GetResult(nameof(HomePhoneNumber)).ToString();
-            WorkPhoneNumberError = Validator.GetResult(nameof(WorkPhoneNumber)).ToString();
+            MobilePhoneNumberError = Validator.GetResult(nameof(MobilePhone)).ToString();
+            HomePhoneNumberError = Validator.GetResult(nameof(HomePhone)).ToString();
+            WorkPhoneNumberError = Validator.GetResult(nameof(WorkPhone)).ToString();
             TrafficSourceDetailError = Validator.GetResult(nameof(ActiveTrafficSourceDetail)).ToString();
         }
 
@@ -661,9 +707,17 @@ namespace ProspectManagement.Core.ViewModels
 
         private void ConfigureValidationRules()
         {
-            Validator.AddRequiredRule(() => FirstName, "First Name is required");
+            Validator.AddRule(nameof(FirstName),
+                  () => RuleResult.Assert(!string.IsNullOrEmpty(FirstName) && FirstName.Length <= 25, "First Name is required and cannot be more than 25 characters"));
 
-            Validator.AddRequiredRule(() => LastName, "Last Name is required");
+            Validator.AddRule(nameof(MiddleName),
+                  () => RuleResult.Assert(string.IsNullOrEmpty(MiddleName) || MiddleName.Length <= 25, "Middle Name cannot be more than 25 characters"));
+
+            Validator.AddRule(nameof(LastName),
+                  () => RuleResult.Assert(!string.IsNullOrEmpty(LastName) && LastName.Length <= 25, "Last Name is required and cannot be more than 25 characters"));
+
+            Validator.AddRule(nameof(NickName),
+                  () => RuleResult.Assert(string.IsNullOrEmpty(NickName) || NickName.Length <= 40, "Alias cannot be more than 40 characters"));
 
             Validator.AddRequiredRule(() => FollowUpSettings.PreferredContactMethod, "Contact Preference is required");
 
@@ -677,7 +731,7 @@ namespace ProspectManagement.Core.ViewModels
                                            : await _emailValidationService.Validate(Email);
 
                         return RuleResult.Assert(result.IsValid,
-                                                 string.Format("Valid email required" + (result.DidYouMean != null ? ". Did you mean " + result.DidYouMean : "")));
+                                                        string.Format("Valid email required" + (result.DidYouMean != null ? ". Did you mean " + result.DidYouMean : "")));
                     });
 
             Validator.AddAsyncRule(() => MobilePhone,
@@ -707,9 +761,9 @@ namespace ProspectManagement.Core.ViewModels
             Validator.AddAsyncRule(() => WorkPhone,
                    async () =>
                     {
-						var verifyViaService = (!WorkPhone.PhoneVerified || !WorkPhone.Phone.Equals(_savedWorkPhoneNumber))
-						                                    && !String.IsNullOrEmpty(WorkPhone.Phone);
-						var result = !verifyViaService ? true :
+                        var verifyViaService = (!WorkPhone.PhoneVerified || !WorkPhone.Phone.Equals(_savedWorkPhoneNumber))
+                                                            && !String.IsNullOrEmpty(WorkPhone.Phone);
+                        var result = !verifyViaService ? true :
                                            await _phoneNumberValidationService.Validate(WorkPhone);
 
                         return RuleResult.Assert(result,
@@ -719,18 +773,18 @@ namespace ProspectManagement.Core.ViewModels
             Validator.AddAsyncRule(() => StreetAddress,
                    async () =>
                     {
-						var verifyViaService = (!StreetAddress.StreetAddressVerified ||
+                        var verifyViaService = (!StreetAddress.StreetAddressVerified ||
                                                 !StreetAddress.AddressLine1.Equals(_savedStreetAddress.AddressLine1) ||
                                                 !StreetAddress.AddressLine2.Equals(_savedStreetAddress.AddressLine2) ||
                                                 !StreetAddress.City.Equals(_savedStreetAddress.City) ||
                                                 !StreetAddress.State.Equals(_savedStreetAddress.State) ||
                                                 !StreetAddress.PostalCode.Equals(_savedStreetAddress.PostalCode))
-											   && (!String.IsNullOrEmpty(StreetAddress.AddressLine1) ||
-													   !String.IsNullOrEmpty(StreetAddress.AddressLine2) ||
-													   !String.IsNullOrEmpty(StreetAddress.City) ||
-													   !String.IsNullOrEmpty(StreetAddress.State) ||
-			                                            !String.IsNullOrEmpty(StreetAddress.PostalCode));
-                
+                                               && (!String.IsNullOrEmpty(StreetAddress.AddressLine1) ||
+                                                       !String.IsNullOrEmpty(StreetAddress.AddressLine2) ||
+                                                       !String.IsNullOrEmpty(StreetAddress.City) ||
+                                                       !String.IsNullOrEmpty(StreetAddress.State) ||
+                                                        !String.IsNullOrEmpty(StreetAddress.PostalCode));
+
                         var result = !verifyViaService
                                            ? true :
                                            await _streetValidationService.Validate(StreetAddress);
@@ -742,7 +796,7 @@ namespace ProspectManagement.Core.ViewModels
             Validator.AddRule(() => ActiveTrafficSourceDetail,
                     () =>
                     {
-                        var result = ActiveTrafficSourceDetail != null && ActiveTrafficSourceDetail.CodeId > 0;
+                        var result = !(Prospect.ProspectCommunity.LeadId == 0 && (ActiveTrafficSourceDetail == null || ActiveTrafficSourceDetail.CodeId == 0));
 
                         return RuleResult.Assert(result, string.Format("Traffic Detail required"));
                     });
