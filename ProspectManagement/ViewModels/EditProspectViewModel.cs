@@ -775,7 +775,8 @@ namespace ProspectManagement.Core.ViewModels
                     {
                         var verifyViaService = (!StreetAddress.StreetAddressVerified ||
                                                 (StreetAddress.AddressLine1 != _savedStreetAddress.AddressLine1) ||
-                                                (StreetAddress.AddressLine2 != _savedStreetAddress.City) ||
+                                                (StreetAddress.AddressLine2 != _savedStreetAddress.AddressLine2) ||
+                                                (StreetAddress.City != _savedStreetAddress.City) ||
                                                 (StreetAddress.State != _savedStreetAddress.State) ||
                                                 (StreetAddress.PostalCode != _savedStreetAddress.PostalCode))
                                                && (!String.IsNullOrEmpty(StreetAddress.AddressLine1) ||
