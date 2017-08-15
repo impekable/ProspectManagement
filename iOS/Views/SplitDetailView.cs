@@ -89,13 +89,6 @@ namespace ProspectManagement.iOS.Views
 			set.Bind(this).For(view => view.ShowAlertInteraction).To(viewModel => viewModel.ShowAlertInteraction).OneWay();
 			set.Apply();
             			
-            ProspectTabBar.ItemSelected += (sender, e) => {
-                if (e.Item.Tag == 1)
-                    ViewModel.ShowCobuyerTab.Execute(null);
-				else if (e.Item.Tag == 2)
-					ViewModel.ShowTrafficCardTab.Execute(null);
-            };
-
 			var b = new UIBarButtonItem("Edit", UIBarButtonItemStyle.Plain, (sender, e) =>
 			{
 				ViewModel.EditProspectCommand.Execute(null);
