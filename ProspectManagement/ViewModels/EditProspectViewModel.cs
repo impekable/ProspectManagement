@@ -774,11 +774,10 @@ namespace ProspectManagement.Core.ViewModels
                    async () =>
                     {
                         var verifyViaService = (!StreetAddress.StreetAddressVerified ||
-                                                !StreetAddress.AddressLine1.Equals(_savedStreetAddress.AddressLine1) ||
-                                                !StreetAddress.AddressLine2.Equals(_savedStreetAddress.AddressLine2) ||
-                                                !StreetAddress.City.Equals(_savedStreetAddress.City) ||
-                                                !StreetAddress.State.Equals(_savedStreetAddress.State) ||
-                                                !StreetAddress.PostalCode.Equals(_savedStreetAddress.PostalCode))
+                                                (StreetAddress.AddressLine1 != _savedStreetAddress.AddressLine1) ||
+                                                (StreetAddress.AddressLine2 != _savedStreetAddress.City) ||
+                                                (StreetAddress.State != _savedStreetAddress.State) ||
+                                                (StreetAddress.PostalCode != _savedStreetAddress.PostalCode))
                                                && (!String.IsNullOrEmpty(StreetAddress.AddressLine1) ||
                                                        !String.IsNullOrEmpty(StreetAddress.AddressLine2) ||
                                                        !String.IsNullOrEmpty(StreetAddress.City) ||
