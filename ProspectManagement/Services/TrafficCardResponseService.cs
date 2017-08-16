@@ -10,7 +10,7 @@ namespace ProspectManagement.Core.Services
 {
 	public class TrafficCardResponseService : ITrafficCardResponseService
 	{
-		const string resource = "http://ProspectRegistrationRestService.azure-mobile.net";
+		const string resource = "http://ProspectManagementRestService.azure-mobile.net";
 
 		private readonly ITrafficCardResponseRepository _responseRepository;
 		private readonly IAuthenticator _authenticator;

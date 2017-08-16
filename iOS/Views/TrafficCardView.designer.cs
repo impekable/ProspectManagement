@@ -16,22 +16,31 @@ namespace ProspectManagement.iOS.Views
     {
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UILabel NameLabel { get; set; }
+        UIKit.UITabBar ProspectTabBar { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UITabBar ProspectTabBar { get; set; }
+        UIKit.UIStackView QuestionsStackView { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UITableView QuestionsTableView { get; set; }
 
         void ReleaseDesignerOutlets ()
         {
-            if (NameLabel != null) {
-                NameLabel.Dispose ();
-                NameLabel = null;
-            }
-
             if (ProspectTabBar != null) {
                 ProspectTabBar.Dispose ();
                 ProspectTabBar = null;
+            }
+
+            if (QuestionsStackView != null) {
+                QuestionsStackView.Dispose ();
+                QuestionsStackView = null;
+            }
+
+            if (QuestionsTableView != null) {
+                QuestionsTableView.Dispose ();
+                QuestionsTableView = null;
             }
         }
     }

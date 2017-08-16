@@ -195,6 +195,8 @@
     <InterfaceDefinition Include="Main.storyboard" />
     <InterfaceDefinition Include="Views\ProspectViewCell.xib" />
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
+    <InterfaceDefinition Include="Views\QuestionViewCell.xib" />
+    <InterfaceDefinition Include="Views\AnswerViewCell.xib" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -257,6 +259,18 @@
     <Compile Include="Bootstrap\FilePluginBootstrap.cs" />
     <Compile Include="Bootstrap\MessengerPluginBootstrap.cs" />
     <Compile Include="Bootstrap\DownloadCachePluginBootstrap.cs" />
+    <Compile Include="Views\TrafficCardQuestionView.cs" />
+    <Compile Include="Views\TrafficCardQuestionView.designer.cs">
+      <DependentUpon>TrafficCardQuestionView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\QuestionViewCell.cs" />
+    <Compile Include="Views\QuestionViewCell.designer.cs">
+      <DependentUpon>QuestionViewCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AnswerViewCell.cs" />
+    <Compile Include="Views\AnswerViewCell.designer.cs">
+      <DependentUpon>AnswerViewCell.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ProspectManagement\ProspectManagement.Core.csproj">

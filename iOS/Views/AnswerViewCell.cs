@@ -5,25 +5,26 @@ using MvvmCross.Binding.BindingContext;
 using MvvmCross.Binding.iOS.Views;
 using UIKit;
 
-namespace ProspectManagement.iOS
+namespace ProspectManagement.iOS.Views
 {
-    public partial class AnswerCell : MvxTableViewCell
+    public partial class AnswerViewCell : MvxTableViewCell
     {
-        public static readonly NSString Key = new NSString("AnswerCell");
+        public static readonly NSString Key = new NSString("AnswerViewCell");
         public static readonly UINib Nib;
 
-        static AnswerCell()
+        static AnswerViewCell()
         {
-            Nib = UINib.FromName("AnswerCell", NSBundle.MainBundle);
+            Nib = UINib.FromName("AnswerViewCell", NSBundle.MainBundle);
         }
 
-        protected AnswerCell(IntPtr handle) : base(handle)
+        protected AnswerViewCell(IntPtr handle) : base(handle)
         {
             // Note: this .ctor should not contain any initialization logic.
             this.DelayBind(() =>
             {
-                var set = this.CreateBindingSet<AnswerCell, string>();
+                var set = this.CreateBindingSet<AnswerViewCell, string>();
                 set.Bind(AnswerLabel).To(v => v);
+
                 set.Apply();
             });
         }

@@ -8,10 +8,10 @@ using Foundation;
 using System;
 using System.CodeDom.Compiler;
 
-namespace ProspectRegistration.iOS
+namespace ProspectManagement.iOS.Views
 {
-    [Register ("AnswerCell")]
-    partial class AnswerCell
+    [Register ("AnswerViewCell")]
+    partial class AnswerViewCell
     {
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]

@@ -7,5 +7,7 @@ namespace ProspectManagement.Core.Interfaces.Repositories
     {
         Prospect GetProspectFromCache(int id);
         void SaveProspectToCache(Prospect prospect);
+		TrafficCardResponse GetTrafficCardResponseFromCache(int id);
+		void SaveTrafficCardResponseToCache(int prospectId, TrafficCardResponse response);
     }
 }

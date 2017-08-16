@@ -127,6 +127,8 @@
     <Compile Include="Models\App\MetadataInternational.cs" />
     <Compile Include="Converters\CountyConverter.cs" />
     <Compile Include="Converters\StateCountryConverter.cs" />
+    <Compile Include="ViewModels\TrafficCardQuestionViewModel.cs" />
+    <Compile Include="Messages\TrafficCardResponseChangedMessage.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MvvmCross.Plugins.Sqlite">
