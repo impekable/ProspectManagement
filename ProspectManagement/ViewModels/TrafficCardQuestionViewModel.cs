@@ -14,95 +14,101 @@ namespace ProspectManagement.Core.ViewModels
     {
         private Prospect _prospect;
 
-		private readonly ITrafficCardResponseService _trafficCardResponseService;
+        private readonly ITrafficCardResponseService _trafficCardResponseService;
         private readonly IProspectCache _prospectCache;
         protected IMvxMessenger Messenger;
 
-		private List<TrafficCardResponse> _responses;
-		private TrafficCardResponse _response;
-		private TrafficCardQuestion _currentQuestion;
-		private TrafficCardAnswer _currentAnswer;
+        private List<TrafficCardResponse> _responses;
+        private TrafficCardResponse _response;
+        private TrafficCardQuestion _currentQuestion;
+        private TrafficCardAnswer _currentAnswer;
 
-		public TrafficCardResponse Response
-		{
-			get { return _response; }
-			set
-			{
-				_response = value;
-				RaisePropertyChanged(() => Response);
-			}
-		}
+        public TrafficCardResponse Response
+        {
+            get { return _response; }
+            set
+            {
+                _response = value;
+                RaisePropertyChanged(() => Response);
+            }
+        }
 
 
-		public TrafficCardAnswer CurrentAnswer
-		{
-			get { return _currentAnswer; }
-			set
-			{
-				_currentAnswer = value;
-				Response.AnswerNumber = _currentAnswer != null ? _currentAnswer.AnswerNumber : 0;
-				RaisePropertyChanged(() => CurrentAnswer);
-			}
-		}
+        public TrafficCardAnswer CurrentAnswer
+        {
+            get { return _currentAnswer; }
+            set
+            {
+                _currentAnswer = value;
+                RaisePropertyChanged(() => CurrentAnswer);
+            }
+        }
 
-		public TrafficCardQuestion CurrentQuestion
-		{
-			get { return _currentQuestion; }
-			set
-			{
-				_currentQuestion = value;
-				RaisePropertyChanged(() => CurrentQuestion);
-			}
-		}
+        public TrafficCardQuestion CurrentQuestion
+        {
+            get { return _currentQuestion; }
+            set
+            {
+                _currentQuestion = value;
+                RaisePropertyChanged(() => CurrentQuestion);
+            }
+        }
 
-		public MvxCommand CancelCommand
-		{
-			get
-			{
-				return new MvxCommand(() =>
-				{
-					Close(this);
-				});
-			}
-		}
+        public MvxCommand CancelCommand
+        {
+            get
+            {
+                return new MvxCommand(() =>
+                {
+                    Close(this);
+                });
+            }
+        }
 
-		public MvxCommand SaveCommand
-		{
-			get
-			{
-				return new MvxCommand(async () =>
-				{
+        public MvxCommand SaveCommand
+        {
+            get
+            {
+                return new MvxCommand(async () =>
+                {
+                    var originalAnswer = Response.AnswerNumber;
+                    Response.AnswerNumber = _currentAnswer != null ? _currentAnswer.AnswerNumber : 0;
+
                     var result = await _trafficCardResponseService.UpdateTrafficCardResponse(_prospect.ProspectAddressNumber, _responses);
 
                     if (result)
                     {
                         Messenger.Publish(new TrafficCardResponseChangedMessage(this) { ChangedResponse = Response });
                     }
-					Close(this);
-				});
-			}
-		}
+                    else
+                    {
+                        Response.AnswerNumber = originalAnswer;
+                    }
+                    Close(this);
+                });
+            }
+        }
 
         public TrafficCardQuestionViewModel(IMvxMessenger messenger, IProspectCache prospectCache, ITrafficCardResponseService trafficCardResponseService)
         {
             Messenger = messenger;
-			_prospectCache = prospectCache;
-			_trafficCardResponseService = trafficCardResponseService;
-		}
+            _prospectCache = prospectCache;
+            _trafficCardResponseService = trafficCardResponseService;
+        }
 
-		public override async void Start()
-		{
-			base.Start();
-			await ReloadDataAsync();
-		}
+        public override async void Start()
+        {
+            base.Start();
+            await ReloadDataAsync();
+        }
 
-		public async void Init(Prospect prospect)
-		{
+        public async void Init(Prospect prospect)
+        {
             _prospect = prospect;
             Response = _prospectCache.GetTrafficCardResponseFromCache(prospect.ProspectAddressNumber);
-			_responses = new List<TrafficCardResponse>();
-			_responses.Add(Response);
-			CurrentQuestion = Response.TrafficCardQuestion;
-		}
-	}
+            _responses = new List<TrafficCardResponse>();
+            _responses.Add(Response);
+            CurrentQuestion = Response.TrafficCardQuestion;
+        }
+    }
 }

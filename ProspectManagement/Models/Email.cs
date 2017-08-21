@@ -13,6 +13,11 @@ namespace ProspectManagement.Core.Models
         public string EmailAddress { get; set; }
         [JsonProperty("emailVerified")]
         public bool EmailVerified { get; set; }
+
+		public Email ShallowCopy()
+		{
+			return (Email)this.MemberwiseClone();
+		}
     }
 
 }

@@ -15,5 +15,10 @@ namespace ProspectManagement.Core.Models
         public bool PhoneVerified { get; set; }
 		[JsonProperty("phoneExtension")]
 		public string PhoneExtension { get; set; }
+
+		public PhoneNumber ShallowCopy()
+		{
+			return (PhoneNumber)this.MemberwiseClone();
+		}
     }
 }

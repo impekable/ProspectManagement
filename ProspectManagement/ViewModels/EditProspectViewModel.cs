@@ -24,6 +24,7 @@ namespace ProspectManagement.Core.ViewModels
         private TrafficSourceDetail _originalTrafficSourceDetail;
 
         private Prospect _prospect;
+        private Prospect _originalProspect;
         private string _firstName;
         private string _lastName;
         private string _middleName;
@@ -34,12 +35,6 @@ namespace ProspectManagement.Core.ViewModels
         private PhoneNumber _workPhoneNumber;
         private PhoneNumber _homePhoneNumber;
         private Email _email;
-
-        private StreetAddress _savedStreetAddress;
-        private string _savedMobilePhoneNumber;
-        private string _savedWorkPhoneNumber;
-        private string _savedHomePhoneNumber;
-        private string _savedEmail;
 
         private readonly ITrafficSourceService _trafficSourceService;
         private readonly IDialogService _dialogService;
@@ -387,6 +382,23 @@ namespace ProspectManagement.Core.ViewModels
 
                         Close(this);
                     }
+                    else
+                    {
+                        Prospect.Name = _originalProspect.Name;
+                        Prospect.FirstName = _originalProspect.FirstName;
+                        Prospect.LastName = _originalProspect.LastName;
+                        Prospect.MiddleName = _originalProspect.MiddleName;
+                        Prospect.NickName = _originalProspect.NickName;
+                        Prospect.NamePrefix = _originalProspect.NamePrefix;
+                        Prospect.NameSuffix = _originalProspect.NameSuffix;
+                        Prospect.TrafficSourceCodeId = _originalProspect.TrafficSourceCodeId;
+                        Prospect.FollowUpSettings = _originalProspect.FollowUpSettings.ShallowCopy();
+                        Prospect.StreetAddress = _originalProspect.StreetAddress.ShallowCopy();
+                        Prospect.MobilePhoneNumber = _originalProspect.MobilePhoneNumber.ShallowCopy();
+                        Prospect.HomePhoneNumber = _originalProspect.HomePhoneNumber.ShallowCopy();
+                        Prospect.WorkPhoneNumber = _originalProspect.WorkPhoneNumber.ShallowCopy();
+                        Prospect.Email = _originalProspect.Email.ShallowCopy();
+                    }
                 }));
             }
         }
@@ -597,53 +609,20 @@ namespace ProspectManagement.Core.ViewModels
             LastName = Prospect.LastName;
             MiddleName = Prospect.MiddleName;
             NickName = Prospect.NickName;
+            StreetAddress = Prospect.StreetAddress == null ? new StreetAddress() : Prospect.StreetAddress.ShallowCopy();
+			FollowUpSettings = Prospect.FollowUpSettings.ShallowCopy();
+            MobilePhone = Prospect.MobilePhoneNumber == null ? new PhoneNumber() : Prospect.MobilePhoneNumber.ShallowCopy();
+			WorkPhone = Prospect.WorkPhoneNumber == null ? new PhoneNumber() : Prospect.WorkPhoneNumber.ShallowCopy();
+			HomePhone = Prospect.HomePhoneNumber == null ? new PhoneNumber() : Prospect.HomePhoneNumber.ShallowCopy();
+			Email = Prospect.Email == null ? new Email() : Prospect.Email.ShallowCopy();
 
-            StreetAddress = new StreetAddress();
-            StreetAddress.AddressLine1 = Prospect.StreetAddress == null ? String.Empty : Prospect.StreetAddress.AddressLine1;
-            StreetAddress.AddressLine2 = Prospect.StreetAddress == null ? String.Empty : Prospect.StreetAddress.AddressLine2;
-            StreetAddress.City = Prospect.StreetAddress == null ? String.Empty : Prospect.StreetAddress.City;
-            StreetAddress.State = Prospect.StreetAddress == null ? String.Empty : Prospect.StreetAddress.State;
-            StreetAddress.County = Prospect.StreetAddress == null ? String.Empty : Prospect.StreetAddress.County;
-            StreetAddress.PostalCode = Prospect.StreetAddress == null ? String.Empty : Prospect.StreetAddress.PostalCode;
-            StreetAddress.Country = Prospect.StreetAddress == null ? String.Empty : Prospect.StreetAddress.Country;
-
-            _savedStreetAddress = new StreetAddress();
-            _savedStreetAddress.AddressLine1 = StreetAddress.AddressLine1;
-            _savedStreetAddress.AddressLine2 = StreetAddress.AddressLine2;
-            _savedStreetAddress.City = StreetAddress.City;
-            _savedStreetAddress.State = StreetAddress.State;
-            _savedStreetAddress.County = StreetAddress.County;
-            _savedStreetAddress.PostalCode = StreetAddress.PostalCode;
-            _savedStreetAddress.Country = StreetAddress.Country;
-
-            FollowUpSettings = new FollowUpSettings();
-            FollowUpSettings.ConsentToEmail = Prospect.FollowUpSettings.ConsentToEmail;
-            FollowUpSettings.ConsentToMail = Prospect.FollowUpSettings.ConsentToMail;
-            FollowUpSettings.ConsentToPhone = Prospect.FollowUpSettings.ConsentToPhone;
-            FollowUpSettings.PreferredContactMethod = Prospect.FollowUpSettings.PreferredContactMethod;
-            FollowUpSettings.ExcludeFromFollowup = Prospect.FollowUpSettings.ExcludeFromFollowup;
-            FollowUpSettings.ExcludeReason = Prospect.FollowUpSettings.ExcludeReason;
-
-            MobilePhone = new PhoneNumber();
-            MobilePhone.Phone = Prospect.MobilePhoneNumber == null ? String.Empty : Prospect.MobilePhoneNumber.Phone;
-            MobilePhone.PhoneVerified = Prospect.MobilePhoneNumber == null ? false : Prospect.MobilePhoneNumber.PhoneVerified;
-            _savedMobilePhoneNumber = MobilePhone.Phone;
-
-            WorkPhone = new PhoneNumber();
-            WorkPhone.Phone = Prospect.WorkPhoneNumber == null ? String.Empty : Prospect.WorkPhoneNumber.Phone;
-            WorkPhone.PhoneVerified = Prospect.WorkPhoneNumber == null ? false : Prospect.WorkPhoneNumber.PhoneVerified;
-            WorkPhone.PhoneExtension = Prospect.WorkPhoneNumber == null ? String.Empty : Prospect.WorkPhoneNumber.PhoneExtension;
-            _savedWorkPhoneNumber = WorkPhone.Phone;
-
-            HomePhone = new PhoneNumber();
-            HomePhone.Phone = Prospect.HomePhoneNumber == null ? String.Empty : Prospect.HomePhoneNumber.Phone;
-            HomePhone.PhoneVerified = Prospect.HomePhoneNumber == null ? false : Prospect.HomePhoneNumber.PhoneVerified;
-            _savedHomePhoneNumber = HomePhone.Phone;
-
-            Email = new Email();
-            Email.EmailAddress = Prospect.Email == null ? String.Empty : Prospect.Email.EmailAddress;
-            Email.EmailVerified = Prospect.Email == null ? false : Prospect.Email.EmailVerified;
-            _savedEmail = Email.EmailAddress;
+            _originalProspect = Prospect.ShallowCopy();
+            _originalProspect.FollowUpSettings = FollowUpSettings.ShallowCopy();
+			_originalProspect.StreetAddress = StreetAddress.ShallowCopy();
+            _originalProspect.MobilePhoneNumber = MobilePhone.ShallowCopy();
+            _originalProspect.WorkPhoneNumber = WorkPhone.ShallowCopy();
+            _originalProspect.HomePhoneNumber = HomePhone.ShallowCopy();
+            _originalProspect.Email = Email.ShallowCopy();
 
             Prefixes = (await _userDefinedCodeService.GetPrefixUserDefinedCodes()).ToObservableCollection();
             ActivePrefix = Prefixes.FirstOrDefault(p => p.Description1 == Prospect.NamePrefix);
@@ -724,7 +703,7 @@ namespace ProspectManagement.Core.ViewModels
             Validator.AddAsyncRule(() => Email,
                    async () =>
                     {
-                        var verifyViaService = (!Email.EmailVerified || !Email.EmailAddress.Equals(_savedEmail))
+                        var verifyViaService = (!Email.EmailVerified || (Email.EmailAddress != _originalProspect.Email.EmailAddress))
                                                              && !String.IsNullOrEmpty(Email.EmailAddress);
                         var result = !verifyViaService
                                            ? new EmailValidationResult() { IsValid = true }
@@ -737,7 +716,7 @@ namespace ProspectManagement.Core.ViewModels
             Validator.AddAsyncRule(() => MobilePhone,
                    async () =>
                     {
-                        var verifyViaService = (!MobilePhone.PhoneVerified || !MobilePhone.Phone.Equals(_savedMobilePhoneNumber))
+                        var verifyViaService = (!MobilePhone.PhoneVerified || (MobilePhone.Phone != _originalProspect.MobilePhoneNumber.Phone))
                                                             && !String.IsNullOrEmpty(MobilePhone.Phone);
                         var result = !verifyViaService ? true :
                                            await _phoneNumberValidationService.Validate(MobilePhone);
@@ -749,7 +728,7 @@ namespace ProspectManagement.Core.ViewModels
             Validator.AddAsyncRule(() => HomePhone,
                    async () =>
                     {
-                        var verifyViaService = (!HomePhone.PhoneVerified || !HomePhone.Phone.Equals(_savedHomePhoneNumber))
+                        var verifyViaService = (!HomePhone.PhoneVerified || (HomePhone.Phone != _originalProspect.HomePhoneNumber.Phone))
                                                             && !String.IsNullOrEmpty(HomePhone.Phone);
                         var result = !verifyViaService ? true :
                                            await _phoneNumberValidationService.Validate(HomePhone);
@@ -761,7 +740,7 @@ namespace ProspectManagement.Core.ViewModels
             Validator.AddAsyncRule(() => WorkPhone,
                    async () =>
                     {
-                        var verifyViaService = (!WorkPhone.PhoneVerified || !WorkPhone.Phone.Equals(_savedWorkPhoneNumber))
+                        var verifyViaService = (!WorkPhone.PhoneVerified || (WorkPhone.Phone != _originalProspect.WorkPhoneNumber.Phone))
                                                             && !String.IsNullOrEmpty(WorkPhone.Phone);
                         var result = !verifyViaService ? true :
                                            await _phoneNumberValidationService.Validate(WorkPhone);
@@ -774,11 +753,11 @@ namespace ProspectManagement.Core.ViewModels
                    async () =>
                     {
                         var verifyViaService = (!StreetAddress.StreetAddressVerified ||
-                                                (StreetAddress.AddressLine1 != _savedStreetAddress.AddressLine1) ||
-                                                (StreetAddress.AddressLine2 != _savedStreetAddress.AddressLine2) ||
-                                                (StreetAddress.City != _savedStreetAddress.City) ||
-                                                (StreetAddress.State != _savedStreetAddress.State) ||
-                                                (StreetAddress.PostalCode != _savedStreetAddress.PostalCode))
+                                                (StreetAddress.AddressLine1 != _originalProspect.StreetAddress.AddressLine1) ||
+                                                (StreetAddress.AddressLine2 != _originalProspect.StreetAddress.AddressLine2) ||
+                                                (StreetAddress.City != _originalProspect.StreetAddress.City) ||
+                                                (StreetAddress.State != _originalProspect.StreetAddress.State) ||
+                                                (StreetAddress.PostalCode != _originalProspect.StreetAddress.PostalCode))
                                                && (!String.IsNullOrEmpty(StreetAddress.AddressLine1) ||
                                                        !String.IsNullOrEmpty(StreetAddress.AddressLine2) ||
                                                        !String.IsNullOrEmpty(StreetAddress.City) ||

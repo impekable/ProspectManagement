@@ -16,7 +16,7 @@ namespace ProspectManagement.Core.Repositories
 			var responses = await GetDataObjectFromAPI<List<TrafficCardResponse>>(string.Format(_baseUri + "?Fields=trafficCardQuestion.trafficCardAnswer&PageSize=99", prospectAddressNumber));
 			if (requiredOnly)
 				responses = responses.Where(r => r.TrafficCardQuestion.WeightingValue > 0).ToList();
-			return responses;
+			return responses.OrderBy(r => r.TrafficCardQuestion.QuestionSequenceNumber).ToList();
 		}
 
 		public async Task<bool> UpdateTrafficCardResponseAsync(int prospectAddressNumber, List<TrafficCardResponse> response, string accessToken)

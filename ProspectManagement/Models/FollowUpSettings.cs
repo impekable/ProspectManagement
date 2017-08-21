@@ -23,5 +23,10 @@ namespace ProspectManagement.Core.Models
         public string ExcludeReason { get; set; }
         [JsonProperty("preferredContactMethod")]
         public string PreferredContactMethod { get; set; }
+
+		public FollowUpSettings ShallowCopy()
+		{
+			return (FollowUpSettings)this.MemberwiseClone();
+		}
     }
 }

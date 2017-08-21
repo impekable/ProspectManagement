@@ -35,8 +35,6 @@ namespace ProspectManagement.Core.Models
 		public PhoneNumber HomePhoneNumber { get; set; }
 		[JsonProperty("corporationIndicator")]
 		public string CorporationIndicator { get; set; }
-		[JsonProperty("usingRealtorYesOrNoEntry")]
-		public string UsingRealtorYesOrNoEntry { get; set; }
 		[JsonProperty("trafficSourceCodeId")]
 		public int TrafficSourceCodeId { get; set; }
 		[JsonProperty("streetAddress")]
@@ -45,8 +43,12 @@ namespace ProspectManagement.Core.Models
         public ProspectCommunity ProspectCommunity { get; set; }
 		[JsonProperty("followUpSettings")]
 		public FollowUpSettings FollowUpSettings { get; set; }
-		[JsonProperty("visitInformation")]
-		public VisitInformation VisitInformation { get; set; }
+
+		public Prospect ShallowCopy()
+		{
+			return (Prospect)this.MemberwiseClone();
+		}
+
         public override string ToString()
         {
             return string.Format("{0}", Name);

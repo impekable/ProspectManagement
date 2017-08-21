@@ -25,5 +25,10 @@ namespace ProspectManagement.Core.Models
 		public string Country { get; set; }
         [JsonProperty("streetAddressVerified")]
         public bool StreetAddressVerified { get; set; }
+
+		public StreetAddress ShallowCopy()
+		{
+			return (StreetAddress)this.MemberwiseClone();
+		}
     }
 }
