@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="160">
-    <device id="retina5_5" orientation="portrait">
+    <device id="retina5_5" orientation="landscape">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -18,7 +18,7 @@
                         <viewControllerLayoutGuide type="bottom" id="3"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="6">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="736" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9">
@@ -48,7 +48,7 @@
                         <viewControllerLayoutGuide type="bottom" id="53"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="56">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="736" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -66,14 +66,14 @@
                         <viewControllerLayoutGuide type="bottom" id="60"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="63">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="736" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="YRD-d8-8gC">
-                                <rect key="frame" x="2" y="20" width="410" height="716"/>
+                                <rect key="frame" x="2" y="20" width="732" height="394"/>
                                 <subviews>
                                     <segmentedControl opaque="NO" contentMode="center" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bordered" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="MSk-at-had">
-                                        <rect key="frame" x="0.0" y="0.0" width="410" height="318"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="732" height="1"/>
                                         <edgeInsets key="layoutMargins" top="8" left="16" bottom="8" right="16"/>
                                         <segments>
                                             <segment title="All"/>
@@ -83,18 +83,18 @@
                                         <color key="tintColor" red="0.4549019608" green="0.68235294120000001" blue="0.70588235290000001" alpha="1" colorSpace="calibratedRGB"/>
                                     </segmentedControl>
                                     <searchBar contentMode="redraw" showsCancelButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Fdz-uU-872">
-                                        <rect key="frame" x="0.0" y="327" width="410" height="44"/>
+                                        <rect key="frame" x="0.0" y="10" width="732" height="39"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </searchBar>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="50" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="139">
-                                        <rect key="frame" x="0.0" y="381" width="410" height="335"/>
+                                        <rect key="frame" x="0.0" y="59" width="732" height="335"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="140">
-                                                <rect key="frame" x="0.0" y="28" width="410" height="50"/>
+                                                <rect key="frame" x="0.0" y="28" width="732" height="50"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="140" id="141">
-                                                    <rect key="frame" x="0.0" y="0.0" width="410" height="49"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="732" height="50"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </tableViewCellContentView>
                                             </tableViewCell>
@@ -134,14 +134,14 @@
                         <viewControllerLayoutGuide type="bottom" id="67"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="70">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="736" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="FUf-Qd-Dgd">
-                                <rect key="frame" x="10" y="30" width="394" height="655"/>
+                                <rect key="frame" x="10" y="30" width="716" height="333"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Prospect Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="148">
-                                        <rect key="frame" x="0.0" y="0.0" width="394" height="328"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="716" height="166.66666666666666"/>
                                         <fontDescription key="fontDescription" name="Raleway-Bold" family="Raleway" pointSize="28"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -153,29 +153,29 @@
                                         </variation>
                                     </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="6l9-dy-swU">
-                                        <rect key="frame" x="0.0" y="328" width="394" height="327"/>
+                                        <rect key="frame" x="0.0" y="166.66666666666663" width="716" height="166.33333333333337"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s7Y-Kp-xlT">
-                                                <rect key="frame" x="0.0" y="0.0" width="394" height="1"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="716" height="1"/>
                                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="1" id="chC-iH-bXf"/>
                                                 </constraints>
                                             </view>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Oeg-t3-usf">
-                                                <rect key="frame" x="0.0" y="3" width="394" height="269"/>
+                                                <rect key="frame" x="0.0" y="3" width="716" height="108.33333333333334"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="I6b-dB-9ga" userLabel="AddressStackView">
-                                                        <rect key="frame" x="146" y="0.0" width="103" height="38"/>
+                                                        <rect key="frame" x="307" y="0.0" width="102.33333333333331" height="0.0"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Address Line1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6fE-qx-vHr">
-                                                                <rect key="frame" x="0.0" y="0.0" width="103" height="19"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="102.33333333333331" height="0.0"/>
                                                                 <fontDescription key="fontDescription" name="Raleway-Bold" family="Raleway" pointSize="16"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="City/State/Zip" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jYK-ym-ySy">
-                                                                <rect key="frame" x="0.0" y="19" width="103" height="19"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="102.33333333333331" height="0.0"/>
                                                                 <fontDescription key="fontDescription" name="Raleway-Bold" family="Raleway" pointSize="16"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -183,19 +183,19 @@
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="i1J-OC-TAu">
-                                                        <rect key="frame" x="44" y="38" width="306" height="193"/>
+                                                        <rect key="frame" x="205" y="0.0" width="306" height="74.666666666666657"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Email" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eBA-9U-iKm">
-                                                                <rect key="frame" x="0.0" y="0.0" width="306" height="48"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="306" height="18.666666666666686"/>
                                                                 <fontDescription key="fontDescription" name="Raleway-Bold" family="Raleway" pointSize="16"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <stackView opaque="NO" contentMode="center" translatesAutoresizingMaskIntoConstraints="NO" id="P1H-nO-m91" userLabel="MobilePhoneStackView">
-                                                                <rect key="frame" x="0.0" y="48" width="306" height="48"/>
+                                                                <rect key="frame" x="0.0" y="18.666666666666686" width="306" height="18.666666666666657"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hUu-mX-7v8">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="200" height="48"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="200" height="18.666666666666657"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="width" constant="200" id="p31-qs-NOW"/>
                                                                         </constraints>
@@ -204,7 +204,7 @@
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MobileNumber" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hgd-vj-9QD">
-                                                                        <rect key="frame" x="200" y="0.0" width="106" height="48"/>
+                                                                        <rect key="frame" x="200" y="0.0" width="106" height="18.666666666666657"/>
                                                                         <fontDescription key="fontDescription" name="Raleway-Bold" family="Raleway" pointSize="16"/>
                                                                         <nil key="textColor"/>
                                                                         <nil key="highlightedColor"/>
@@ -212,10 +212,10 @@
                                                                 </subviews>
                                                             </stackView>
                                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="Yab-F2-q4U" userLabel="HomePhoneStackView">
-                                                                <rect key="frame" x="0.0" y="96" width="306" height="49"/>
+                                                                <rect key="frame" x="0.0" y="37.333333333333343" width="306" height="18.666666666666657"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2HQ-CI-Xcs">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="200" height="49"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="200" height="18.666666666666657"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="width" constant="200" id="znF-JH-bCu"/>
                                                                         </constraints>
@@ -224,7 +224,7 @@
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="HomeNumber" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L5s-9B-sj6">
-                                                                        <rect key="frame" x="201" y="0.0" width="105" height="49"/>
+                                                                        <rect key="frame" x="201" y="0.0" width="105" height="18.666666666666657"/>
                                                                         <fontDescription key="fontDescription" name="Raleway-Bold" family="Raleway" pointSize="16"/>
                                                                         <nil key="textColor"/>
                                                                         <nil key="highlightedColor"/>
@@ -232,10 +232,10 @@
                                                                 </subviews>
                                                             </stackView>
                                                             <stackView opaque="NO" contentMode="center" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Kcb-3k-r09" userLabel="WorkPhoneStackView">
-                                                                <rect key="frame" x="0.0" y="145" width="306" height="48"/>
+                                                                <rect key="frame" x="0.0" y="56" width="306" height="18.666666666666657"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xUa-nw-wtA">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="200" height="48"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="200" height="18.666666666666657"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="width" constant="200" id="XTx-uX-moB"/>
                                                                         </constraints>
@@ -244,7 +244,7 @@
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="WorkNumber" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uRb-Tx-i0n">
-                                                                        <rect key="frame" x="200" y="14" width="106" height="19"/>
+                                                                        <rect key="frame" x="200" y="0.0" width="106" height="18.666666666666657"/>
                                                                         <fontDescription key="fontDescription" name="Raleway-Bold" family="Raleway" pointSize="16"/>
                                                                         <nil key="textColor"/>
                                                                         <nil key="highlightedColor"/>
@@ -254,19 +254,19 @@
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="2Xf-rN-x3x">
-                                                        <rect key="frame" x="0.0" y="231" width="394" height="38"/>
+                                                        <rect key="frame" x="0.0" y="74.666666666666657" width="716" height="33.666666666666686"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Consents" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bPi-rk-AwE">
-                                                                <rect key="frame" x="0.0" y="0.0" width="394" height="19"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="716" height="16.666666666666686"/>
                                                                 <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="16"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ls8-HC-MCP" userLabel="ContactPreferenceStackView">
-                                                                <rect key="frame" x="0.0" y="19" width="394" height="19"/>
+                                                                <rect key="frame" x="0.0" y="16.666666666666686" width="716" height="17"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Contact Preference" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hws-37-02W">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="200" height="19"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="200" height="17"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="width" constant="200" id="sDw-cU-jrT"/>
                                                                         </constraints>
@@ -275,7 +275,7 @@
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xxu-Ty-ihg">
-                                                                        <rect key="frame" x="200" y="0.0" width="194" height="19"/>
+                                                                        <rect key="frame" x="200" y="0.0" width="516" height="17"/>
                                                                         <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="16"/>
                                                                         <nil key="textColor"/>
                                                                         <nil key="highlightedColor"/>
@@ -287,14 +287,14 @@
                                                 </subviews>
                                             </stackView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eaI-IH-gWd">
-                                                <rect key="frame" x="0.0" y="274" width="394" height="1"/>
+                                                <rect key="frame" x="0.0" y="113.33333333333334" width="716" height="1"/>
                                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="1" id="odY-Ru-SmN"/>
                                                 </constraints>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SFX-Je-cRI">
-                                                <rect key="frame" x="0.0" y="277" width="394" height="50"/>
+                                                <rect key="frame" x="0.0" y="116.33333333333334" width="716" height="50"/>
                                                 <color key="backgroundColor" red="0.45490196078431372" green="0.68235294117647061" blue="0.70588235294117652" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="50" id="rsY-ir-Cor"/>
@@ -315,10 +315,18 @@
                                     <constraint firstAttribute="height" constant="50" id="nRU-W8-Fj5"/>
                                 </constraints>
                                 <items>
-                                    <tabBarItem title="Details" id="300"/>
-                                    <tabBarItem tag="1" title="Cobuyers" id="301"/>
-                                    <tabBarItem tag="2" title="Traffic Card" id="302"/>
+                                    <tabBarItem title="Details" image="ic-detail" id="300"/>
+                                    <tabBarItem tag="1" title="Cobuyers" image="ic-cobuyers" id="301"/>
+                                    <tabBarItem tag="2" title="Traffic Card" image="ic-card" id="302"/>
                                 </items>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
+                                        <color key="value" red="0.0" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="unselectedItemTintColor">
+                                        <color key="value" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                             </tabBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -362,7 +370,7 @@
                         <viewControllerLayoutGuide type="bottom" id="158"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="161">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="736" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -380,7 +388,7 @@
                         <viewControllerLayoutGuide type="bottom" id="222"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="225">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="736" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Cobuyers" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="235">
@@ -391,13 +399,21 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <tabBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="323">
-                                <rect key="frame" x="0.0" y="975" width="768" height="49"/>
+                                <rect key="frame" x="0.0" y="365" width="736" height="49"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <items>
-                                    <tabBarItem title="Details" id="324"/>
-                                    <tabBarItem tag="1" title="Cobuyers" id="325"/>
-                                    <tabBarItem tag="2" title="Traffic Card" id="326"/>
+                                    <tabBarItem title="Details" image="ic-detail" id="324"/>
+                                    <tabBarItem tag="1" title="Cobuyers" image="ic-cobuyers" id="325"/>
+                                    <tabBarItem tag="2" title="Traffic Card" image="ic-card" id="326"/>
                                 </items>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
+                                        <color key="value" red="0.0" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="unselectedItemTintColor">
+                                        <color key="value" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                             </tabBar>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="346">
                                 <rect key="frame" x="181" y="229" width="137" height="30"/>
@@ -414,6 +430,11 @@
                             <constraint firstAttribute="trailing" secondItem="323" secondAttribute="trailing" id="khd-j4-fwL"/>
                             <constraint firstItem="323" firstAttribute="leading" secondItem="225" secondAttribute="leading" id="pzb-Hx-VjM"/>
                         </constraints>
+                        <variation key="heightClass=compact-widthClass=compact">
+                            <mask key="subviews">
+                                <exclude reference="323"/>
+                            </mask>
+                        </variation>
                         <variation key="heightClass=regular-widthClass=compact">
                             <mask key="subviews">
                                 <exclude reference="323"/>
@@ -439,26 +460,34 @@
                         <viewControllerLayoutGuide type="bottom" id="229"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="232">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="736" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="top" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="iee-rf-CS3">
-                                <rect key="frame" x="20" y="20" width="374" height="666"/>
+                                <rect key="frame" x="20" y="20" width="696" height="344"/>
                                 <subviews>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Msi-4U-vUU">
-                                        <rect key="frame" x="0.0" y="0.0" width="374" height="666"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="696" height="344"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </tableView>
                                 </subviews>
                             </stackView>
                             <tabBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="305">
-                                <rect key="frame" x="0.0" y="974" width="768" height="50"/>
+                                <rect key="frame" x="0.0" y="364" width="736" height="50"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <items>
-                                    <tabBarItem title="Details" id="306"/>
-                                    <tabBarItem tag="1" title="Cobuyers" id="307"/>
-                                    <tabBarItem tag="2" title="Traffic Card" id="308"/>
+                                    <tabBarItem title="Details" image="ic-detail" id="306"/>
+                                    <tabBarItem tag="1" title="Cobuyers" image="ic-cobuyers" id="307"/>
+                                    <tabBarItem tag="2" title="Traffic Card" image="ic-card" id="308"/>
                                 </items>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="unselectedItemTintColor">
+                                        <color key="value" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
+                                        <color key="value" red="0.0" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                             </tabBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -472,6 +501,11 @@
                             <constraint firstItem="305" firstAttribute="top" secondItem="iee-rf-CS3" secondAttribute="bottom" id="riO-8g-sZf"/>
                             <constraint firstItem="229" firstAttribute="top" secondItem="305" secondAttribute="bottom" id="zbi-h9-XiN"/>
                         </constraints>
+                        <variation key="heightClass=compact-widthClass=compact">
+                            <mask key="subviews">
+                                <exclude reference="305"/>
+                            </mask>
+                        </variation>
                         <variation key="heightClass=regular-widthClass=compact">
                             <mask key="subviews">
                                 <exclude reference="305"/>
@@ -497,7 +531,7 @@
                         <viewControllerLayoutGuide type="bottom" id="340"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="343">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="736" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="360">
@@ -528,20 +562,20 @@
                         <viewControllerLayoutGuide type="bottom" id="bU6-CD-Nya"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="bEo-vf-t9M">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="736" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VAN-iW-ms1">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                                <rect key="frame" x="0.0" y="0.0" width="736" height="414"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qaK-WF-IN5" userLabel="ContentView">
-                                        <rect key="frame" x="20" y="5" width="374" height="1088"/>
+                                        <rect key="frame" x="20" y="5" width="696" height="628.33333333333337"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="83s-Ou-DSc">
-                                                <rect key="frame" x="0.0" y="0.0" width="374" height="1088"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="696" height="627.66666666666663"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="All Errors" lineBreakMode="wordWrap" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XqX-5B-MXT">
-                                                        <rect key="frame" x="0.0" y="0.0" width="374" height="18"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="696" height="19.666666666666668"/>
                                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                         <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="16"/>
                                                         <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -555,22 +589,22 @@
                                                         </variation>
                                                     </label>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="rsa-rE-nIh" userLabel="EntryFormStackView">
-                                                        <rect key="frame" x="0.0" y="23" width="374" height="1065"/>
+                                                        <rect key="frame" x="0.0" y="39.666666666666686" width="696" height="588"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="top" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="dvE-77-F1N" userLabel="PrefixFirstStackView">
-                                                                <rect key="frame" x="0.0" y="0.0" width="374" height="86"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="696" height="52.000000000000007"/>
                                                                 <subviews>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Oka-rg-yx3" userLabel="PrefixStackView">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="374" height="30"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="340.66666666666669" height="30.000000000000007"/>
                                                                         <subviews>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Prefix" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OCM-Eb-lZc">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="122" height="30"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="120.66666666666666" height="30.000000000000007"/>
                                                                                 <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="14"/>
                                                                                 <nil key="textColor"/>
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
                                                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="H0v-DQ-Ypc">
-                                                                                <rect key="frame" x="126" y="0.0" width="248" height="30"/>
+                                                                                <rect key="frame" x="128.66666666666669" y="0.0" width="212.00000000000006" height="30.000000000000007"/>
                                                                                 <nil key="textColor"/>
                                                                                 <fontDescription key="fontDescription" name="Raleway-Bold" family="Raleway" pointSize="16"/>
                                                                                 <textInputTraits key="textInputTraits"/>
@@ -580,19 +614,19 @@
                                                                         <variation key="heightClass=regular-widthClass=compact" spacing="4"/>
                                                                     </stackView>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="yM6-PQ-HLg" userLabel="FirstNameStackView">
-                                                                        <rect key="frame" x="0.0" y="38" width="374" height="48"/>
+                                                                        <rect key="frame" x="355.66666666666674" y="0.0" width="340.33333333333326" height="52.000000000000007"/>
                                                                         <subviews>
                                                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="MKv-19-Ulh">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="374" height="30"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="340.33333333333331" height="30.000000000000007"/>
                                                                                 <subviews>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="First Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N5r-6Z-Pld">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="122" height="30"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="121.33333333333331" height="30.000000000000007"/>
                                                                                         <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="14"/>
                                                                                         <nil key="textColor"/>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                     <textField opaque="NO" clipsSubviews="YES" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Fdj-qh-M8p">
-                                                                                        <rect key="frame" x="126" y="0.0" width="248" height="30"/>
+                                                                                        <rect key="frame" x="129.33333333333331" y="0.0" width="211" height="30.000000000000007"/>
                                                                                         <nil key="textColor"/>
                                                                                         <fontDescription key="fontDescription" name="Raleway-Bold" family="Raleway" pointSize="16"/>
                                                                                         <textInputTraits key="textInputTraits"/>
@@ -602,7 +636,7 @@
                                                                                 <variation key="heightClass=regular-widthClass=compact" spacing="4"/>
                                                                             </stackView>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="First Name Error" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vFy-am-LgR">
-                                                                                <rect key="frame" x="0.0" y="34" width="374" height="14"/>
+                                                                                <rect key="frame" x="0.0" y="38.000000000000007" width="340.33333333333331" height="14"/>
                                                                                 <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="12"/>
                                                                                 <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                                 <nil key="highlightedColor"/>
@@ -619,19 +653,19 @@
                                                                 <variation key="heightClass=regular-widthClass=compact" alignment="fill" axis="vertical" distribution="fill" spacing="8"/>
                                                             </stackView>
                                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="top" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="eqV-xm-cGO" userLabel="MiddleLastStackView">
-                                                                <rect key="frame" x="0.0" y="94" width="374" height="86"/>
+                                                                <rect key="frame" x="0.0" y="60.000000000000007" width="696" height="51.999999999999993"/>
                                                                 <subviews>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Q8Z-io-BYM" userLabel="MiddleNameStackView">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="374" height="30"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="340.66666666666669" height="29.999999999999986"/>
                                                                         <subviews>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Middle Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kJB-Iy-0Ch">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="122" height="30"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="120.66666666666666" height="29.999999999999986"/>
                                                                                 <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="14"/>
                                                                                 <nil key="textColor"/>
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
                                                                             <textField opaque="NO" clipsSubviews="YES" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4Su-Xr-w98">
-                                                                                <rect key="frame" x="126" y="0.0" width="248" height="30"/>
+                                                                                <rect key="frame" x="128.66666666666669" y="0.0" width="212.00000000000006" height="29.999999999999986"/>
                                                                                 <nil key="textColor"/>
                                                                                 <fontDescription key="fontDescription" name="Raleway-Bold" family="Raleway" pointSize="16"/>
                                                                                 <textInputTraits key="textInputTraits"/>
@@ -641,19 +675,19 @@
                                                                         <variation key="heightClass=regular-widthClass=compact" spacing="4"/>
                                                                     </stackView>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="dCl-14-QIJ" userLabel="LastNameStackView">
-                                                                        <rect key="frame" x="0.0" y="38" width="374" height="48"/>
+                                                                        <rect key="frame" x="355.66666666666674" y="0.0" width="340.33333333333326" height="51.999999999999986"/>
                                                                         <subviews>
                                                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="UqA-bW-vtT">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="374" height="30"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="340.33333333333331" height="29.999999999999986"/>
                                                                                 <subviews>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Last Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wy3-XX-so4">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="122" height="30"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="121.33333333333331" height="29.999999999999986"/>
                                                                                         <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="14"/>
                                                                                         <nil key="textColor"/>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                     <textField opaque="NO" clipsSubviews="YES" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hQY-gl-BUm">
-                                                                                        <rect key="frame" x="126" y="0.0" width="248" height="30"/>
+                                                                                        <rect key="frame" x="129.33333333333331" y="0.0" width="211" height="29.999999999999986"/>
                                                                                         <nil key="textColor"/>
                                                                                         <fontDescription key="fontDescription" name="Raleway-Bold" family="Raleway" pointSize="16"/>
                                                                                         <textInputTraits key="textInputTraits"/>
@@ -663,7 +697,7 @@
                                                                                 <variation key="heightClass=regular-widthClass=compact" spacing="4"/>
                                                                             </stackView>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Last Name Error" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K96-he-H9R">
-                                                                                <rect key="frame" x="0.0" y="34" width="374" height="14"/>
+                                                                                <rect key="frame" x="0.0" y="37.999999999999986" width="340.33333333333331" height="14"/>
                                                                                 <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="12"/>
                                                                                 <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                                 <nil key="highlightedColor"/>
@@ -677,19 +711,19 @@
                                                                 <variation key="heightClass=regular-widthClass=compact" alignment="fill" axis="vertical" distribution="fill" spacing="8"/>
                                                             </stackView>
                                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="2Xw-Rn-6mY" userLabel="AliasSuffixStackView">
-                                                                <rect key="frame" x="0.0" y="188" width="374" height="68"/>
+                                                                <rect key="frame" x="0.0" y="120" width="696" height="30"/>
                                                                 <subviews>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="nKH-Mg-0dV" userLabel="SuffixStackView">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="374" height="30"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="340.66666666666669" height="30"/>
                                                                         <subviews>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Suffix" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZkL-Je-aOh">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="122" height="30"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="120.66666666666666" height="30"/>
                                                                                 <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="14"/>
                                                                                 <nil key="textColor"/>
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
                                                                             <textField opaque="NO" clipsSubviews="YES" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="KVN-7S-bdb">
-                                                                                <rect key="frame" x="126" y="0.0" width="248" height="30"/>
+                                                                                <rect key="frame" x="128.66666666666669" y="0.0" width="212.00000000000006" height="30"/>
                                                                                 <nil key="textColor"/>
                                                                                 <fontDescription key="fontDescription" name="Raleway-Bold" family="Raleway" pointSize="16"/>
                                                                                 <textInputTraits key="textInputTraits"/>
@@ -699,19 +733,19 @@
                                                                         <variation key="heightClass=regular-widthClass=compact" spacing="4"/>
                                                                     </stackView>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="wQA-fd-zk7" userLabel="AliasStackView">
-                                                                        <rect key="frame" x="0.0" y="38" width="374" height="30"/>
+                                                                        <rect key="frame" x="355.66666666666674" y="0.0" width="340.33333333333326" height="30"/>
                                                                         <subviews>
                                                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Qyx-m2-YLz">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="374" height="30"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="340.33333333333331" height="30"/>
                                                                                 <subviews>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Alias" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ydb-t1-yYb">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="122" height="30"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="121.33333333333331" height="30"/>
                                                                                         <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="14"/>
                                                                                         <nil key="textColor"/>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                     <textField opaque="NO" clipsSubviews="YES" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Jo5-TC-UgN">
-                                                                                        <rect key="frame" x="126" y="0.0" width="248" height="30"/>
+                                                                                        <rect key="frame" x="129.33333333333331" y="0.0" width="211" height="30"/>
                                                                                         <nil key="textColor"/>
                                                                                         <fontDescription key="fontDescription" name="Raleway-Bold" family="Raleway" pointSize="16"/>
                                                                                         <textInputTraits key="textInputTraits"/>
@@ -727,29 +761,29 @@
                                                                 <variation key="heightClass=regular-widthClass=compact" alignment="fill" axis="vertical" distribution="fill" spacing="8"/>
                                                             </stackView>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iEy-my-un0">
-                                                                <rect key="frame" x="0.0" y="264" width="374" height="1"/>
+                                                                <rect key="frame" x="0.0" y="158" width="696" height="1"/>
                                                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="1" id="fsF-cY-BP9"/>
                                                                 </constraints>
                                                             </view>
                                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="7Ig-yZ-42K" userLabel="AddressLine12StackView">
-                                                                <rect key="frame" x="0.0" y="273" width="374" height="68"/>
+                                                                <rect key="frame" x="0.0" y="167" width="696" height="30"/>
                                                                 <subviews>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Mvr-CD-zGx" userLabel="AddressLine1StackView">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="374" height="30"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="340.66666666666669" height="30"/>
                                                                         <subviews>
                                                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Lzg-yh-fQp">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="374" height="30"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="340.66666666666669" height="30"/>
                                                                                 <subviews>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Address Line 1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t52-wE-c4S">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="122" height="30"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="120.66666666666666" height="30"/>
                                                                                         <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="14"/>
                                                                                         <nil key="textColor"/>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                     <textField opaque="NO" clipsSubviews="YES" tag="6" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kBy-vl-8Zb" userLabel="Address Line 1 Text Field">
-                                                                                        <rect key="frame" x="126" y="0.0" width="248" height="30"/>
+                                                                                        <rect key="frame" x="128.66666666666669" y="0.0" width="212.00000000000006" height="30"/>
                                                                                         <nil key="textColor"/>
                                                                                         <fontDescription key="fontDescription" name="Raleway-Bold" family="Raleway" pointSize="16"/>
                                                                                         <textInputTraits key="textInputTraits"/>
@@ -761,19 +795,19 @@
                                                                         </subviews>
                                                                     </stackView>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="hjT-Jg-kfk" userLabel="AddressLine2StackView">
-                                                                        <rect key="frame" x="0.0" y="38" width="374" height="30"/>
+                                                                        <rect key="frame" x="355.66666666666674" y="0.0" width="340.33333333333326" height="30"/>
                                                                         <subviews>
                                                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Zvf-KS-52U">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="374" height="30"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="340.33333333333331" height="30"/>
                                                                                 <subviews>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Address Line 2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LWz-uw-Dzd">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="122" height="30"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="121.33333333333331" height="30"/>
                                                                                         <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="14"/>
                                                                                         <nil key="textColor"/>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                     <textField opaque="NO" clipsSubviews="YES" tag="7" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JRN-2G-t3c" userLabel="Address Line 2 Text Field">
-                                                                                        <rect key="frame" x="126" y="0.0" width="248" height="30"/>
+                                                                                        <rect key="frame" x="129.33333333333331" y="0.0" width="211" height="30"/>
                                                                                         <nil key="textColor"/>
                                                                                         <fontDescription key="fontDescription" name="Raleway-Bold" family="Raleway" pointSize="16"/>
                                                                                         <textInputTraits key="textInputTraits"/>
@@ -789,22 +823,22 @@
                                                                 <variation key="heightClass=regular-widthClass=compact" alignment="fill" axis="vertical" distribution="fill" spacing="8"/>
                                                             </stackView>
                                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="G6s-16-Cgn" userLabel="CityStateCountryStackView">
-                                                                <rect key="frame" x="0.0" y="349" width="374" height="68"/>
+                                                                <rect key="frame" x="0.0" y="205" width="696" height="30.000000000000028"/>
                                                                 <subviews>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Bdy-nO-bDY" userLabel="CityStackView">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="374" height="30"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="340.66666666666669" height="30.000000000000028"/>
                                                                         <subviews>
                                                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="IL4-Od-8QO">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="374" height="30"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="340.66666666666669" height="30.000000000000028"/>
                                                                                 <subviews>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="City" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8mF-1I-rL9">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="122" height="30"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="120.66666666666666" height="30.000000000000028"/>
                                                                                         <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="14"/>
                                                                                         <nil key="textColor"/>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                     <textField opaque="NO" clipsSubviews="YES" tag="8" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="SQT-J3-Kf4" userLabel="City Text Field">
-                                                                                        <rect key="frame" x="126" y="0.0" width="248" height="30"/>
+                                                                                        <rect key="frame" x="128.66666666666669" y="0.0" width="212.00000000000006" height="30.000000000000028"/>
                                                                                         <nil key="textColor"/>
                                                                                         <fontDescription key="fontDescription" name="Raleway-Bold" family="Raleway" pointSize="16"/>
                                                                                         <textInputTraits key="textInputTraits"/>
@@ -816,25 +850,25 @@
                                                                         </subviews>
                                                                     </stackView>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="fuZ-5v-d1U" userLabel="StateCountryStackView">
-                                                                        <rect key="frame" x="0.0" y="38" width="374" height="30"/>
+                                                                        <rect key="frame" x="355.66666666666674" y="0.0" width="340.33333333333326" height="30.000000000000028"/>
                                                                         <subviews>
                                                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Q94-zh-qyQ">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="374" height="30"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="340.33333333333331" height="30.000000000000028"/>
                                                                                 <subviews>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="State/Country" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yvb-iE-OEc">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="122" height="30"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="121.33333333333331" height="30.000000000000028"/>
                                                                                         <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="14"/>
                                                                                         <nil key="textColor"/>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                     <textField opaque="NO" clipsSubviews="YES" tag="9" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="pfi-xF-G37" userLabel="State Text Field">
-                                                                                        <rect key="frame" x="126" y="0.0" width="218" height="30"/>
+                                                                                        <rect key="frame" x="129.33333333333331" y="0.0" width="177" height="30.000000000000028"/>
                                                                                         <nil key="textColor"/>
                                                                                         <fontDescription key="fontDescription" name="Raleway-Bold" family="Raleway" pointSize="16"/>
                                                                                         <textInputTraits key="textInputTraits"/>
                                                                                     </textField>
                                                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="RTm-3t-53c">
-                                                                                        <rect key="frame" x="348" y="0.0" width="26" height="30"/>
+                                                                                        <rect key="frame" x="314.33333333333331" y="0.0" width="26" height="30.000000000000028"/>
                                                                                         <nil key="textColor"/>
                                                                                         <fontDescription key="fontDescription" name="Raleway-Bold" family="Raleway" pointSize="16"/>
                                                                                         <textInputTraits key="textInputTraits"/>
@@ -850,22 +884,22 @@
                                                                 <variation key="heightClass=regular-widthClass=compact" alignment="fill" axis="vertical" distribution="fill" spacing="8"/>
                                                             </stackView>
                                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="6wA-9d-hD8" userLabel="CountyZipStackView">
-                                                                <rect key="frame" x="0.0" y="425" width="374" height="68"/>
+                                                                <rect key="frame" x="0.0" y="243" width="696" height="30"/>
                                                                 <subviews>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="pDs-pJ-lQk" userLabel="CountyStackView">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="374" height="30"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="340.66666666666669" height="30"/>
                                                                         <subviews>
                                                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="gLC-Bw-thz">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="374" height="30"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="340.66666666666669" height="30"/>
                                                                                 <subviews>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="County" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j5z-7s-fis">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="122" height="30"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="120.66666666666666" height="30"/>
                                                                                         <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="14"/>
                                                                                         <nil key="textColor"/>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                     <textField opaque="NO" clipsSubviews="YES" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Gwy-Vc-DQe" userLabel="County Text Field">
-                                                                                        <rect key="frame" x="126" y="0.0" width="248" height="30"/>
+                                                                                        <rect key="frame" x="128.66666666666669" y="0.0" width="212.00000000000006" height="30"/>
                                                                                         <nil key="textColor"/>
                                                                                         <fontDescription key="fontDescription" name="Raleway-Bold" family="Raleway" pointSize="16"/>
                                                                                         <textInputTraits key="textInputTraits"/>
@@ -877,19 +911,19 @@
                                                                         </subviews>
                                                                     </stackView>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="frC-aS-4sK" userLabel="ZipStackView">
-                                                                        <rect key="frame" x="0.0" y="38" width="374" height="30"/>
+                                                                        <rect key="frame" x="355.66666666666674" y="0.0" width="340.33333333333326" height="30"/>
                                                                         <subviews>
                                                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="J9I-sz-eGa">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="374" height="30"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="340.33333333333331" height="30"/>
                                                                                 <subviews>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Zip Code" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zoo-9F-S9l">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="122" height="30"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="121.33333333333331" height="30"/>
                                                                                         <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="14"/>
                                                                                         <nil key="textColor"/>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                     <textField opaque="NO" clipsSubviews="YES" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dtr-9o-S3f" userLabel="Zip Code Text Field">
-                                                                                        <rect key="frame" x="126" y="0.0" width="248" height="30"/>
+                                                                                        <rect key="frame" x="129.33333333333331" y="0.0" width="211" height="30"/>
                                                                                         <nil key="textColor"/>
                                                                                         <fontDescription key="fontDescription" name="Raleway-Bold" family="Raleway" pointSize="16"/>
                                                                                         <textInputTraits key="textInputTraits"/>
@@ -905,29 +939,29 @@
                                                                 <variation key="heightClass=regular-widthClass=compact" alignment="fill" axis="vertical" distribution="fill" spacing="8"/>
                                                             </stackView>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="89I-OX-etZ">
-                                                                <rect key="frame" x="0.0" y="501" width="374" height="1"/>
+                                                                <rect key="frame" x="0.0" y="281" width="696" height="1"/>
                                                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="1" id="0Pc-Zs-bjo"/>
                                                                 </constraints>
                                                             </view>
                                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="tYc-xc-K6Y" userLabel="MobileWorkStackView">
-                                                                <rect key="frame" x="0.0" y="510" width="374" height="104"/>
+                                                                <rect key="frame" x="0.0" y="290" width="696" height="52"/>
                                                                 <subviews>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="VOD-Vw-skr" userLabel="MobilePhoneStackView">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="374" height="48"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="340.66666666666669" height="52"/>
                                                                         <subviews>
                                                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="zQo-a8-Hr6">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="374" height="30"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="340.66666666666669" height="30"/>
                                                                                 <subviews>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mobile Phone" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="22h-3w-czh">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="122" height="30"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="120.66666666666666" height="30"/>
                                                                                         <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="14"/>
                                                                                         <nil key="textColor"/>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                     <textField opaque="NO" clipsSubviews="YES" tag="12" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6qi-dF-8xM">
-                                                                                        <rect key="frame" x="126" y="0.0" width="248" height="30"/>
+                                                                                        <rect key="frame" x="128.66666666666669" y="0.0" width="212.00000000000006" height="30"/>
                                                                                         <nil key="textColor"/>
                                                                                         <fontDescription key="fontDescription" name="Raleway-Bold" family="Raleway" pointSize="16"/>
                                                                                         <textInputTraits key="textInputTraits"/>
@@ -937,7 +971,7 @@
                                                                                 <variation key="heightClass=regular-widthClass=compact" spacing="4"/>
                                                                             </stackView>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mobile Phone Error" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b2r-Ex-SL9">
-                                                                                <rect key="frame" x="0.0" y="34" width="374" height="14"/>
+                                                                                <rect key="frame" x="0.0" y="38" width="340.66666666666669" height="14"/>
                                                                                 <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="12"/>
                                                                                 <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                                 <nil key="highlightedColor"/>
@@ -947,28 +981,28 @@
                                                                         <variation key="heightClass=regular-widthClass=compact" spacing="4"/>
                                                                     </stackView>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="nJN-Ej-EmE" userLabel="WorkPhoneStackView">
-                                                                        <rect key="frame" x="0.0" y="56" width="374" height="48"/>
+                                                                        <rect key="frame" x="355.66666666666674" y="0.0" width="340.33333333333326" height="52"/>
                                                                         <subviews>
                                                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="ZbT-Yl-pT1">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="374" height="30"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="340.33333333333331" height="30"/>
                                                                                 <subviews>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Work Phone" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XfO-H3-Al3">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="122" height="30"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="121.33333333333331" height="30"/>
                                                                                         <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="14"/>
                                                                                         <nil key="textColor"/>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="Rxr-G9-LaJ">
-                                                                                        <rect key="frame" x="126" y="0.0" width="248" height="30"/>
+                                                                                        <rect key="frame" x="129.33333333333331" y="0.0" width="211" height="30"/>
                                                                                         <subviews>
                                                                                             <textField opaque="NO" clipsSubviews="YES" tag="13" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="VLI-q8-3Ax">
-                                                                                                <rect key="frame" x="0.0" y="0.0" width="184" height="30"/>
+                                                                                                <rect key="frame" x="0.0" y="0.0" width="147.33333333333337" height="30"/>
                                                                                                 <nil key="textColor"/>
                                                                                                 <fontDescription key="fontDescription" name="Raleway-Bold" family="Raleway" pointSize="16"/>
                                                                                                 <textInputTraits key="textInputTraits"/>
                                                                                             </textField>
                                                                                             <textField opaque="NO" clipsSubviews="YES" tag="14" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Ext." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Oip-xc-pcS">
-                                                                                                <rect key="frame" x="199" y="0.0" width="49" height="30"/>
+                                                                                                <rect key="frame" x="162.33333333333337" y="0.0" width="48.666666666666629" height="30"/>
                                                                                                 <nil key="textColor"/>
                                                                                                 <fontDescription key="fontDescription" name="Raleway-Bold" family="Raleway" pointSize="16"/>
                                                                                                 <textInputTraits key="textInputTraits"/>
@@ -980,7 +1014,7 @@
                                                                                 <variation key="heightClass=regular-widthClass=compact" spacing="4"/>
                                                                             </stackView>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Work Phone Error" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bjA-jO-f2h">
-                                                                                <rect key="frame" x="0.0" y="34" width="374" height="14"/>
+                                                                                <rect key="frame" x="0.0" y="38" width="340.33333333333331" height="14"/>
                                                                                 <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="12"/>
                                                                                 <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                                 <nil key="highlightedColor"/>
@@ -994,22 +1028,22 @@
                                                                 <variation key="heightClass=regular-widthClass=compact" alignment="fill" axis="vertical" distribution="fill" spacing="8"/>
                                                             </stackView>
                                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="tzJ-FC-bHq" userLabel="HomeEmailStackView">
-                                                                <rect key="frame" x="0.0" y="622" width="374" height="104"/>
+                                                                <rect key="frame" x="0.0" y="350" width="696" height="52"/>
                                                                 <subviews>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="U2X-Cq-0Lm" userLabel="HomePhoneStackView">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="374" height="48"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="340.66666666666669" height="52"/>
                                                                         <subviews>
                                                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="NCJ-xm-tQl">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="374" height="30"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="340.66666666666669" height="30"/>
                                                                                 <subviews>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Home Phone" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CWK-sR-0cb">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="122" height="30"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="120.66666666666666" height="30"/>
                                                                                         <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="14"/>
                                                                                         <nil key="textColor"/>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                     <textField opaque="NO" clipsSubviews="YES" tag="15" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="FCi-RS-yu7">
-                                                                                        <rect key="frame" x="126" y="0.0" width="248" height="30"/>
+                                                                                        <rect key="frame" x="128.66666666666669" y="0.0" width="212.00000000000006" height="30"/>
                                                                                         <nil key="textColor"/>
                                                                                         <fontDescription key="fontDescription" name="Raleway-Bold" family="Raleway" pointSize="16"/>
                                                                                         <textInputTraits key="textInputTraits"/>
@@ -1019,7 +1053,7 @@
                                                                                 <variation key="heightClass=regular-widthClass=compact" spacing="4"/>
                                                                             </stackView>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Home Phone Error" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="54D-Jo-tyj">
-                                                                                <rect key="frame" x="0.0" y="34" width="374" height="14"/>
+                                                                                <rect key="frame" x="0.0" y="38" width="340.66666666666669" height="14"/>
                                                                                 <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="12"/>
                                                                                 <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                                 <nil key="highlightedColor"/>
@@ -1029,19 +1063,19 @@
                                                                         <variation key="heightClass=regular-widthClass=compact" spacing="4"/>
                                                                     </stackView>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="q0l-rg-f0h" userLabel="EmailStackView">
-                                                                        <rect key="frame" x="0.0" y="56" width="374" height="48"/>
+                                                                        <rect key="frame" x="355.66666666666674" y="0.0" width="340.33333333333326" height="52"/>
                                                                         <subviews>
                                                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="8f3-lW-fWi">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="374" height="30"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="340.33333333333331" height="30"/>
                                                                                 <subviews>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9bx-ap-7s2">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="122" height="30"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="121.33333333333331" height="30"/>
                                                                                         <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="14"/>
                                                                                         <nil key="textColor"/>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                     <textField opaque="NO" clipsSubviews="YES" tag="16" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="yC8-EJ-Akl">
-                                                                                        <rect key="frame" x="126" y="0.0" width="248" height="30"/>
+                                                                                        <rect key="frame" x="129.33333333333331" y="0.0" width="211" height="30"/>
                                                                                         <nil key="textColor"/>
                                                                                         <fontDescription key="fontDescription" name="Raleway-Bold" family="Raleway" pointSize="16"/>
                                                                                         <textInputTraits key="textInputTraits"/>
@@ -1051,7 +1085,7 @@
                                                                                 <variation key="heightClass=regular-widthClass=compact" spacing="4"/>
                                                                             </stackView>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email Error" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uzr-E0-uuO">
-                                                                                <rect key="frame" x="0.0" y="34" width="374" height="14"/>
+                                                                                <rect key="frame" x="0.0" y="38" width="340.33333333333331" height="14"/>
                                                                                 <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="12"/>
                                                                                 <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                                 <nil key="highlightedColor"/>
@@ -1065,29 +1099,29 @@
                                                                 <variation key="heightClass=regular-widthClass=compact" alignment="fill" axis="vertical" distribution="fill" spacing="8"/>
                                                             </stackView>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VRA-2k-mxD">
-                                                                <rect key="frame" x="0.0" y="734" width="374" height="1"/>
+                                                                <rect key="frame" x="0.0" y="410" width="696" height="1"/>
                                                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="1" id="dvW-ca-GcD"/>
                                                                 </constraints>
                                                             </view>
                                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="hek-hl-1IE" userLabel="ConsentEmailMailStackView">
-                                                                <rect key="frame" x="0.0" y="743" width="374" height="70"/>
+                                                                <rect key="frame" x="0.0" y="419" width="696" height="31"/>
                                                                 <subviews>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Tip-aF-6i8" userLabel="ConsentEmailStackView">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="374" height="31"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="340.66666666666669" height="31"/>
                                                                         <subviews>
                                                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="s83-cn-stI">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="374" height="31"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="340.66666666666669" height="31"/>
                                                                                 <subviews>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Consent To Email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jpo-pM-VEh">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="321" height="31"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="283.66666666666669" height="31"/>
                                                                                         <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="14"/>
                                                                                         <nil key="textColor"/>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OVX-x4-Lyz">
-                                                                                        <rect key="frame" x="325" y="0.0" width="51" height="31"/>
+                                                                                        <rect key="frame" x="291.66666666666669" y="0.0" width="51" height="31"/>
                                                                                         <color key="onTintColor" red="0.4549019608" green="0.68235294120000001" blue="0.70588235290000001" alpha="1" colorSpace="calibratedRGB"/>
                                                                                     </switch>
                                                                                 </subviews>
@@ -1097,19 +1131,19 @@
                                                                         </subviews>
                                                                     </stackView>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="z7G-O9-Kme" userLabel="ConsentMailStackView">
-                                                                        <rect key="frame" x="0.0" y="39" width="374" height="31"/>
+                                                                        <rect key="frame" x="355.66666666666674" y="0.0" width="340.33333333333326" height="31"/>
                                                                         <subviews>
                                                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="j2A-Lm-kNe">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="374" height="31"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="340.33333333333331" height="31"/>
                                                                                 <subviews>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Consent To Mail" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P7N-ac-UJ4">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="321" height="31"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="283.33333333333331" height="31"/>
                                                                                         <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="14"/>
                                                                                         <nil key="textColor"/>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7f3-D0-VEi">
-                                                                                        <rect key="frame" x="325" y="0.0" width="51" height="31"/>
+                                                                                        <rect key="frame" x="291.33333333333331" y="0.0" width="51" height="31"/>
                                                                                         <color key="onTintColor" red="0.4549019608" green="0.68235294120000001" blue="0.70588235290000001" alpha="1" colorSpace="calibratedRGB"/>
                                                                                     </switch>
                                                                                 </subviews>
@@ -1123,22 +1157,22 @@
                                                                 <variation key="heightClass=regular-widthClass=compact" alignment="fill" axis="vertical" distribution="fill" spacing="8"/>
                                                             </stackView>
                                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="VAb-Jw-V7n" userLabel="ConsentPhoneContactPrefStackView">
-                                                                <rect key="frame" x="0.0" y="821" width="374" height="69"/>
+                                                                <rect key="frame" x="0.0" y="458" width="696" height="30.999999999999943"/>
                                                                 <subviews>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="ckK-Na-KP3" userLabel="ConsentPhoneStackView">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="374" height="31"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="340.66666666666669" height="30.999999999999943"/>
                                                                         <subviews>
                                                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="5qM-1K-HCx">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="374" height="31"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="340.66666666666669" height="30.999999999999943"/>
                                                                                 <subviews>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Consent To Phone" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nnv-fs-ga0">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="321" height="31"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="283.66666666666669" height="30.999999999999943"/>
                                                                                         <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="14"/>
                                                                                         <nil key="textColor"/>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1Rb-nu-MRx">
-                                                                                        <rect key="frame" x="325" y="0.0" width="51" height="31"/>
+                                                                                        <rect key="frame" x="291.66666666666669" y="0.0" width="51" height="30.999999999999943"/>
                                                                                         <color key="onTintColor" red="0.4549019608" green="0.68235294120000001" blue="0.70588235290000001" alpha="1" colorSpace="calibratedRGB"/>
                                                                                     </switch>
                                                                                 </subviews>
@@ -1148,19 +1182,19 @@
                                                                         </subviews>
                                                                     </stackView>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="PoR-Dj-eFm" userLabel="ContactPreferenceStackView">
-                                                                        <rect key="frame" x="0.0" y="39" width="374" height="30"/>
+                                                                        <rect key="frame" x="355.66666666666674" y="0.0" width="340.33333333333326" height="30.999999999999943"/>
                                                                         <subviews>
                                                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="gf7-XT-y57">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="374" height="30"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="340.33333333333331" height="30.999999999999943"/>
                                                                                 <subviews>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Contact Preference" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IaH-1Q-i6c">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="122" height="30"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="121.33333333333331" height="30.999999999999943"/>
                                                                                         <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="14"/>
                                                                                         <nil key="textColor"/>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                     <textField opaque="NO" clipsSubviews="YES" tag="17" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="W0Z-YY-grp">
-                                                                                        <rect key="frame" x="126" y="0.0" width="248" height="30"/>
+                                                                                        <rect key="frame" x="129.33333333333331" y="0.0" width="211" height="30.999999999999943"/>
                                                                                         <nil key="textColor"/>
                                                                                         <fontDescription key="fontDescription" name="Raleway-Bold" family="Raleway" pointSize="16"/>
                                                                                         <textInputTraits key="textInputTraits"/>
@@ -1176,22 +1210,22 @@
                                                                 <variation key="heightClass=regular-widthClass=compact" alignment="fill" axis="vertical" distribution="fill" spacing="8"/>
                                                             </stackView>
                                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="dz9-Ro-l8A" userLabel="ExcludeFromFollowupStackView">
-                                                                <rect key="frame" x="0.0" y="898" width="374" height="69"/>
+                                                                <rect key="frame" x="0.0" y="497" width="696" height="31"/>
                                                                 <subviews>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Xng-UU-Qup" userLabel="ExcludeFollowupStackView">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="374" height="31"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="340.66666666666669" height="31"/>
                                                                         <subviews>
                                                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Bhq-hl-TEI">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="374" height="31"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="340.66666666666669" height="31"/>
                                                                                 <subviews>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Exclude From Follow Up" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XgO-F0-oLE">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="321" height="31"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="283.66666666666669" height="31"/>
                                                                                         <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="14"/>
                                                                                         <nil key="textColor"/>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hJa-sI-IH9">
-                                                                                        <rect key="frame" x="325" y="0.0" width="51" height="31"/>
+                                                                                        <rect key="frame" x="291.66666666666669" y="0.0" width="51" height="31"/>
                                                                                         <color key="onTintColor" red="0.4549019608" green="0.68235294120000001" blue="0.70588235290000001" alpha="1" colorSpace="calibratedRGB"/>
                                                                                     </switch>
                                                                                 </subviews>
@@ -1201,19 +1235,19 @@
                                                                         </subviews>
                                                                     </stackView>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Vfc-gU-5uo" userLabel="ExcludeReasonStackView">
-                                                                        <rect key="frame" x="0.0" y="39" width="374" height="30"/>
+                                                                        <rect key="frame" x="355.66666666666674" y="0.0" width="340.33333333333326" height="31"/>
                                                                         <subviews>
                                                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="RBN-Py-BWg">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="374" height="30"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="340.33333333333331" height="31"/>
                                                                                 <subviews>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Exclude Reason" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="htY-Pb-o6o">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="122" height="30"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="121.33333333333331" height="31"/>
                                                                                         <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="14"/>
                                                                                         <nil key="textColor"/>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                     <textField opaque="NO" clipsSubviews="YES" tag="18" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Nvf-2S-xDa">
-                                                                                        <rect key="frame" x="126" y="0.0" width="248" height="30"/>
+                                                                                        <rect key="frame" x="129.33333333333331" y="0.0" width="211" height="31"/>
                                                                                         <nil key="textColor"/>
                                                                                         <fontDescription key="fontDescription" name="Raleway-Bold" family="Raleway" pointSize="16"/>
                                                                                         <textInputTraits key="textInputTraits"/>
@@ -1229,22 +1263,22 @@
                                                                 <variation key="heightClass=regular-widthClass=compact" alignment="fill" axis="vertical" distribution="fill" spacing="8"/>
                                                             </stackView>
                                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="7rK-LD-wAn" userLabel="TrafficSourceDetailStackView">
-                                                                <rect key="frame" x="0.0" y="975" width="374" height="68"/>
+                                                                <rect key="frame" x="0.0" y="536" width="696" height="30"/>
                                                                 <subviews>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="ucW-kK-E6R" userLabel="TrafficSourceStackView">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="374" height="30"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="340.66666666666669" height="30"/>
                                                                         <subviews>
                                                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="YfY-kS-hHC">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="374" height="30"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="340.66666666666669" height="30"/>
                                                                                 <subviews>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Traffic Source" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2G2-9y-jie">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="122" height="30"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="120.66666666666666" height="30"/>
                                                                                         <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="14"/>
                                                                                         <nil key="textColor"/>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                     <textField opaque="NO" clipsSubviews="YES" tag="19" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="lVh-Ex-KPg">
-                                                                                        <rect key="frame" x="126" y="0.0" width="248" height="30"/>
+                                                                                        <rect key="frame" x="128.66666666666669" y="0.0" width="212.00000000000006" height="30"/>
                                                                                         <nil key="textColor"/>
                                                                                         <fontDescription key="fontDescription" name="Raleway-Bold" family="Raleway" pointSize="16"/>
                                                                                         <textInputTraits key="textInputTraits"/>
@@ -1256,19 +1290,19 @@
                                                                         </subviews>
                                                                     </stackView>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="ajj-qq-cuU" userLabel="TrafficDetailStackView">
-                                                                        <rect key="frame" x="0.0" y="38" width="374" height="30"/>
+                                                                        <rect key="frame" x="355.66666666666674" y="0.0" width="340.33333333333326" height="30"/>
                                                                         <subviews>
                                                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="MCb-1h-mFo">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="374" height="30"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="340.33333333333331" height="30"/>
                                                                                 <subviews>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Traffic Detail" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ax3-rl-md3">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="122" height="30"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="121.33333333333331" height="30"/>
                                                                                         <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="14"/>
                                                                                         <nil key="textColor"/>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                     <textField opaque="NO" clipsSubviews="YES" tag="20" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="j7m-EB-yen">
-                                                                                        <rect key="frame" x="126" y="0.0" width="248" height="30"/>
+                                                                                        <rect key="frame" x="129.33333333333331" y="0.0" width="211" height="30"/>
                                                                                         <nil key="textColor"/>
                                                                                         <fontDescription key="fontDescription" name="Raleway-Bold" family="Raleway" pointSize="16"/>
                                                                                         <textInputTraits key="textInputTraits"/>
@@ -1287,7 +1321,7 @@
                                                                 <variation key="heightClass=regular-widthClass=compact" alignment="fill" axis="vertical" distribution="fill" spacing="8"/>
                                                             </stackView>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Traffic Source Error" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eFZ-Pr-d69">
-                                                                <rect key="frame" x="0.0" y="1051" width="374" height="14"/>
+                                                                <rect key="frame" x="0.0" y="574" width="696" height="14"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="14" id="gWS-v2-hz8"/>
                                                                 </constraints>
@@ -1419,14 +1453,14 @@
                         <viewControllerLayoutGuide type="bottom" id="Py3-Jw-wtt"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="wGt-TW-8Jq">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="736" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="top" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="kx4-O3-XRQ">
-                                <rect key="frame" x="10" y="30" width="394" height="696"/>
+                                <rect key="frame" x="10" y="30" width="716" height="374"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z4O-pU-pcy">
-                                        <rect key="frame" x="0.0" y="0.0" width="394" height="5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="716" height="0.0"/>
                                         <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="30"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -1438,7 +1472,7 @@
                                         </variation>
                                     </label>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="qbh-y8-K2l">
-                                        <rect key="frame" x="0.0" y="25" width="394" height="671"/>
+                                        <rect key="frame" x="0.0" y="20" width="716" height="354"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </tableView>
                                 </subviews>
@@ -1462,4 +1496,9 @@
             <point key="canvasLocation" x="543.47829999999999" y="-1672.011"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="ic-card" width="90" height="90"/>
+        <image name="ic-cobuyers" width="1024" height="1024"/>
+        <image name="ic-detail" width="60" height="60"/>
+    </resources>
 </document>

@@ -30,6 +30,7 @@ namespace ProspectManagement.Core.Services
 			}
 			catch (Exception e)
 			{
+                _authenticator.Logout();
 				return default(User);
 			}
 		}

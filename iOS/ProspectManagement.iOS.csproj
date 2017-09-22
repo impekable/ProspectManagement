@@ -190,6 +190,9 @@
     <Folder Include="Extensions\" />
     <Folder Include="Resources\Assets.xcassets\ic-unassigned.imageset\" />
     <Folder Include="Resources\Assets.xcassets\ic-assigned.imageset\" />
+    <Folder Include="Resources\Assets.xcassets\ic-cobuyers.imageset\" />
+    <Folder Include="Resources\Assets.xcassets\ic-detail.imageset\" />
+    <Folder Include="Resources\Assets.xcassets\ic-card.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Main.storyboard" />
@@ -378,6 +381,22 @@
     <ImageAsset Include="Resources\Assets.xcassets\ic-assigned.imageset\Contents.json" />
     <ImageAsset Include="Resources\Assets.xcassets\ic-assigned.imageset\timthumb.jpeg" />
     <ImageAsset Include="Resources\Assets.xcassets\ic-unassigned.imageset\unknown-person1.jpg" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons.appiconset\Icon-180.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons.appiconset\Icon-120.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons.appiconset\Icon-114.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons.appiconset\Icon-57.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\ic-cobuyers.imageset\Contents.json" />
+    <ImageAsset Include="Resources\Assets.xcassets\ic-cobuyers.imageset\OS_X_users_icon.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\ic-cobuyers.imageset\Cobuyers 60x60.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\ic-cobuyers.imageset\Cobuyers 90x90.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\ic-detail.imageset\Contents.json" />
+    <ImageAsset Include="Resources\Assets.xcassets\ic-detail.imageset\Detail 60x60.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\ic-detail.imageset\Detail 30x30.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\ic-detail.imageset\Detail 90x90.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\ic-card.imageset\Contents.json" />
+    <ImageAsset Include="Resources\Assets.xcassets\ic-card.imageset\survey 90x90.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\ic-card.imageset\survey 60x60.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\ic-card.imageset\survey 30x30.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
