@@ -10,8 +10,6 @@ namespace ProspectManagement.Core.Services
 {
 	public class TrafficCardResponseService : ITrafficCardResponseService
 	{
-		const string resource = "http://ProspectManagementRestService.azure-mobile.net";
-
 		private readonly ITrafficCardResponseRepository _responseRepository;
 		private readonly IAuthenticator _authenticator;
 		private IDialogService _dialogService;
@@ -31,7 +29,7 @@ namespace ProspectManagement.Core.Services
 		{
 			try
 			{
-				var authResult = await _authenticator.AuthenticateUser(resource);
+				var authResult = await _authenticator.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource);
 				return await _responseRepository.UpdateTrafficCardResponseAsync(prospectAddressNumber, response, authResult.AccessToken);
 			}
 			catch (Exception ex)

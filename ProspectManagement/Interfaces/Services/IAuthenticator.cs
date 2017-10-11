@@ -7,7 +7,6 @@ namespace ProspectManagement.Core.Interfaces.Services
 	public interface IAuthenticator
 	{
 		Task<AuthenticationResult> AuthenticateUser(string resource);
-		Task<AuthenticationResult> AuthenticateClient(string resource);
         void Logout();
 	}
 }

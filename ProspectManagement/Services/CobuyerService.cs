@@ -9,8 +9,6 @@ namespace ProspectManagement.Core.Services
 {
     public class CobuyerService : ICobuyerService
     {
-		const string resource = "http://ProspectManagementRestService.azure-mobile.net";
-
 		private readonly IAuthenticator _authenticator;
 		private IDialogService _dialogService;
         private readonly ICobuyerRepository _cobuyerRepository;
@@ -30,7 +28,7 @@ namespace ProspectManagement.Core.Services
         {
 			try
 			{
-				var authResult = await _authenticator.AuthenticateUser(resource);
+				var authResult = await _authenticator.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource);
 				return await _cobuyerRepository.AddCobuyerToProspectAsync(prospectId, cobuyer, authResult.AccessToken);
 			}
 			catch (Exception ex)
@@ -55,7 +53,7 @@ namespace ProspectManagement.Core.Services
         {
 			try
 			{
-				var authResult = await _authenticator.AuthenticateUser(resource);
+				var authResult = await _authenticator.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource);
 				return await _cobuyerRepository.UpdateCobuyerAsync(cobuyer, authResult.AccessToken);
 			}
 			catch (Exception ex)
@@ -71,7 +69,7 @@ namespace ProspectManagement.Core.Services
 		{
 			try
 			{
-				var authResult = await _authenticator.AuthenticateUser(resource);
+				var authResult = await _authenticator.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource);
 				return await _cobuyerRepository.DeleteCobuyerFromProspectAsync(cobuyerId, authResult.AccessToken);
 			}
 			catch (Exception ex)

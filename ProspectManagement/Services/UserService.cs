@@ -11,26 +11,38 @@ namespace ProspectManagement.Core.Services
 {
 	public class UserService : IUserService
 	{
-		const string resource = "http://ProspectManagementRestService.azure-mobile.net";
 		private readonly IUserRepository _userRepository;
 		private readonly IAuthenticator _authenticator;
+        private IDialogService _dialogService;
 
-		public UserService(IAuthenticator authenticator, IUserRepository userRepository)
+		public UserService(IAuthenticator authenticator, IUserRepository userRepository, IDialogService dialogService)
 		{
+            _dialogService = dialogService;
 			_userRepository = userRepository;
 			_authenticator = authenticator;
+			_userRepository.RetrievingDataFailed += (sender, e) =>
+			{
+				_dialogService.ShowAlertAsync("Seems like there was a problem. " + e.RetrievingDataFailureMessage, "Oops", "Close");
+			};
 		}
 
 		public async Task<User> GetLoggedInUser()
 		{
 			try
 			{
-				var authResult = await _authenticator.AuthenticateUser(resource);
-				return await _userRepository.GetUserByIdAsync(authResult.UserInfo.DisplayableId);
+				var authResult = await _authenticator.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource);
+				var user = await _userRepository.GetUserByIdAsync(authResult.UserInfo.DisplayableId);
+                if (user == null)
+                {
+                    _dialogService.ShowAlertAsync(string.Format("Seems like there was a problem. {0} user not found.", authResult.UserInfo.DisplayableId), "Oops", "Close");
+					_authenticator.Logout();
+                }
+                return user;
 			}
 			catch (Exception e)
 			{
-                _authenticator.Logout();
+				_dialogService.ShowAlertAsync("Seems like there was a problem." + e.Message, "Oops", "Close");
+				_authenticator.Logout();
 				return default(User);
 			}
 		}

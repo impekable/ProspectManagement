@@ -18,6 +18,7 @@ namespace ProspectManagement.iOS.Views
 		/// </summary>
 		protected UIView ViewToCenterOnKeyboardShown;
 		protected float ScrollViewInset = 0;
+        private nfloat scrollViewOffset;
 
 		public BaseView(IntPtr handle) : base(handle)
 		{
@@ -122,19 +123,23 @@ namespace ProspectManagement.iOS.Views
 
 		protected virtual void CenterViewInScroll(UIView viewToCenter, UIScrollView scrollView, float keyboardHeight)
 		{
-			var contentInsets = new UIEdgeInsets(0.0f, 0.0f, keyboardHeight, 0.0f);
-			scrollView.ContentInset = contentInsets;
-			scrollView.ScrollIndicatorInsets = contentInsets;
-
 			// Position of the active field relative isnside the scroll view
 			CGRect relativeFrame = viewToCenter.Superview.ConvertRectToView(viewToCenter.Frame, scrollView);
 
-			bool landscape = InterfaceOrientation == UIInterfaceOrientation.LandscapeLeft || InterfaceOrientation == UIInterfaceOrientation.LandscapeRight;
-			var spaceAboveKeyboard = (landscape ? scrollView.Frame.Width : scrollView.Frame.Height) - keyboardHeight;
+			var spaceAboveKeyboard = scrollView.Frame.Height - keyboardHeight;
 
-			// Move the active field to the center of the available space
-			var offset = (relativeFrame.Y - spaceAboveKeyboard - viewToCenter.Frame.Height) / 2;
-			scrollView.ContentOffset = new PointF(0, (float)offset);
+			// Move the active field to the center of the available space if it is hidden
+            if (relativeFrame.Y + viewToCenter.Frame.Height - scrollView.ContentOffset.Y > spaceAboveKeyboard)
+            {
+				scrollViewOffset = scrollView.ContentOffset.Y;
+
+				var contentInsets = new UIEdgeInsets(0.0f, 0.0f, keyboardHeight, 0.0f);
+				scrollView.ContentInset = contentInsets;
+				scrollView.ScrollIndicatorInsets = contentInsets;
+
+				var offset = (relativeFrame.Y - spaceAboveKeyboard - viewToCenter.Frame.Height) / 2;
+                scrollView.ContentOffset = new PointF(0, (float)offset);
+            }
 
 		}
 
@@ -142,7 +147,7 @@ namespace ProspectManagement.iOS.Views
 		{
 			scrollView.ContentInset = new UIEdgeInsets(height, 0.0f, 0.0f, 0.0f);
 			scrollView.ScrollIndicatorInsets = UIEdgeInsets.Zero;
-			scrollView.ContentOffset = new PointF(0, (float)-height);
+			scrollView.ContentOffset = new PointF(0, (float)scrollViewOffset);
 		}
 
 		/// <summary>

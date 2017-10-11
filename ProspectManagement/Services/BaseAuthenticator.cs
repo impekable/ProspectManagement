@@ -8,23 +8,8 @@ namespace ProspectManagement.Core.Services
 {
 	public abstract class BaseAuthenticator: IAuthenticator
 	{
-		protected static string authority = "https://login.windows.net/khovmobileapptest.onmicrosoft.com/oauth2/token";
-		protected static string nativeClientId = "735f81ee-a2b8-4282-bce9-e8ca0337f0f8";
+		protected static string authority = "https://login.windows.net/khov.onmicrosoft.com/oauth2/token";
 		protected static string returnUri = "http://ProspectManagementClient.azure-mobile.net";
-		static string restClientId = "87910174-0c14-4780-af58-c9834ef1c13b";
-		static string clientSecret = "vdTTwPpHS9gVW0G5chnBotCXv9Mf+DK+3A2B+YMkUiw=";
-
-
-		public async Task<AuthenticationResult> AuthenticateClient(string resource)
-		{
-			var authContext = new AuthenticationContext(authority);
-			if (authContext.TokenCache.ReadItems().Any())
-				authContext = new AuthenticationContext(authContext.TokenCache.ReadItems().First().Authority);
-
-			var clientCredential = new ClientCredential(restClientId, clientSecret);
-			var authResult = await authContext.AcquireTokenAsync(resource, clientCredential);
-			return authResult;
-		}
 
 		public abstract Task<AuthenticationResult> AuthenticateUser(string resource);
 

@@ -10,8 +10,6 @@ namespace ProspectManagement.Core.Services
 {
     public class ProspectService : IProspectService
     {
-        const string resource = "http://ProspectManagementRestService.azure-mobile.net";
-
         private readonly IAuthenticator _authenticator;
         private readonly IUserService _userService;
         private IDialogService _dialogService;
@@ -34,7 +32,7 @@ namespace ProspectManagement.Core.Services
         {
             try
             {
-                var authResult = await _authenticator.AuthenticateUser(resource);
+                var authResult = await _authenticator.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource);
                 var user = await _userService.GetUserById(authResult.UserInfo.DisplayableId);
                 var result = await _prospectRepository.AssignProspectToSalespersonAsync(communityNumber, prospectId, user.AddressNumber, authResult.AccessToken);
                 return user.AddressNumber;
@@ -77,7 +75,7 @@ namespace ProspectManagement.Core.Services
         {
             try
             {
-                var authResult = await _authenticator.AuthenticateUser(resource);
+                var authResult = await _authenticator.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource);
                 return await _prospectRepository.UpdateProspectAsync(prospect, authResult.AccessToken);
             }
             catch (Exception ex)

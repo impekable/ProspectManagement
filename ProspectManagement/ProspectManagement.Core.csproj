@@ -129,6 +129,7 @@
     <Compile Include="Converters\StateCountryConverter.cs" />
     <Compile Include="ViewModels\TrafficCardQuestionViewModel.cs" />
     <Compile Include="Messages\TrafficCardResponseChangedMessage.cs" />
+    <Compile Include="Constants\PrivateKeys.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MvvmCross.Plugins.Sqlite">
@@ -199,6 +200,7 @@
     <Folder Include="Extensions\" />
     <Folder Include="Messages\" />
     <Folder Include="Interactions\" />
+    <Folder Include="Constants\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\NETStandard.Library.2.0.0\build\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.0\build\NETStandard.Library.targets')" />

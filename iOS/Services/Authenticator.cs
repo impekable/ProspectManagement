@@ -16,11 +16,14 @@ namespace ProspectManagement.iOS.Services
 			var _platformParams = new PlatformParameters(controller);
 
 			var authContext = new AuthenticationContext(authority);
-			if (authContext.TokenCache.ReadItems().Any())
-				authContext = new AuthenticationContext(authContext.TokenCache.ReadItems().First().Authority);
+            if (authContext.TokenCache.ReadItems().Any())
+            {
+                if (authContext.TokenCache.ReadItems().First().Authority.Equals(authority))
+                    authContext = new AuthenticationContext(authContext.TokenCache.ReadItems().First().Authority);
+            }
 
 			var uri = new Uri(returnUri);
-			var authResult = await authContext.AcquireTokenAsync(resource, nativeClientId, uri, _platformParams);
+			var authResult = await authContext.AcquireTokenAsync(resource, Constants.PrivateKeys.ProspectMgmtClientId, uri, _platformParams);
 			return authResult;
 		}
 
