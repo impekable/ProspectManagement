@@ -9,8 +9,8 @@ namespace ProspectManagement.Core.Interfaces.Repositories
 {
     public interface ITrafficSourceRepository : IBaseRepository
     {
-        Task<List<TrafficSource>> GetTrafficSourcesByDivisionAsync(string divisionCode);
+        Task<List<TrafficSource>> GetTrafficSourcesByDivisionAsync(string divisionCode, string accessToken);
 
-        Task<TrafficSource> GetTrafficSourceDetailsAsync(int sourceId);
+        Task<TrafficSource> GetTrafficSourceDetailsAsync(int sourceId, string accessToken);
     }
 }

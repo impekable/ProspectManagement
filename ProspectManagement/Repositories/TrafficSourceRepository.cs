@@ -12,14 +12,14 @@ namespace ProspectManagement.Core.Repositories
     {
         const string _baseUri = _devUri + "TrafficSources"; 
 
-        public async Task<TrafficSource> GetTrafficSourceDetailsAsync(int sourceId)
+        public async Task<TrafficSource> GetTrafficSourceDetailsAsync(int sourceId, string accessToken)
         {
-            return await GetDataObjectFromAPI<TrafficSource>(string.Format(_baseUri + "/{0}?Fields=trafficSourceDetails", sourceId));
+            return await GetDataObjectFromAPI<TrafficSource>(string.Format(_baseUri + "/{0}?Fields=trafficSourceDetails", sourceId), accessToken);
         }
 
-        public async Task<List<TrafficSource>> GetTrafficSourcesByDivisionAsync(string divisionCode)
+        public async Task<List<TrafficSource>> GetTrafficSourcesByDivisionAsync(string divisionCode, string accessToken)
         {
-            return await GetDataObjectFromAPI<List<TrafficSource>>(string.Format(_baseUri + "?Division={0}&Fields=trafficSourceDetails", divisionCode));
+            return await GetDataObjectFromAPI<List<TrafficSource>>(string.Format(_baseUri + "?Division={0}&Fields=trafficSourceDetails", divisionCode), accessToken);
         }
 
     }

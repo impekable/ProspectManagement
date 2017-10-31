@@ -9,8 +9,8 @@ namespace ProspectManagement.Core.Interfaces.Repositories
 {
     public interface ICommunityRepository : IBaseRepository
     {
-        Task<List<Community>> GetCommunitiesBySalespersonAsync(int salespersonId);
+        Task<List<Community>> GetCommunitiesBySalespersonAsync(int salespersonId, string accessToken);
 
-        Task<List<Community>> GetCommunitiesByDivisionAsync(string divisionCode, bool activeOnly);
+        Task<List<Community>> GetCommunitiesByDivisionAsync(string accessToken, string divisionCode, bool activeOnly);
     }
 }

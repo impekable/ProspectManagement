@@ -17,12 +17,12 @@ namespace ProspectManagement.Core.Repositories
 
         public async Task<Cobuyer> GetCobuyerAsync(int prospectId, int cobuyerId)
         {
-            return await GetDataObjectFromAPI<Cobuyer>(string.Format(_baseUri, prospectId) + cobuyerId);
+            return await GetDataObjectFromAPI<Cobuyer>(string.Format(_baseUri, prospectId) + cobuyerId, "");
         }
 
         public async Task<List<Cobuyer>> GetCobuyersForProspectAsync(int prospectId)
         {
-            return await GetDataObjectFromAPI <List<Cobuyer>> (string.Format(_baseUri, prospectId));
+            return await GetDataObjectFromAPI <List<Cobuyer>> (string.Format(_baseUri, prospectId), "");
         }
 
 		public Task<bool> DeleteCobuyerFromProspectAsync(int cobuyerId, string accessToken)

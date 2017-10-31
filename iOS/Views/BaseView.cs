@@ -129,10 +129,9 @@ namespace ProspectManagement.iOS.Views
 			var spaceAboveKeyboard = scrollView.Frame.Height - keyboardHeight;
 
 			// Move the active field to the center of the available space if it is hidden
+            scrollViewOffset = scrollView.ContentOffset.Y;
             if (relativeFrame.Y + viewToCenter.Frame.Height - scrollView.ContentOffset.Y > spaceAboveKeyboard)
             {
-				scrollViewOffset = scrollView.ContentOffset.Y;
-
 				var contentInsets = new UIEdgeInsets(0.0f, 0.0f, keyboardHeight, 0.0f);
 				scrollView.ContentInset = contentInsets;
 				scrollView.ScrollIndicatorInsets = contentInsets;

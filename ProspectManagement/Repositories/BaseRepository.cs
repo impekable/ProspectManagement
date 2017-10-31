@@ -73,13 +73,42 @@ namespace ProspectManagement.Core.Repositories
             });
         }
 
-        protected async Task<T> GetDataObjectFromAPI<T>(string apiUrl)
+		protected async Task<T> GetDataObjectFromAPI<T>(string apiUrl)
+		{
+			return await Task.Run(async () =>
+			{
+				try
+				{
+					using (var stream = await _httpClient.GetStreamAsync(apiUrl).ConfigureAwait(false))
+					using (var reader = new System.IO.StreamReader(stream))
+					using (var json = new JsonTextReader(reader))
+					{
+						if (json == null)
+							return default(T);
+						return _serializer.Deserialize<T>(json);
+					}
+					//var json = await _httpClient.GetStringAsync(apiUrl);
+
+					//if (string.IsNullOrWhiteSpace(json))
+					//    return default(T);
+					//return DeserializeObject<T>(json);
+				}
+				catch (Exception e)
+				{
+					OnRetrievingDataFailed(e.Message);
+					return default(T);
+				}
+			});
+		}
+
+        protected async Task<T> GetDataObjectFromAPI<T>(string apiUrl, string accessToken)
         {
             return await Task.Run(async () =>
             {
+                var client = SetAccessTokenHttpClient(accessToken);
                 try
                 {
-                    using (var stream = await _httpClient.GetStreamAsync(apiUrl).ConfigureAwait(false))
+                    using (var stream = await client.GetStreamAsync(apiUrl).ConfigureAwait(false))
                     using (var reader = new System.IO.StreamReader(stream))
                     using (var json = new JsonTextReader(reader))
                     {

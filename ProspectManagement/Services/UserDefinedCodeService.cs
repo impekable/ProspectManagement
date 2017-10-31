@@ -9,6 +9,8 @@ namespace ProspectManagement.Core.Services
 {
     public class UserDefinedCodeService : IUserDefinedCodeService
     {
+		private readonly IAuthenticator _authenticator;
+		private IDialogService _dialogService;
         private readonly IUserDefinedCodeRepository _userDefinedCodeRepository;
         private List<UserDefinedCode> _prefixes;
         private List<UserDefinedCode> _suffixes;
@@ -17,8 +19,10 @@ namespace ProspectManagement.Core.Services
         private List<UserDefinedCode> _states;
 		private List<UserDefinedCode> _countries;
 
-        public UserDefinedCodeService(IUserDefinedCodeRepository userDefinedCodeRepository)
+        public UserDefinedCodeService(IUserDefinedCodeRepository userDefinedCodeRepository, IAuthenticator authenticator, IDialogService dialogService)
         {
+            _dialogService = dialogService;
+            _authenticator = authenticator;
             _userDefinedCodeRepository = userDefinedCodeRepository;
         }
 
@@ -66,7 +70,18 @@ namespace ProspectManagement.Core.Services
 
         private async Task<List<UserDefinedCode>> getUserDefinedCodes(string productCode, string group)
         {
-            return await _userDefinedCodeRepository.GetUserDefinedCodesAsync(productCode, group);
+			try
+			{
+				var authResult = await _authenticator.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource);
+
+				return await _userDefinedCodeRepository.GetUserDefinedCodesAsync(productCode, group, authResult.AccessToken );
+			}
+			catch (Exception ex)
+			{
+				System.Diagnostics.Debug.WriteLine(ex.ToString());
+				_dialogService.ShowAlertAsync("Seems like there was a problem." + ex.Message, "Oops", "Close");
+				return default(List<UserDefinedCode>);
+			}
         }
     }
 }

@@ -9,6 +9,6 @@ namespace ProspectManagement.Core.Interfaces.Repositories
 {
     public interface IUserRepository : IBaseRepository
     {
-        Task<User> GetUserByIdAsync(string userId);
+        Task<User> GetUserByIdAsync(string userId, string accessToken);
     }
 }

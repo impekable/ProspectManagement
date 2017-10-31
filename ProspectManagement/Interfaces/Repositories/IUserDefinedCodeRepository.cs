@@ -7,6 +7,6 @@ namespace ProspectManagement.Core.Interfaces.Repositories
 {
 	public interface IUserDefinedCodeRepository : IBaseRepository
 	{
-        Task<List<UserDefinedCode>> GetUserDefinedCodesAsync(string productCode, string group);
+        Task<List<UserDefinedCode>> GetUserDefinedCodesAsync(string productCode, string group, string accessToken);
 	}
 }

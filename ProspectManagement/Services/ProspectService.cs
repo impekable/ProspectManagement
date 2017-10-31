@@ -40,21 +40,31 @@ namespace ProspectManagement.Core.Services
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
-                _dialogService.ShowAlertAsync("Seems like there was a problem.", "Oops", "Close");
+                _dialogService.ShowAlertAsync("Seems like there was a problem." + ex.Message, "Oops", "Close");
                 return 0;
             }
         }
 
         public async Task<Prospect> GetProspectAsync(int prospectId)
         {
-            return await _prospectRepository.GetProspectAsync(prospectId);
+            try
+            {
+                var authResult = await _authenticator.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource);
+                return await _prospectRepository.GetProspectAsync(prospectId, authResult.AccessToken);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                _dialogService.ShowAlertAsync("Seems like there was a problem." + ex.Message, "Oops", "Close");
+                return default(Prospect);
+            }
         }
 
-        public async Task<List<Prospect>> GetProspectsAsync(List<Community> communities, int? salespersonId, int page, int pageSize, string searchTerm)
+        public async Task<List<Prospect>> GetProspectsAsync(string accessToken, List<Community> communities, int? salespersonId, int page, int pageSize, string searchTerm)
         {
             try
             {
-                var prospects = await _prospectRepository.GetProspectsAsync(salespersonId, communities, page, pageSize, searchTerm);
+                var prospects = await _prospectRepository.GetProspectsAsync(accessToken, salespersonId, communities, page, pageSize, searchTerm);
                 var p = prospects.Join(communities, p2 => p2.ProspectCommunity.CommunityNumber, c => c.CommunityNumber, (p2, c) =>
                 {
                     p2.ProspectCommunity.Community = c;
@@ -66,8 +76,8 @@ namespace ProspectManagement.Core.Services
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
-                _dialogService.ShowAlertAsync("Seems like there was a problem.", "Oops", "Close");
-                return null;
+                _dialogService.ShowAlertAsync("Seems like there was a problem." + ex.Message, "Oops", "Close");
+                return default(List<Prospect>);
             }
         }
 
@@ -81,7 +91,7 @@ namespace ProspectManagement.Core.Services
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
-                _dialogService.ShowAlertAsync("Seems like there was a problem.", "Oops", "Close");
+                _dialogService.ShowAlertAsync("Seems like there was a problem." + ex.Message, "Oops", "Close");
                 return false;
             }
         }

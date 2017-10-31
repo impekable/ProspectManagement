@@ -31,7 +31,7 @@ namespace ProspectManagement.Core.Services
 			try
 			{
 				var authResult = await _authenticator.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource);
-				var user = await _userRepository.GetUserByIdAsync(authResult.UserInfo.DisplayableId);
+				var user = await _userRepository.GetUserByIdAsync(authResult.UserInfo.DisplayableId, authResult.AccessToken);
                 if (user == null)
                 {
                     _dialogService.ShowAlertAsync(string.Format("Seems like there was a problem. {0} user not found.", authResult.UserInfo.DisplayableId), "Oops", "Close");
@@ -49,7 +49,17 @@ namespace ProspectManagement.Core.Services
 
 		public async Task<User> GetUserById(string userId)
 		{
-			return await _userRepository.GetUserByIdAsync(userId);
+			try
+			{
+				var authResult = await _authenticator.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource);
+				return await _userRepository.GetUserByIdAsync(userId, authResult.AccessToken);
+			}
+			catch (Exception e)
+			{
+				_dialogService.ShowAlertAsync("Seems like there was a problem." + e.Message, "Oops", "Close");
+				_authenticator.Logout();
+				return default(User);
+			}
 		}
 	}
 }

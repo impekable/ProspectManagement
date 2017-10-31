@@ -11,9 +11,9 @@ namespace ProspectManagement.Core.Repositories
 	{
 		const string _baseUri = _devUri + "Prospects/{0}/TrafficCardResponses";
 
-		public async Task<List<TrafficCardResponse>> GetTrafficCardResponsesForProspectAsync(int prospectAddressNumber, bool requiredOnly)
+		public async Task<List<TrafficCardResponse>> GetTrafficCardResponsesForProspectAsync(int prospectAddressNumber, bool requiredOnly, string accessToken)
 		{
-			var responses = await GetDataObjectFromAPI<List<TrafficCardResponse>>(string.Format(_baseUri + "?Fields=trafficCardQuestion.trafficCardAnswer&PageSize=99", prospectAddressNumber));
+			var responses = await GetDataObjectFromAPI<List<TrafficCardResponse>>(string.Format(_baseUri + "?Fields=trafficCardQuestion.trafficCardAnswer&PageSize=99", prospectAddressNumber), accessToken);
 			if (requiredOnly)
 				responses = responses.Where(r => r.TrafficCardQuestion.WeightingValue > 0).ToList();
 			return responses == null ? new List<TrafficCardResponse>() : responses.OrderBy(r => r.TrafficCardQuestion.QuestionSequenceNumber).ToList();

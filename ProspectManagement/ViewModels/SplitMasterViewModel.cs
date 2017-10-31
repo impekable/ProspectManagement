@@ -98,6 +98,7 @@ namespace ProspectManagement.Core.ViewModels
             {
                 if (_prospects == null)
                 {
+                    var authResult = _authService.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource);
                     _prospects = _collectionFactory.GetCollection(async (count, pageSize) =>
                                     {
                                         var newProspects = new ObservableCollection<Prospect>();
@@ -109,7 +110,7 @@ namespace ProspectManagement.Core.ViewModels
                                         {
                                             Page++;
                                             var salespersonId = SelectedSegment == 0 ? (int?)null : SelectedSegment == 1 ? 0 : User.AddressNumber;
-                                            var prospectList = await _prospectService.GetProspectsAsync(_communities, salespersonId, Page, pageSize, SearchTerm);
+                                            var prospectList = await _prospectService.GetProspectsAsync(authResult.Result.AccessToken, _communities, salespersonId, Page, pageSize, SearchTerm);
                                             newProspects = prospectList.ToObservableCollection();
                                             OnLoadingDataFromBackendCompleted();
                                         });

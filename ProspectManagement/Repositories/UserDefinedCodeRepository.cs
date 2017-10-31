@@ -10,9 +10,9 @@ namespace ProspectManagement.Core.Repositories
 	{
         const string _baseUri = _devUri + "UserDefinedCodes/{0}/{1}";
 
-        public async Task<List<UserDefinedCode>> GetUserDefinedCodesAsync(string productCode, string group)
+        public async Task<List<UserDefinedCode>> GetUserDefinedCodesAsync(string productCode, string group, string accessToken)
         {
-            return await GetDataObjectFromAPI<List<UserDefinedCode>>(string.Format(_baseUri, productCode, group));
+            return await GetDataObjectFromAPI<List<UserDefinedCode>>(string.Format(_baseUri, productCode, group), accessToken);
         }
     }
 }
