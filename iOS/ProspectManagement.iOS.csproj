@@ -193,6 +193,7 @@
     <Folder Include="Resources\Assets.xcassets\ic-cobuyers.imageset\" />
     <Folder Include="Resources\Assets.xcassets\ic-detail.imageset\" />
     <Folder Include="Resources\Assets.xcassets\ic-card.imageset\" />
+    <Folder Include="CustomBindings\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Main.storyboard" />
@@ -274,6 +275,11 @@
     <Compile Include="Views\AnswerViewCell.designer.cs">
       <DependentUpon>AnswerViewCell.cs</DependentUpon>
     </Compile>
+    <Compile Include="CustomBindings\CustomAlertControllerActionsTargetBinding.cs" />
+    <Compile Include="Views\AlertOverlay.cs" />
+    <Compile Include="Views\CustomAlertController.cs" />
+    <Compile Include="CustomBindings\CustomAlertControllerSelectedCodeTargetBinding.cs" />
+    <Compile Include="Views\TextFieldWithPopup.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ProspectManagement\ProspectManagement.Core.csproj">
