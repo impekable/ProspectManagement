@@ -36,7 +36,8 @@ namespace ProspectManagement.iOS.Views
 		{
 
 			NSIndexPath[] rowsToReload = new NSIndexPath[] { NSIndexPath.FromRowSection(eventArgs.Value.TableRowToUpdate, 0) };
-			QuestionsTableView.ReloadRows(rowsToReload, UITableViewRowAnimation.None);
+            var c = QuestionsTableView.Source.GetCell(QuestionsTableView,NSIndexPath.FromRowSection(eventArgs.Value.TableRowToUpdate, 0));
+            QuestionsTableView.ReloadRows(rowsToReload, UITableViewRowAnimation.None);
 		}
 
 		public TrafficCardView (IntPtr handle) : base (handle)

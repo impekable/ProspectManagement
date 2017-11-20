@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using ProspectManagement.Core.Interfaces.Repositories;
 using ProspectManagement.Core.Interfaces.Services;
@@ -43,29 +44,41 @@ namespace ProspectManagement.Core.Services
         public async Task<List<UserDefinedCode>> GetPrefixUserDefinedCodes()
         {
             if (_prefixes == null)
+            {
                 _prefixes = await getUserDefinedCodes("01", "W3");
-            return _prefixes;
+                _prefixes?.Add(new UserDefinedCode() { Code = "", Description1 = " " });
+            }
+            return _prefixes.OrderBy(p => p.Description1).ToList();
         }
 
         public async Task<List<UserDefinedCode>> GetStateUserDefinedCodes()
         {
             if (_states == null)
+            {
                 _states = await getUserDefinedCodes("00", "S");
-            return _states;
+                _states?.Add(new UserDefinedCode() { Code = "", Description1 = " " });
+            }
+            return _states.OrderBy(p => p.Description1).ToList();
         }
 
 		public async Task<List<UserDefinedCode>> GetCountryUserDefinedCodes()
 		{
-			if (_countries == null)
-				_countries = await getUserDefinedCodes("00", "CN");
-			return _countries;
+            if (_countries == null)
+            {
+                _countries = await getUserDefinedCodes("00", "CN");
+                _countries?.Add(new UserDefinedCode() { Code = "", Description1 = " " });
+            }
+            return _countries.OrderBy(p => p.Description1).ToList();
 		}
 
         public async Task<List<UserDefinedCode>> GetSuffixUserDefinedCodes()
         {
             if (_suffixes == null)
+            {
                 _suffixes = await getUserDefinedCodes("01", "W4");
-            return _suffixes;
+                _suffixes?.Add(new UserDefinedCode() { Code = "", Description1 = " " });
+            }
+            return _suffixes.OrderBy(p => p.Description1).ToList();
         }
 
         private async Task<List<UserDefinedCode>> getUserDefinedCodes(string productCode, string group)

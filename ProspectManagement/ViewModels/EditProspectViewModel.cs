@@ -133,7 +133,7 @@ namespace ProspectManagement.Core.ViewModels
             get { return _activePrefix; }
             set
             {
-                _activePrefix = value;
+                _activePrefix = value == null || String.IsNullOrEmpty(value.Code) ? null : value;
                 RaisePropertyChanged(() => ActivePrefix);
             }
         }
@@ -143,7 +143,7 @@ namespace ProspectManagement.Core.ViewModels
             get { return _activeSuffix; }
             set
             {
-                _activeSuffix = value;
+                _activeSuffix = value == null || String.IsNullOrEmpty(value.Code) ? null : value;
                 RaisePropertyChanged(() => ActiveSuffix);
             }
         }
@@ -153,7 +153,7 @@ namespace ProspectManagement.Core.ViewModels
             get { return _activeState; }
             set
             {
-                _activeState = value;
+                _activeState = value == null || String.IsNullOrEmpty(value.Code) ? null : value;
                 StreetAddress.State = _activeState == null ? String.Empty : _activeState.Code;
                 RaisePropertyChanged(() => ActiveState);
             }
@@ -164,7 +164,7 @@ namespace ProspectManagement.Core.ViewModels
             get { return _activeCountry; }
             set
             {
-                _activeCountry = value;
+                _activeCountry = value == null || String.IsNullOrEmpty(value.Code) ? null : value;
                 StreetAddress.Country = _activeCountry == null ? String.Empty : _activeCountry.Code;
                 RaisePropertyChanged(() => ActiveCountry);
                 RaisePropertyChanged(() => ForeignState);
@@ -641,7 +641,7 @@ namespace ProspectManagement.Core.ViewModels
 
             Countries = (await _userDefinedCodeService.GetCountryUserDefinedCodes()).ToObservableCollection();
             ActiveCountry = Prospect.StreetAddress != null ? Countries.FirstOrDefault(p => p.Code == Prospect.StreetAddress.Country) : null;
-
+           
             TrafficSources = (await _trafficSourceService.GetTrafficSourcesByDivision(Prospect.ProspectCommunity.Division)).ToObservableCollection();
             ActiveTrafficSource = TrafficSources.FirstOrDefault(t => t.TrafficSourceDetails.Any(td => td.CodeId == Prospect.TrafficSourceCodeId));
             if (ActiveTrafficSource != null)
@@ -822,7 +822,7 @@ namespace ProspectManagement.Core.ViewModels
                     () =>
                     {
                         var result = !(!FollowUpSettings.ConsentToEmail &&
-                                                     FollowUpSettings.PreferredContactMethod.Equals("E") && !FollowUpSettings.ExcludeFromFollowup);
+                                                     FollowUpSettings.PreferredContactMethod.Equals("Email") && !FollowUpSettings.ExcludeFromFollowup);
 
                         return RuleResult.Assert(result, string.Format("Must Consent To Email when Contact Preference is Email"));
                     });
@@ -831,7 +831,7 @@ namespace ProspectManagement.Core.ViewModels
                     () =>
                     {
                         var result = !(!FollowUpSettings.ConsentToPhone &&
-                                                     FollowUpSettings.PreferredContactMethod.Equals("P"));
+                                                     FollowUpSettings.PreferredContactMethod.Equals("Phone"));
 
                         return RuleResult.Assert(result, string.Format("Must Consent To Phone when Contact Preference is Phone"));
                     });
@@ -840,7 +840,7 @@ namespace ProspectManagement.Core.ViewModels
                     () =>
                     {
                         var result = !(!FollowUpSettings.ConsentToMail &&
-                                                     FollowUpSettings.PreferredContactMethod.Equals("M"));
+                                                     FollowUpSettings.PreferredContactMethod.Equals("Mail"));
 
                         return RuleResult.Assert(result, string.Format("Must Consent To Mail when Contact Preference is Mail"));
                     });
@@ -849,7 +849,7 @@ namespace ProspectManagement.Core.ViewModels
                     () =>
                     {
                         var result = !(!FollowUpSettings.ConsentToText &&
-                                                     FollowUpSettings.PreferredContactMethod.Equals("T"));
+                                                     FollowUpSettings.PreferredContactMethod.Equals("Text"));
 
                         return RuleResult.Assert(result, string.Format("Must Consent To Text when Contact Preference is Text"));
                     });
@@ -858,7 +858,7 @@ namespace ProspectManagement.Core.ViewModels
                     () =>
                     {
                         var result = !(String.IsNullOrEmpty(Email.EmailAddress) &&
-                                       (FollowUpSettings.PreferredContactMethod.Equals("E") || FollowUpSettings.ConsentToEmail));
+                                       (FollowUpSettings.PreferredContactMethod.Equals("Email") || FollowUpSettings.ConsentToEmail));
 
                         return RuleResult.Assert(result, string.Format("Email required when Consenting To Email or Contact Preference is Email"));
                     });
@@ -869,7 +869,7 @@ namespace ProspectManagement.Core.ViewModels
                         var result = !(String.IsNullOrEmpty(MobilePhone.Phone) &&
                                            String.IsNullOrEmpty(HomePhone.Phone) &&
                                            String.IsNullOrEmpty(WorkPhone.Phone) &&
-                                       (FollowUpSettings.PreferredContactMethod.Equals("P") || FollowUpSettings.ConsentToPhone));
+                                       (FollowUpSettings.PreferredContactMethod.Equals("Phone") || FollowUpSettings.ConsentToPhone));
 
                         return RuleResult.Assert(result, string.Format("Phone required when Consenting To Phone or Contact Preference is Phone"));
                     });
@@ -882,7 +882,7 @@ namespace ProspectManagement.Core.ViewModels
                                            String.IsNullOrEmpty(StreetAddress.City) &&
                                            String.IsNullOrEmpty(StreetAddress.State) &&
                                        String.IsNullOrEmpty(StreetAddress.PostalCode) &&
-                                       (FollowUpSettings.PreferredContactMethod.Equals("M") || FollowUpSettings.ConsentToMail));
+                                       (FollowUpSettings.PreferredContactMethod.Equals("Mail") || FollowUpSettings.ConsentToMail));
 
                         return RuleResult.Assert(result, string.Format("Street Address required when Consenting To Mail or Contact Preference is Mail"));
                     });
@@ -891,7 +891,7 @@ namespace ProspectManagement.Core.ViewModels
                     () =>
                     {
                         var result = !(String.IsNullOrEmpty(MobilePhone.Phone) &&
-                                       (FollowUpSettings.PreferredContactMethod.Equals("T") || FollowUpSettings.ConsentToText));
+                                       (FollowUpSettings.PreferredContactMethod.Equals("Text") || FollowUpSettings.ConsentToText));
 
                         return RuleResult.Assert(result, string.Format("Mobile Phone required when Consenting To Text or Contact Preference is Text"));
                     });

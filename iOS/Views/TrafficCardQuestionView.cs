@@ -14,6 +14,7 @@ namespace ProspectManagement.iOS.Views
 	[MvxModalPresentation(WrapInNavigationController = true)]
 	public partial class TrafficCardQuestionView : MvxViewController<TrafficCardQuestionViewModel>
 	{
+        AlertOverlay alertOverlay;
 		protected TrafficCardQuestionViewModel TrafficCardQuestionViewModel => ViewModel as TrafficCardQuestionViewModel;
 
 		public TrafficCardQuestionView(IntPtr handle) : base (handle)
@@ -44,6 +45,11 @@ namespace ProspectManagement.iOS.Views
 
 			var saveButton = new UIBarButtonItem("Save", UIBarButtonItemStyle.Plain, (sender, e) =>
 			{
+                var bounds = UIScreen.MainScreen.Bounds;
+
+                // show the loading overlay on the UI thread using the correct orientation sizing
+                alertOverlay = new AlertOverlay(bounds, "Saving...");
+                View.Add(alertOverlay);
 				TrafficCardQuestionViewModel.SaveCommand.Execute(null);
 
 			});

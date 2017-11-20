@@ -13,11 +13,16 @@ using ProspectManagement.Core;
 using ProspectManagement.Core.Services;
 using ProspectManagement.Core.Interfaces.Repositories;
 using ProspectManagement.Core.Repositories;
+using MvvmCross.Binding.Bindings.Target.Construction;
+using ProspectManagement.iOS.CustomBindings;
+using ProspectManagement.iOS.Views;
+using MvvmCross.Platform.Logging;
 
 namespace ProspectManagement.iOS
 {
-    public class Setup: MvxIosSetup
+    public class Setup : MvxIosSetup
     {
+        protected override MvxLogProviderType GetDefaultLogProviderType() => MvxLogProviderType.None;
         private MvxApplicationDelegate _applicationDelegate;
         UIWindow _window;
 
@@ -40,12 +45,23 @@ namespace ProspectManagement.iOS
         {
             base.InitializeIoC();
             Mvx.RegisterSingleton<IDialogService>(() => new DialogService());
-			Mvx.RegisterSingleton<IAuthenticator>(() => new Authenticator());
+            Mvx.RegisterSingleton<IAuthenticator>(() => new Authenticator());
         }
 
         protected override IMvxIosViewsContainer CreateIosViewsContainer()
         {
             return new StoryBoardContainer();
+        }
+
+        protected override void FillTargetFactories(IMvxTargetBindingFactoryRegistry registry)
+        {
+            base.FillTargetFactories(registry);
+            registry.RegisterPropertyInfoBindingFactory(
+                typeof(CustomAlertControllerActionsTargetBinding),
+                typeof(CustomAlertController), "AlertController");
+            registry.RegisterPropertyInfoBindingFactory(
+                typeof(CustomAlertControllerSelectedCodeTargetBinding),
+                typeof(CustomAlertController), "SelectedCode");
         }
     }
 }

@@ -37,7 +37,6 @@ namespace ProspectManagement.iOS.Views
 
         private async void OnUpdateRowInteractionRequested(object sender, MvxValueEventArgs<TableRow> eventArgs)
         {
-
             NSIndexPath[] rowsToReload = new NSIndexPath[] { NSIndexPath.FromRowSection(eventArgs.Value.TableRowToUpdate, 0) };// points to second row in the first section of the model
             MasterTableView.ReloadRows(rowsToReload, UITableViewRowAnimation.None);
         }
