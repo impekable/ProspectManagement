@@ -16,11 +16,13 @@ using ProspectManagement.Core.Repositories;
 using MvvmCross.Binding.Bindings.Target.Construction;
 using ProspectManagement.iOS.CustomBindings;
 using ProspectManagement.iOS.Views;
+using MvvmCross.Platform.Logging;
 
 namespace ProspectManagement.iOS
 {
     public class Setup : MvxIosSetup
     {
+        protected override MvxLogProviderType GetDefaultLogProviderType() => MvxLogProviderType.None;
         private MvxApplicationDelegate _applicationDelegate;
         UIWindow _window;
 
