@@ -130,7 +130,9 @@
     <Compile Include="ViewModels\TrafficCardQuestionViewModel.cs" />
     <Compile Include="Messages\TrafficCardResponseChangedMessage.cs" />
     <Compile Include="Constants\PrivateKeys.cs" />
-  </ItemGroup>
+    <Compile Include="Messages\CobuyerChangedMessage.cs" />
+    <Compile Include="CobuyerAddedMessage.cs" />
+ </ItemGroup>
   <ItemGroup>
     <Reference Include="MvvmCross.Plugins.Sqlite">
       <HintPath>..\packages\MvvmCross.Plugin.SQLitePCL.4.4.0\lib\portable-win+net45+wp8+win8+wpa81+win81+dotnet\MvvmCross.Plugins.Sqlite.dll</HintPath>

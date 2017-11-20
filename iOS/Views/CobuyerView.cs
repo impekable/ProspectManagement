@@ -5,6 +5,14 @@ using MvvmCross.iOS.Views;
 using MvvmCross.iOS.Views.Presenters.Attributes;
 using ProspectManagement.Core.ViewModels;
 using MvvmCross.Binding.BindingContext;
+using MvvmCross.Binding.iOS.Views;
+using Sequence.Plugins.InfiniteScroll.iOS;
+using ProspectManagement.iOS.Utility;
+using System.Threading.Tasks;
+using MvvmCross.Core.ViewModels;
+using ProspectManagement.Core.Interactions;
+using MvvmCross.Platform.Core;
+using System.Linq;
 
 namespace ProspectManagement.iOS.Views
 {
@@ -12,7 +20,58 @@ namespace ProspectManagement.iOS.Views
     [MvxDetailSplitViewPresentation(WrapInNavigationController = true)]
     public partial class CobuyerView : MvxViewController<CobuyerViewModel>
     {
-        public CobuyerView(IntPtr handle) : base(handle)
+
+		private MvxSimpleTableViewSource source;
+
+		private IMvxInteraction<TableRow> _updateRowInteraction;
+		public IMvxInteraction<TableRow> UpdateRowInteraction
+		{
+			get => _updateRowInteraction;
+			set
+			{
+				if (_updateRowInteraction != null)
+					_updateRowInteraction.Requested -= OnUpdateRowInteractionRequested;
+
+				_updateRowInteraction = value;
+				_updateRowInteraction.Requested += OnUpdateRowInteractionRequested;
+			}
+		}
+
+		private IMvxInteraction _addRowInteraction;
+		public IMvxInteraction AddRowInteraction
+		{
+			get => _addRowInteraction;
+			set
+			{
+				if (_addRowInteraction != null)
+					_addRowInteraction.Requested -= OnAddRowInteractionRequested;
+
+				_addRowInteraction = value;
+				_addRowInteraction.Requested += OnAddRowInteractionRequested;
+			}
+		}
+
+		private async void OnUpdateRowInteractionRequested(object sender, MvxValueEventArgs<TableRow> eventArgs)
+		{
+
+			NSIndexPath[] rowsToReload = new NSIndexPath[] { NSIndexPath.FromRowSection(eventArgs.Value.TableRowToUpdate, 0) };// points to second row in the first section of the model
+            var c = CobuyerTableView.Source.GetCell(CobuyerTableView, NSIndexPath.FromRowSection(eventArgs.Value.TableRowToUpdate, 0));
+            CobuyerTableView.ReloadRows(rowsToReload, UITableViewRowAnimation.None);
+		}
+
+		private async void OnAddRowInteractionRequested(object sender, EventArgs eventArgs)
+		{
+			//NSIndexPath[] rowsToAdd = new NSIndexPath[] { NSIndexPath.FromRowSection(eventArgs.Value.TableRowToUpdate, 0) };// points to second row in the first section of the model
+            //CobuyerTableView.BeginUpdates();
+            //CobuyerTableView.InsertRows(rowsToAdd, UITableViewRowAnimation.None);
+            //CobuyerTableView.EndUpdates();
+
+            CobuyerTableView.ReloadData();
+
+		}
+
+
+		public CobuyerView(IntPtr handle) : base(handle)
         {
         }
 
@@ -20,10 +79,30 @@ namespace ProspectManagement.iOS.Views
         {
             base.ViewDidLoad();
 
-            var set = this.CreateBindingSet<CobuyerView, CobuyerViewModel>();
-            set.Bind(NameLabel).To(vm => vm.Prospect.Name);
-            set.Bind(CobuyerDetailButton).To(vm => vm.ShowCobuyerDetail);
-            set.Apply();
+
+			CobuyerTableView.TableFooterView = new UIView();
+
+            var source = new MvxSimpleTableViewSource(CobuyerTableView, CobuyerViewCell.Key, CobuyerViewCell.Key, null);
+			CobuyerTableView.Source = source;
+
+			var set = this.CreateBindingSet<CobuyerView, CobuyerViewModel>();
+            set.Bind(source).To(vm => vm.CobuyersList);
+			set.Bind(source).For(s => s.SelectionChangedCommand).To(vm => vm.SelectionChangedCommand);
+			set.Bind(this).For(view => view.AddRowInteraction).To(viewModel => viewModel.AddRowInteraction).OneWay();
+            set.Bind(this).For(view => view.UpdateRowInteraction).To(viewModel => viewModel.UpdateRowInteraction).OneWay();
+
+			set.Apply();
+
+            CobuyerTableView.ReloadData();
+
+		
+
+			var b = new UIBarButtonItem("Add", UIBarButtonItemStyle.Plain, (sender, e) =>
+			{
+				ViewModel.AddCobuyerCommand.Execute(null);
+			});
+
+			this.NavigationItem.SetRightBarButtonItem(b, true);
 
 			foreach (UITabBarItem item in ProspectTabBar.Items)
 			{
@@ -45,6 +124,8 @@ namespace ProspectManagement.iOS.Views
 					}, UIControlState.Normal);
 				}
 			}
+
+
 
             ProspectTabBar.SelectedItem = ProspectTabBar.Items[1];
             ProspectTabBar.ItemSelected += (sender, e) =>

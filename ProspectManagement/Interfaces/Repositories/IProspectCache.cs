@@ -9,5 +9,7 @@ namespace ProspectManagement.Core.Interfaces.Repositories
         void SaveProspectToCache(Prospect prospect);
 		TrafficCardResponse GetTrafficCardResponseFromCache(int id);
 		void SaveTrafficCardResponseToCache(int prospectId, TrafficCardResponse response);
+        Cobuyer GetCobuyerFromCache(int id);
+        void SaveCobuyerToCache(Cobuyer cobuyer);
     }
 }

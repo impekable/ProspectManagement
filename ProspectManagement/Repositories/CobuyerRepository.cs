@@ -15,14 +15,14 @@ namespace ProspectManagement.Core.Repositories
             return await PostDataObjectToAPI(string.Format(_baseUri, prospectId), cobuyer, accessToken);
         }
 
-        public async Task<Cobuyer> GetCobuyerAsync(int prospectId, int cobuyerId)
+        public async Task<Cobuyer> GetCobuyerAsync(int prospectId, int cobuyerId, string accessToken)
         {
-            return await GetDataObjectFromAPI<Cobuyer>(string.Format(_baseUri, prospectId) + cobuyerId, "");
+            return await GetDataObjectFromAPI<Cobuyer>(string.Format(_baseUri, prospectId) + cobuyerId, accessToken);
         }
 
-        public async Task<List<Cobuyer>> GetCobuyersForProspectAsync(int prospectId)
+        public async Task<List<Cobuyer>> GetCobuyersForProspectAsync(int prospectId, string accessToken)
         {
-            return await GetDataObjectFromAPI <List<Cobuyer>> (string.Format(_baseUri, prospectId), "");
+            return await GetDataObjectFromAPI <List<Cobuyer>> (string.Format(_baseUri, prospectId), accessToken);
         }
 
 		public Task<bool> DeleteCobuyerFromProspectAsync(int cobuyerId, string accessToken)
@@ -30,9 +30,10 @@ namespace ProspectManagement.Core.Repositories
 			throw new NotImplementedException();
 		}
 
-        public Task<bool> UpdateCobuyerAsync(Cobuyer cobuyer, string accessToken)
+        public async Task<bool> UpdateCobuyerAsync(Cobuyer cobuyer, string accessToken)
         {
-            throw new NotImplementedException();
+            
+            return await PutDataObjectToAPI(string.Format(_baseUri, cobuyer.ProspectAddressNumber) + cobuyer.CobuyerAddressNumber, cobuyer, accessToken);
         }
     }
 }

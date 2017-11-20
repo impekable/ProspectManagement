@@ -34,9 +34,16 @@ namespace ProspectManagement.Core.Models
 		[JsonProperty("homePhoneNumber")]
 		public PhoneNumber HomePhoneNumber { get; set; }
 		[JsonProperty("addressSameAsBuyer")]
-		public StreetAddress AddressSameAsBuyer { get; set; }
+		public bool AddressSameAsBuyer { get; set; }
 		[JsonProperty("streetAddress")]
 		public StreetAddress StreetAddress { get; set; }
+
+        public string FullName => LastName + ", " + FirstName;
+
+        public Cobuyer ShallowCopy()
+		{
+            return (Cobuyer)this.MemberwiseClone();
+		}
         		
 	}
 

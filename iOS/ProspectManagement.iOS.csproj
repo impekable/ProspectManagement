@@ -65,7 +65,7 @@
     <DefineConstants>DEBUG;ENABLE_TEST_CLOUD;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodesignKey>iPhone Developer: Dan Szot (48PX3JJW9W)</CodesignKey>
+    <CodesignKey>iPhone Developer: Nelya Safarov (L3E3P5S8E3)</CodesignKey>
     <DeviceSpecificBuild>true</DeviceSpecificBuild>
     <MtouchDebug>true</MtouchDebug>
     <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
@@ -200,6 +200,7 @@
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
     <InterfaceDefinition Include="Views\QuestionViewCell.xib" />
     <InterfaceDefinition Include="Views\AnswerViewCell.xib" />
+    <InterfaceDefinition Include="Views\CobuyerViewCell.xib" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -273,6 +274,10 @@
     <Compile Include="Views\AnswerViewCell.cs" />
     <Compile Include="Views\AnswerViewCell.designer.cs">
       <DependentUpon>AnswerViewCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CobuyerViewCell.cs" />
+    <Compile Include="Views\CobuyerViewCell.designer.cs">
+      <DependentUpon>CobuyerViewCell.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
