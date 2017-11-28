@@ -7,6 +7,7 @@ using ProspectManagement.Core.ViewModels;
 using MvvmCross.Binding.BindingContext;
 using ProspectManagement.Core.Converters;
 using MvvmCross.Core.ViewModels;
+using ProspectManagement.iOS.Utility;
 
 namespace ProspectManagement.iOS.Views
 {
@@ -93,6 +94,11 @@ namespace ProspectManagement.iOS.Views
 			{
 				ViewModel.EditProspectCommand.Execute(null);
 			});
+            b.SetTitleTextAttributes(new UITextAttributes()
+            {
+                Font = UIFont.FromName("Raleway-Bold", 18),
+                TextColor = ProspectManagementColors.DarkColor
+            }, UIControlState.Normal);
 
 			this.NavigationItem.SetRightBarButtonItem(b, true);
 

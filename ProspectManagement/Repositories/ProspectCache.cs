@@ -7,7 +7,6 @@ namespace ProspectManagement.Core.Repositories
 {
     public class ProspectCache: IProspectCache
     {
-
         private Prospect _propsect;
         private KeyValuePair<int, TrafficCardResponse> _response;
         private Cobuyer _cobuyer;
@@ -26,7 +25,6 @@ namespace ProspectManagement.Core.Repositories
 		{
             return id > 0 && id == _cobuyer.CobuyerAddressNumber ? _cobuyer : null;
 		}
-
 
 		public void SaveProspectToCache(Prospect prospect)
         {

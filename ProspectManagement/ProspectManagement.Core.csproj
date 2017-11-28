@@ -132,6 +132,7 @@
     <Compile Include="Constants\PrivateKeys.cs" />
     <Compile Include="Messages\CobuyerChangedMessage.cs" />
     <Compile Include="CobuyerAddedMessage.cs" />
+    <Compile Include="Converters\TitleCaseValueConverter.cs" />
  </ItemGroup>
   <ItemGroup>
     <Reference Include="MvvmCross.Plugins.Sqlite">

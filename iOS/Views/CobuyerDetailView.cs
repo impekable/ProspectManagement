@@ -14,13 +14,14 @@ using MvvmCross.Core.ViewModels;
 using MvvmCross.Platform.Core;
 using ProspectManagement.iOS.Extensions;
 
-
 namespace ProspectManagement.iOS.Views
 {
     [MvxFromStoryboard("Main")]
     [MvxModalPresentation(WrapInNavigationController = true)]
     public partial class CobuyerDetailView : BaseView
     {
+        AlertOverlay alertOverlay;
+
         private UIPickerView _defaultPrefixPickerView;
         private MvxPickerViewModel _defaultPrefixPickerViewModel;
         private UIPickerView _defaultCountryPickerView;
@@ -31,7 +32,6 @@ namespace ProspectManagement.iOS.Views
         private MvxPickerViewModel _defaultContactPreferencePickerViewModel;
         private UIPickerView _defaultStatePickerView;
         private MvxPickerViewModel _defaultStatePickerViewModel;
-
 
         private static readonly int TextFieldMargin = 10;
         public static readonly int ArrowWidth = 14;
@@ -53,16 +53,11 @@ namespace ProspectManagement.iOS.Views
 
         private async void OnHideAlertInteractionRequested(object sender, EventArgs eventArgs)
         {
-            DismissViewController(true, null);
-            var scrollView = ValidationErrorLabel.FindSuperviewOfType(View, typeof(UIScrollView)) as UIScrollView;
-            RestoreScrollPosition(scrollView, 100);
+            alertOverlay.Hide();
         }
-
-
 
         public CobuyerDetailView(IntPtr handle) : base(handle)
         {
-            ScrollViewInset = 80;
         }
 
         public override bool HandlesKeyboardNotifications()
@@ -72,7 +67,6 @@ namespace ProspectManagement.iOS.Views
 
         UITextFieldCondition shouldReturn = (textField) =>
         {
-
             {
                 textField.ResignFirstResponder();
             }
@@ -89,11 +83,11 @@ namespace ProspectManagement.iOS.Views
             CreatePickerViewBindings(set);
 
             set.Bind(PrefixTextField).To(vm => vm.ActivePrefix.Description1);
-            set.Bind(FirstNameTextField).To(vm => vm.FirstName);
-            set.Bind(MiddleNameTextField).To(vm => vm.MiddleName);
-            set.Bind(LastNameTextField).To(vm => vm.LastName);
+            set.Bind(FirstNameTextField).To(vm => vm.FirstName).WithConversion(new TitleCaseValueConverter());
+            set.Bind(MiddleNameTextField).To(vm => vm.MiddleName).WithConversion(new TitleCaseValueConverter());
+            set.Bind(LastNameTextField).To(vm => vm.LastName).WithConversion(new TitleCaseValueConverter());
             set.Bind(SuffixTextField).To(vm => vm.ActiveSuffix.Description1);
-            set.Bind(AliasTextField).To(vm => vm.NickName);
+            set.Bind(AliasTextField).To(vm => vm.NickName).WithConversion(new TitleCaseValueConverter());
             set.Bind(MobilePhoneTextField).To(vm => vm.MobilePhoneNumber).WithConversion(new PhoneNumberValueConverter());
             set.Bind(WorkPhoneTextField).To(vm => vm.WorkPhoneNumber).WithConversion(new PhoneNumberValueConverter());
             set.Bind(HomePhoneTextField).To(vm => vm.HomePhoneNumber).WithConversion(new PhoneNumberValueConverter());
@@ -132,29 +126,17 @@ namespace ProspectManagement.iOS.Views
 
             set.Bind(this).For(view => view.HideAlertInteraction).To(viewModel => viewModel.HideAlertInteraction).OneWay();
 
-			
-
-
             CustomizeTextField(PrefixTextField, _defaultPrefixPickerView, "Prefix");
             CustomizeTextField(SuffixTextField, _defaultSuffixPickerView, "Suffix");
             CustomizeTextField(StateTextField, _defaultStatePickerView, "State");
             CustomizeTextField(CountryTextField, _defaultCountryPickerView, "Country");
 
-           
-
             if (CobuyerDetailViewModel.Cobuyer != null)
             {
-
                 AddressSameAsBuyerSwitch.On = CobuyerDetailViewModel.Cobuyer.AddressSameAsBuyer;
-
-
             }
 
-			set.Apply();
-
-
-
-			
+            set.Apply();
 
             PrefixTextField.ShouldReturn = shouldReturn;
             FirstNameTextField.ShouldReturn = shouldReturn;
@@ -175,8 +157,6 @@ namespace ProspectManagement.iOS.Views
             CountryTextField.ShouldReturn = shouldReturn;
             CountyTextField.ShouldReturn = shouldReturn;
             ZipCodeTextField.ShouldReturn = shouldReturn;
-
-
 
             PrefixTextField.EditingDidBegin += (sender, e) =>
             {
@@ -203,45 +183,51 @@ namespace ProspectManagement.iOS.Views
                     CobuyerDetailViewModel.ActiveCountry = CobuyerDetailViewModel.Countries.FirstOrDefault();
             };
 
-
             var cancelButton = new UIBarButtonItem("Cancel", UIBarButtonItemStyle.Plain, (sender, e) =>
             {
                 CobuyerDetailViewModel.CloseCommand.Execute(null);
             });
+            cancelButton.SetTitleTextAttributes(new UITextAttributes()
+            {
+                Font = UIFont.FromName("Raleway-Bold", 18),
+                TextColor = UIColor.White
+            }, UIControlState.Normal);
 
             var saveButton = new UIBarButtonItem("Save", UIBarButtonItemStyle.Plain, (sender, e) =>
             {
-                UIAlertController myAlert = UIAlertController.Create("Saving", "", UIAlertControllerStyle.Alert);
-                var activity = new UIActivityIndicatorView() { ActivityIndicatorViewStyle = UIActivityIndicatorViewStyle.WhiteLarge };
-                activity.Frame = myAlert.View.Bounds;
-                activity.AutoresizingMask = UIViewAutoresizing.FlexibleDimensions;
-                activity.Color = UIColor.Black;
-                activity.StartAnimating();
-                myAlert.Add(activity);
-                this.PresentViewController(myAlert, true, null);
+
+                var bounds = UIScreen.MainScreen.Bounds;
+
+                // show the loading overlay on the UI thread using the correct orientation sizing
+                alertOverlay = new AlertOverlay(bounds, "Saving Data...");
+                View.Add(alertOverlay);
 
                 CobuyerDetailViewModel.SaveCommand.Execute(null);
 
             });
+            saveButton.SetTitleTextAttributes(new UITextAttributes()
+            {
+                Font = UIFont.FromName("Raleway-Bold", 18),
+                TextColor = UIColor.White
+            }, UIControlState.Normal);
 
             this.NavigationItem.SetLeftBarButtonItem(cancelButton, true);
             this.NavigationItem.SetRightBarButtonItem(saveButton, true);
-            UINavigationBar.Appearance.SetTitleTextAttributes(new UITextAttributes()
-            {
-                Font = UIFont.FromName("Raleway-Bold", 20)
-            });
 
-            if(CobuyerDetailViewModel.Cobuyer.CobuyerAddressNumber > 0)
+
+            if (CobuyerDetailViewModel.Cobuyer.CobuyerAddressNumber > 0)
             {
                 this.NavigationItem.Title = "Edit Cobuyer";
-            } else{
-                
+            }
+            else
+            {
+
                 this.NavigationItem.Title = "Add Cobuyer";
             }
-                
+
         }
 
-	
+
         private void CustomizeTextField(UITextField textField, UIPickerView pickerView, string pickerType)
         {
             textField.TintColor = UIColor.Clear;
@@ -321,7 +307,6 @@ namespace ProspectManagement.iOS.Views
 
         private void CreatePickerViewBindings(MvxFluentBindingDescriptionSet<CobuyerDetailView, CobuyerDetailViewModel> set)
         {
-
             set.Bind(StateTextField).To(vm => vm.ActiveState.Description1).OneWay();
             _defaultStatePickerView = new UIPickerView
             {
@@ -331,7 +316,6 @@ namespace ProspectManagement.iOS.Views
             _defaultStatePickerView.Model = _defaultStatePickerViewModel;
             set.Bind(_defaultStatePickerViewModel).For(p => p.ItemsSource).To(vm => vm.States).OneWay();
             set.Bind(_defaultStatePickerViewModel).For(p => p.SelectedItem).To(vm => vm.ActiveState).OneWayToSource();
-
 
             set.Bind(CountryTextField).To(vm => vm.ActiveCountry.Description1).OneWay();
             _defaultCountryPickerView = new UIPickerView
@@ -343,7 +327,6 @@ namespace ProspectManagement.iOS.Views
             set.Bind(_defaultCountryPickerViewModel).For(p => p.ItemsSource).To(vm => vm.Countries).OneWay();
             set.Bind(_defaultCountryPickerViewModel).For(p => p.SelectedItem).To(vm => vm.ActiveCountry).OneWayToSource();
 
-
             set.Bind(SuffixTextField).To(vm => vm.ActiveSuffix.Description1).OneWay();
             _defaultSuffixPickerView = new UIPickerView
             {
@@ -354,7 +337,6 @@ namespace ProspectManagement.iOS.Views
             set.Bind(_defaultSuffixPickerViewModel).For(p => p.ItemsSource).To(vm => vm.Suffixes).OneWay();
             set.Bind(_defaultSuffixPickerViewModel).For(p => p.SelectedItem).To(vm => vm.ActiveSuffix).OneWayToSource();
 
-
             set.Bind(PrefixTextField).To(vm => vm.ActivePrefix.Description1).OneWay();
             _defaultPrefixPickerView = new UIPickerView
             {
@@ -364,7 +346,6 @@ namespace ProspectManagement.iOS.Views
             _defaultPrefixPickerView.Model = _defaultPrefixPickerViewModel;
             set.Bind(_defaultPrefixPickerViewModel).For(p => p.ItemsSource).To(vm => vm.Prefixes).OneWay();
             set.Bind(_defaultPrefixPickerViewModel).For(p => p.SelectedItem).To(vm => vm.ActivePrefix).OneWayToSource();
-
 
         }
     }

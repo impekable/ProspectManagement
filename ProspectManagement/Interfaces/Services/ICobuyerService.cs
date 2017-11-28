@@ -9,7 +9,7 @@ namespace ProspectManagement.Core.Interfaces.Services
 	{
 		Task<List<Cobuyer>> GetCobuyersForProspectAsync(int prospectId);
 
-		Task<Cobuyer> GetCobuyerAsync(int prospectId, int cobuyerId);
+        Task<Cobuyer> GetCobuyerAsync(int prospectId, int cobuyerId, string authToken);
 
 		Task<bool> UpdateCobuyerAsync(Cobuyer cobuyer);
 

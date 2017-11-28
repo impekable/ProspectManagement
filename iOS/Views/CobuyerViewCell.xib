@@ -1,58 +1,38 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6211" systemVersion="14A298i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7026.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" customClass="CobuyerViewCell" id="cxk-wN-pdQ" rowHeight="44">
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="44" id="cxk-wN-pdQ" customClass="CobuyerViewCell">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cxk-wN-pdQ" id="YTl-1W-gDM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="5" translatesAutoresizingMaskIntoConstraints="NO" fixedFrame="YES">
-                        <rect key="frame" x="81" y="0.0" width="223" height="43"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5">
+                        <rect key="frame" x="10" y="12.5" width="300" height="21"/>
+                        <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="18"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="8" translatesAutoresizingMaskIntoConstraints="NO" fixedFrame="YES">
-                        <rect key="frame" x="0.0" y="0.0" width="55" height="43"/>
-                    </imageView>
                 </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="5" secondAttribute="bottom" constant="10" id="4Ud-5R-uak"/>
+                    <constraint firstItem="5" firstAttribute="leading" secondItem="YTl-1W-gDM" secondAttribute="leading" constant="10" id="5MZ-oe-DAf"/>
+                    <constraint firstAttribute="trailing" secondItem="5" secondAttribute="trailing" constant="10" id="NY0-vh-kOV"/>
+                </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="CobuyerLabel" destination="5" id="name-outlet-5"/>
-                <outlet property="CobuyerImage" destination="8" id="name-outlet-8"/>
             </connections>
         </tableViewCell>
     </objects>
-    <resources>
-        <image name="ITunesArtwork" width="512" height="512"/>
-        <image name="ITunesArtwork@2x" width="512" height="512"/>
-        <image name="unknown-person1.jpg" width="280" height="280"/>
-        <image name="timthumb.jpeg" width="300" height="260"/>
-        <image name="arrow-down" width="17" height="9"/>
-        <image name="arrow-left" width="9" height="17"/>
-        <image name="arrow-right" width="9" height="17"/>
-        <image name="arrow-up" width="17" height="9"/>
-        <image name="ic-home-active" width="22" height="21"/>
-        <image name="ic-home-normal" width="22" height="21"/>
-        <image name="ic-logo" width="373" height="89"/>
-        <image name="ic-saved-active" width="22" height="21"/>
-        <image name="ic-saved-normal" width="22" height="21"/>
-        <image name="ic-search-active" width="20" height="20"/>
-        <image name="ic-search-normal" width="20" height="20"/>
-        <image name="ic-settings-active" width="20" height="20"/>
-        <image name="ic-settings-normal" width="20" height="20"/>
-        <image name="splash" width="188" height="204"/>
-        <image name="ic-assigned" width="300" height="260"/>
-        <image name="ic-unassigned" width="280" height="280"/>
-        <image name="ic-cobuyers" width="1024" height="1024"/>
-        <image name="ic-detail" width="60" height="60"/>
-        <image name="ic-card" width="90" height="90"/>
-    </resources>
 </document>

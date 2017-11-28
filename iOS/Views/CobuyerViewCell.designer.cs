@@ -15,19 +15,10 @@ namespace ProspectManagement.iOS.Views
     {
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UIImageView CobuyerImage { get; set; }
-
-        [Outlet]
-        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UILabel CobuyerLabel { get; set; }
 
         void ReleaseDesignerOutlets ()
         {
-            if (CobuyerImage != null) {
-                CobuyerImage.Dispose ();
-                CobuyerImage = null;
-            }
-
             if (CobuyerLabel != null) {
                 CobuyerLabel.Dispose ();
                 CobuyerLabel = null;

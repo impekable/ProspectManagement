@@ -31,7 +31,7 @@ namespace ProspectManagement.iOS.Views
 			if (NavigationController != null)
 			{
 				var stringAttributes = new UIStringAttributes();
-				stringAttributes.Font = UIFont.SystemFontOfSize(16);
+                stringAttributes.Font = UIFont.FromName("Raleway-Bold", 20);
 				stringAttributes.ForegroundColor = UIColor.FromRGB(255, 255, 255);
 				NavigationController.NavigationBar.BarTintColor = ProspectManagementColors.DarkColor;
 				NavigationController.NavigationBar.TintColor = UIColor.White;

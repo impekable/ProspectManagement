@@ -86,11 +86,11 @@ namespace ProspectManagement.iOS.Views
             CreateAlertViewBindings(set);
 
             set.Bind(PrefixTextField).To(vm => vm.ActivePrefix.Description1);
-            set.Bind(FirstNameTextField).To(vm => vm.FirstName);
-            set.Bind(MiddleNameTextField).To(vm => vm.MiddleName);
-            set.Bind(LastNameTextField).To(vm => vm.LastName);
+            set.Bind(FirstNameTextField).To(vm => vm.FirstName).WithConversion(new TitleCaseValueConverter());
+            set.Bind(MiddleNameTextField).To(vm => vm.MiddleName).WithConversion(new TitleCaseValueConverter());;
+            set.Bind(LastNameTextField).To(vm => vm.LastName).WithConversion(new TitleCaseValueConverter());;
             set.Bind(SuffixTextField).To(vm => vm.ActiveSuffix.Description1);
-            set.Bind(AliasTextField).To(vm => vm.NickName);
+            set.Bind(AliasTextField).To(vm => vm.NickName).WithConversion(new TitleCaseValueConverter());;
             set.Bind(MobilePhoneTextField).To(vm => vm.MobilePhoneNumber).WithConversion(new PhoneNumberValueConverter());
             set.Bind(WorkPhoneTextField).To(vm => vm.WorkPhoneNumber).WithConversion(new PhoneNumberValueConverter());
             set.Bind(HomePhoneTextField).To(vm => vm.HomePhoneNumber).WithConversion(new PhoneNumberValueConverter());
@@ -170,6 +170,11 @@ namespace ProspectManagement.iOS.Views
             {
                 EditProspectViewModel.CloseCommand.Execute(null);
             });
+            cancelButton.SetTitleTextAttributes(new UITextAttributes()
+            {
+                Font = UIFont.FromName("Raleway-Bold", 18),
+                TextColor = UIColor.White
+            }, UIControlState.Normal);
 
             var saveButton = new UIBarButtonItem("Save", UIBarButtonItemStyle.Plain, (sender, e) =>
             {
@@ -181,13 +186,14 @@ namespace ProspectManagement.iOS.Views
                 EditProspectViewModel.SaveCommand.Execute(null);
 
             });
+            saveButton.SetTitleTextAttributes(new UITextAttributes()
+            {
+                Font = UIFont.FromName("Raleway-Bold", 18),
+                TextColor = UIColor.White
+            }, UIControlState.Normal);
 
             this.NavigationItem.SetLeftBarButtonItem(cancelButton, true);
             this.NavigationItem.SetRightBarButtonItem(saveButton, true);
-            UINavigationBar.Appearance.SetTitleTextAttributes(new UITextAttributes()
-            {
-                Font = UIFont.FromName("Raleway-Bold", 20)
-            });
             this.NavigationItem.Title = "Edit Prospect";
         }
 

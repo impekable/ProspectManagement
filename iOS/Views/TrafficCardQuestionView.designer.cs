@@ -20,14 +20,6 @@ namespace ProspectManagement.iOS.Views
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UIButton CancelButton { get; set; }
-
-        [Outlet]
-        [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UIButton SaveButton { get; set; }
-
-        [Outlet]
-        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UILabel TrafficCardQuestionLabel { get; set; }
 
         void ReleaseDesignerOutlets ()
@@ -35,16 +27,6 @@ namespace ProspectManagement.iOS.Views
             if (AnswersTableView != null) {
                 AnswersTableView.Dispose ();
                 AnswersTableView = null;
-            }
-
-            if (CancelButton != null) {
-                CancelButton.Dispose ();
-                CancelButton = null;
-            }
-
-            if (SaveButton != null) {
-                SaveButton.Dispose ();
-                SaveButton = null;
             }
 
             if (TrafficCardQuestionLabel != null) {

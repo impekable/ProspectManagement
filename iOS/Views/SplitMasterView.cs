@@ -133,11 +133,21 @@ namespace ProspectManagement.iOS.Views
                 ViewModel.LogoutCommand.Execute(null);
             });
 
-            this.NavigationItem.SetRightBarButtonItem(b, true);
-            UINavigationBar.Appearance.SetTitleTextAttributes(new UITextAttributes()
+            b.SetTitleTextAttributes(new UITextAttributes()
             {
-                Font = UIFont.FromName("Raleway-Bold", 20)
-            });
+                Font = UIFont.FromName("Raleway-Bold", 18),
+                TextColor = ProspectManagementColors.DarkColor
+            }, UIControlState.Normal);
+
+            this.NavigationItem.SetRightBarButtonItem(b, true);
+
+            var stringAttributes = new UIStringAttributes();
+            stringAttributes.Font = UIFont.FromName("Raleway-Bold", 20);
+            stringAttributes.ForegroundColor = UIColor.Black;
+            //NavigationController.NavigationBar.BarTintColor = ProspectManagementColors.DarkColor;
+            NavigationController.NavigationBar.TintColor = ProspectManagementColors.DarkColor;
+            NavigationController.NavigationBar.TitleTextAttributes = stringAttributes;
+
         }
     }
 }

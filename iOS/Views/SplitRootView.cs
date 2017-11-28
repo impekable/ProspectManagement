@@ -4,6 +4,7 @@ using UIKit;
 using MvvmCross.iOS.Views;
 using MvvmCross.iOS.Views.Presenters.Attributes;
 using ProspectManagement.Core.ViewModels;
+using ProspectManagement.iOS.Utility;
 
 namespace ProspectManagement.iOS.Views
 {
@@ -35,6 +36,12 @@ namespace ProspectManagement.iOS.Views
 
 				//PreferredDisplayMode = UISplitViewControllerDisplayMode.PrimaryHidden;
 			}
+
+            UIBarButtonItem.Appearance.SetTitleTextAttributes(new UITextAttributes()
+            {
+                Font = UIFont.FromName("Raleway-Bold", 18),
+                TextColor = ProspectManagementColors.DarkColor
+            }, UIControlState.Normal);
 		}
 	}
 }

@@ -16,10 +16,8 @@ namespace ProspectManagement.Core.ViewModels
 {
     public class CobuyerDetailViewModel : BaseViewModel
     {
-
         private MvxInteraction _hideAlertInteraction = new MvxInteraction();
         public IMvxInteraction HideAlertInteraction => _hideAlertInteraction;
-
 
         private UserDefinedCode _originalPickerValue;
         private TrafficSource _originalTrafficSource;
@@ -40,6 +38,7 @@ namespace ProspectManagement.Core.ViewModels
 
         private bool _addressSameAsBuyer;
 
+        private readonly IAuthenticator _authenticator;
         private readonly IDialogService _dialogService;
         private readonly IEmailValidationService _emailValidationService;
         private readonly IPhoneNumberValidationService _phoneNumberValidationService;
@@ -53,18 +52,15 @@ namespace ProspectManagement.Core.ViewModels
         private ICommand _saveCommand;
         private ICommand _closeCommand;
 
-
         private ObservableCollection<UserDefinedCode> _prefixes;
         private ObservableCollection<UserDefinedCode> _suffixes;
         private ObservableCollection<UserDefinedCode> _states;
         private ObservableCollection<UserDefinedCode> _countries;
 
-
         private UserDefinedCode _activePrefix;
         private UserDefinedCode _activeSuffix;
         private UserDefinedCode _activeState;
         private UserDefinedCode _activeCountry;
-
 
         private string _firstNameError;
         private string _lastNameError;
@@ -72,7 +68,6 @@ namespace ProspectManagement.Core.ViewModels
         private string _mobilePhoneNumberError;
         private string _workPhoneNumberError;
         private string _homePhoneNumberError;
-
 
         public UserDefinedCode OriginalPickerValue
         {
@@ -83,7 +78,6 @@ namespace ProspectManagement.Core.ViewModels
                 RaisePropertyChanged(() => OriginalPickerValue);
             }
         }
-
 
         public UserDefinedCode ActivePrefix
         {
@@ -127,7 +121,6 @@ namespace ProspectManagement.Core.ViewModels
                 RaisePropertyChanged(() => ForeignState);
             }
         }
-
 
         public ObservableCollection<UserDefinedCode> Prefixes
         {
@@ -229,7 +222,6 @@ namespace ProspectManagement.Core.ViewModels
             }
         }
 
-
         public ICommand SaveCommand
         {
             get
@@ -262,14 +254,10 @@ namespace ProspectManagement.Core.ViewModels
                         if (Cobuyer.CobuyerAddressNumber > 0)
                             cobuyerUpdated = await _cobuyerService.UpdateCobuyerAsync(Cobuyer);
                         else
-
                         {
-
                             var newCobuyer = await _cobuyerService.AddCobuyerToProspectAsync(Cobuyer.ProspectAddressNumber, Cobuyer);
-                            //cobuyerUpdated = newCobuyer != null;
                             cobuyerAdded = newCobuyer != null;
                             Cobuyer.CobuyerAddressNumber = newCobuyer != null ? newCobuyer.CobuyerAddressNumber : 0;
-
                         }
 
                     }
@@ -277,7 +265,7 @@ namespace ProspectManagement.Core.ViewModels
 
                     if (cobuyerUpdated)
                     {
-                        Messenger.Publish(new CobuyerChangedMessage(this) { UpdatedCobuyer = new Cobuyer(){CobuyerAddressNumber = Cobuyer.CobuyerAddressNumber} });
+                        Messenger.Publish(new CobuyerChangedMessage(this) { UpdatedCobuyer = new Cobuyer() { CobuyerAddressNumber = Cobuyer.CobuyerAddressNumber, FirstName = Cobuyer.FirstName, LastName = Cobuyer.LastName } });
 
                         Close(this);
                     }
@@ -305,6 +293,7 @@ namespace ProspectManagement.Core.ViewModels
                 }));
             }
         }
+
         public ICommand CloseCommand
         {
             get
@@ -312,6 +301,7 @@ namespace ProspectManagement.Core.ViewModels
                 return _closeCommand ?? (_closeCommand = new MvxCommand(() => Close(this)));
             }
         }
+
         public Cobuyer Cobuyer
         {
             get { return _cobuyer; }
@@ -328,7 +318,7 @@ namespace ProspectManagement.Core.ViewModels
             set
             {
                 _firstName = value;
-                RaisePropertyChanged(() => FullName);
+                RaisePropertyChanged(() => FirstName);
                 Validator.ValidateAsync(nameof(FirstName));
             }
         }
@@ -339,16 +329,10 @@ namespace ProspectManagement.Core.ViewModels
             set
             {
                 _lastName = value;
-                RaisePropertyChanged(() => FullName);
+                RaisePropertyChanged(() => LastName);
                 Validator.ValidateAsync(nameof(LastName));
             }
         }
-
-        //public string FullName => _lastName + ", " + _firstName;
-		public string FullName
-		{
-			get { return LastName + ", " + FirstName; }
-		}
 
         public string MiddleName
         {
@@ -387,11 +371,11 @@ namespace ProspectManagement.Core.ViewModels
             get { return !(ActiveCountry == null || String.IsNullOrEmpty(ActiveCountry.Code) || ActiveCountry.Code.Equals("US")); }
         }
 
-		public bool EnableAddressFields
+        public bool EnableAddressFields
         {
             get { return !(AddressSameAsBuyer); }
         }
-            
+
         public PhoneNumber MobilePhone
         {
             get { return _mobilePhoneNumber; }
@@ -473,12 +457,10 @@ namespace ProspectManagement.Core.ViewModels
                 RaisePropertyChanged(() => AddressSameAsBuyer);
                 RaisePropertyChanged(() => EnableAddressFields);
                 Validator.ValidateAsync(nameof(AddressSameAsBuyer));
-
-
             }
         }
 
-        public CobuyerDetailViewModel(IMvxMessenger messenger, IUserDefinedCodeService userDefinedCodeService, IStreetValidationService streetValidationService, IDialogService dialogService, IPhoneNumberValidationService phoneNumberValidationService, IEmailValidationService emailValidationService, IProspectCache cobuyerCache, ICobuyerService cobuyerService)
+        public CobuyerDetailViewModel(IAuthenticator authenticator, IMvxMessenger messenger, IUserDefinedCodeService userDefinedCodeService, IStreetValidationService streetValidationService, IDialogService dialogService, IPhoneNumberValidationService phoneNumberValidationService, IEmailValidationService emailValidationService, IProspectCache cobuyerCache, ICobuyerService cobuyerService)
         {
             Messenger = messenger;
             _dialogService = dialogService;
@@ -488,27 +470,21 @@ namespace ProspectManagement.Core.ViewModels
             _cobuyerService = cobuyerService;
             _userDefinedCodeService = userDefinedCodeService;
             _cobuyerCache = cobuyerCache;
+            _authenticator = authenticator;
 
             ConfigureValidationRules();
             Validator.ResultChanged += OnValidationResultChanged;
-
-
         }
-
-
 
         public async void Init(Cobuyer cobuyer)
         {
             if (cobuyer.CobuyerAddressNumber > 0)
             {
-
-
-
                 Cobuyer = _cobuyerCache.GetCobuyerFromCache(cobuyer.CobuyerAddressNumber);
                 if (Cobuyer == null)
                 {
-                    Cobuyer = await _cobuyerService.GetCobuyerAsync(cobuyer.ProspectAddressNumber, cobuyer.CobuyerAddressNumber);
-
+                    var authResult = await _authenticator.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource);
+                    Cobuyer = await _cobuyerService.GetCobuyerAsync(cobuyer.ProspectAddressNumber, cobuyer.CobuyerAddressNumber, authResult.AccessToken);
                 }
 
                 FirstName = Cobuyer.FirstName;
@@ -521,13 +497,8 @@ namespace ProspectManagement.Core.ViewModels
                 HomePhone = Cobuyer.HomePhoneNumber == null ? new PhoneNumber() : Cobuyer.HomePhoneNumber.ShallowCopy();
                 Email = Cobuyer.Email == null ? new Email() : Cobuyer.Email.ShallowCopy();
                 AddressSameAsBuyer = Cobuyer.AddressSameAsBuyer;
-
-
-
             }
-
             else
-
             {
                 Cobuyer = cobuyer;
                 StreetAddress = new StreetAddress();
@@ -535,7 +506,6 @@ namespace ProspectManagement.Core.ViewModels
                 WorkPhone = new PhoneNumber();
                 HomePhone = new PhoneNumber();
                 Email = new Email();
-
             }
 
             _originalCobuyer = Cobuyer.ShallowCopy();
@@ -551,13 +521,11 @@ namespace ProspectManagement.Core.ViewModels
             Suffixes = (await _userDefinedCodeService.GetSuffixUserDefinedCodes()).ToObservableCollection();
             ActiveSuffix = Suffixes.FirstOrDefault(p => p.Description1 == Cobuyer.NameSuffix);
 
-
             States = (await _userDefinedCodeService.GetStateUserDefinedCodes()).ToObservableCollection();
             ActiveState = Cobuyer.StreetAddress != null ? States.FirstOrDefault(p => p.Code == Cobuyer.StreetAddress.State) : null;
 
             Countries = (await _userDefinedCodeService.GetCountryUserDefinedCodes()).ToObservableCollection();
             ActiveCountry = Cobuyer.StreetAddress != null ? Countries.FirstOrDefault(p => p.Code == Cobuyer.StreetAddress.Country) : null;
-
         }
 
         protected async void Validate()
@@ -590,23 +558,13 @@ namespace ProspectManagement.Core.ViewModels
             if (_prospect.StreetAddress != null)
             {
                 StreetAddress = _prospect.StreetAddress.ShallowCopy();
-               
-
             }
 
             if (_prospect.HomePhoneNumber != null)
-			{
-				
-				HomePhone = _prospect.HomePhoneNumber.ShallowCopy();
-
-			}
-
-
-
+            {
+                HomePhone = _prospect.HomePhoneNumber.ShallowCopy();
+            }
         }
-
-
-
 
         private void OnValidationResultChanged(object sender, ValidationResultChangedEventArgs e)
         {
@@ -617,9 +575,6 @@ namespace ProspectManagement.Core.ViewModels
                 UpdateValidationSummaryAndDetails(validationResult);
             }
         }
-
-
-
 
         private void ConfigureValidationRules()
         {
@@ -724,9 +679,6 @@ namespace ProspectManagement.Core.ViewModels
 
                     return RuleResult.Assert(result, string.Format("Enter Full Street Address or Phone Number or Email"));
                 });
-
-
-
         }
     }
 }

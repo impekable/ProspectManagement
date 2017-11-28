@@ -53,7 +53,6 @@ namespace ProspectManagement.iOS.Views
 
 		private async void OnUpdateRowInteractionRequested(object sender, MvxValueEventArgs<TableRow> eventArgs)
 		{
-
 			NSIndexPath[] rowsToReload = new NSIndexPath[] { NSIndexPath.FromRowSection(eventArgs.Value.TableRowToUpdate, 0) };// points to second row in the first section of the model
             var c = CobuyerTableView.Source.GetCell(CobuyerTableView, NSIndexPath.FromRowSection(eventArgs.Value.TableRowToUpdate, 0));
             CobuyerTableView.ReloadRows(rowsToReload, UITableViewRowAnimation.None);
@@ -61,13 +60,7 @@ namespace ProspectManagement.iOS.Views
 
 		private async void OnAddRowInteractionRequested(object sender, EventArgs eventArgs)
 		{
-			//NSIndexPath[] rowsToAdd = new NSIndexPath[] { NSIndexPath.FromRowSection(eventArgs.Value.TableRowToUpdate, 0) };// points to second row in the first section of the model
-            //CobuyerTableView.BeginUpdates();
-            //CobuyerTableView.InsertRows(rowsToAdd, UITableViewRowAnimation.None);
-            //CobuyerTableView.EndUpdates();
-
             CobuyerTableView.ReloadData();
-
 		}
 
 

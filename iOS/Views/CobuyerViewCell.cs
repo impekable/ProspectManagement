@@ -4,8 +4,6 @@ using UIKit;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Binding.iOS.Views;
 using ProspectManagement.Core.Models;
-using ProspectManagement.Core.Converters;
-using ProspectManagement.Core.ViewModels;
 
 namespace ProspectManagement.iOS.Views
 {
@@ -13,7 +11,6 @@ namespace ProspectManagement.iOS.Views
     {
         public static readonly NSString Key = new NSString("CobuyerViewCell");
         public static readonly UINib Nib;
-        private readonly MvxImageViewLoader imageViewLoader;
 
         static CobuyerViewCell()
         {
@@ -22,12 +19,10 @@ namespace ProspectManagement.iOS.Views
 
         protected CobuyerViewCell(IntPtr handle) : base(handle)
         {
-            //imageViewLoader = new MvxImageViewLoader(() => CobuyerImage);
-			this.DelayBind(() =>
+            this.DelayBind(() =>
 	        {
-		        var set = this.CreateBindingSet<CobuyerViewCell, CobuyerDetailViewModel>();
+		        var set = this.CreateBindingSet<CobuyerViewCell, Cobuyer>();
                 set.Bind(CobuyerLabel).To(v => v.FullName);
-				//set.Bind(imageViewLoader).For(i => i.DefaultImagePath);
 				set.Apply();
 	        });
         }

@@ -33,10 +33,7 @@ namespace ProspectManagement.Core.ViewModels
         private MvxInteraction _addRowInteraction = new MvxInteraction();
         public IMvxInteraction AddRowInteraction => _addRowInteraction;
 
-
         private List<Cobuyer> _cobuyers;
-
-
 
         public ICommand ShowDetailTab
         {
@@ -45,6 +42,7 @@ namespace ProspectManagement.Core.ViewModels
                 return _showDetailTab ?? (_showDetailTab = new MvxCommand<Prospect>((prospect) => ShowViewModel<SplitDetailViewModel>(_prospect)));
             }
         }
+
         public ICommand ShowTrafficCardTab
         {
             get
@@ -52,6 +50,7 @@ namespace ProspectManagement.Core.ViewModels
                 return _showTrafficCardTab ?? (_showTrafficCardTab = new MvxCommand<Prospect>((prospect) => ShowViewModel<TrafficCardViewModel>(_prospect)));
             }
         }
+
         public ICommand SelectionChangedCommand
         {
             get
@@ -95,11 +94,7 @@ namespace ProspectManagement.Core.ViewModels
             _prospectCache = prospectCache;
 
             Messenger.Subscribe<CobuyerChangedMessage>(async message => CobuyerUpdated(message.UpdatedCobuyer), MvxReference.Strong);
-
             Messenger.Subscribe<CobuyerAddedMessage>(async message => CobuyerAdded(message.AddedCobuyer), MvxReference.Strong);
-
-
-
         }
 
         public async void CobuyerUpdated(Cobuyer cobuyer)
@@ -115,10 +110,7 @@ namespace ProspectManagement.Core.ViewModels
         public async void CobuyerAdded(Cobuyer cobuyer)
         {
             CobuyersList.Add(cobuyer);
-
             _addRowInteraction.Raise();
-
-
         }
 
         public override async void Start()
@@ -131,7 +123,6 @@ namespace ProspectManagement.Core.ViewModels
         {
             Prospect = prospect;
             CobuyersList = await _cobuyerService.GetCobuyersForProspectAsync(_prospect.ProspectAddressNumber);
-
         }
     }
 }
