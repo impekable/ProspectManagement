@@ -496,7 +496,7 @@ namespace ProspectManagement.Core.ViewModels
                 WorkPhone = Cobuyer.WorkPhoneNumber == null ? new PhoneNumber() : Cobuyer.WorkPhoneNumber.ShallowCopy();
                 HomePhone = Cobuyer.HomePhoneNumber == null ? new PhoneNumber() : Cobuyer.HomePhoneNumber.ShallowCopy();
                 Email = Cobuyer.Email == null ? new Email() : Cobuyer.Email.ShallowCopy();
-                AddressSameAsBuyer = Cobuyer.AddressSameAsBuyer;
+                _addressSameAsBuyer = Cobuyer.AddressSameAsBuyer;
             }
             else
             {
@@ -558,6 +558,8 @@ namespace ProspectManagement.Core.ViewModels
             if (_prospect.StreetAddress != null)
             {
                 StreetAddress = _prospect.StreetAddress.ShallowCopy();
+                ActiveState = States.FirstOrDefault(p => p.Code == StreetAddress.State);
+                ActiveCountry = Countries.FirstOrDefault(p => p.Code == StreetAddress.Country);
             }
 
             if (_prospect.HomePhoneNumber != null)

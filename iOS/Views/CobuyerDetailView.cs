@@ -22,16 +22,12 @@ namespace ProspectManagement.iOS.Views
     {
         AlertOverlay alertOverlay;
 
-        private UIPickerView _defaultPrefixPickerView;
-        private MvxPickerViewModel _defaultPrefixPickerViewModel;
+        private TextFieldWithPopup prefixPopup;
+        private TextFieldWithPopup suffixPopup;
+        private TextFieldWithPopup statePopup;
+
         private UIPickerView _defaultCountryPickerView;
         private MvxPickerViewModel _defaultCountryPickerViewModel;
-        private UIPickerView _defaultSuffixPickerView;
-        private MvxPickerViewModel _defaultSuffixPickerViewModel;
-        private UIPickerView _defaultContactPreferencePickerView;
-        private MvxPickerViewModel _defaultContactPreferencePickerViewModel;
-        private UIPickerView _defaultStatePickerView;
-        private MvxPickerViewModel _defaultStatePickerViewModel;
 
         private static readonly int TextFieldMargin = 10;
         public static readonly int ArrowWidth = 14;
@@ -54,10 +50,13 @@ namespace ProspectManagement.iOS.Views
         private async void OnHideAlertInteractionRequested(object sender, EventArgs eventArgs)
         {
             alertOverlay.Hide();
+            var scrollView = ValidationErrorLabel.FindSuperviewOfType(View, typeof(UIScrollView)) as UIScrollView;
+            RestoreScrollPosition(scrollView, 100);
         }
 
         public CobuyerDetailView(IntPtr handle) : base(handle)
         {
+            ScrollViewInset = 0;
         }
 
         public override bool HandlesKeyboardNotifications()
@@ -79,8 +78,8 @@ namespace ProspectManagement.iOS.Views
             base.ViewDidLoad();
 
             var set = this.CreateBindingSet<CobuyerDetailView, CobuyerDetailViewModel>();
-
             CreatePickerViewBindings(set);
+            CreateAlertViewBindings(set);
 
             set.Bind(PrefixTextField).To(vm => vm.ActivePrefix.Description1);
             set.Bind(FirstNameTextField).To(vm => vm.FirstName).WithConversion(new TitleCaseValueConverter());
@@ -126,9 +125,6 @@ namespace ProspectManagement.iOS.Views
 
             set.Bind(this).For(view => view.HideAlertInteraction).To(viewModel => viewModel.HideAlertInteraction).OneWay();
 
-            CustomizeTextField(PrefixTextField, _defaultPrefixPickerView, "Prefix");
-            CustomizeTextField(SuffixTextField, _defaultSuffixPickerView, "Suffix");
-            CustomizeTextField(StateTextField, _defaultStatePickerView, "State");
             CustomizeTextField(CountryTextField, _defaultCountryPickerView, "Country");
 
             if (CobuyerDetailViewModel.Cobuyer != null)
@@ -158,29 +154,11 @@ namespace ProspectManagement.iOS.Views
             CountyTextField.ShouldReturn = shouldReturn;
             ZipCodeTextField.ShouldReturn = shouldReturn;
 
-            PrefixTextField.EditingDidBegin += (sender, e) =>
-            {
-                CobuyerDetailViewModel.OriginalPickerValue = CobuyerDetailViewModel.ActivePrefix;
-                if (CobuyerDetailViewModel.ActivePrefix == null)
-                    CobuyerDetailViewModel.ActivePrefix = CobuyerDetailViewModel.Prefixes != null ? CobuyerDetailViewModel.Prefixes.FirstOrDefault() : null;
-            };
-            SuffixTextField.EditingDidBegin += (sender, e) =>
-            {
-                CobuyerDetailViewModel.OriginalPickerValue = CobuyerDetailViewModel.ActiveSuffix;
-                if (CobuyerDetailViewModel.ActiveSuffix == null)
-                    CobuyerDetailViewModel.ActiveSuffix = CobuyerDetailViewModel.Suffixes.FirstOrDefault();
-            };
-            StateTextField.EditingDidBegin += (sender, e) =>
-            {
-                CobuyerDetailViewModel.OriginalPickerValue = CobuyerDetailViewModel.ActiveState;
-                if (CobuyerDetailViewModel.ActiveState == null)
-                    CobuyerDetailViewModel.ActiveState = CobuyerDetailViewModel.States.FirstOrDefault();
-            };
             CountryTextField.EditingDidBegin += (sender, e) =>
             {
                 CobuyerDetailViewModel.OriginalPickerValue = CobuyerDetailViewModel.ActiveCountry;
-                if (CobuyerDetailViewModel.ActiveCountry == null)
-                    CobuyerDetailViewModel.ActiveCountry = CobuyerDetailViewModel.Countries.FirstOrDefault();
+                var row = CobuyerDetailViewModel.Countries.IndexOf(CobuyerDetailViewModel.OriginalPickerValue);
+                _defaultCountryPickerView.Select(row, 0, true);
             };
 
             var cancelButton = new UIBarButtonItem("Cancel", UIBarButtonItemStyle.Plain, (sender, e) =>
@@ -256,28 +234,10 @@ namespace ProspectManagement.iOS.Views
                 var row = 0;
                 switch (pickerType)
                 {
-                    case "State":
-                        {
-                            row = CobuyerDetailViewModel.States.IndexOf(CobuyerDetailViewModel.OriginalPickerValue);
-                            CobuyerDetailViewModel.ActiveState = null;
-                            break;
-                        };
                     case "Country":
                         {
                             row = CobuyerDetailViewModel.Countries.IndexOf(CobuyerDetailViewModel.OriginalPickerValue);
                             CobuyerDetailViewModel.ActiveCountry = null;
-                            break;
-                        };
-                    case "Suffix":
-                        {
-                            row = CobuyerDetailViewModel.Suffixes.IndexOf(CobuyerDetailViewModel.OriginalPickerValue);
-                            CobuyerDetailViewModel.ActiveSuffix = null;
-                            break;
-                        };
-                    case "Prefix":
-                        {
-                            row = CobuyerDetailViewModel.Prefixes.IndexOf(CobuyerDetailViewModel.OriginalPickerValue);
-                            CobuyerDetailViewModel.ActivePrefix = null;
                             break;
                         };
 
@@ -307,16 +267,6 @@ namespace ProspectManagement.iOS.Views
 
         private void CreatePickerViewBindings(MvxFluentBindingDescriptionSet<CobuyerDetailView, CobuyerDetailViewModel> set)
         {
-            set.Bind(StateTextField).To(vm => vm.ActiveState.Description1).OneWay();
-            _defaultStatePickerView = new UIPickerView
-            {
-                ShowSelectionIndicator = true
-            };
-            _defaultStatePickerViewModel = new CustomPickerView(_defaultStatePickerView);
-            _defaultStatePickerView.Model = _defaultStatePickerViewModel;
-            set.Bind(_defaultStatePickerViewModel).For(p => p.ItemsSource).To(vm => vm.States).OneWay();
-            set.Bind(_defaultStatePickerViewModel).For(p => p.SelectedItem).To(vm => vm.ActiveState).OneWayToSource();
-
             set.Bind(CountryTextField).To(vm => vm.ActiveCountry.Description1).OneWay();
             _defaultCountryPickerView = new UIPickerView
             {
@@ -326,26 +276,24 @@ namespace ProspectManagement.iOS.Views
             _defaultCountryPickerView.Model = _defaultCountryPickerViewModel;
             set.Bind(_defaultCountryPickerViewModel).For(p => p.ItemsSource).To(vm => vm.Countries).OneWay();
             set.Bind(_defaultCountryPickerViewModel).For(p => p.SelectedItem).To(vm => vm.ActiveCountry).OneWayToSource();
+        }
 
-            set.Bind(SuffixTextField).To(vm => vm.ActiveSuffix.Description1).OneWay();
-            _defaultSuffixPickerView = new UIPickerView
-            {
-                ShowSelectionIndicator = true
-            };
-            _defaultSuffixPickerViewModel = new CustomPickerView(_defaultSuffixPickerView);
-            _defaultSuffixPickerView.Model = _defaultSuffixPickerViewModel;
-            set.Bind(_defaultSuffixPickerViewModel).For(p => p.ItemsSource).To(vm => vm.Suffixes).OneWay();
-            set.Bind(_defaultSuffixPickerViewModel).For(p => p.SelectedItem).To(vm => vm.ActiveSuffix).OneWayToSource();
+        private void CreateAlertViewBindings(MvxFluentBindingDescriptionSet<CobuyerDetailView, CobuyerDetailViewModel> set)
+        {
+            prefixPopup = new TextFieldWithPopup(PrefixTextField, this);
+            prefixPopup.CustomAlertController = new CustomAlertController("Prefix");
+            set.Bind(prefixPopup.CustomAlertController).For(p => p.AlertController).To(vm => vm.Prefixes);
+            set.Bind(prefixPopup.CustomAlertController).For(p => p.SelectedCode).To(vm => vm.ActivePrefix);
 
-            set.Bind(PrefixTextField).To(vm => vm.ActivePrefix.Description1).OneWay();
-            _defaultPrefixPickerView = new UIPickerView
-            {
-                ShowSelectionIndicator = true
-            };
-            _defaultPrefixPickerViewModel = new CustomPickerView(_defaultPrefixPickerView);
-            _defaultPrefixPickerView.Model = _defaultPrefixPickerViewModel;
-            set.Bind(_defaultPrefixPickerViewModel).For(p => p.ItemsSource).To(vm => vm.Prefixes).OneWay();
-            set.Bind(_defaultPrefixPickerViewModel).For(p => p.SelectedItem).To(vm => vm.ActivePrefix).OneWayToSource();
+            suffixPopup = new TextFieldWithPopup(SuffixTextField, this);
+            suffixPopup.CustomAlertController = new CustomAlertController("Suffix");
+            set.Bind(suffixPopup.CustomAlertController).For(p => p.AlertController).To(vm => vm.Suffixes);
+            set.Bind(suffixPopup.CustomAlertController).For(p => p.SelectedCode).To(vm => vm.ActiveSuffix);
+
+            statePopup = new TextFieldWithPopup(StateTextField, this);
+            statePopup.CustomAlertController = new CustomAlertController("State");
+            set.Bind(statePopup.CustomAlertController).For(p => p.AlertController).To(vm => vm.States);
+            set.Bind(statePopup.CustomAlertController).For(p => p.SelectedCode).To(vm => vm.ActiveState);
 
         }
     }

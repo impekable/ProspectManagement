@@ -57,6 +57,8 @@ namespace ProspectManagement.iOS.Views
         private async void OnHideAlertInteractionRequested(object sender, EventArgs eventArgs)
         {
             alertOverlay.Hide();
+            var scrollView = ValidationErrorsLabel.FindSuperviewOfType(View, typeof(UIScrollView)) as UIScrollView;
+            RestoreScrollPosition(scrollView, 100);
         }
 
         public EditProspectView(IntPtr handle) : base(handle)
