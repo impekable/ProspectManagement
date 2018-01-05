@@ -57,13 +57,11 @@ namespace ProspectManagement.iOS.Views
         private async void OnHideAlertInteractionRequested(object sender, EventArgs eventArgs)
         {
             alertOverlay.Hide();
-            var scrollView = ValidationErrorsLabel.FindSuperviewOfType(View, typeof(UIScrollView)) as UIScrollView;
-            RestoreScrollPosition(scrollView, 100);
         }
 
         public EditProspectView(IntPtr handle) : base(handle)
         {
-            ScrollViewInset = 0;
+            ScrollViewInset = 64.0f;
         }
 
         public override bool HandlesKeyboardNotifications()
@@ -215,8 +213,8 @@ namespace ProspectManagement.iOS.Views
             var toolbar = CreateToolbar(textField, pickerView, pickerType);
             textField.InputAccessoryView = toolbar;
 
-            textField.Layer.BorderColor = ProspectManagementColors.BorderColor.CGColor;
-            textField.Layer.BorderWidth = 1;
+            //textField.Layer.BorderColor = ProspectManagementColors.BorderColor.CGColor;
+            //textField.Layer.BorderWidth = 1;
 
         }
 

@@ -39,8 +39,8 @@ namespace ProspectManagement.iOS.Views
             _textField.RightView = arrowImageView;
             _textField.RightViewMode = UITextFieldViewMode.UnlessEditing;
 
-            _textField.Layer.BorderColor = ProspectManagementColors.BorderColor.CGColor;
-            _textField.Layer.BorderWidth = 1;
+            //_textField.Layer.BorderColor = ProspectManagementColors.BorderColor.CGColor;
+            //_textField.Layer.BorderWidth = 1;
 
         }
 

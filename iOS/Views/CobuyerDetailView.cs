@@ -50,13 +50,11 @@ namespace ProspectManagement.iOS.Views
         private async void OnHideAlertInteractionRequested(object sender, EventArgs eventArgs)
         {
             alertOverlay.Hide();
-            var scrollView = ValidationErrorLabel.FindSuperviewOfType(View, typeof(UIScrollView)) as UIScrollView;
-            RestoreScrollPosition(scrollView, 100);
         }
 
         public CobuyerDetailView(IntPtr handle) : base(handle)
         {
-            ScrollViewInset = 0;
+            ScrollViewInset = 64.0f;
         }
 
         public override bool HandlesKeyboardNotifications()

@@ -18,7 +18,6 @@ namespace ProspectManagement.iOS.Views
 		/// </summary>
 		protected UIView ViewToCenterOnKeyboardShown;
 		protected float ScrollViewInset = 0;
-        private nfloat scrollViewOffset;
 
 		public BaseView(IntPtr handle) : base(handle)
 		{
@@ -112,7 +111,7 @@ namespace ProspectManagement.iOS.Views
 			var scrollView = activeView.FindSuperviewOfType(View, typeof(UIScrollView)) as UIScrollView;
 			if (scrollView == null)
 				return;
-
+            
 			if (!visible)
 				RestoreScrollPosition(scrollView, ScrollViewInset);
 			else
@@ -129,7 +128,6 @@ namespace ProspectManagement.iOS.Views
 			var spaceAboveKeyboard = scrollView.Frame.Height - keyboardHeight;
 
 			// Move the active field to the center of the available space if it is hidden
-            scrollViewOffset = scrollView.ContentOffset.Y;
             if (relativeFrame.Y + viewToCenter.Frame.Height - scrollView.ContentOffset.Y > spaceAboveKeyboard)
             {
 				var contentInsets = new UIEdgeInsets(0.0f, 0.0f, keyboardHeight, 0.0f);
@@ -146,7 +144,6 @@ namespace ProspectManagement.iOS.Views
 		{
 			scrollView.ContentInset = new UIEdgeInsets(height, 0.0f, 0.0f, 0.0f);
 			scrollView.ScrollIndicatorInsets = UIEdgeInsets.Zero;
-			scrollView.ContentOffset = new PointF(0, (float)scrollViewOffset);
 		}
 
 		/// <summary>
