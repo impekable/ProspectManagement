@@ -15,6 +15,8 @@ namespace ProspectManagement.iOS.Views
     [MvxDetailSplitViewPresentation(WrapInNavigationController = true)]
     public partial class SplitDetailView : MvxViewController<SplitDetailViewModel>
     {
+        protected SplitDetailViewModel SplitDetailViewModel => ViewModel as SplitDetailViewModel;
+
 		private IMvxInteraction _showAlertInteraction;
 		public IMvxInteraction ShowAlertInteraction
 		{
@@ -89,18 +91,28 @@ namespace ProspectManagement.iOS.Views
 			set.Bind(this).For(view => view.HideAlertInteraction).To(viewModel => viewModel.HideAlertInteraction).OneWay();
 			set.Bind(this).For(view => view.ShowAlertInteraction).To(viewModel => viewModel.ShowAlertInteraction).OneWay();
 			set.Apply();
-            			
-			var b = new UIBarButtonItem("Edit", UIBarButtonItemStyle.Plain, (sender, e) =>
-			{
-				ViewModel.EditProspectCommand.Execute(null);
-			});
-            b.SetTitleTextAttributes(new UITextAttributes()
-            {
-                Font = UIFont.FromName("Raleway-Bold", 18),
-                TextColor = ProspectManagementColors.DarkColor
-            }, UIControlState.Normal);
 
-			this.NavigationItem.SetRightBarButtonItem(b, true);
+            if (SplitDetailViewModel.Prospect.ProspectAddressNumber > 0)
+            {
+                var b = new UIBarButtonItem("Edit", UIBarButtonItemStyle.Plain, (sender, e) =>
+                {
+                    ViewModel.EditProspectCommand.Execute(null);
+                });
+                b.SetTitleTextAttributes(new UITextAttributes()
+                {
+                    Font = UIFont.FromName("Raleway-Bold", 18),
+                    TextColor = ProspectManagementColors.DarkColor
+                }, UIControlState.Normal);
+
+                this.NavigationItem.SetRightBarButtonItem(b, true);
+            }
+            else
+            {
+                ProspectTabBar.Hidden = true;
+                ContactPreferenceLabel.Hidden = true;
+                AssignButton.Hidden = true;
+                PreferenceLabel.Hidden = true;
+            }
 
             foreach (UITabBarItem item in ProspectTabBar.Items)
             {

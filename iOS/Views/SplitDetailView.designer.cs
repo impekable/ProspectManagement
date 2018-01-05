@@ -60,6 +60,10 @@ namespace ProspectManagement.iOS.Views
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UILabel PreferenceLabel { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UITabBar ProspectTabBar { get; set; }
 
         [Outlet]
@@ -125,6 +129,11 @@ namespace ProspectManagement.iOS.Views
             if (NameLabel != null) {
                 NameLabel.Dispose ();
                 NameLabel = null;
+            }
+
+            if (PreferenceLabel != null) {
+                PreferenceLabel.Dispose ();
+                PreferenceLabel = null;
             }
 
             if (ProspectTabBar != null) {
