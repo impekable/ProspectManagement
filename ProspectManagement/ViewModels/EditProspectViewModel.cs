@@ -327,6 +327,10 @@ namespace ProspectManagement.Core.ViewModels
             get { return _activeTrafficSource; }
             set
             {
+                if (_activeTrafficSource != value)
+                {
+                    ActiveTrafficSourceDetail = null;
+                }
                 _activeTrafficSource = value;
                 IsSelectedTrafficSource = (_activeTrafficSource != null);
                 RaisePropertyChanged(() => ActiveTrafficSource);
