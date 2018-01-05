@@ -27,5 +27,15 @@ namespace ProspectManagement.iOS.Services
 			return authResult;
 		}
 
+        public override async void Logout()
+        {
+            var authContext = new AuthenticationContext(authority);
+            authContext.TokenCache.Clear();
+            var cookieStorage = Foundation.NSHttpCookieStorage.SharedStorage;
+            foreach (var cookie in cookieStorage.Cookies)
+            {
+                cookieStorage.DeleteCookie(cookie);
+            }
+        }
 	}
 }

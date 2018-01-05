@@ -13,10 +13,7 @@ namespace ProspectManagement.Core.Services
 
 		public abstract Task<AuthenticationResult> AuthenticateUser(string resource);
 
-		public async void Logout()
-		{
-			var authContext = new AuthenticationContext(authority);
-			authContext.TokenCache.Clear();
-		}
+        public abstract void Logout();
+	
 	}
 }
