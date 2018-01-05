@@ -23,6 +23,8 @@ namespace ProspectManagement.Core.Models
         public string StartDate { get; set; }
         [JsonProperty("endDate")]
         public string EndDate { get; set; }
+        [JsonProperty("enteredDate")]
+        public DateTime EnteredDate { get; set; }
         public Community Community { get; set; }
     }
 }

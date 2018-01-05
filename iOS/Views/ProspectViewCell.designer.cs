@@ -19,6 +19,10 @@ namespace ProspectManagement.iOS.Views
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UILabel EnteredDateLabel { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UILabel ProspectLabel { get; set; }
 
         [Outlet]
@@ -34,6 +38,11 @@ namespace ProspectManagement.iOS.Views
             if (CommunityLabel != null) {
                 CommunityLabel.Dispose ();
                 CommunityLabel = null;
+            }
+
+            if (EnteredDateLabel != null) {
+                EnteredDateLabel.Dispose ();
+                EnteredDateLabel = null;
             }
 
             if (ProspectLabel != null) {
