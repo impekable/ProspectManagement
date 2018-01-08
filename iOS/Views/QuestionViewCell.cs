@@ -3,6 +3,7 @@
 using Foundation;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Binding.iOS.Views;
+using ProspectManagement.Core.Converters;
 using ProspectManagement.Core.Models;
 using UIKit;
 
@@ -26,7 +27,9 @@ namespace ProspectManagement.iOS.Views
 				var set = this.CreateBindingSet<QuestionViewCell, TrafficCardResponse>();
 				set.Bind(QuestionLabel).To(v => v.TrafficCardQuestion.QuestionText);
 				set.Bind(AnswerLabel).To(v => v.AnswerText);
-				
+                set.Bind(this).For(u => u.BackgroundColor).To(v => v).WithConversion(new QuestionBackgroundValueConverter());
+                set.Bind(QuestionLabel).For(u => u.TextColor).To(v => v).WithConversion(new QuestionTextColorValueConverter());
+                set.Bind(AnswerLabel).For(u => u.TextColor).To(v => v).WithConversion(new QuestionTextColorValueConverter());
 				set.Apply();
 			});
 		}

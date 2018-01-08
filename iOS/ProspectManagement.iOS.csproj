@@ -36,13 +36,15 @@
     <OutputPath>bin\iPhone\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodesignKey>iPhone Developer</CodesignKey>
+    <CodesignKey>iPhone Distribution</CodesignKey>
     <MtouchFloat32>true</MtouchFloat32>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <MtouchLink>SdkOnly</MtouchLink>
     <MtouchArch>ARMv7, ARM64</MtouchArch>
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
     <PlatformTarget>x86</PlatformTarget>
+    <CodesignProvision>Prospects App Testing Ad Hoc</CodesignProvision>
+    <BuildIpa>true</BuildIpa>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>pdbonly</DebugType>
@@ -66,7 +68,7 @@
     <DefineConstants>DEBUG;ENABLE_TEST_CLOUD;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodesignKey>iPhone Developer: Nelya Safarov (L3E3P5S8E3)</CodesignKey>
+    <CodesignKey>iPhone Developer: Dan Szot (48PX3JJW9W)</CodesignKey>
     <DeviceSpecificBuild>true</DeviceSpecificBuild>
     <MtouchDebug>true</MtouchDebug>
     <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
@@ -131,36 +133,6 @@
     <Reference Include="Microsoft.IdentityModel.Clients.ActiveDirectory.Platform">
       <HintPath>..\packages\Microsoft.IdentityModel.Clients.ActiveDirectory.3.17.2\lib\Xamarin.iOS10\Microsoft.IdentityModel.Clients.ActiveDirectory.Platform.dll</HintPath>
     </Reference>
-    <Reference Include="MvvmCross.Platform">
-      <HintPath>..\packages\MvvmCross.Platform.5.4.2\lib\Xamarin.iOS10\MvvmCross.Platform.dll</HintPath>
-    </Reference>
-    <Reference Include="MvvmCross.Platform.iOS">
-      <HintPath>..\packages\MvvmCross.Platform.5.4.2\lib\Xamarin.iOS10\MvvmCross.Platform.iOS.dll</HintPath>
-    </Reference>
-    <Reference Include="MvvmCross.Core">
-      <HintPath>..\packages\MvvmCross.Core.5.4.2\lib\Xamarin.iOS10\MvvmCross.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="MvvmCross.iOS">
-      <HintPath>..\packages\MvvmCross.Core.5.4.2\lib\Xamarin.iOS10\MvvmCross.iOS.dll</HintPath>
-    </Reference>
-    <Reference Include="MvvmCross.Binding">
-      <HintPath>..\packages\MvvmCross.Binding.5.4.2\lib\Xamarin.iOS10\MvvmCross.Binding.dll</HintPath>
-    </Reference>
-    <Reference Include="MvvmCross.Binding.iOS">
-      <HintPath>..\packages\MvvmCross.Binding.5.4.2\lib\Xamarin.iOS10\MvvmCross.Binding.iOS.dll</HintPath>
-    </Reference>
-    <Reference Include="MvvmCross.Localization">
-      <HintPath>..\packages\MvvmCross.Binding.5.4.2\lib\Xamarin.iOS10\MvvmCross.Localization.dll</HintPath>
-    </Reference>
-    <Reference Include="MvvmCross.Plugins.File">
-      <HintPath>..\packages\MvvmCross.Plugin.File.5.4.2\lib\Xamarin.iOS10\MvvmCross.Plugins.File.dll</HintPath>
-    </Reference>
-    <Reference Include="MvvmCross.Plugins.File.iOS">
-      <HintPath>..\packages\MvvmCross.Plugin.File.5.4.2\lib\Xamarin.iOS10\MvvmCross.Plugins.File.iOS.dll</HintPath>
-    </Reference>
-    <Reference Include="MvvmCross.Plugins.Messenger">
-      <HintPath>..\packages\MvvmCross.Plugin.Messenger.5.4.2\lib\Xamarin.iOS10\MvvmCross.Plugins.Messenger.dll</HintPath>
-    </Reference>
     <Reference Include="MvvmValidation">
       <HintPath>..\packages\MvvmValidation.3.1.0\lib\netstandard1.0\MvvmValidation.dll</HintPath>
     </Reference>
@@ -176,11 +148,47 @@
     <Reference Include="SQLitePCLRaw.batteries_v2">
       <HintPath>..\packages\SQLitePCLRaw.bundle_green.1.1.9\lib\Xamarin.iOS10\SQLitePCLRaw.batteries_v2.dll</HintPath>
     </Reference>
+    <Reference Include="MvvmCross.Platform">
+      <HintPath>..\packages\MvvmCross.Platform.5.6.3\lib\Xamarin.iOS10\MvvmCross.Platform.dll</HintPath>
+    </Reference>
+    <Reference Include="MvvmCross.Platform.iOS">
+      <HintPath>..\packages\MvvmCross.Platform.5.6.3\lib\Xamarin.iOS10\MvvmCross.Platform.iOS.dll</HintPath>
+    </Reference>
+    <Reference Include="MvvmCross.Core">
+      <HintPath>..\packages\MvvmCross.Core.5.6.3\lib\Xamarin.iOS10\MvvmCross.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="MvvmCross.iOS">
+      <HintPath>..\packages\MvvmCross.Core.5.6.3\lib\Xamarin.iOS10\MvvmCross.iOS.dll</HintPath>
+    </Reference>
+    <Reference Include="MvvmCross.Binding">
+      <HintPath>..\packages\MvvmCross.Binding.5.6.3\lib\Xamarin.iOS10\MvvmCross.Binding.dll</HintPath>
+    </Reference>
+    <Reference Include="MvvmCross.Binding.iOS">
+      <HintPath>..\packages\MvvmCross.Binding.5.6.3\lib\Xamarin.iOS10\MvvmCross.Binding.iOS.dll</HintPath>
+    </Reference>
+    <Reference Include="MvvmCross.Localization">
+      <HintPath>..\packages\MvvmCross.Binding.5.6.3\lib\Xamarin.iOS10\MvvmCross.Localization.dll</HintPath>
+    </Reference>
+    <Reference Include="MvvmCross.Plugins.Color">
+      <HintPath>..\packages\MvvmCross.Plugin.Color.5.6.3\lib\Xamarin.iOS10\MvvmCross.Plugins.Color.dll</HintPath>
+    </Reference>
+    <Reference Include="MvvmCross.Plugins.Color.iOS">
+      <HintPath>..\packages\MvvmCross.Plugin.Color.5.6.3\lib\Xamarin.iOS10\MvvmCross.Plugins.Color.iOS.dll</HintPath>
+    </Reference>
+    <Reference Include="MvvmCross.Plugins.File">
+      <HintPath>..\packages\MvvmCross.Plugin.File.5.6.3\lib\Xamarin.iOS10\MvvmCross.Plugins.File.dll</HintPath>
+    </Reference>
+    <Reference Include="MvvmCross.Plugins.File.iOS">
+      <HintPath>..\packages\MvvmCross.Plugin.File.5.6.3\lib\Xamarin.iOS10\MvvmCross.Plugins.File.iOS.dll</HintPath>
+    </Reference>
+    <Reference Include="MvvmCross.Plugins.Messenger">
+      <HintPath>..\packages\MvvmCross.Plugin.Messenger.5.6.3\lib\Xamarin.iOS10\MvvmCross.Plugins.Messenger.dll</HintPath>
+    </Reference>
     <Reference Include="MvvmCross.Plugins.DownloadCache">
-      <HintPath>..\packages\MvvmCross.Plugin.DownloadCache.5.4.2\lib\Xamarin.iOS10\MvvmCross.Plugins.DownloadCache.dll</HintPath>
+      <HintPath>..\packages\MvvmCross.Plugin.DownloadCache.5.6.3\lib\Xamarin.iOS10\MvvmCross.Plugins.DownloadCache.dll</HintPath>
     </Reference>
     <Reference Include="MvvmCross.Plugins.DownloadCache.iOS">
-      <HintPath>..\packages\MvvmCross.Plugin.DownloadCache.5.4.2\lib\Xamarin.iOS10\MvvmCross.Plugins.DownloadCache.iOS.dll</HintPath>
+      <HintPath>..\packages\MvvmCross.Plugin.DownloadCache.5.6.3\lib\Xamarin.iOS10\MvvmCross.Plugins.DownloadCache.iOS.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -262,9 +270,6 @@
       <DependentUpon>EditProspectView.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\CustomPickerView.cs" />
-    <Compile Include="Bootstrap\FilePluginBootstrap.cs" />
-    <Compile Include="Bootstrap\MessengerPluginBootstrap.cs" />
-    <Compile Include="Bootstrap\DownloadCachePluginBootstrap.cs" />
     <Compile Include="Views\TrafficCardQuestionView.cs" />
     <Compile Include="Views\TrafficCardQuestionView.designer.cs">
       <DependentUpon>TrafficCardQuestionView.cs</DependentUpon>
@@ -286,6 +291,11 @@
     <Compile Include="Views\CustomAlertController.cs" />
     <Compile Include="CustomBindings\CustomAlertControllerSelectedCodeTargetBinding.cs" />
     <Compile Include="Views\TextFieldWithPopup.cs" />
+    <Compile Include="Bootstrap\ColorPluginBootstrap.cs" />
+    <Compile Include="Bootstrap\FilePluginBootstrap.cs" />
+    <Compile Include="Bootstrap\MessengerPluginBootstrap.cs" />
+    <Compile Include="Bootstrap\DownloadCachePluginBootstrap.cs" />
+    <Compile Include="LinkerPleaseInclude.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ProspectManagement\ProspectManagement.Core.csproj">
