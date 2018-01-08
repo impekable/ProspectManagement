@@ -50,6 +50,9 @@ namespace ProspectManagement.iOS.Views
         private async void OnHideAlertInteractionRequested(object sender, EventArgs eventArgs)
         {
             alertOverlay.Hide();
+            var scrollView = FirstNameLabel.FindSuperviewOfType(View, typeof(UIScrollView)) as UIScrollView;
+            View.FindFirstResponder()?.ResignFirstResponder();
+            scrollView.ContentOffset = new CGPoint(0, -ScrollViewInset);
         }
 
         public CobuyerDetailView(IntPtr handle) : base(handle)
@@ -125,11 +128,6 @@ namespace ProspectManagement.iOS.Views
 
             CustomizeTextField(CountryTextField, _defaultCountryPickerView, "Country");
 
-            if (CobuyerDetailViewModel.Cobuyer != null)
-            {
-                AddressSameAsBuyerSwitch.On = CobuyerDetailViewModel.Cobuyer.AddressSameAsBuyer;
-            }
-
             set.Apply();
 
             PrefixTextField.ShouldReturn = shouldReturn;
@@ -171,7 +169,6 @@ namespace ProspectManagement.iOS.Views
 
             var saveButton = new UIBarButtonItem("Save", UIBarButtonItemStyle.Plain, (sender, e) =>
             {
-
                 var bounds = UIScreen.MainScreen.Bounds;
 
                 // show the loading overlay on the UI thread using the correct orientation sizing
@@ -197,12 +194,9 @@ namespace ProspectManagement.iOS.Views
             }
             else
             {
-
                 this.NavigationItem.Title = "Add Cobuyer";
             }
-
         }
-
 
         private void CustomizeTextField(UITextField textField, UIPickerView pickerView, string pickerType)
         {

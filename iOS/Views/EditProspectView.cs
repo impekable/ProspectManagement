@@ -57,6 +57,9 @@ namespace ProspectManagement.iOS.Views
         private async void OnHideAlertInteractionRequested(object sender, EventArgs eventArgs)
         {
             alertOverlay.Hide();
+            var scrollView = FirstNameLabel.FindSuperviewOfType(View, typeof(UIScrollView)) as UIScrollView;
+            View.FindFirstResponder()?.ResignFirstResponder();
+            scrollView.ContentOffset = new CGPoint(0, -ScrollViewInset);
         }
 
         public EditProspectView(IntPtr handle) : base(handle)
@@ -140,8 +143,6 @@ namespace ProspectManagement.iOS.Views
             CustomizeTextFieldWithPicker(CountryTextField, _defaultCountryPickerView, "Country");
 
             set.Apply();
-
-            ConsentPhoneSwitch.On = EditProspectViewModel.Prospect.FollowUpSettings.ConsentToPhone;
 
             FirstNameTextField.ShouldReturn = shouldReturn;
             MiddleNameTextField.ShouldReturn = shouldReturn;
