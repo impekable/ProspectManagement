@@ -33,13 +33,12 @@ namespace ProspectManagement.Core.Services
                     streetAddress.PostalCode = results[0].components.zipcode + "-" + results[0].components.plus4_code;
                     streetAddress.County = results[0].metadata.county_name;
                     streetAddress.StreetAddressVerified = true;
-                    return true;
                 }
                 else
                 {
                     streetAddress.StreetAddressVerified = false;
-                    return false;
                 }
+                return streetAddress.StreetAddressVerified;
             }
         }
 
@@ -55,14 +54,13 @@ namespace ProspectManagement.Core.Services
 				streetAddress.City = results[0].components.locality;
                 streetAddress.PostalCode = results[0].components.postal_code;
 
-                streetAddress.StreetAddressVerified = false;
-				return !results[0].analysis.verification_status.Equals("none");
+                streetAddress.StreetAddressVerified = !results[0].analysis.verification_status.Equals("none");
 			}
 			else
 			{
 				streetAddress.StreetAddressVerified = false;
-				return false;
 			}
+            return streetAddress.StreetAddressVerified;
         }
     }
 }
