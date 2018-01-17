@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Foundation;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
 using MvvmCross.Core.ViewModels;
 using MvvmCross.iOS.Platform;
 using MvvmCross.iOS.Views.Presenters;
@@ -30,6 +33,10 @@ namespace ProspectManagement.iOS
 			startup.Start();
 
 			Window.MakeKeyAndVisible();
+
+            AppCenter.Start("85a96bc0-a6ca-410e-a703-f4f1188ec592",
+                   typeof(Analytics), typeof(Crashes));
+            
 			return true;
         }
     }
