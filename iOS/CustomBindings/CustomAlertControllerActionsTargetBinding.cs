@@ -81,10 +81,6 @@ namespace ProspectManagement.iOS.CustomBindings
                     }
                 }
             }
-
-            var actionCancel = UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, null);
-            actionCancel.SetValueForKey(ProspectManagementColors.DarkColor, new NSString("titleTextColor"));
-            view.AlertController.AddAction(actionCancel);
         }
     }
 }
