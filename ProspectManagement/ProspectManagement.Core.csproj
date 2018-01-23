@@ -19,12 +19,28 @@
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CustomCommands>
+      <CustomCommands>
+        <Command>
+          <type>BeforeBuild</type>
+          <command>/bin/sh appcenter-pre-build.sh</command>
+        </Command>
+      </CustomCommands>
+    </CustomCommands>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CustomCommands>
+      <CustomCommands>
+        <Command>
+          <type>BeforeBuild</type>
+          <command>/bin/sh appcenter-pre-build.sh Release</command>
+        </Command>
+      </CustomCommands>
+    </CustomCommands>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -131,11 +147,11 @@
     <Compile Include="Messages\TrafficCardResponseChangedMessage.cs" />
     <Compile Include="Constants\PrivateKeys.cs" />
     <Compile Include="Messages\CobuyerChangedMessage.cs" />
-    <Compile Include="CobuyerAddedMessage.cs" />
     <Compile Include="Converters\TitleCaseValueConverter.cs" />
     <Compile Include="Converters\ElapsedTimeConverter.cs" />
     <Compile Include="Converters\QuestionBackgroundValueConverter.cs" />
     <Compile Include="Converters\QuestionTextColorValueConverter.cs" />
+    <Compile Include="Messages\CobuyerAddedMessage.cs" />
  </ItemGroup>
   <ItemGroup>
     <Reference Include="MvvmCross.Plugins.Sqlite">
@@ -216,6 +232,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="appcenter-pre-build.sh" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Extensions\" />
