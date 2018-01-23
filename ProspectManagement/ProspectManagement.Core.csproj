@@ -232,7 +232,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="appcenter-pre-build.sh" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Extensions\" />
