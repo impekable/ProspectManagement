@@ -152,9 +152,7 @@ namespace ProspectManagement.Core.ViewModels
                             _authService.Logout();
                             User = null;
                             OnLogoutCompleted();
-                            var emptyProspect = new Prospect() { ProspectCommunity = new ProspectCommunity() };
-                            _prospectCache.SaveProspectToCache(emptyProspect); 
-                            ShowViewModel<SplitDetailViewModel>(emptyProspect);
+                            Messenger.Publish(new UserLogoutMessage(this));
                         }
                     }
                 }));

@@ -30,6 +30,9 @@ namespace ProspectManagement.Core.ViewModels
 		private MvxInteraction _hideAlertInteraction = new MvxInteraction();
 		public IMvxInteraction HideAlertInteraction => _hideAlertInteraction;
 
+        private MvxInteraction _clearDetailsInteraction = new MvxInteraction();
+        public IMvxInteraction ClearDetailsInteraction => _clearDetailsInteraction;
+
 		public SplitDetailViewModel(IMvxMessenger messenger, IProspectCache prospectCache, IProspectService prospectService)
         {
             Messenger = messenger;
@@ -37,6 +40,12 @@ namespace ProspectManagement.Core.ViewModels
             _prospectCache = prospectCache;
 
             Messenger.Subscribe<ProspectChangedMessage>(async message => Init(message.UpdatedProspect), MvxReference.Strong);
+            Messenger.Subscribe<UserLogoutMessage>(async message => UserLogout(), MvxReference.Strong);
+        }
+
+        public async void UserLogout()
+        {
+            _clearDetailsInteraction.Raise();
         }
 
         public ICommand AssignCommand

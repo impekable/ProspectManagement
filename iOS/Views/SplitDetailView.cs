@@ -16,53 +16,93 @@ namespace ProspectManagement.iOS.Views
     public partial class SplitDetailView : MvxViewController<SplitDetailViewModel>
     {
         protected SplitDetailViewModel SplitDetailViewModel => ViewModel as SplitDetailViewModel;
+        private UIBarButtonItem _EditButton;
 
-		private IMvxInteraction _showAlertInteraction;
-		public IMvxInteraction ShowAlertInteraction
-		{
-			get => _hideAlertInteraction;
-			set
-			{
-				if (_showAlertInteraction != null)
-					_showAlertInteraction.Requested -= OnShowAlertInteractionRequested;
+        private IMvxInteraction _showAlertInteraction;
+        public IMvxInteraction ShowAlertInteraction
+        {
+            get => _hideAlertInteraction;
+            set
+            {
+                if (_showAlertInteraction != null)
+                    _showAlertInteraction.Requested -= OnShowAlertInteractionRequested;
 
-				_showAlertInteraction = value;
-				_showAlertInteraction.Requested += OnShowAlertInteractionRequested;
-			}
-		}
+                _showAlertInteraction = value;
+                _showAlertInteraction.Requested += OnShowAlertInteractionRequested;
+            }
+        }
 
-		private async void OnShowAlertInteractionRequested(object sender, EventArgs eventArgs)
-		{
-			UIAlertController myAlert = UIAlertController.Create("", "", UIAlertControllerStyle.Alert);
-			var activity = new UIActivityIndicatorView() { ActivityIndicatorViewStyle = UIActivityIndicatorViewStyle.WhiteLarge };
-			activity.Frame = myAlert.View.Bounds;
-			activity.AutoresizingMask = UIViewAutoresizing.FlexibleDimensions;
-			activity.Color = UIColor.Black;
-			activity.StartAnimating();
-			myAlert.Add(activity);
-			this.PresentViewController(myAlert, true, null);
+        private async void OnShowAlertInteractionRequested(object sender, EventArgs eventArgs)
+        {
+            UIAlertController myAlert = UIAlertController.Create("", "", UIAlertControllerStyle.Alert);
+            var activity = new UIActivityIndicatorView() { ActivityIndicatorViewStyle = UIActivityIndicatorViewStyle.WhiteLarge };
+            activity.Frame = myAlert.View.Bounds;
+            activity.AutoresizingMask = UIViewAutoresizing.FlexibleDimensions;
+            activity.Color = UIColor.Black;
+            activity.StartAnimating();
+            myAlert.Add(activity);
+            this.PresentViewController(myAlert, true, null);
 
-		}
+        }
 
-		private IMvxInteraction _hideAlertInteraction;
-		public IMvxInteraction HideAlertInteraction
-		{
-			get => _hideAlertInteraction;
-			set
-			{
-				if (_hideAlertInteraction != null)
-					_hideAlertInteraction.Requested -= OnHideAlertInteractionRequested;
+        private IMvxInteraction _hideAlertInteraction;
+        public IMvxInteraction HideAlertInteraction
+        {
+            get => _hideAlertInteraction;
+            set
+            {
+                if (_hideAlertInteraction != null)
+                    _hideAlertInteraction.Requested -= OnHideAlertInteractionRequested;
 
-				_hideAlertInteraction = value;
-				_hideAlertInteraction.Requested += OnHideAlertInteractionRequested;
-			}
-		}
+                _hideAlertInteraction = value;
+                _hideAlertInteraction.Requested += OnHideAlertInteractionRequested;
+            }
+        }
 
 
-		private async void OnHideAlertInteractionRequested(object sender, EventArgs eventArgs)
-		{
-			DismissViewController(true, null);
-		}
+        private async void OnHideAlertInteractionRequested(object sender, EventArgs eventArgs)
+        {
+            DismissViewController(true, null);
+        }
+
+        private IMvxInteraction _clearDetailsInteraction;
+        public IMvxInteraction ClearDetailsInteraction
+        {
+            get => _clearDetailsInteraction;
+            set
+            {
+                if (_clearDetailsInteraction != null)
+                    _clearDetailsInteraction.Requested -= OnClearDetailsInteractionRequested;
+
+                _clearDetailsInteraction = value;
+                _clearDetailsInteraction.Requested += OnClearDetailsInteractionRequested;
+            }
+        }
+
+
+        private async void OnClearDetailsInteractionRequested(object sender, EventArgs eventArgs)
+        {
+            NameLabel.Hidden = true;
+            AddressLine1Label.Hidden = true;
+            CityStateZipLabel.Hidden = true;
+            EmailLabel.Hidden = true;
+            WorkPhoneLabel.Hidden = true;
+            WorkLabel.Hidden = true;
+            HomePhoneLabel.Hidden = true;
+            HomeLabel.Hidden = true;
+            MobilePhoneLabel.Hidden = true;
+            MobileLabel.Hidden = true;
+            ConsentLabel.Hidden = true;
+            ContactPreferenceLabel.Hidden = true;
+            PreferenceLabel.Hidden = true;
+            AssignButton.Hidden = true;
+            ProspectTabBar.Hidden = true;
+            _EditButton.Enabled = false;
+            _EditButton.Title = "";
+            SeparatorLineLabel1.Hidden = true;
+            SeparatorLineLabel2.Hidden = true;
+            this.NavigationItem.Title = "";
+        }
 
         public SplitDetailView(IntPtr handle) : base(handle)
         {
@@ -72,7 +112,7 @@ namespace ProspectManagement.iOS.Views
         {
             base.ViewDidLoad();
 
-			var set = this.CreateBindingSet<SplitDetailView, SplitDetailViewModel>();
+            var set = this.CreateBindingSet<SplitDetailView, SplitDetailViewModel>();
             set.Bind(NameLabel).To(vm => vm.Prospect.Name);
             set.Bind(AddressLine1Label).To(vm => vm.Prospect.StreetAddress.AddressLine1);
             set.Bind(CityStateZipLabel).To(vm => vm.Prospect.StreetAddress).WithConversion(new CityStateZipConverter()); ;
@@ -88,31 +128,23 @@ namespace ProspectManagement.iOS.Views
             set.Bind(AssignButton).For(c => c.Hidden).To(vm => vm.ProspectAssigned);
             set.Bind(AssignButton).To(vm => vm.AssignCommand);
 
-			set.Bind(this).For(view => view.HideAlertInteraction).To(viewModel => viewModel.HideAlertInteraction).OneWay();
-			set.Bind(this).For(view => view.ShowAlertInteraction).To(viewModel => viewModel.ShowAlertInteraction).OneWay();
-			set.Apply();
+            set.Bind(this).For(view => view.HideAlertInteraction).To(viewModel => viewModel.HideAlertInteraction).OneWay();
+            set.Bind(this).For(view => view.ShowAlertInteraction).To(viewModel => viewModel.ShowAlertInteraction).OneWay();
+            set.Bind(this).For(view => view.ClearDetailsInteraction).To(viewModel => viewModel.ClearDetailsInteraction).OneWay();
+            set.Apply();
 
-            if (SplitDetailViewModel.Prospect.ProspectAddressNumber > 0)
+            _EditButton = new UIBarButtonItem("Edit", UIBarButtonItemStyle.Plain, (sender, e) =>
             {
-                var b = new UIBarButtonItem("Edit", UIBarButtonItemStyle.Plain, (sender, e) =>
-                {
-                    ViewModel.EditProspectCommand.Execute(null);
-                });
-                b.SetTitleTextAttributes(new UITextAttributes()
-                {
-                    Font = UIFont.FromName("Raleway-Bold", 18),
-                    TextColor = ProspectManagementColors.DarkColor
-                }, UIControlState.Normal);
+                ViewModel.EditProspectCommand.Execute(null);
+            });
+            _EditButton.SetTitleTextAttributes(new UITextAttributes()
+            {
+                Font = UIFont.FromName("Raleway-Bold", 18),
+                TextColor = ProspectManagementColors.DarkColor
+            }, UIControlState.Normal);
 
-                this.NavigationItem.SetRightBarButtonItem(b, true);
-            }
-            else
-            {
-                ProspectTabBar.Hidden = true;
-                ContactPreferenceLabel.Hidden = true;
-                AssignButton.Hidden = true;
-                PreferenceLabel.Hidden = true;
-            }
+            this.NavigationItem.SetRightBarButtonItem(_EditButton, true);
+
 
             foreach (UITabBarItem item in ProspectTabBar.Items)
             {

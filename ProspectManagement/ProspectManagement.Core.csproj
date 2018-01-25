@@ -23,7 +23,7 @@
       <CustomCommands>
         <Command>
           <type>BeforeBuild</type>
-          <command>/bin/sh appcenter-pre-build.sh</command>
+          <command>/bin/sh ../appcenter-pre-build.sh</command>
         </Command>
       </CustomCommands>
     </CustomCommands>
@@ -152,6 +152,7 @@
     <Compile Include="Converters\QuestionBackgroundValueConverter.cs" />
     <Compile Include="Converters\QuestionTextColorValueConverter.cs" />
     <Compile Include="Messages\CobuyerAddedMessage.cs" />
+    <Compile Include="Messages\UserLogoutMessage.cs" />
  </ItemGroup>
   <ItemGroup>
     <Reference Include="MvvmCross.Plugins.Sqlite">

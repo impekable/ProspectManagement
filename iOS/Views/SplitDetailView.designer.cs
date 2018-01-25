@@ -68,6 +68,14 @@ namespace ProspectManagement.iOS.Views
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIView SeparatorLineLabel1 { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIView SeparatorLineLabel2 { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UILabel WorkLabel { get; set; }
 
         [Outlet]
@@ -139,6 +147,16 @@ namespace ProspectManagement.iOS.Views
             if (ProspectTabBar != null) {
                 ProspectTabBar.Dispose ();
                 ProspectTabBar = null;
+            }
+
+            if (SeparatorLineLabel1 != null) {
+                SeparatorLineLabel1.Dispose ();
+                SeparatorLineLabel1 = null;
+            }
+
+            if (SeparatorLineLabel2 != null) {
+                SeparatorLineLabel2.Dispose ();
+                SeparatorLineLabel2 = null;
             }
 
             if (WorkLabel != null) {
