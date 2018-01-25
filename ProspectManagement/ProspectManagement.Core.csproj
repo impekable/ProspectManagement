@@ -23,7 +23,11 @@
       <CustomCommands>
         <Command>
           <type>BeforeBuild</type>
-          <command>/bin/sh ../appcenter-pre-build.sh</command>
+          <command>/bin/sh ../local-pre-build.sh</command>
+        </Command>
+        <Command>
+          <type>AfterBuild</type>
+          <command>/bin/sh ../local-post-build.sh</command>
         </Command>
       </CustomCommands>
     </CustomCommands>
@@ -37,7 +41,7 @@
       <CustomCommands>
         <Command>
           <type>BeforeBuild</type>
-          <command>/bin/sh appcenter-pre-build.sh Release</command>
+          <command>/bin/sh ../appcenter-pre-build.sh Release</command>
         </Command>
       </CustomCommands>
     </CustomCommands>
