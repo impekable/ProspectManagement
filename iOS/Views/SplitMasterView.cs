@@ -39,6 +39,7 @@ namespace ProspectManagement.iOS.Views
         {
             NSIndexPath[] rowsToReload = new NSIndexPath[] { NSIndexPath.FromRowSection(eventArgs.Value.TableRowToUpdate, 0) };// points to second row in the first section of the model
             MasterTableView.ReloadRows(rowsToReload, UITableViewRowAnimation.None);
+            MasterTableView.SelectRow(NSIndexPath.FromRowSection(eventArgs.Value.TableRowToUpdate, 0), true, UITableViewScrollPosition.None);
         }
 
         public SplitMasterView(IntPtr handle) : base(handle)

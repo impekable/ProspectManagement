@@ -835,7 +835,7 @@ namespace ProspectManagement.Core.ViewModels
                     () =>
                     {
                         var result = !(!FollowUpSettings.ConsentToPhone &&
-                                                     FollowUpSettings.PreferredContactMethod.Equals("Phone"));
+                                       FollowUpSettings.PreferredContactMethod.Equals("Phone") && !FollowUpSettings.ExcludeFromFollowup);
 
                         return RuleResult.Assert(result, string.Format("Must Consent To Phone when Contact Preference is Phone"));
                     });
@@ -844,7 +844,7 @@ namespace ProspectManagement.Core.ViewModels
                     () =>
                     {
                         var result = !(!FollowUpSettings.ConsentToMail &&
-                                                     FollowUpSettings.PreferredContactMethod.Equals("Mail"));
+                                       FollowUpSettings.PreferredContactMethod.Equals("Mail") && !FollowUpSettings.ExcludeFromFollowup);
 
                         return RuleResult.Assert(result, string.Format("Must Consent To Mail when Contact Preference is Mail"));
                     });
@@ -853,7 +853,7 @@ namespace ProspectManagement.Core.ViewModels
                     () =>
                     {
                         var result = !(!FollowUpSettings.ConsentToText &&
-                                                     FollowUpSettings.PreferredContactMethod.Equals("Text"));
+                                       FollowUpSettings.PreferredContactMethod.Equals("Text") && !FollowUpSettings.ExcludeFromFollowup);
 
                         return RuleResult.Assert(result, string.Format("Must Consent To Text when Contact Preference is Text"));
                     });
