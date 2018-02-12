@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Windows.Input;
 using MvvmCross.Core.Navigation;
 using MvvmCross.Core.ViewModels;
 using MvvmCross.Plugins.Messenger;
@@ -23,6 +24,31 @@ namespace ProspectManagement.Core.ViewModels
         private readonly IProspectService _prospectService;
         private readonly IProspectCache _prospectCache;
         protected IMvxMessenger Messenger;
+
+        public bool StreetAddressEntered
+        {
+            get { return Prospect.StreetAddress != null && !String.IsNullOrEmpty(Prospect.StreetAddress.AddressLine1); }
+        }
+
+        public bool EmailEntered
+        {
+            get { return Prospect.Email != null && !String.IsNullOrEmpty(Prospect.Email.EmailAddress); }
+        }
+
+        public bool WorkPhoneEntered
+        {
+            get { return Prospect.WorkPhoneNumber != null && !String.IsNullOrEmpty(Prospect.WorkPhoneNumber.Phone); }
+        }
+
+        public bool MobilePhoneEntered
+        {
+            get { return Prospect.MobilePhoneNumber != null && !String.IsNullOrEmpty(Prospect.MobilePhoneNumber.Phone); }
+        }
+
+        public bool HomePhoneEntered
+        {
+            get { return Prospect.HomePhoneNumber != null && !String.IsNullOrEmpty(Prospect.HomePhoneNumber.Phone); }
+        }
 
 		private MvxInteraction _showAlertInteraction = new MvxInteraction();
 		public IMvxInteraction ShowAlertInteraction => _showAlertInteraction;
@@ -103,6 +129,7 @@ namespace ProspectManagement.Core.ViewModels
                 MobilePhoneLabel = _prospect.MobilePhoneNumber == null || string.IsNullOrEmpty(_prospect.MobilePhoneNumber.Phone) ? null : "Mobile";
                 HomePhoneLabel = _prospect.HomePhoneNumber == null || string.IsNullOrEmpty(_prospect.HomePhoneNumber.Phone) ? null : "Home";
                 RaisePropertyChanged(() => Prospect);
+                RaisePropertyChanged(() => StreetAddressEntered);
             }
         }
 

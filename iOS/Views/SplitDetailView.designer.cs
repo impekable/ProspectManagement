@@ -32,11 +32,23 @@ namespace ProspectManagement.iOS.Views
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIStackView ConsentStackView { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UILabel ContactPreferenceLabel { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UILabel EmailLabel { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIStackView EmailStackView { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIStackView ExcludeStackView { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
@@ -48,6 +60,10 @@ namespace ProspectManagement.iOS.Views
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIStackView HomeStackView { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UILabel MobileLabel { get; set; }
 
         [Outlet]
@@ -56,11 +72,19 @@ namespace ProspectManagement.iOS.Views
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIStackView MobileStackView { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UILabel NameLabel { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UILabel PreferenceLabel { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIStackView PreferenceStackView { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
@@ -76,11 +100,19 @@ namespace ProspectManagement.iOS.Views
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIStackView StreetAddressStackView { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UILabel WorkLabel { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UILabel WorkPhoneLabel { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIStackView WorkStackView { get; set; }
 
         void ReleaseDesignerOutlets ()
         {
@@ -104,6 +136,11 @@ namespace ProspectManagement.iOS.Views
                 ConsentLabel = null;
             }
 
+            if (ConsentStackView != null) {
+                ConsentStackView.Dispose ();
+                ConsentStackView = null;
+            }
+
             if (ContactPreferenceLabel != null) {
                 ContactPreferenceLabel.Dispose ();
                 ContactPreferenceLabel = null;
@@ -112,6 +149,16 @@ namespace ProspectManagement.iOS.Views
             if (EmailLabel != null) {
                 EmailLabel.Dispose ();
                 EmailLabel = null;
+            }
+
+            if (EmailStackView != null) {
+                EmailStackView.Dispose ();
+                EmailStackView = null;
+            }
+
+            if (ExcludeStackView != null) {
+                ExcludeStackView.Dispose ();
+                ExcludeStackView = null;
             }
 
             if (HomeLabel != null) {
@@ -124,6 +171,11 @@ namespace ProspectManagement.iOS.Views
                 HomePhoneLabel = null;
             }
 
+            if (HomeStackView != null) {
+                HomeStackView.Dispose ();
+                HomeStackView = null;
+            }
+
             if (MobileLabel != null) {
                 MobileLabel.Dispose ();
                 MobileLabel = null;
@@ -134,6 +186,11 @@ namespace ProspectManagement.iOS.Views
                 MobilePhoneLabel = null;
             }
 
+            if (MobileStackView != null) {
+                MobileStackView.Dispose ();
+                MobileStackView = null;
+            }
+
             if (NameLabel != null) {
                 NameLabel.Dispose ();
                 NameLabel = null;
@@ -142,6 +199,11 @@ namespace ProspectManagement.iOS.Views
             if (PreferenceLabel != null) {
                 PreferenceLabel.Dispose ();
                 PreferenceLabel = null;
+            }
+
+            if (PreferenceStackView != null) {
+                PreferenceStackView.Dispose ();
+                PreferenceStackView = null;
             }
 
             if (ProspectTabBar != null) {
@@ -159,6 +221,11 @@ namespace ProspectManagement.iOS.Views
                 SeparatorLineLabel2 = null;
             }
 
+            if (StreetAddressStackView != null) {
+                StreetAddressStackView.Dispose ();
+                StreetAddressStackView = null;
+            }
+
             if (WorkLabel != null) {
                 WorkLabel.Dispose ();
                 WorkLabel = null;
@@ -167,6 +234,11 @@ namespace ProspectManagement.iOS.Views
             if (WorkPhoneLabel != null) {
                 WorkPhoneLabel.Dispose ();
                 WorkPhoneLabel = null;
+            }
+
+            if (WorkStackView != null) {
+                WorkStackView.Dispose ();
+                WorkStackView = null;
             }
         }
     }

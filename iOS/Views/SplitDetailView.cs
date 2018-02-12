@@ -128,6 +128,15 @@ namespace ProspectManagement.iOS.Views
             set.Bind(AssignButton).For(c => c.Hidden).To(vm => vm.ProspectAssigned);
             set.Bind(AssignButton).To(vm => vm.AssignCommand);
 
+            set.Bind(StreetAddressStackView).For(v => v.Hidden).To(vm => vm.StreetAddressEntered).WithConversion(new InverseValueConverter());
+            set.Bind(EmailStackView).For(v => v.Hidden).To(vm => vm.EmailEntered).WithConversion(new InverseValueConverter());
+            set.Bind(WorkStackView).For(v => v.Hidden).To(vm => vm.WorkPhoneEntered).WithConversion(new InverseValueConverter());
+            set.Bind(HomeStackView).For(v => v.Hidden).To(vm => vm.HomePhoneEntered).WithConversion(new InverseValueConverter());
+            set.Bind(MobileStackView).For(v => v.Hidden).To(vm => vm.MobilePhoneEntered).WithConversion(new InverseValueConverter());
+
+            set.Bind(ExcludeStackView).For(v => v.Hidden).To(vm => vm.Prospect.FollowUpSettings.ExcludeFromFollowup).WithConversion(new InverseValueConverter());
+            set.Bind(ConsentStackView).For(v => v.Hidden).To(vm => vm.Prospect.FollowUpSettings.ExcludeFromFollowup);
+
             set.Bind(this).For(view => view.HideAlertInteraction).To(viewModel => viewModel.HideAlertInteraction).OneWay();
             set.Bind(this).For(view => view.ShowAlertInteraction).To(viewModel => viewModel.ShowAlertInteraction).OneWay();
             set.Bind(this).For(view => view.ClearDetailsInteraction).To(viewModel => viewModel.ClearDetailsInteraction).OneWay();

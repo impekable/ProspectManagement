@@ -8,16 +8,16 @@ namespace ProspectManagement.Core.Converters
     {
 		protected override string Convert(FollowUpSettings value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
 		{
-            var settingsString = value.ExcludeFromFollowup ? "Excluded From Follow Up" : "Consented To";
+            var settingsString = ""; //value.ExcludeFromFollowup ? "Excluded From Follow Up" : "Consented To";
 
 			if (value.ConsentToEmail)
-				settingsString += " Email,";
+				settingsString += "Email, ";
 			if (value.ConsentToMail)
-				settingsString += " Mail,";
+				settingsString += "Mail, ";
 			if (value.ConsentToPhone)
-				settingsString += " Phone";
+				settingsString += "Phone";
             
-			return settingsString.TrimEnd(',');
+			return settingsString.TrimEnd(',',' ');
 		}
     }
 }
