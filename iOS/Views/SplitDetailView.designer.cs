@@ -40,6 +40,10 @@ namespace ProspectManagement.iOS.Views
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIStackView DetailStackView { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UILabel EmailLabel { get; set; }
 
         [Outlet]
@@ -144,6 +148,11 @@ namespace ProspectManagement.iOS.Views
             if (ContactPreferenceLabel != null) {
                 ContactPreferenceLabel.Dispose ();
                 ContactPreferenceLabel = null;
+            }
+
+            if (DetailStackView != null) {
+                DetailStackView.Dispose ();
+                DetailStackView = null;
             }
 
             if (EmailLabel != null) {

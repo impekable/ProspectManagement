@@ -473,6 +473,7 @@
                         <outlet property="WorkPhoneLabel" destination="uRb-Tx-i0n" id="name-outlet-uRb-Tx-i0n"/>
                         <outlet property="WorkStackView" destination="Kcb-3k-r09" id="name-outlet-Kcb-3k-r09"/>
                         <outlet property="ExcludeStackView" destination="9J0-Hl-8Ed" id="name-outlet-9J0-Hl-8Ed"/>
+                        <outlet property="DetailStackView" destination="FUf-Qd-Dgd" id="name-outlet-FUf-Qd-Dgd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="71" userLabel="First Responder" sceneMemberID="firstResponder"/>

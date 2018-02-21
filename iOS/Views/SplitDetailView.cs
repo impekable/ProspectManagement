@@ -82,25 +82,10 @@ namespace ProspectManagement.iOS.Views
 
         private async void OnClearDetailsInteractionRequested(object sender, EventArgs eventArgs)
         {
-            NameLabel.Hidden = true;
-            AddressLine1Label.Hidden = true;
-            CityStateZipLabel.Hidden = true;
-            EmailLabel.Hidden = true;
-            WorkPhoneLabel.Hidden = true;
-            WorkLabel.Hidden = true;
-            HomePhoneLabel.Hidden = true;
-            HomeLabel.Hidden = true;
-            MobilePhoneLabel.Hidden = true;
-            MobileLabel.Hidden = true;
-            ConsentLabel.Hidden = true;
-            ContactPreferenceLabel.Hidden = true;
-            PreferenceLabel.Hidden = true;
-            AssignButton.Hidden = true;
+            DetailStackView.Hidden = true;
             ProspectTabBar.Hidden = true;
             _EditButton.Enabled = false;
             _EditButton.Title = "";
-            SeparatorLineLabel1.Hidden = true;
-            SeparatorLineLabel2.Hidden = true;
             this.NavigationItem.Title = "";
         }
 
