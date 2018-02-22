@@ -564,7 +564,7 @@ namespace ProspectManagement.Core.ViewModels
 
             if (_prospect.HomePhoneNumber != null)
             {
-                HomePhone = _prospect.HomePhoneNumber.ShallowCopy();
+                HomePhoneNumber = _prospect.HomePhoneNumber.Phone;
             }
         }
 
