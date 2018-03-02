@@ -10,5 +10,12 @@ namespace ProspectManagement.iOS
             textField.Text = textField.Text + "";
             textField.EditingChanged += (sender, args) => { textField.Text = ""; };
         }
+
+        public void Include(UITextView textView)
+        {
+            textView.Text = textView.Text + "";
+            textView.Changed += (sender, args) => { textView.Text = ""; }; 
+            textView.TextStorage.DidProcessEditing += (sender, e) => textView.Text = "";
+        }
     }
 }

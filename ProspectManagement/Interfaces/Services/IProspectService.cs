@@ -13,6 +13,6 @@ namespace ProspectManagement.Core.Interfaces.Services
 
 		Task<bool> UpdateProspectAsync(Prospect prospect);
 
-		Task<int> AssignProspectToLoggedInUserAsync(string communityNumber, int prospectId);
+		Task<AddressBook> AssignProspectToLoggedInUserAsync(string communityNumber, int prospectId);
 	}
 }

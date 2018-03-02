@@ -317,6 +317,10 @@
     <Compile Include="Bootstrap\MessengerPluginBootstrap.cs" />
     <Compile Include="Bootstrap\DownloadCachePluginBootstrap.cs" />
     <Compile Include="LinkerPleaseInclude.cs" />
+    <Compile Include="Views\AddActivityView.cs" />
+    <Compile Include="Views\AddActivityView.designer.cs">
+      <DependentUpon>AddActivityView.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ProspectManagement\ProspectManagement.Core.csproj">

@@ -16,7 +16,15 @@ namespace ProspectManagement.iOS.Views
     {
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIButton AddNoteButton { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UILabel AddressLine1Label { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIButton AddVisitButton { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
@@ -25,6 +33,10 @@ namespace ProspectManagement.iOS.Views
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UILabel CityStateZipLabel { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIButton CompleteApptButton { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
@@ -120,9 +132,19 @@ namespace ProspectManagement.iOS.Views
 
         void ReleaseDesignerOutlets ()
         {
+            if (AddNoteButton != null) {
+                AddNoteButton.Dispose ();
+                AddNoteButton = null;
+            }
+
             if (AddressLine1Label != null) {
                 AddressLine1Label.Dispose ();
                 AddressLine1Label = null;
+            }
+
+            if (AddVisitButton != null) {
+                AddVisitButton.Dispose ();
+                AddVisitButton = null;
             }
 
             if (AssignButton != null) {
@@ -133,6 +155,11 @@ namespace ProspectManagement.iOS.Views
             if (CityStateZipLabel != null) {
                 CityStateZipLabel.Dispose ();
                 CityStateZipLabel = null;
+            }
+
+            if (CompleteApptButton != null) {
+                CompleteApptButton.Dispose ();
+                CompleteApptButton = null;
             }
 
             if (ConsentLabel != null) {

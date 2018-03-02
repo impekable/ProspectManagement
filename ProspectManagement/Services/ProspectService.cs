@@ -28,20 +28,20 @@ namespace ProspectManagement.Core.Services
             };
         }
 
-        public async Task<int> AssignProspectToLoggedInUserAsync(string communityNumber, int prospectId)
+        public async Task<AddressBook> AssignProspectToLoggedInUserAsync(string communityNumber, int prospectId)
         {
             try
             {
                 var authResult = await _authenticator.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource);
                 var user = await _userService.GetUserById(authResult.UserInfo.DisplayableId);
                 var result = await _prospectRepository.AssignProspectToSalespersonAsync(communityNumber, prospectId, user.AddressNumber, authResult.AccessToken);
-                return user.AddressNumber;
+                return user.AddressBook;
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
                 _dialogService.ShowAlertAsync("Seems like there was a problem." + ex.Message, "Oops", "Close");
-                return 0;
+                return null;
             }
         }
 

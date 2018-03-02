@@ -54,6 +54,8 @@ namespace ProspectManagement.iOS.Views
             source = new IncrementalTableViewSource(MasterTableView, ProspectViewCell.Key); // new MvxSimpleTableViewSource(MasterTableView, ProspectViewCell.Key, ProspectViewCell.Key, null);
             source.CreateBinding<SplitMasterViewModel>(this, vm => vm.Prospects);
             MasterTableView.Source = source;
+            MasterTableView.RowHeight = UITableView.AutomaticDimension;
+            MasterTableView.EstimatedRowHeight = 40;
             MasterTableView.ReloadData();
             set.Bind(source).For(s => s.SelectionChangedCommand).To(vm => vm.SelectionChangedCommand);
             set.Apply();

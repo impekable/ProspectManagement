@@ -18,6 +18,25 @@ namespace ProspectManagement.iOS.Views
         protected SplitDetailViewModel SplitDetailViewModel => ViewModel as SplitDetailViewModel;
         private UIBarButtonItem _EditButton;
 
+        private IMvxInteraction _assignedProspectInteraction;
+        public IMvxInteraction AssignedProspectInteraction
+        {
+            get => _hideAlertInteraction;
+            set
+            {
+                if (_assignedProspectInteraction != null)
+                    _assignedProspectInteraction.Requested -= OnAssignedProspectInteractionRequested;
+
+                _assignedProspectInteraction = value;
+                _assignedProspectInteraction.Requested += OnAssignedProspectInteractionRequested;
+            }
+        }
+
+        private async void OnAssignedProspectInteractionRequested(object sender, EventArgs eventArgs)
+        {
+            setNavigation();
+        }
+
         private IMvxInteraction _showAlertInteraction;
         public IMvxInteraction ShowAlertInteraction
         {
@@ -110,8 +129,16 @@ namespace ProspectManagement.iOS.Views
             set.Bind(MobileLabel).To(vm => vm.MobilePhoneLabel);
             set.Bind(ConsentLabel).To(vm => vm.Prospect.FollowUpSettings).WithConversion(new FollowUpSettingsValueConverter());
             set.Bind(ContactPreferenceLabel).To(vm => vm.Prospect.FollowUpSettings.PreferredContactMethod);
-            set.Bind(AssignButton).For(c => c.Hidden).To(vm => vm.ProspectAssigned);
+            set.Bind(AssignButton).For(c => c.Hidden).To(vm => vm.Assigned);
             set.Bind(AssignButton).To(vm => vm.AssignCommand);
+
+            set.Bind(AddNoteButton).To(vm => vm.AddNoteCommand);
+            set.Bind(CompleteApptButton).To(vm => vm.CompleteApptCommand);
+            set.Bind(AddVisitButton).To(vm => vm.CompleteApptCommand);
+
+            set.Bind(AddNoteButton).For(c => c.Hidden).To(vm => vm.AssignedProspect).WithConversion(new InverseValueConverter());
+            set.Bind(CompleteApptButton).For(v => v.Hidden).To(vm => vm.IsLead).WithConversion(new InverseValueConverter());
+            set.Bind(AddVisitButton).For(v => v.Hidden).To(vm => vm.AssignedProspect).WithConversion(new InverseValueConverter());
 
             set.Bind(StreetAddressStackView).For(v => v.Hidden).To(vm => vm.StreetAddressEntered).WithConversion(new InverseValueConverter());
             set.Bind(EmailStackView).For(v => v.Hidden).To(vm => vm.EmailEntered).WithConversion(new InverseValueConverter());
@@ -125,50 +152,63 @@ namespace ProspectManagement.iOS.Views
             set.Bind(this).For(view => view.HideAlertInteraction).To(viewModel => viewModel.HideAlertInteraction).OneWay();
             set.Bind(this).For(view => view.ShowAlertInteraction).To(viewModel => viewModel.ShowAlertInteraction).OneWay();
             set.Bind(this).For(view => view.ClearDetailsInteraction).To(viewModel => viewModel.ClearDetailsInteraction).OneWay();
+            set.Bind(this).For(view => view.AssignedProspectInteraction).To(viewModel => viewModel.AssignedProspectInteraction).OneWay();
             set.Apply();
 
-            _EditButton = new UIBarButtonItem("Edit", UIBarButtonItemStyle.Plain, (sender, e) =>
-            {
-                ViewModel.EditProspectCommand.Execute(null);
-            });
-            _EditButton.SetTitleTextAttributes(new UITextAttributes()
-            {
-                Font = UIFont.FromName("Raleway-Bold", 18),
-                TextColor = ProspectManagementColors.DarkColor
-            }, UIControlState.Normal);
+            setNavigation();
+        }
 
-            this.NavigationItem.SetRightBarButtonItem(_EditButton, true);
-
-
-            foreach (UITabBarItem item in ProspectTabBar.Items)
+        private void setNavigation()
+        {
+            if (ViewModel.AssignedProspect)
             {
-                if (item.Tag == 0)
+                _EditButton = new UIBarButtonItem("Edit", UIBarButtonItemStyle.Plain, (sender, e) =>
                 {
-                    item.SetTitleTextAttributes(new UITextAttributes()
-                    {
-                        Font = UIFont.FromName("Raleway-Bold", 10),
-                        TextColor = UIColor.Black
-                    }, UIControlState.Normal);
-
-                }
-                else
+                    ViewModel.EditProspectCommand.Execute(null);
+                });
+                _EditButton.SetTitleTextAttributes(new UITextAttributes()
                 {
-                    item.SetTitleTextAttributes(new UITextAttributes()
+                    Font = UIFont.FromName("Raleway-Bold", 18),
+                    TextColor = ProspectManagementColors.DarkColor
+                }, UIControlState.Normal);
+
+                this.NavigationItem.SetRightBarButtonItem(_EditButton, true);
+
+                foreach (UITabBarItem item in ProspectTabBar.Items)
+                {
+                    if (item.Tag == 0)
                     {
-                        Font = UIFont.FromName("Raleway-Regular", 10),
-                        TextColor = UIColor.Black
-                    }, UIControlState.Normal);
+                        item.SetTitleTextAttributes(new UITextAttributes()
+                        {
+                            Font = UIFont.FromName("Raleway-Bold", 10),
+                            TextColor = UIColor.Black
+                        }, UIControlState.Normal);
+
+                    }
+                    else
+                    {
+                        item.SetTitleTextAttributes(new UITextAttributes()
+                        {
+                            Font = UIFont.FromName("Raleway-Regular", 10),
+                            TextColor = UIColor.Black
+                        }, UIControlState.Normal);
+                    }
                 }
+
+                ProspectTabBar.Hidden = false;
+                ProspectTabBar.SelectedItem = ProspectTabBar.Items[0];
+                ProspectTabBar.ItemSelected += (sender, e) =>
+                {
+                    if (e.Item.Tag == 1)
+                        ViewModel.ShowCobuyerTab.Execute(null);
+                    else if (e.Item.Tag == 2)
+                        ViewModel.ShowTrafficCardTab.Execute(null);
+                };
             }
-
-            ProspectTabBar.SelectedItem = ProspectTabBar.Items[0];
-            ProspectTabBar.ItemSelected += (sender, e) =>
+            else
             {
-                if (e.Item.Tag == 1)
-                    ViewModel.ShowCobuyerTab.Execute(null);
-                else if (e.Item.Tag == 2)
-                    ViewModel.ShowTrafficCardTab.Execute(null);
-            };
+                ProspectTabBar.Hidden = true;
+            }
         }
     }
 }

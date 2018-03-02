@@ -13,17 +13,24 @@ namespace ProspectManagement.Core.ViewModels
     public class SplitDetailViewModel : BaseViewModel
     {
         private Prospect _prospect;
-        private bool _prospectAssigned;
+        private bool _assigned;
         private string _workPhoneLabel;
         private string _homePhoneLabel;
         private string _mobilePhoneLabel;
         private ICommand _editProspectCommand;
         private ICommand _assignCommand;
+        private ICommand _addNoteCommand;
+        private ICommand _completeApptCommand;
         private ICommand _showCobuyerTab;
         private ICommand _showTrafficCardTab;
         private readonly IProspectService _prospectService;
         private readonly IProspectCache _prospectCache;
         protected IMvxMessenger Messenger;
+
+        public bool IsLead
+        {
+            get { return Prospect.ProspectCommunity.AddressType.Equals("Lead"); }
+        }
 
         public bool StreetAddressEntered
         {
@@ -50,16 +57,19 @@ namespace ProspectManagement.Core.ViewModels
             get { return Prospect.HomePhoneNumber != null && !String.IsNullOrEmpty(Prospect.HomePhoneNumber.Phone); }
         }
 
-		private MvxInteraction _showAlertInteraction = new MvxInteraction();
-		public IMvxInteraction ShowAlertInteraction => _showAlertInteraction;
+        private MvxInteraction _showAlertInteraction = new MvxInteraction();
+        public IMvxInteraction ShowAlertInteraction => _showAlertInteraction;
 
-		private MvxInteraction _hideAlertInteraction = new MvxInteraction();
-		public IMvxInteraction HideAlertInteraction => _hideAlertInteraction;
+        private MvxInteraction _hideAlertInteraction = new MvxInteraction();
+        public IMvxInteraction HideAlertInteraction => _hideAlertInteraction;
 
         private MvxInteraction _clearDetailsInteraction = new MvxInteraction();
         public IMvxInteraction ClearDetailsInteraction => _clearDetailsInteraction;
 
-		public SplitDetailViewModel(IMvxMessenger messenger, IProspectCache prospectCache, IProspectService prospectService)
+        private MvxInteraction _assignedProspectInteraction = new MvxInteraction();
+        public IMvxInteraction AssignedProspectInteraction => _assignedProspectInteraction;
+
+        public SplitDetailViewModel(IMvxMessenger messenger, IProspectCache prospectCache, IProspectService prospectService, IActivityService activityService)
         {
             Messenger = messenger;
             _prospectService = prospectService;
@@ -67,11 +77,23 @@ namespace ProspectManagement.Core.ViewModels
 
             Messenger.Subscribe<ProspectChangedMessage>(async message => Init(message.UpdatedProspect), MvxReference.Strong);
             Messenger.Subscribe<UserLogoutMessage>(async message => UserLogout(), MvxReference.Strong);
+            Messenger.Subscribe<ActivityAddedMessage>(async message => ActivityAdded(message.AddedActivity), MvxReference.Strong);
         }
 
         public async void UserLogout()
         {
             _clearDetailsInteraction.Raise();
+        }
+
+        public async void ActivityAdded(Activity activity)
+        {
+            if (Prospect.ProspectCommunity.AddressType.Equals("Lead") && activity.ActivityType.Equals("VISIT"))
+            {
+                Prospect.ProspectCommunity.AddressType = "Prospect";
+                RaisePropertyChanged(() => IsLead);
+                RaisePropertyChanged(() => AssignedProspect);
+                _assignedProspectInteraction.Raise();
+            }
         }
 
         public ICommand AssignCommand
@@ -80,27 +102,68 @@ namespace ProspectManagement.Core.ViewModels
             {
                 return _assignCommand ?? (_assignCommand = new MvxCommand(async () =>
                 {
-					_showAlertInteraction.Raise();
-					var _assignedTo = await _prospectService.AssignProspectToLoggedInUserAsync(_prospect.ProspectCommunity.CommunityNumber, _prospect.ProspectAddressNumber);
-					_hideAlertInteraction.Raise();
+                    _showAlertInteraction.Raise();
+                    var _assignedTo = await _prospectService.AssignProspectToLoggedInUserAsync(_prospect.ProspectCommunity.CommunityNumber, _prospect.ProspectAddressNumber);
+                    _hideAlertInteraction.Raise();
 
-					if (_assignedTo > 0)
+                    if (_assignedTo != null)
                     {
-                        ProspectAssigned = true;
-                        Prospect.ProspectCommunity.SalespersonAddressNumber = _assignedTo;
+                        Assigned = true;
+                        Prospect.ProspectCommunity.SalespersonAddressNumber = _assignedTo.AddressNumber;
+                        Prospect.ProspectCommunity.SalespersonName = _assignedTo.Name;
                         Messenger.Publish(new ProspectAssignedMessage(this) { AssignedProspect = Prospect });
+                        _assignedProspectInteraction.Raise();
                     }
-				}));
+                }));
             }
         }
 
-		public ICommand EditProspectCommand
-		{
-			get
-			{
+        public ICommand AddNoteCommand
+        {
+            get
+            {
+                return _addNoteCommand ?? (_addNoteCommand = new MvxCommand(() =>
+                {
+                    var activity = new Activity
+                    {
+                        ActivityType = "COMMENT",
+                        DateCompleted = DateTime.UtcNow,
+                        ProspectAddressNumber = Prospect.ProspectAddressNumber,
+                        SalespersonAddressNumber = Prospect.ProspectCommunity.SalespersonAddressNumber,
+                        ProspectCommunityId = Prospect.ProspectCommunity.ProspectCommunityId
+                    };
+                    ShowViewModel<AddActivityViewModel>(activity);
+                }));
+            }
+        }
+
+        public ICommand CompleteApptCommand
+        {
+            get
+            {
+                return _completeApptCommand ?? (_completeApptCommand = new MvxCommand(() =>
+                {
+                    var activity = new Activity
+                    {
+                        ActivityType = "VISIT",
+                        ContactMethod = "In-Person",
+                        DateCompleted = DateTime.UtcNow,
+                        ProspectAddressNumber = Prospect.ProspectAddressNumber,
+                        SalespersonAddressNumber = Prospect.ProspectCommunity.SalespersonAddressNumber,
+                        ProspectCommunityId = Prospect.ProspectCommunity.ProspectCommunityId
+                    };
+                    ShowViewModel<AddActivityViewModel>(activity);
+                }));
+            }
+        }
+
+        public ICommand EditProspectCommand
+        {
+            get
+            {
                 return _editProspectCommand ?? (_editProspectCommand = new MvxCommand(() => { ShowViewModel<EditProspectViewModel>(_prospect); }));
-			}
-		}
+            }
+        }
 
         public ICommand ShowCobuyerTab
         {
@@ -124,7 +187,7 @@ namespace ProspectManagement.Core.ViewModels
             set
             {
                 _prospect = value;
-                ProspectAssigned = _prospect.ProspectCommunity.SalespersonAddressNumber > 0;
+                Assigned = _prospect.ProspectCommunity.SalespersonAddressNumber > 0;
                 WorkPhoneLabel = _prospect.WorkPhoneNumber == null || string.IsNullOrEmpty(_prospect.WorkPhoneNumber.Phone) ? null : "Work";
                 MobilePhoneLabel = _prospect.MobilePhoneNumber == null || string.IsNullOrEmpty(_prospect.MobilePhoneNumber.Phone) ? null : "Mobile";
                 HomePhoneLabel = _prospect.HomePhoneNumber == null || string.IsNullOrEmpty(_prospect.HomePhoneNumber.Phone) ? null : "Home";
@@ -133,13 +196,19 @@ namespace ProspectManagement.Core.ViewModels
             }
         }
 
-        public bool ProspectAssigned
+        public bool AssignedProspect
         {
-            get { return _prospectAssigned; }
+            get { return Assigned && !IsLead; }
+        }
+
+        public bool Assigned
+        {
+            get { return _assigned; }
             set
             {
-                _prospectAssigned = value;
-                RaisePropertyChanged(() => ProspectAssigned);
+                _assigned = value;
+                RaisePropertyChanged(() => AssignedProspect);
+                RaisePropertyChanged(() => Assigned);
             }
         }
 
@@ -173,7 +242,7 @@ namespace ProspectManagement.Core.ViewModels
             }
         }
 
-		public override async void Start()
+        public override async void Start()
         {
             base.Start();
             await ReloadDataAsync();

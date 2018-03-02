@@ -157,6 +157,14 @@
     <Compile Include="Converters\QuestionTextColorValueConverter.cs" />
     <Compile Include="Messages\CobuyerAddedMessage.cs" />
     <Compile Include="Messages\UserLogoutMessage.cs" />
+    <Compile Include="Models\Activity.cs" />
+    <Compile Include="Interfaces\Repositories\IActivityRepository.cs" />
+    <Compile Include="Repositories\ActivityRepository.cs" />
+    <Compile Include="Interfaces\Services\IActivityService.cs" />
+    <Compile Include="Services\ActivityService.cs" />
+    <Compile Include="ViewModels\AddActivityViewModel.cs" />
+    <Compile Include="Models\AddressBook.cs" />
+    <Compile Include="Messages\ActivityAddedMessage.cs" />
  </ItemGroup>
   <ItemGroup>
     <Reference Include="MvvmCross.Plugins.Sqlite">

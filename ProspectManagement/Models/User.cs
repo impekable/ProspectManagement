@@ -13,5 +13,7 @@ namespace ProspectManagement.Core.Models
         public string UserId { get; set; }
         [JsonProperty("addressNumber")]
         public int AddressNumber { get; set; }
+        [JsonProperty("addressBook")]
+        public AddressBook AddressBook { get; set; }
     }
 }

@@ -29,6 +29,10 @@ namespace ProspectManagement.iOS.Views
         [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UIImageView SalespersonImage { get; set; }
 
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UILabel SalespersonLabel { get; set; }
+
         void ReleaseDesignerOutlets ()
         {
             if (CommunityLabel != null) {
@@ -49,6 +53,11 @@ namespace ProspectManagement.iOS.Views
             if (SalespersonImage != null) {
                 SalespersonImage.Dispose ();
                 SalespersonImage = null;
+            }
+
+            if (SalespersonLabel != null) {
+                SalespersonLabel.Dispose ();
+                SalespersonLabel = null;
             }
         }
     }
