@@ -35,6 +35,8 @@ namespace ProspectManagement.Core.Models
 		public PhoneNumber HomePhoneNumber { get; set; }
 		[JsonProperty("corporationIndicator")]
 		public string CorporationIndicator { get; set; }
+        [JsonProperty("usingRealtor")]
+        public bool UsingRealtor { get; set; }
 		[JsonProperty("trafficSourceCodeId")]
 		public int TrafficSourceCodeId { get; set; }
 		[JsonProperty("streetAddress")]
