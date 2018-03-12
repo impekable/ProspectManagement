@@ -134,11 +134,11 @@ namespace ProspectManagement.iOS.Views
 
             set.Bind(AddNoteButton).To(vm => vm.AddNoteCommand);
             set.Bind(CompleteApptButton).To(vm => vm.CompleteApptCommand);
-            set.Bind(AddVisitButton).To(vm => vm.CompleteApptCommand);
+            set.Bind(AddVisitButton).To(vm => vm.AddVisitCommand);
 
             set.Bind(AddNoteButton).For(c => c.Hidden).To(vm => vm.AssignedProspect).WithConversion(new InverseValueConverter());
-            set.Bind(CompleteApptButton).For(v => v.Hidden).To(vm => vm.IsLead).WithConversion(new InverseValueConverter());
-            set.Bind(AddVisitButton).For(v => v.Hidden).To(vm => vm.AssignedProspect).WithConversion(new InverseValueConverter());
+            set.Bind(CompleteApptButton).For(v => v.Hidden).To(vm => vm.IsLeadWithAppointment).WithConversion(new InverseValueConverter());
+            set.Bind(AddVisitButton).For(v => v.Hidden).To(vm => vm.AssignedWithoutAppointment).WithConversion(new InverseValueConverter());
 
             set.Bind(StreetAddressStackView).For(v => v.Hidden).To(vm => vm.StreetAddressEntered).WithConversion(new InverseValueConverter());
             set.Bind(EmailStackView).For(v => v.Hidden).To(vm => vm.EmailEntered).WithConversion(new InverseValueConverter());

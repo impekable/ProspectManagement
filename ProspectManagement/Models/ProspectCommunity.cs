@@ -19,8 +19,8 @@ namespace ProspectManagement.Core.Models
         public int SalespersonAddressNumber { get; set; }
         [JsonProperty("salespersonName")]
         public string SalespersonName { get; set; }
-        [JsonProperty("visitStatus")]
-        public string VisitStatus { get; set; }
+        [JsonProperty("appointmentStatus")]
+        public string AppointmentStatus { get; set; }
         [JsonProperty("startDate")]
         public string StartDate { get; set; }
         [JsonProperty("endDate")]

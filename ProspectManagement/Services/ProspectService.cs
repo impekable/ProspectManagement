@@ -60,12 +60,12 @@ namespace ProspectManagement.Core.Services
             }
         }
 
-        public async Task<List<Prospect>> GetProspectsAsync(string accessToken, List<Community> communities, int? salespersonId, int page, int pageSize, string searchTerm)
+        public async Task<List<Prospect>> GetProspectsAsync(string accessToken, List<Community> communities, int? salespersonId, string type, int page, int pageSize, string searchTerm)
         {
             try
             {
-                var prospects = await _prospectRepository.GetProspectsAsync(accessToken, salespersonId, communities, page, pageSize, searchTerm);
-                var p = prospects.Join(communities, p2 => p2.ProspectCommunity.CommunityNumber, c => c.CommunityNumber, (p2, c) =>
+                var prospects = await _prospectRepository.GetProspectsAsync(accessToken, salespersonId, type, communities, page, pageSize, searchTerm);
+                var p = prospects?.Join(communities, p2 => p2.ProspectCommunity.CommunityNumber, c => c.CommunityNumber, (p2, c) =>
                 {
                     p2.ProspectCommunity.Community = c;
                     return p2;

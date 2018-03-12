@@ -21,6 +21,7 @@ namespace ProspectManagement.Core.ViewModels
         private ICommand _assignCommand;
         private ICommand _addNoteCommand;
         private ICommand _completeApptCommand;
+        private ICommand _addVisitCommand;
         private ICommand _showCobuyerTab;
         private ICommand _showTrafficCardTab;
         private readonly IProspectService _prospectService;
@@ -30,6 +31,11 @@ namespace ProspectManagement.Core.ViewModels
         public bool IsLead
         {
             get { return Prospect.ProspectCommunity.AddressType.Equals("Lead"); }
+        }
+
+        public bool IsLeadWithAppointment
+        {
+            get { return IsLead && Prospect.ProspectCommunity.AppointmentStatus.Equals("Pending"); }
         }
 
         public bool StreetAddressEntered
@@ -87,11 +93,13 @@ namespace ProspectManagement.Core.ViewModels
 
         public async void ActivityAdded(Activity activity)
         {
-            if (Prospect.ProspectCommunity.AddressType.Equals("Lead") && activity.ActivityType.Equals("VISIT"))
+            if (Prospect.ProspectCommunity.AddressType.Equals("Lead") && (activity.ActivityType.Equals("VISIT") || activity.ActivityType.Equals("APPOINTMENT")))
             {
                 Prospect.ProspectCommunity.AddressType = "Prospect";
                 RaisePropertyChanged(() => IsLead);
                 RaisePropertyChanged(() => AssignedProspect);
+                RaisePropertyChanged(() => IsLeadWithAppointment);
+                RaisePropertyChanged(() => AssignedWithoutAppointment);
                 _assignedProspectInteraction.Raise();
             }
         }
@@ -142,6 +150,26 @@ namespace ProspectManagement.Core.ViewModels
             get
             {
                 return _completeApptCommand ?? (_completeApptCommand = new MvxCommand(() =>
+                {
+                    var activity = new Activity
+                    {
+                        ActivityType = "APPOINTMENT",
+                        ContactMethod = "In-Person",
+                        DateCompleted = DateTime.UtcNow,
+                        ProspectAddressNumber = Prospect.ProspectAddressNumber,
+                        SalespersonAddressNumber = Prospect.ProspectCommunity.SalespersonAddressNumber,
+                        ProspectCommunityId = Prospect.ProspectCommunity.ProspectCommunityId
+                    };
+                    ShowViewModel<AddActivityViewModel>(activity);
+                }));
+            }
+        }
+
+        public ICommand AddVisitCommand
+        {
+            get
+            {
+                return _addVisitCommand ?? (_addVisitCommand = new MvxCommand(() =>
                 {
                     var activity = new Activity
                     {
@@ -201,12 +229,18 @@ namespace ProspectManagement.Core.ViewModels
             get { return Assigned && !IsLead; }
         }
 
+        public bool AssignedWithoutAppointment
+        {
+            get { return AssignedProspect ||(IsLead && !Prospect.ProspectCommunity.AppointmentStatus.Equals("Pending")); }
+        }
+
         public bool Assigned
         {
             get { return _assigned; }
             set
             {
                 _assigned = value;
+                RaisePropertyChanged(() => AssignedWithoutAppointment);
                 RaisePropertyChanged(() => AssignedProspect);
                 RaisePropertyChanged(() => Assigned);
             }

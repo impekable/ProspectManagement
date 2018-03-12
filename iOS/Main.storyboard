@@ -39,11 +39,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="YRD-d8-8gC">
-                                <rect key="frame" x="2" y="20" width="764" height="1004"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="YRD-d8-8gC">
+                                <rect key="frame" x="3" y="20" width="762" height="1001"/>
                                 <subviews>
                                     <segmentedControl opaque="NO" contentMode="center" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bordered" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="MSk-at-had">
-                                        <rect key="frame" x="0.0" y="0.0" width="764" height="29"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="762" height="98.5"/>
                                         <edgeInsets key="layoutMargins" top="8" left="16" bottom="8" right="16"/>
                                         <segments>
                                             <segment title="All"/>
@@ -53,41 +53,80 @@
                                         <color key="tintColor" red="0.4549019608" green="0.68235294120000001" blue="0.70588235290000001" alpha="1" colorSpace="calibratedRGB"/>
                                     </segmentedControl>
                                     <searchBar contentMode="redraw" showsCancelButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Fdz-uU-872">
-                                        <rect key="frame" x="0.0" y="38" width="764" height="56"/>
+                                        <rect key="frame" x="0.0" y="99.5" width="762" height="56"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </searchBar>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="100" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="139">
-                                        <rect key="frame" x="0.0" y="104" width="764" height="900"/>
+                                        <rect key="frame" x="0.0" y="157.5" width="762" height="809.5"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="140">
-                                                <rect key="frame" x="0.0" y="28" width="764" height="100"/>
+                                                <rect key="frame" x="0.0" y="28" width="762" height="100"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="140" id="141">
-                                                    <rect key="frame" x="0.0" y="0.0" width="764" height="99.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="762" height="99.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </tableViewCellContentView>
                                             </tableViewCell>
                                         </prototypes>
                                     </tableView>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="E8j-4b-B4N">
+                                        <rect key="frame" x="0.0" y="969" width="762" height="1"/>
+                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="1" id="BhK-Vm-r1x"/>
+                                        </constraints>
+                                    </view>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="aRe-8M-2pC">
+                                        <rect key="frame" x="0.0" y="972" width="762" height="29"/>
+                                        <subviews>
+                                            <button contentMode="TopLeft" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bis-9m-yYH">
+                                                <rect key="frame" x="0.0" y="0.0" width="254" height="29"/>
+                                                <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="14"/>
+                                                <color key="tintColor" red="0.99607843137254903" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            </button>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="PUb-fo-ekn">
+                                                <rect key="frame" x="254" y="0.0" width="254" height="29"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Filtered By:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fVT-Ho-SMn">
+                                                        <rect key="frame" x="0.0" y="0.0" width="254" height="14.5"/>
+                                                        <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="12"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Leads" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lz1-H5-6ZE">
+                                                        <rect key="frame" x="0.0" y="14.5" width="254" height="14.5"/>
+                                                        <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="12"/>
+                                                        <color key="textColor" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QB3-aF-EfR">
+                                                <rect key="frame" x="508" y="0.0" width="254" height="29"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
                                 </subviews>
-                                <constraints>
-                                    <constraint firstItem="Fdz-uU-872" firstAttribute="top" secondItem="MSk-at-had" secondAttribute="bottom" constant="10" id="EBE-eo-hmv"/>
-                                    <constraint firstItem="139" firstAttribute="top" secondItem="Fdz-uU-872" secondAttribute="bottom" constant="10" id="UgO-tC-fvY"/>
-                                </constraints>
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="60" firstAttribute="top" secondItem="YRD-d8-8gC" secondAttribute="bottom" id="PGz-Bi-Gpi"/>
+                            <constraint firstItem="60" firstAttribute="top" secondItem="YRD-d8-8gC" secondAttribute="bottom" constant="3" id="PGz-Bi-Gpi"/>
                             <constraint firstItem="YRD-d8-8gC" firstAttribute="top" secondItem="59" secondAttribute="bottom" id="bUM-AE-e1i"/>
-                            <constraint firstAttribute="trailing" secondItem="YRD-d8-8gC" secondAttribute="trailing" constant="2" id="lNP-94-FoQ"/>
-                            <constraint firstItem="YRD-d8-8gC" firstAttribute="leading" secondItem="63" secondAttribute="leading" constant="2" id="yEZ-BT-K61"/>
+                            <constraint firstAttribute="trailing" secondItem="YRD-d8-8gC" secondAttribute="trailing" constant="3" id="lNP-94-FoQ"/>
+                            <constraint firstItem="YRD-d8-8gC" firstAttribute="leading" secondItem="63" secondAttribute="leading" constant="3" id="yEZ-BT-K61"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="CurrentFilterLabel" destination="lz1-H5-6ZE" id="name-outlet-lz1-H5-6ZE"/>
+                        <outlet property="FilterLabel" destination="fVT-Ho-SMn" id="name-outlet-fVT-Ho-SMn"/>
                         <outlet property="FilterSearchBar" destination="Fdz-uU-872" id="name-outlet-Fdz-uU-872"/>
                         <outlet property="FilterSegmentControl" destination="MSk-at-had" id="name-outlet-MSk-at-had"/>
+                        <outlet property="LeadsOnlyButton" destination="bis-9m-yYH" id="name-outlet-bis-9m-yYH"/>
                         <outlet property="MasterTableView" destination="139" id="name-outlet-139"/>
                     </connections>
                 </viewController>

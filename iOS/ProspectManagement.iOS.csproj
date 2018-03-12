@@ -224,6 +224,8 @@
     <Folder Include="Resources\Assets.xcassets\ic-phone.imageset\" />
     <Folder Include="Resources\Assets.xcassets\ic-mail.imageset\" />
     <Folder Include="Resources\Assets.xcassets\ic-email.imageset\" />
+    <Folder Include="Resources\Assets.xcassets\ic-filter-active.imageset\" />
+    <Folder Include="Resources\Assets.xcassets\ic-filter-inactive.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Main.storyboard" />
@@ -452,6 +454,14 @@
     <ImageAsset Include="Resources\Assets.xcassets\ic-email.imageset\EMail-icon 30.png" />
     <ImageAsset Include="Resources\Assets.xcassets\ic-email.imageset\EMail-icon 60.png" />
     <ImageAsset Include="Resources\Assets.xcassets\ic-email.imageset\EMail-icon 90.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\ic-filter-active.imageset\Contents.json" />
+    <ImageAsset Include="Resources\Assets.xcassets\ic-filter-inactive.imageset\Contents.json" />
+    <ImageAsset Include="Resources\Assets.xcassets\ic-filter-inactive.imageset\filter inactive 90.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\ic-filter-inactive.imageset\filter inactive 60.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\ic-filter-inactive.imageset\filter inactive 30.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\ic-filter-active.imageset\filter active 90.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\ic-filter-active.imageset\filter active 60.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\ic-filter-active.imageset\filter active 30.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

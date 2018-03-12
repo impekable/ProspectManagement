@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using MvvmCross.Core.ViewModels;
 using ProspectManagement.Core.Interactions;
 using MvvmCross.Platform.Core;
+using ProspectManagement.Core.Converters;
 
 namespace ProspectManagement.iOS.Views
 {
@@ -20,6 +21,21 @@ namespace ProspectManagement.iOS.Views
     public partial class SplitMasterView : MvxViewController<SplitMasterViewModel>
     {
         private IncrementalTableViewSource source;
+        private NSObject _notificationHandle;
+
+        private IMvxInteraction<Filter> _filterInteraction;
+        public IMvxInteraction<Filter> FilterInteraction
+        {
+            get => _filterInteraction;
+            set
+            {
+                if (_filterInteraction != null)
+                    _filterInteraction.Requested -= OnFilterInteractionRequested;
+
+                _filterInteraction = value;
+                _filterInteraction.Requested += OnFilterInteractionRequested;
+            }
+        }
 
         private IMvxInteraction<TableRow> _updateRowInteraction;
         public IMvxInteraction<TableRow> UpdateRowInteraction
@@ -33,6 +49,22 @@ namespace ProspectManagement.iOS.Views
                 _updateRowInteraction = value;
                 _updateRowInteraction.Requested += OnUpdateRowInteractionRequested;
             }
+        }
+
+        private async void OnFilterInteractionRequested(object sender, MvxValueEventArgs<Filter> eventArgs)
+        {
+            if (!ViewModel.FilterActive)
+            {
+                LeadsOnlyButton.SetImage(UIImage.FromBundle("ic-filter-active"), UIControlState.Normal);
+            }
+            else
+            {
+                LeadsOnlyButton.SetImage(UIImage.FromBundle("ic-filter-inactive"), UIControlState.Normal);
+            }
+            ViewModel.FilterActive = !ViewModel.FilterActive;
+
+            var set = this.CreateBindingSet<SplitMasterView, SplitMasterViewModel>();
+            setTableViewSource(set);
         }
 
         private async void OnUpdateRowInteractionRequested(object sender, MvxValueEventArgs<TableRow> eventArgs)
@@ -68,9 +100,16 @@ namespace ProspectManagement.iOS.Views
             var set = this.CreateBindingSet<SplitMasterView, SplitMasterViewModel>();
             set.Bind(FilterSearchBar).To(vm => vm.SearchTerm);
             set.Bind(FilterSegmentControl).To(vm => vm.SelectedSegment);
-			set.Bind(this).For(view => view.UpdateRowInteraction).To(viewModel => viewModel.UpdateRowInteraction).OneWay();
-			
-			setTableViewSource(set);
+            //set.Bind(LeadsOnlyButton).To(vm => vm.FilterCommand);
+            LeadsOnlyButton.TouchUpInside += (sender, e) =>
+            {
+                OnFilterInteractionRequested(sender, new MvxValueEventArgs<Filter>(new Filter() { Active = !ViewModel.FilterActive }));
+            };
+            set.Bind(FilterLabel).For(v => v.Hidden).To(vm => vm.FilterActive).WithConversion(new InverseValueConverter()); ;
+            set.Bind(CurrentFilterLabel).For(v => v.Hidden).To(vm => vm.FilterActive).WithConversion(new InverseValueConverter()); ;
+            set.Bind(this).For(view => view.UpdateRowInteraction).To(viewModel => viewModel.UpdateRowInteraction).OneWay();
+            set.Bind(this).For(view => view.FilterInteraction).To(viewModel => viewModel.FilterInteraction).OneWay();
+            setTableViewSource(set);
 
             var refreshControl = new UIRefreshControl();
             refreshControl.ValueChanged += (sender, e) =>
@@ -123,6 +162,9 @@ namespace ProspectManagement.iOS.Views
             {
                 setTableViewSource(set);
             };
+
+            var inactiveFilterImage = UIImage.FromBundle("ic-filter-inactive");
+            LeadsOnlyButton.SetImage(inactiveFilterImage, UIControlState.Normal);
 
             FilterSegmentControl.ValueChanged += (sender, e) =>
             {

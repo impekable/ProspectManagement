@@ -165,6 +165,7 @@
     <Compile Include="ViewModels\AddActivityViewModel.cs" />
     <Compile Include="Models\AddressBook.cs" />
     <Compile Include="Messages\ActivityAddedMessage.cs" />
+    <Compile Include="Interactions\Filter.cs" />
  </ItemGroup>
   <ItemGroup>
     <Reference Include="MvvmCross.Plugins.Sqlite">

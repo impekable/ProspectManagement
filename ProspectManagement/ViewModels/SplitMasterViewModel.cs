@@ -36,16 +36,43 @@ namespace ProspectManagement.Core.ViewModels
 
         private ICommand _selectionChangedCommand;
         private ICommand _logoutCommand;
+        private ICommand _filterCommand;
 
         private int _selectedSegment;
         private int _page = 0;
         private int _pageSize = 10;
         private string _searchTerm;
+        private bool _filterActive;
         private User _user;
         private List<Community> _communities;
 
         private MvxInteraction<TableRow> _updateRowInteraction = new MvxInteraction<TableRow>();
         public IMvxInteraction<TableRow> UpdateRowInteraction => _updateRowInteraction;
+
+        private MvxInteraction<Filter> _filterInteraction = new MvxInteraction<Filter>();
+        public IMvxInteraction<Filter> FilterInteraction => _filterInteraction;
+
+        public ICommand FilterCommand
+        {
+            get
+            {
+                return _filterCommand ?? (_filterCommand = new MvxCommand(async () =>
+                {
+                    var request = new Filter { Active = !FilterActive };
+                    _filterInteraction.Raise(request);
+                }));
+            }
+        }
+
+        public bool FilterActive
+        {
+            get { return _filterActive; }
+            set
+            {
+                _filterActive = value;
+                RaisePropertyChanged(() => FilterActive);
+            }
+        }
 
         public User User
         {
@@ -98,9 +125,9 @@ namespace ProspectManagement.Core.ViewModels
             {
                 if (_prospects == null)
                 {
-                    var authResult = _authService.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource);
                     _prospects = _collectionFactory.GetCollection(async (count, pageSize) =>
                                     {
+                                        var authResult = _authService.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource);
                                         var newProspects = new ObservableCollection<Prospect>();
                                         if (_communities == null)
                                         {
@@ -109,8 +136,9 @@ namespace ProspectManagement.Core.ViewModels
                                         await Task.Run(async () =>
                                         {
                                             Page++;
+                                            var searchType = FilterActive ? "Lead" : null;
                                             var salespersonId = SelectedSegment == 0 ? (int?)null : SelectedSegment == 1 ? 0 : User.AddressNumber;
-                                            var prospectList = await _prospectService.GetProspectsAsync(authResult.Result.AccessToken, _communities, salespersonId, Page, pageSize, SearchTerm);
+                                            var prospectList = await _prospectService.GetProspectsAsync(authResult.Result.AccessToken, _communities, salespersonId, searchType, Page, pageSize, SearchTerm);
                                             newProspects = prospectList.ToObservableCollection();
                                             OnLoadingDataFromBackendCompleted();
                                         });
@@ -126,7 +154,6 @@ namespace ProspectManagement.Core.ViewModels
                 RaisePropertyChanged(() => Prospects);
             }
         }
-
 
         public ICommand LogoutCommand
         {

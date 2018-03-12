@@ -87,7 +87,7 @@ namespace ProspectManagement.iOS.Views
             {
                 this.NavigationItem.Title = "Add Note";
             }
-            else if (AddActivityViewModel.Activity.ActivityType.Equals("VISIT"))
+            else if (AddActivityViewModel.Activity.ActivityType.Equals("VISIT") || AddActivityViewModel.Activity.ActivityType.Equals("APPOINTMENT"))
             {
                 this.NavigationItem.Title = "Add Visit Note";
             }

@@ -16,6 +16,14 @@ namespace ProspectManagement.iOS.Views
     {
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UILabel CurrentFilterLabel { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UILabel FilterLabel { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UISearchBar FilterSearchBar { get; set; }
 
         [Outlet]
@@ -24,10 +32,24 @@ namespace ProspectManagement.iOS.Views
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIButton LeadsOnlyButton { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UITableView MasterTableView { get; set; }
 
         void ReleaseDesignerOutlets ()
         {
+            if (CurrentFilterLabel != null) {
+                CurrentFilterLabel.Dispose ();
+                CurrentFilterLabel = null;
+            }
+
+            if (FilterLabel != null) {
+                FilterLabel.Dispose ();
+                FilterLabel = null;
+            }
+
             if (FilterSearchBar != null) {
                 FilterSearchBar.Dispose ();
                 FilterSearchBar = null;
@@ -36,6 +58,11 @@ namespace ProspectManagement.iOS.Views
             if (FilterSegmentControl != null) {
                 FilterSegmentControl.Dispose ();
                 FilterSegmentControl = null;
+            }
+
+            if (LeadsOnlyButton != null) {
+                LeadsOnlyButton.Dispose ();
+                LeadsOnlyButton = null;
             }
 
             if (MasterTableView != null) {
