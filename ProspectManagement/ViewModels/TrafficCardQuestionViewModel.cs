@@ -94,6 +94,9 @@ namespace ProspectManagement.Core.ViewModels
             Messenger = messenger;
             _prospectCache = prospectCache;
             _trafficCardResponseService = trafficCardResponseService;
+
+            Messenger.Subscribe<RefreshMessage>(async message => Close(this), MvxReference.Strong);
+           
         }
 
         public override async void Start()

@@ -96,6 +96,8 @@ namespace ProspectManagement.Core.ViewModels
 
             ConfigureValidationRules();
             Validator.ResultChanged += OnValidationResultChanged;
+
+            Messenger.Subscribe<RefreshMessage>(async message => Close(this), MvxReference.Strong);
         }
 
         public async void Init(Activity activity)

@@ -21,6 +21,9 @@ namespace ProspectManagement.Core.ViewModels
 		private MvxInteraction<TableRow> _updateRowInteraction = new MvxInteraction<TableRow>();
 		public IMvxInteraction<TableRow> UpdateRowInteraction => _updateRowInteraction;
 
+        private MvxInteraction _clearDetailsInteraction = new MvxInteraction();
+        public IMvxInteraction ClearDetailsInteraction => _clearDetailsInteraction;
+
 		private Prospect _prospect;
         private List<TrafficCardResponse> _responses;
 
@@ -77,6 +80,7 @@ namespace ProspectManagement.Core.ViewModels
 			_trafficCardResponseService = trafficCardResponseService;
             _prospectCache = prospectCache;
 
+            Messenger.Subscribe<RefreshMessage>(async message => _clearDetailsInteraction.Raise(), MvxReference.Strong);
             Messenger.Subscribe<TrafficCardResponseChangedMessage>(async message => ResponseUpdated(message.ChangedResponse), MvxReference.Strong);
 		}
 

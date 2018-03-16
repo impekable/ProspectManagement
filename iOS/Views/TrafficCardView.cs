@@ -18,6 +18,28 @@ namespace ProspectManagement.iOS.Views
     {
 		protected TrafficCardViewModel TrafficCardViewModel => ViewModel as TrafficCardViewModel;
 
+        private IMvxInteraction _clearDetailsInteraction;
+        public IMvxInteraction ClearDetailsInteraction
+        {
+            get => _clearDetailsInteraction;
+            set
+            {
+                if (_clearDetailsInteraction != null)
+                    _clearDetailsInteraction.Requested -= OnClearDetailsInteractionRequested;
+
+                _clearDetailsInteraction = value;
+                _clearDetailsInteraction.Requested += OnClearDetailsInteractionRequested;
+            }
+        }
+
+
+        private async void OnClearDetailsInteractionRequested(object sender, EventArgs eventArgs)
+        {
+            QuestionsTableView.Hidden = true;
+            ProspectTabBar.Hidden = true;
+            this.NavigationItem.Title = "";
+        }
+
 		private IMvxInteraction<TableRow> _updateRowInteraction;
 		public IMvxInteraction<TableRow> UpdateRowInteraction
 		{
@@ -58,6 +80,7 @@ namespace ProspectManagement.iOS.Views
 			set.Bind(source).To(vm => vm.Responses);
 			set.Bind(source).For(s => s.SelectionChangedCommand).To(vm => vm.SelectionChangedCommand);
 			set.Bind(this).For(view => view.UpdateRowInteraction).To(viewModel => viewModel.UpdateRowInteraction).OneWay();
+            set.Bind(this).For(view => view.ClearDetailsInteraction).To(viewModel => viewModel.ClearDetailsInteraction).OneWay();
 			set.Apply();
 
             QuestionsTableView.ReloadData();

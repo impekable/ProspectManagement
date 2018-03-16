@@ -81,6 +81,7 @@ namespace ProspectManagement.Core.ViewModels
             _prospectService = prospectService;
             _prospectCache = prospectCache;
 
+            Messenger.Subscribe<RefreshMessage>(async message => _clearDetailsInteraction.Raise(), MvxReference.Strong);
             Messenger.Subscribe<ProspectChangedMessage>(async message => Init(message.UpdatedProspect), MvxReference.Strong);
             Messenger.Subscribe<UserLogoutMessage>(async message => UserLogout(), MvxReference.Strong);
             Messenger.Subscribe<ActivityAddedMessage>(async message => ActivityAdded(message.AddedActivity), MvxReference.Strong);

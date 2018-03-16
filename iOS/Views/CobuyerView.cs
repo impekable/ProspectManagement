@@ -20,8 +20,35 @@ namespace ProspectManagement.iOS.Views
     [MvxDetailSplitViewPresentation(WrapInNavigationController = true)]
     public partial class CobuyerView : MvxViewController<CobuyerViewModel>
     {
-
+        private UIBarButtonItem _AddButton;
 		private MvxSimpleTableViewSource source;
+
+        private IMvxInteraction _clearDetailsInteraction;
+        public IMvxInteraction ClearDetailsInteraction
+        {
+            get => _clearDetailsInteraction;
+            set
+            {
+                if (_clearDetailsInteraction != null)
+                    _clearDetailsInteraction.Requested -= OnClearDetailsInteractionRequested;
+
+                _clearDetailsInteraction = value;
+                _clearDetailsInteraction.Requested += OnClearDetailsInteractionRequested;
+            }
+        }
+
+
+        private async void OnClearDetailsInteractionRequested(object sender, EventArgs eventArgs)
+        {
+            CobuyerTableView.Hidden = true;
+            if (_AddButton != null)
+            {
+                _AddButton.Enabled = false;
+                _AddButton.Title = "";
+            }
+            ProspectTabBar.Hidden = true;
+            this.NavigationItem.Title = "";
+        }
 
 		private IMvxInteraction<TableRow> _updateRowInteraction;
 		public IMvxInteraction<TableRow> UpdateRowInteraction
@@ -83,19 +110,18 @@ namespace ProspectManagement.iOS.Views
 			set.Bind(source).For(s => s.SelectionChangedCommand).To(vm => vm.SelectionChangedCommand);
 			set.Bind(this).For(view => view.AddRowInteraction).To(viewModel => viewModel.AddRowInteraction).OneWay();
             set.Bind(this).For(view => view.UpdateRowInteraction).To(viewModel => viewModel.UpdateRowInteraction).OneWay();
+            set.Bind(this).For(view => view.ClearDetailsInteraction).To(viewModel => viewModel.ClearDetailsInteraction).OneWay();
 
 			set.Apply();
 
             CobuyerTableView.ReloadData();
 
-		
-
-			var b = new UIBarButtonItem("Add", UIBarButtonItemStyle.Plain, (sender, e) =>
+            _AddButton = new UIBarButtonItem("Add", UIBarButtonItemStyle.Plain, (sender, e) =>
 			{
 				ViewModel.AddCobuyerCommand.Execute(null);
 			});
 
-			this.NavigationItem.SetRightBarButtonItem(b, true);
+            this.NavigationItem.SetRightBarButtonItem(_AddButton, true);
 
 			foreach (UITabBarItem item in ProspectTabBar.Items)
 			{

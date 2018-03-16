@@ -103,8 +103,11 @@ namespace ProspectManagement.iOS.Views
         {
             DetailStackView.Hidden = true;
             ProspectTabBar.Hidden = true;
-            _EditButton.Enabled = false;
-            _EditButton.Title = "";
+            if (_EditButton != null)
+            {
+                _EditButton.Enabled = false;
+                _EditButton.Title = "";
+            }
             this.NavigationItem.Title = "";
         }
 

@@ -37,6 +37,7 @@ namespace ProspectManagement.Core.ViewModels
         private ICommand _selectionChangedCommand;
         private ICommand _logoutCommand;
         private ICommand _filterCommand;
+        private ICommand _refreshCommand;
 
         private int _selectedSegment;
         private int _page = 0;
@@ -51,6 +52,17 @@ namespace ProspectManagement.Core.ViewModels
 
         private MvxInteraction<Filter> _filterInteraction = new MvxInteraction<Filter>();
         public IMvxInteraction<Filter> FilterInteraction => _filterInteraction;
+
+        public ICommand RefreshCommand
+        {
+            get
+            {
+                return _refreshCommand ?? (_refreshCommand = new MvxCommand(async () =>
+                {
+                    Messenger.Publish(new RefreshMessage(this));
+                }));
+            }
+        }
 
         public ICommand FilterCommand
         {
@@ -127,21 +139,24 @@ namespace ProspectManagement.Core.ViewModels
                 {
                     _prospects = _collectionFactory.GetCollection(async (count, pageSize) =>
                                     {
-                                        var authResult = _authService.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource);
+                                        var authResult = await _authService.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource);
                                         var newProspects = new ObservableCollection<Prospect>();
-                                        if (_communities == null)
+                                        if (authResult != null && !String.IsNullOrEmpty(authResult.AccessToken))
                                         {
-                                            _communities = await _communityService.GetCommunitiesBySalesperson(User.AddressNumber);
+                                            if (_communities == null)
+                                            {
+                                                _communities = await _communityService.GetCommunitiesBySalesperson(User.AddressNumber);
+                                            }
+                                            await Task.Run(async () =>
+                                            {
+                                                Page++;
+                                                var searchType = FilterActive ? "Lead" : null;
+                                                var salespersonId = SelectedSegment == 0 ? (int?)null : SelectedSegment == 1 ? 0 : User.AddressNumber;
+                                                var prospectList = await _prospectService.GetProspectsAsync(authResult.AccessToken, _communities, salespersonId, searchType, Page, pageSize, SearchTerm);
+                                                newProspects = prospectList.ToObservableCollection();
+                                                OnLoadingDataFromBackendCompleted();
+                                            });
                                         }
-                                        await Task.Run(async () =>
-                                        {
-                                            Page++;
-                                            var searchType = FilterActive ? "Lead" : null;
-                                            var salespersonId = SelectedSegment == 0 ? (int?)null : SelectedSegment == 1 ? 0 : User.AddressNumber;
-                                            var prospectList = await _prospectService.GetProspectsAsync(authResult.Result.AccessToken, _communities, salespersonId, searchType, Page, pageSize, SearchTerm);
-                                            newProspects = prospectList.ToObservableCollection();
-                                            OnLoadingDataFromBackendCompleted();
-                                        });
                                         return newProspects;
                                     }, _pageSize);
 
@@ -161,13 +176,13 @@ namespace ProspectManagement.Core.ViewModels
             {
                 return _logoutCommand ?? (_logoutCommand = new MvxCommand(async () =>
                 {
-                    if (User == null)
+                    if (User == null || User.AddressNumber == 0)
                     {
-                        while (User == null)
+                        User = await _userService.GetLoggedInUser();
+                        if (User != null && User.AddressNumber != 0)
                         {
-                            User = await _userService.GetLoggedInUser();
+                            OnLoginCompleted();
                         }
-                        OnLoginCompleted();
                     }
                     else
                     {

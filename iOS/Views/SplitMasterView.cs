@@ -22,6 +22,7 @@ namespace ProspectManagement.iOS.Views
     {
         private IncrementalTableViewSource source;
         private NSObject _notificationHandle;
+        private DateTime loadTime;
 
         private IMvxInteraction<Filter> _filterInteraction;
         public IMvxInteraction<Filter> FilterInteraction
@@ -91,11 +92,19 @@ namespace ProspectManagement.iOS.Views
             MasterTableView.ReloadData();
             set.Bind(source).For(s => s.SelectionChangedCommand).To(vm => vm.SelectionChangedCommand);
             set.Apply();
-        }
+            loadTime = DateTime.Now;         }          public override void ViewWillAppear(bool animated)         {
+            if (_notificationHandle == null)
+            {                 _notificationHandle = NSNotificationCenter.DefaultCenter.AddObserver(UIApplication.WillEnterForegroundNotification, HandleAppWillEnterForeground);             }
+        }          private void HandleAppWillEnterForeground(NSNotification notification)         {
+            System.Diagnostics.Debug.WriteLine("Being notified of ViewWillAppear " + this.Handle);             var timeSinceLoad = DateTime.Now - loadTime;
+            if (timeSinceLoad.Minutes > 5)
+            {                 var set = this.CreateBindingSet<SplitMasterView, SplitMasterViewModel>();                 setTableViewSource(set);
+                ViewModel.RefreshCommand.Execute(null);             }         }
 
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
+            System.Diagnostics.Debug.WriteLine("Loading Master View: " + this.Handle);
 
             var set = this.CreateBindingSet<SplitMasterView, SplitMasterViewModel>();
             set.Bind(FilterSearchBar).To(vm => vm.SearchTerm);
@@ -133,6 +142,7 @@ namespace ProspectManagement.iOS.Views
                 FilterSearchBar.Hidden = true;
                 FilterSegmentControl.Hidden = true;
                 MasterTableView.Hidden = true;
+                FilterStackView.Hidden = true;
                 setTableViewSource(set);
                 this.NavigationItem.RightBarButtonItem.Title = "Login";
             };
@@ -142,6 +152,7 @@ namespace ProspectManagement.iOS.Views
                 FilterSearchBar.Hidden = false;
                 FilterSegmentControl.Hidden = false;
                 MasterTableView.Hidden = false;
+                FilterStackView.Hidden = false;
                 setTableViewSource(set);
                 this.NavigationItem.RightBarButtonItem.Title = "Logout";
             };
@@ -171,8 +182,6 @@ namespace ProspectManagement.iOS.Views
                 setTableViewSource(set);
             };
 
-            InvokeOnMainThread(() => refreshControl.BeginRefreshing());
-
             var b = new UIBarButtonItem("Logout", UIBarButtonItemStyle.Plain, (sender, e) =>
             {
                 ViewModel.LogoutCommand.Execute(null);
@@ -193,6 +202,18 @@ namespace ProspectManagement.iOS.Views
             NavigationController.NavigationBar.TintColor = ProspectManagementColors.DarkColor;
             NavigationController.NavigationBar.TitleTextAttributes = stringAttributes;
 
+            if (ViewModel.User != null && ViewModel.User.AddressNumber != 0)
+            {
+                InvokeOnMainThread(() => refreshControl.BeginRefreshing());
+            }
+            else
+            {
+                b.Title = "Login";
+                FilterSearchBar.Hidden = true;
+                FilterSegmentControl.Hidden = true;
+                MasterTableView.Hidden = true;
+                FilterStackView.Hidden = true;
+            }
         }
     }
 }

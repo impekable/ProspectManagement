@@ -32,6 +32,10 @@ namespace ProspectManagement.iOS.Views
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIStackView FilterStackView { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UIButton LeadsOnlyButton { get; set; }
 
         [Outlet]
@@ -58,6 +62,11 @@ namespace ProspectManagement.iOS.Views
             if (FilterSegmentControl != null) {
                 FilterSegmentControl.Dispose ();
                 FilterSegmentControl = null;
+            }
+
+            if (FilterStackView != null) {
+                FilterStackView.Dispose ();
+                FilterStackView = null;
             }
 
             if (LeadsOnlyButton != null) {

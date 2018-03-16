@@ -33,6 +33,9 @@ namespace ProspectManagement.Core.ViewModels
         private MvxInteraction _addRowInteraction = new MvxInteraction();
         public IMvxInteraction AddRowInteraction => _addRowInteraction;
 
+        private MvxInteraction _clearDetailsInteraction = new MvxInteraction();
+        public IMvxInteraction ClearDetailsInteraction => _clearDetailsInteraction;
+
         private List<Cobuyer> _cobuyers;
 
         public ICommand ShowDetailTab
@@ -93,6 +96,7 @@ namespace ProspectManagement.Core.ViewModels
             _cobuyerService = cobuyerService;
             _prospectCache = prospectCache;
 
+            Messenger.Subscribe<RefreshMessage>(async message => _clearDetailsInteraction.Raise(), MvxReference.Strong);
             Messenger.Subscribe<CobuyerChangedMessage>(async message => CobuyerUpdated(message.UpdatedCobuyer), MvxReference.Strong);
             Messenger.Subscribe<CobuyerAddedMessage>(async message => CobuyerAdded(message.AddedCobuyer), MvxReference.Strong);
         }
