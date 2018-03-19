@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using MvvmCross.Core.Navigation;
 using MvvmCross.Core.ViewModels;
 using ProspectManagement.Core.Interfaces.Services;
 using ProspectManagement.Core.Models;
@@ -8,6 +9,7 @@ namespace ProspectManagement.Core.ViewModels
 {
     public class RootViewModel: BaseViewModel
     {
+        private readonly IMvxNavigationService _navigationService;
         private readonly IUserService _userService;
 		private User _user;
 
@@ -21,9 +23,10 @@ namespace ProspectManagement.Core.ViewModels
 			}
 		}
 
-		public RootViewModel(IUserService userService)
+        public RootViewModel(IUserService userService, IMvxNavigationService navigationService)
 		{
 			_userService = userService;
+            _navigationService = navigationService;
 		}
 
 		public override async void Start()
@@ -38,7 +41,7 @@ namespace ProspectManagement.Core.ViewModels
 			{
 				User = await _userService.GetLoggedInUser();
 			}
-            ShowViewModel<SplitRootViewModel>(User);
+            _navigationService.Navigate<SplitRootViewModel, User>(User);
 		}
     }
 }

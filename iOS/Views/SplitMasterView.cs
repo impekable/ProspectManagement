@@ -99,7 +99,8 @@ namespace ProspectManagement.iOS.Views
             System.Diagnostics.Debug.WriteLine("Being notified of ViewWillAppear " + this.Handle);             var timeSinceLoad = DateTime.Now - loadTime;
             if (timeSinceLoad.Minutes > 5)
             {                 var set = this.CreateBindingSet<SplitMasterView, SplitMasterViewModel>();                 setTableViewSource(set);
-                ViewModel.RefreshCommand.Execute(null);             }         }
+                ViewModel.RefreshCommand.Execute(null);
+                this.NavigationController.PopToRootViewController(true);             }         }
 
         public override void ViewDidLoad()
         {

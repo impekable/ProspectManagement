@@ -9,11 +9,12 @@ using ProspectManagement.Core.Interactions;
 using ProspectManagement.Core.Interfaces.Repositories;
 using ProspectManagement.Core.Interfaces.Services;
 using ProspectManagement.Core.Messages;
-
+using MvvmCross.Core.Navigation;
+using System.Threading.Tasks;
 
 namespace ProspectManagement.Core.ViewModels
 {
-    public class CobuyerViewModel : BaseViewModel
+    public class CobuyerViewModel : BaseViewModel, IMvxViewModel<Prospect>
     {
         private Prospect _prospect;
         private ICommand _showDetailTab;
@@ -24,8 +25,8 @@ namespace ProspectManagement.Core.ViewModels
         private ICommand _addCobuyerCommand;
 
         private readonly ICobuyerService _cobuyerService;
-        private readonly IProspectCache _prospectCache;
         protected IMvxMessenger Messenger;
+        private readonly IMvxNavigationService _navigationService;
 
         private MvxInteraction<TableRow> _updateRowInteraction = new MvxInteraction<TableRow>();
         public IMvxInteraction<TableRow> UpdateRowInteraction => _updateRowInteraction;
@@ -42,7 +43,7 @@ namespace ProspectManagement.Core.ViewModels
         {
             get
             {
-                return _showDetailTab ?? (_showDetailTab = new MvxCommand<Prospect>((prospect) => ShowViewModel<SplitDetailViewModel>(_prospect)));
+                return _showDetailTab ?? (_showDetailTab = new MvxCommand<Prospect>((prospect) => _navigationService.Navigate<SplitDetailViewModel, Prospect>(_prospect)));
             }
         }
 
@@ -50,7 +51,7 @@ namespace ProspectManagement.Core.ViewModels
         {
             get
             {
-                return _showTrafficCardTab ?? (_showTrafficCardTab = new MvxCommand<Prospect>((prospect) => ShowViewModel<TrafficCardViewModel>(_prospect)));
+                return _showTrafficCardTab ?? (_showTrafficCardTab = new MvxCommand<Prospect>((prospect) => _navigationService.Navigate<TrafficCardViewModel, Prospect>(_prospect)));
             }
         }
 
@@ -58,7 +59,7 @@ namespace ProspectManagement.Core.ViewModels
         {
             get
             {
-                return _selectionChangedCommand ?? (_selectionChangedCommand = new MvxCommand<Cobuyer>((cobuyer) => { _prospectCache.SaveCobuyerToCache(cobuyer); ShowViewModel<CobuyerDetailViewModel>(cobuyer); }));
+                return _selectionChangedCommand ?? (_selectionChangedCommand = new MvxCommand<Cobuyer>((cobuyer) => _navigationService.Navigate<CobuyerDetailViewModel, Cobuyer>(cobuyer)));
             }
         }
 
@@ -66,7 +67,7 @@ namespace ProspectManagement.Core.ViewModels
         {
             get
             {
-                return _addCobuyerCommand ?? (_addCobuyerCommand = new MvxCommand(() => { ShowViewModel<CobuyerDetailViewModel>(new Cobuyer() { ProspectAddressNumber = _prospect.ProspectAddressNumber }); }));
+                return _addCobuyerCommand ?? (_addCobuyerCommand = new MvxCommand(() => _navigationService.Navigate<CobuyerDetailViewModel, Cobuyer>(new Cobuyer() { ProspectAddressNumber = _prospect.ProspectAddressNumber })));
             }
         }
 
@@ -90,11 +91,11 @@ namespace ProspectManagement.Core.ViewModels
             }
         }
 
-        public CobuyerViewModel(IMvxMessenger messenger, IProspectCache prospectCache, ICobuyerService cobuyerService)
+        public CobuyerViewModel(IMvxMessenger messenger, ICobuyerService cobuyerService, IMvxNavigationService navigationService)
         {
             Messenger = messenger;
             _cobuyerService = cobuyerService;
-            _prospectCache = prospectCache;
+            _navigationService = navigationService;
 
             Messenger.Subscribe<RefreshMessage>(async message => _clearDetailsInteraction.Raise(), MvxReference.Strong);
             Messenger.Subscribe<CobuyerChangedMessage>(async message => CobuyerUpdated(message.UpdatedCobuyer), MvxReference.Strong);
@@ -123,10 +124,14 @@ namespace ProspectManagement.Core.ViewModels
             await ReloadDataAsync();
         }
 
-        public async void Init(Prospect prospect)
+        public override async Task Initialize()
+        {
+            CobuyersList = await _cobuyerService.GetCobuyersForProspectAsync(_prospect.ProspectAddressNumber);
+        }
+
+        public void Prepare(Prospect prospect)
         {
             Prospect = prospect;
-            CobuyersList = await _cobuyerService.GetCobuyersForProspectAsync(_prospect.ProspectAddressNumber);
         }
     }
 }

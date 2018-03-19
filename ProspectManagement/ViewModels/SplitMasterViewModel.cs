@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using MvvmCross.Core.Navigation;
 using MvvmCross.Core.ViewModels;
 using MvvmCross.Plugins.Messenger;
 using ProspectManagement.Core.Extensions;
@@ -16,7 +17,7 @@ using Sequence.Plugins.InfiniteScroll;
 
 namespace ProspectManagement.Core.ViewModels
 {
-    public class SplitMasterViewModel : BaseViewModel
+    public class SplitMasterViewModel : BaseViewModel, IMvxViewModel<User>
     {
         public event EventHandler LoadingDataFromBackendStarted;
         public event EventHandler LoadingDataFromBackendCompleted;
@@ -28,8 +29,8 @@ namespace ProspectManagement.Core.ViewModels
         private readonly ICommunityService _communityService;
         private readonly IUserService _userService;
         private readonly IProspectService _prospectService;
-        private readonly IProspectCache _prospectCache;
         protected IMvxMessenger Messenger;
+        private readonly IMvxNavigationService _navigationService;
 
         private readonly IIncrementalCollectionFactory _collectionFactory;
         private ObservableCollection<Prospect> _prospects;
@@ -205,20 +206,20 @@ namespace ProspectManagement.Core.ViewModels
         {
             get
             {
-                return _selectionChangedCommand ?? (_selectionChangedCommand = new MvxCommand<Prospect>((prospect) => { _prospectCache.SaveProspectToCache(prospect); ShowViewModel<SplitDetailViewModel>(prospect); }));
+                return _selectionChangedCommand ?? (_selectionChangedCommand = new MvxCommand<Prospect>((prospect) => _navigationService.Navigate<SplitDetailViewModel, Prospect>(prospect)));
             }
         }
 
-        public SplitMasterViewModel(IMvxMessenger messenger, IProspectCache prospectCache, IDialogService dialogService, IUserService userService, IAuthenticator authService, ICommunityService communityService, IProspectService prospectService, IIncrementalCollectionFactory collectionFactory)
+        public SplitMasterViewModel(IMvxMessenger messenger, IDialogService dialogService, IUserService userService, IAuthenticator authService, ICommunityService communityService, IProspectService prospectService, IIncrementalCollectionFactory collectionFactory, IMvxNavigationService navigationService)
         {
             Messenger = messenger;
-            _prospectCache = prospectCache;
             _dialogService = dialogService;
             _userService = userService;
             _authService = authService;
             _communityService = communityService;
             _prospectService = prospectService;
             _collectionFactory = collectionFactory;
+            _navigationService = navigationService;
 
             Messenger.Subscribe<ProspectChangedMessage>(async message => ProspectUpdated(message.UpdatedProspect), MvxReference.Strong);
             Messenger.Subscribe<ProspectAssignedMessage>(async message => ProspectAssigned(message.AssignedProspect), MvxReference.Strong);
@@ -251,7 +252,7 @@ namespace ProspectManagement.Core.ViewModels
             await ReloadDataAsync();
         }
 
-        public async void Init(User parameter)
+        public void Prepare(User parameter)
         {
             User = parameter;
         }

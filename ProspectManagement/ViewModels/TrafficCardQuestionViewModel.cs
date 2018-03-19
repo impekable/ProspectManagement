@@ -1,23 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MvvmCross.Core.Navigation;
 using MvvmCross.Core.ViewModels;
 using MvvmCross.Plugins.Messenger;
-using ProspectManagement.Core.Interfaces.Repositories;
 using ProspectManagement.Core.Interfaces.Services;
 using ProspectManagement.Core.Messages;
 using ProspectManagement.Core.Models;
 
 namespace ProspectManagement.Core.ViewModels
 {
-    public class TrafficCardQuestionViewModel : BaseViewModel
+    public class TrafficCardQuestionViewModel : BaseViewModel, IMvxViewModel<KeyValuePair<int, TrafficCardResponse>>
     {
-        private Prospect _prospect;
-
         private readonly ITrafficCardResponseService _trafficCardResponseService;
-        private readonly IProspectCache _prospectCache;
         protected IMvxMessenger Messenger;
+        private readonly IMvxNavigationService _navigationService;
 
+        private int _prospectNumber;
         private List<TrafficCardResponse> _responses;
         private TrafficCardResponse _response;
         private TrafficCardQuestion _currentQuestion;
@@ -74,7 +73,7 @@ namespace ProspectManagement.Core.ViewModels
                     var originalAnswer = Response.AnswerNumber;
                     Response.AnswerNumber = _currentAnswer != null ? _currentAnswer.AnswerNumber : 0;
 
-                    var result = await _trafficCardResponseService.UpdateTrafficCardResponse(_prospect.ProspectAddressNumber, _responses);
+                    var result = await _trafficCardResponseService.UpdateTrafficCardResponse(_prospectNumber, _responses);
 
                     if (result)
                     {
@@ -89,11 +88,11 @@ namespace ProspectManagement.Core.ViewModels
             }
         }
 
-        public TrafficCardQuestionViewModel(IMvxMessenger messenger, IProspectCache prospectCache, ITrafficCardResponseService trafficCardResponseService)
+        public TrafficCardQuestionViewModel(IMvxMessenger messenger, ITrafficCardResponseService trafficCardResponseService, IMvxNavigationService navigationService)
         {
             Messenger = messenger;
-            _prospectCache = prospectCache;
             _trafficCardResponseService = trafficCardResponseService;
+            _navigationService = navigationService;
 
             Messenger.Subscribe<RefreshMessage>(async message => Close(this), MvxReference.Strong);
            
@@ -105,10 +104,10 @@ namespace ProspectManagement.Core.ViewModels
             await ReloadDataAsync();
         }
 
-        public async void Init(Prospect prospect)
+        public void Prepare(KeyValuePair<int, TrafficCardResponse> parameter)
         {
-            _prospect = prospect;
-            Response = _prospectCache.GetTrafficCardResponseFromCache(prospect.ProspectAddressNumber);
+            Response = parameter.Value;
+            _prospectNumber = parameter.Key;
             _responses = new List<TrafficCardResponse>();
             _responses.Add(Response);
             CurrentQuestion = Response.TrafficCardQuestion;

@@ -11,10 +11,11 @@ using System.Threading.Tasks;
 using System.Linq;
 using MvvmCross.Plugins.Messenger;
 using ProspectManagement.Core.Messages;
+using MvvmCross.Core.Navigation;
 
 namespace ProspectManagement.Core.ViewModels
 {
-    public class EditProspectViewModel : BaseViewModel
+    public class EditProspectViewModel : BaseViewModel, IMvxViewModel<Prospect>
     {
         private MvxInteraction _hideAlertInteraction = new MvxInteraction();
         public IMvxInteraction HideAlertInteraction => _hideAlertInteraction;
@@ -43,8 +44,8 @@ namespace ProspectManagement.Core.ViewModels
         private readonly IStreetValidationService _streetValidationService;
         private readonly IProspectService _prospectService;
         private readonly IUserDefinedCodeService _userDefinedCodeService;
-        private readonly IProspectCache _prospectCache;
         protected IMvxMessenger Messenger;
+        private readonly IMvxNavigationService _navigationService;
 
         private ICommand _saveCommand;
         private ICommand _closeCommand;
@@ -584,7 +585,8 @@ namespace ProspectManagement.Core.ViewModels
             }
         }
 
-        public EditProspectViewModel(IMvxMessenger messenger, IUserDefinedCodeService userDefinedCodeService, IStreetValidationService streetValidationService, ITrafficSourceService trafficSourceService, IDialogService dialogService, IPhoneNumberValidationService phoneNumberValidationService, IEmailValidationService emailValidationService, IProspectCache prospectCache, IProspectService prospectService)
+        public EditProspectViewModel(IMvxMessenger messenger, IUserDefinedCodeService userDefinedCodeService, IStreetValidationService streetValidationService, ITrafficSourceService trafficSourceService, IDialogService dialogService, IPhoneNumberValidationService phoneNumberValidationService, IEmailValidationService emailValidationService, IProspectService prospectService, IMvxNavigationService navigationService)
+
         {
             Messenger = messenger;
             _trafficSourceService = trafficSourceService;
@@ -594,7 +596,7 @@ namespace ProspectManagement.Core.ViewModels
             _emailValidationService = emailValidationService;
             _prospectService = prospectService;
             _userDefinedCodeService = userDefinedCodeService;
-            _prospectCache = prospectCache;
+            _navigationService = navigationService;
 
             ConfigureValidationRules();
             Validator.ResultChanged += OnValidationResultChanged;
@@ -603,14 +605,13 @@ namespace ProspectManagement.Core.ViewModels
            
         }
 
-        public async void Init(Prospect prospect)
+        public void Prepare(Prospect prospect)
         {
-            Prospect = _prospectCache.GetProspectFromCache(prospect.ProspectAddressNumber);
-            if (Prospect == null)
-            {
-                Prospect = await _prospectService.GetProspectAsync(prospect.ProspectAddressNumber);
-            }
+            Prospect = prospect;
+        }
 
+        public override async Task Initialize()
+        {
             FirstName = Prospect.FirstName;
             LastName = Prospect.LastName;
             MiddleName = Prospect.MiddleName;
@@ -652,8 +653,6 @@ namespace ProspectManagement.Core.ViewModels
             ActiveTrafficSource = TrafficSources.FirstOrDefault(t => t.TrafficSourceDetails.Any(td => td.CodeId == Prospect.TrafficSourceCodeId));
             if (ActiveTrafficSource != null)
                 ActiveTrafficSourceDetail = ActiveTrafficSource.TrafficSourceDetails.First(td => td.CodeId == Prospect.TrafficSourceCodeId);
-
-
         }
 
         protected async void Validate()

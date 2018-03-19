@@ -10,7 +10,7 @@ using ProspectManagement.Core.Models;
 
 namespace ProspectManagement.Core.ViewModels
 {
-    public class SplitDetailViewModel : BaseViewModel
+    public class SplitDetailViewModel : BaseViewModel, IMvxViewModel<Prospect>
     {
         private Prospect _prospect;
         private bool _assigned;
@@ -25,8 +25,8 @@ namespace ProspectManagement.Core.ViewModels
         private ICommand _showCobuyerTab;
         private ICommand _showTrafficCardTab;
         private readonly IProspectService _prospectService;
-        private readonly IProspectCache _prospectCache;
         protected IMvxMessenger Messenger;
+        private readonly IMvxNavigationService _navigationService;
 
         public bool IsLead
         {
@@ -75,14 +75,14 @@ namespace ProspectManagement.Core.ViewModels
         private MvxInteraction _assignedProspectInteraction = new MvxInteraction();
         public IMvxInteraction AssignedProspectInteraction => _assignedProspectInteraction;
 
-        public SplitDetailViewModel(IMvxMessenger messenger, IProspectCache prospectCache, IProspectService prospectService, IActivityService activityService)
+        public SplitDetailViewModel(IMvxMessenger messenger, IProspectService prospectService, IMvxNavigationService navigationService)
         {
             Messenger = messenger;
             _prospectService = prospectService;
-            _prospectCache = prospectCache;
+            _navigationService = navigationService;
 
             Messenger.Subscribe<RefreshMessage>(async message => _clearDetailsInteraction.Raise(), MvxReference.Strong);
-            Messenger.Subscribe<ProspectChangedMessage>(async message => Init(message.UpdatedProspect), MvxReference.Strong);
+            Messenger.Subscribe<ProspectChangedMessage>(async message => Prepare(message.UpdatedProspect), MvxReference.Strong);
             Messenger.Subscribe<UserLogoutMessage>(async message => UserLogout(), MvxReference.Strong);
             Messenger.Subscribe<ActivityAddedMessage>(async message => ActivityAdded(message.AddedActivity), MvxReference.Strong);
         }
@@ -141,7 +141,7 @@ namespace ProspectManagement.Core.ViewModels
                         SalespersonAddressNumber = Prospect.ProspectCommunity.SalespersonAddressNumber,
                         ProspectCommunityId = Prospect.ProspectCommunity.ProspectCommunityId
                     };
-                    ShowViewModel<AddActivityViewModel>(activity);
+                    _navigationService.Navigate<AddActivityViewModel, Activity>(activity);
                 }));
             }
         }
@@ -161,7 +161,7 @@ namespace ProspectManagement.Core.ViewModels
                         SalespersonAddressNumber = Prospect.ProspectCommunity.SalespersonAddressNumber,
                         ProspectCommunityId = Prospect.ProspectCommunity.ProspectCommunityId
                     };
-                    ShowViewModel<AddActivityViewModel>(activity);
+                    _navigationService.Navigate<AddActivityViewModel, Activity>(activity);
                 }));
             }
         }
@@ -181,7 +181,7 @@ namespace ProspectManagement.Core.ViewModels
                         SalespersonAddressNumber = Prospect.ProspectCommunity.SalespersonAddressNumber,
                         ProspectCommunityId = Prospect.ProspectCommunity.ProspectCommunityId
                     };
-                    ShowViewModel<AddActivityViewModel>(activity);
+                    _navigationService.Navigate<AddActivityViewModel, Activity>(activity);
                 }));
             }
         }
@@ -190,7 +190,7 @@ namespace ProspectManagement.Core.ViewModels
         {
             get
             {
-                return _editProspectCommand ?? (_editProspectCommand = new MvxCommand(() => { ShowViewModel<EditProspectViewModel>(_prospect); }));
+                return _editProspectCommand ?? (_editProspectCommand = new MvxCommand(() => _navigationService.Navigate<EditProspectViewModel, Prospect>(_prospect)));
             }
         }
 
@@ -198,7 +198,7 @@ namespace ProspectManagement.Core.ViewModels
         {
             get
             {
-                return _showCobuyerTab ?? (_showCobuyerTab = new MvxCommand<Prospect>((prospect) => ShowViewModel<CobuyerViewModel>(_prospect)));
+                return _showCobuyerTab ?? (_showCobuyerTab = new MvxCommand<Prospect>((prospect) => _navigationService.Navigate<CobuyerViewModel, Prospect>(_prospect)));
             }
         }
 
@@ -206,7 +206,7 @@ namespace ProspectManagement.Core.ViewModels
         {
             get
             {
-                return _showTrafficCardTab ?? (_showTrafficCardTab = new MvxCommand<Prospect>((prospect) => ShowViewModel<TrafficCardViewModel>(_prospect)));
+                return _showTrafficCardTab ?? (_showTrafficCardTab = new MvxCommand<Prospect>((prospect) => _navigationService.Navigate<TrafficCardViewModel, Prospect>(_prospect)));
             }
         }
 
@@ -283,13 +283,9 @@ namespace ProspectManagement.Core.ViewModels
             await ReloadDataAsync();
         }
 
-        public async void Init(Prospect prospect)
+        public async void Prepare(Prospect prospect)
         {
-            Prospect = _prospectCache.GetProspectFromCache(prospect.ProspectAddressNumber);
-            if (Prospect == null)
-            {
-                Prospect = await _prospectService.GetProspectAsync(prospect.ProspectAddressNumber);
-            }
+            Prospect = prospect;
         }
     }
 

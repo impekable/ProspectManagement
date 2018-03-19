@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using MvvmCross.Core.Navigation;
 using MvvmCross.Core.ViewModels;
 using MvvmCross.Plugins.Messenger;
 using MvvmValidation;
@@ -10,9 +11,10 @@ using ProspectManagement.Core.Models;
 
 namespace ProspectManagement.Core.ViewModels
 {
-    public class AddActivityViewModel : BaseViewModel
+    public class AddActivityViewModel : BaseViewModel, IMvxViewModel<Activity>
     {
         protected IMvxMessenger Messenger;
+        private readonly IMvxNavigationService _navigationService;
 
         private MvxInteraction _hideAlertInteraction = new MvxInteraction();
         public IMvxInteraction HideAlertInteraction => _hideAlertInteraction;
@@ -89,10 +91,11 @@ namespace ProspectManagement.Core.ViewModels
             }
         }
 
-        public AddActivityViewModel(IMvxMessenger messenger, IActivityService activityService)
+        public AddActivityViewModel(IMvxMessenger messenger, IActivityService activityService, IMvxNavigationService navigationService)
         {
             Messenger = messenger;
             _activityService = activityService;
+            _navigationService = navigationService;
 
             ConfigureValidationRules();
             Validator.ResultChanged += OnValidationResultChanged;
@@ -100,7 +103,7 @@ namespace ProspectManagement.Core.ViewModels
             Messenger.Subscribe<RefreshMessage>(async message => Close(this), MvxReference.Strong);
         }
 
-        public async void Init(Activity activity)
+        public async void Prepare(Activity activity)
         {
             Activity = activity;
         }

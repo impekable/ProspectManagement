@@ -11,17 +11,16 @@ using System.Threading.Tasks;
 using System.Linq;
 using MvvmCross.Plugins.Messenger;
 using ProspectManagement.Core.Messages;
+using MvvmCross.Core.Navigation;
 
 namespace ProspectManagement.Core.ViewModels
 {
-    public class CobuyerDetailViewModel : BaseViewModel
+    public class CobuyerDetailViewModel : BaseViewModel, IMvxViewModel<Cobuyer>
     {
         private MvxInteraction _hideAlertInteraction = new MvxInteraction();
         public IMvxInteraction HideAlertInteraction => _hideAlertInteraction;
 
         private UserDefinedCode _originalPickerValue;
-        private TrafficSource _originalTrafficSource;
-        private TrafficSourceDetail _originalTrafficSourceDetail;
 
         private Prospect _prospect;
         private Cobuyer _cobuyer;
@@ -45,7 +44,8 @@ namespace ProspectManagement.Core.ViewModels
         private readonly IStreetValidationService _streetValidationService;
         private readonly IUserDefinedCodeService _userDefinedCodeService;
         private readonly ICobuyerService _cobuyerService;
-        private readonly IProspectCache _cobuyerCache;
+        private readonly IProspectService _prospectService;
+        private readonly IMvxNavigationService _navigationService;
 
         protected IMvxMessenger Messenger;
 
@@ -460,7 +460,7 @@ namespace ProspectManagement.Core.ViewModels
             }
         }
 
-        public CobuyerDetailViewModel(IAuthenticator authenticator, IMvxMessenger messenger, IUserDefinedCodeService userDefinedCodeService, IStreetValidationService streetValidationService, IDialogService dialogService, IPhoneNumberValidationService phoneNumberValidationService, IEmailValidationService emailValidationService, IProspectCache cobuyerCache, ICobuyerService cobuyerService)
+        public CobuyerDetailViewModel(IAuthenticator authenticator, IMvxMessenger messenger, IProspectService prospectService, IUserDefinedCodeService userDefinedCodeService, IStreetValidationService streetValidationService, IDialogService dialogService, IPhoneNumberValidationService phoneNumberValidationService, IEmailValidationService emailValidationService, ICobuyerService cobuyerService, IMvxNavigationService navigationService)
         {
             Messenger = messenger;
             _dialogService = dialogService;
@@ -469,8 +469,9 @@ namespace ProspectManagement.Core.ViewModels
             _emailValidationService = emailValidationService;
             _cobuyerService = cobuyerService;
             _userDefinedCodeService = userDefinedCodeService;
-            _cobuyerCache = cobuyerCache;
             _authenticator = authenticator;
+            _prospectService = prospectService;
+            _navigationService = navigationService;
 
             ConfigureValidationRules();
             Validator.ResultChanged += OnValidationResultChanged;
@@ -478,17 +479,11 @@ namespace ProspectManagement.Core.ViewModels
             Messenger.Subscribe<RefreshMessage>(async message => Close(this), MvxReference.Strong);
         }
 
-        public async void Init(Cobuyer cobuyer)
+        public async void Prepare(Cobuyer cobuyer)
         {
-            if (cobuyer.CobuyerAddressNumber > 0)
+            Cobuyer = cobuyer;
+            if (Cobuyer.CobuyerAddressNumber > 0)
             {
-                Cobuyer = _cobuyerCache.GetCobuyerFromCache(cobuyer.CobuyerAddressNumber);
-                if (Cobuyer == null)
-                {
-                    var authResult = await _authenticator.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource);
-                    Cobuyer = await _cobuyerService.GetCobuyerAsync(cobuyer.ProspectAddressNumber, cobuyer.CobuyerAddressNumber, authResult.AccessToken);
-                }
-
                 FirstName = Cobuyer.FirstName;
                 LastName = Cobuyer.LastName;
                 MiddleName = Cobuyer.MiddleName;
@@ -502,14 +497,16 @@ namespace ProspectManagement.Core.ViewModels
             }
             else
             {
-                Cobuyer = cobuyer;
                 StreetAddress = new StreetAddress();
                 MobilePhone = new PhoneNumber();
                 WorkPhone = new PhoneNumber();
                 HomePhone = new PhoneNumber();
                 Email = new Email();
             }
+        }
 
+        public override async Task Initialize()
+        {
             _originalCobuyer = Cobuyer.ShallowCopy();
             _originalCobuyer.StreetAddress = StreetAddress.ShallowCopy();
             _originalCobuyer.MobilePhoneNumber = MobilePhone.ShallowCopy();
@@ -553,9 +550,9 @@ namespace ProspectManagement.Core.ViewModels
             WorkPhoneNumberError = Validator.GetResult(nameof(WorkPhone)).ToString();
         }
 
-        private void UpdateCobuyerAddressWithProspectAddress(int ProspectAddressNumber)
+        private async void UpdateCobuyerAddressWithProspectAddress(int ProspectAddressNumber)
         {
-            _prospect = _cobuyerCache.GetProspectFromCache(ProspectAddressNumber);
+            _prospect = await _prospectService.GetProspectAsync(ProspectAddressNumber);
 
             if (_prospect.StreetAddress != null)
             {
