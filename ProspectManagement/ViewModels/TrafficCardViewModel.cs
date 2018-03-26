@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Microsoft.AppCenter.Analytics;
 using MvvmCross.Core.Navigation;
 using MvvmCross.Core.ViewModels;
 using MvvmCross.Plugins.Messenger;
@@ -82,24 +83,25 @@ namespace ProspectManagement.Core.ViewModels
 			_trafficCardResponseService = trafficCardResponseService;
             _navigationService = navigationService;
 
-            Messenger.Subscribe<RefreshMessage>(async message => _clearDetailsInteraction.Raise(), MvxReference.Strong);
-            Messenger.Subscribe<TrafficCardResponseChangedMessage>(async message => ResponseUpdated(message.ChangedResponse), MvxReference.Strong);
+            Messenger.Subscribe<RefreshMessage>(message => _clearDetailsInteraction.Raise(), MvxReference.Strong);
+            Messenger.Subscribe<TrafficCardResponseChangedMessage>(message => ResponseUpdated(message.ChangedResponse), MvxReference.Strong);
 		}
 
-		public async void ResponseUpdated(TrafficCardResponse response)
+		public void ResponseUpdated(TrafficCardResponse response)
 		{
+            Analytics.TrackEvent("Traffic Card Updated", new Dictionary<string, string>
+            {
+                {"ProspectNumber", Prospect.ProspectAddressNumber.ToString()},
+                {"ProspectName", Prospect.Name},
+                {"SalesAssociateNumber", Prospect.ProspectCommunity.SalespersonAddressNumber.ToString()},
+                {"SalesAssociateName", Prospect.ProspectCommunity.SalespersonName},
+            });
             var r = Responses.FirstOrDefault(res => res.ResponseNumber == response.ResponseNumber);
             if (r != null)
             {
                 var request = new TableRow { TableRowToUpdate = Responses.IndexOf(r) };
                 _updateRowInteraction.Raise(request);
             }
-		}
-
-		public override async void Start()
-		{
-			base.Start();
-			await ReloadDataAsync();
 		}
 
         public void Prepare(Prospect prospect)
@@ -109,6 +111,13 @@ namespace ProspectManagement.Core.ViewModels
 
         public override async Task Initialize()
         {
+            Analytics.TrackEvent("Traffic Card Viewed", new Dictionary<string, string>
+            {
+                {"ProspectNumber", Prospect.ProspectAddressNumber.ToString()},
+                {"ProspectName", Prospect.Name},
+                {"SalesAssociateNumber", Prospect.ProspectCommunity.SalespersonAddressNumber.ToString()},
+                {"SalesAssociateName", Prospect.ProspectCommunity.SalespersonName},
+            });
             Responses = await _trafficCardResponseService.GetTrafficCardResponsesForProspect(Prospect.ProspectAddressNumber, false);
 		}
     }

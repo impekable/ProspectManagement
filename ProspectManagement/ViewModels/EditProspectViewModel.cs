@@ -385,7 +385,7 @@ namespace ProspectManagement.Core.ViewModels
                     {
                         Messenger.Publish(new ProspectChangedMessage(this) { UpdatedProspect = Prospect });
 
-                        Close(this);
+                        await _navigationService.Close(this);
                     }
                     else
                     {
@@ -412,7 +412,7 @@ namespace ProspectManagement.Core.ViewModels
         {
             get
             {
-                return _closeCommand ?? (_closeCommand = new MvxCommand(() => { Close(this); }));
+                return _closeCommand ?? (_closeCommand = new MvxCommand(async () => { await _navigationService.Close(this); }));
             }
         }
 
@@ -601,7 +601,7 @@ namespace ProspectManagement.Core.ViewModels
             ConfigureValidationRules();
             Validator.ResultChanged += OnValidationResultChanged;
 
-            Messenger.Subscribe<RefreshMessage>(async message => Close(this), MvxReference.Strong);
+            Messenger.Subscribe<RefreshMessage>(async message => await _navigationService.Close(this), MvxReference.Strong);
            
         }
 

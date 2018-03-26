@@ -125,6 +125,7 @@ namespace ProspectManagement.iOS.Views
             refreshControl.ValueChanged += (sender, e) =>
             {
                 setTableViewSource(set);
+                ViewModel.RefreshCommand.Execute(null);
             };
             MasterTableView.RefreshControl = refreshControl;
 

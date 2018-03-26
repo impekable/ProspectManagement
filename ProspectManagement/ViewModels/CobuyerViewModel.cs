@@ -11,6 +11,7 @@ using ProspectManagement.Core.Interfaces.Services;
 using ProspectManagement.Core.Messages;
 using MvvmCross.Core.Navigation;
 using System.Threading.Tasks;
+using Microsoft.AppCenter.Analytics;
 
 namespace ProspectManagement.Core.ViewModels
 {
@@ -97,13 +98,22 @@ namespace ProspectManagement.Core.ViewModels
             _cobuyerService = cobuyerService;
             _navigationService = navigationService;
 
-            Messenger.Subscribe<RefreshMessage>(async message => _clearDetailsInteraction.Raise(), MvxReference.Strong);
-            Messenger.Subscribe<CobuyerChangedMessage>(async message => CobuyerUpdated(message.UpdatedCobuyer), MvxReference.Strong);
-            Messenger.Subscribe<CobuyerAddedMessage>(async message => CobuyerAdded(message.AddedCobuyer), MvxReference.Strong);
+            Messenger.Subscribe<RefreshMessage>(message => _clearDetailsInteraction.Raise(), MvxReference.Strong);
+            Messenger.Subscribe<CobuyerChangedMessage>(message => CobuyerUpdated(message.UpdatedCobuyer), MvxReference.Strong);
+            Messenger.Subscribe<CobuyerAddedMessage>(message => CobuyerAdded(message.AddedCobuyer), MvxReference.Strong);
         }
 
-        public async void CobuyerUpdated(Cobuyer cobuyer)
+        public void CobuyerUpdated(Cobuyer cobuyer)
         {
+            Analytics.TrackEvent("Cobuyer Updated", new Dictionary<string, string>
+            {
+                {"ProspectNumber", Prospect.ProspectAddressNumber.ToString()},
+                {"ProspectName", Prospect.Name},
+                {"SalesAssociateNumber", Prospect.ProspectCommunity.SalespersonAddressNumber.ToString()},
+                {"SalesAssociateName", Prospect.ProspectCommunity.SalespersonName},
+                {"CobuyerNumber", cobuyer.CobuyerAddressNumber.ToString()},
+                {"CobuyerName", cobuyer.FullName},
+            });
             var r = CobuyersList.FirstOrDefault(res => res.CobuyerAddressNumber == cobuyer.CobuyerAddressNumber);
             if (r != null)
             {
@@ -112,20 +122,30 @@ namespace ProspectManagement.Core.ViewModels
             }
         }
 
-        public async void CobuyerAdded(Cobuyer cobuyer)
+        public void CobuyerAdded(Cobuyer cobuyer)
         {
+            Analytics.TrackEvent("Cobuyer Added", new Dictionary<string, string>
+            {
+                {"ProspectNumber", Prospect.ProspectAddressNumber.ToString()},
+                {"ProspectName", Prospect.Name},
+                {"SalesAssociateNumber", Prospect.ProspectCommunity.SalespersonAddressNumber.ToString()},
+                {"SalesAssociateName", Prospect.ProspectCommunity.SalespersonName},
+                {"CobuyerNumber", cobuyer.CobuyerAddressNumber.ToString()},
+                {"CobuyerName", cobuyer.FullName},
+            });
             CobuyersList.Add(cobuyer);
             _addRowInteraction.Raise();
         }
 
-        public override async void Start()
-        {
-            base.Start();
-            await ReloadDataAsync();
-        }
-
         public override async Task Initialize()
         {
+            Analytics.TrackEvent("Cobuyers Viewed", new Dictionary<string, string>
+            {
+                {"ProspectNumber", Prospect.ProspectAddressNumber.ToString()},
+                {"ProspectName", Prospect.Name},
+                {"SalesAssociateNumber", Prospect.ProspectCommunity.SalespersonAddressNumber.ToString()},
+                {"SalesAssociateName", Prospect.ProspectCommunity.SalespersonName},
+            });
             CobuyersList = await _cobuyerService.GetCobuyersForProspectAsync(_prospect.ProspectAddressNumber);
         }
 

@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Microsoft.AppCenter.Analytics;
 using MvvmCross.Core.Navigation;
 using MvvmCross.Core.ViewModels;
 using MvvmCross.Plugins.Messenger;
@@ -58,7 +59,7 @@ namespace ProspectManagement.Core.ViewModels
         {
             get
             {
-                return _refreshCommand ?? (_refreshCommand = new MvxCommand(async () =>
+                return _refreshCommand ?? (_refreshCommand = new MvxCommand(() =>
                 {
                     Messenger.Publish(new RefreshMessage(this));
                 }));
@@ -69,7 +70,7 @@ namespace ProspectManagement.Core.ViewModels
         {
             get
             {
-                return _filterCommand ?? (_filterCommand = new MvxCommand(async () =>
+                return _filterCommand ?? (_filterCommand = new MvxCommand(() =>
                 {
                     var request = new Filter { Active = !FilterActive };
                     _filterInteraction.Raise(request);
@@ -221,19 +222,33 @@ namespace ProspectManagement.Core.ViewModels
             _collectionFactory = collectionFactory;
             _navigationService = navigationService;
 
-            Messenger.Subscribe<ProspectChangedMessage>(async message => ProspectUpdated(message.UpdatedProspect), MvxReference.Strong);
-            Messenger.Subscribe<ProspectAssignedMessage>(async message => ProspectAssigned(message.AssignedProspect), MvxReference.Strong);
+            Messenger.Subscribe<ProspectChangedMessage>(message => ProspectUpdated(message.UpdatedProspect), MvxReference.Strong);
+            Messenger.Subscribe<ProspectAssignedMessage>(message => ProspectAssigned(message.AssignedProspect), MvxReference.Strong);
 
         }
 
-        public async void ProspectUpdated(Prospect prospect)
+        public void ProspectUpdated(Prospect prospect)
         {
+            Analytics.TrackEvent("Prospect Updated", new Dictionary<string, string>
+            {
+                {"ProspectNumber", prospect.ProspectAddressNumber.ToString()},
+                {"ProspectName", prospect.Name},
+                {"SalesAssociateNumber", prospect.ProspectCommunity.SalespersonAddressNumber.ToString()},
+                {"SalesAssociateName", prospect.ProspectCommunity.SalespersonName},
+            });
             var request = new TableRow { TableRowToUpdate = Prospects.IndexOf(prospect) };
             _updateRowInteraction.Raise(request);
         }
 
-        public async void ProspectAssigned(Prospect prospect)
+        public void ProspectAssigned(Prospect prospect)
         {
+            Analytics.TrackEvent("Prospect Assigned", new Dictionary<string, string>
+            {
+                {"ProspectNumber", prospect.ProspectAddressNumber.ToString()},
+                {"ProspectName", prospect.Name},
+                {"SalesAssociateNumber", prospect.ProspectCommunity.SalespersonAddressNumber.ToString()},
+                {"SalesAssociateName", prospect.ProspectCommunity.SalespersonName},
+            });
             var request = new TableRow { TableRowToUpdate = Prospects.IndexOf(prospect) };
             if (SelectedSegment == 1) //Unassigned
             {
@@ -244,12 +259,6 @@ namespace ProspectManagement.Core.ViewModels
                 _updateRowInteraction.Raise(request);
             }
 
-        }
-
-        public override async void Start()
-        {
-            base.Start();
-            await ReloadDataAsync();
         }
 
         public void Prepare(User parameter)
@@ -264,6 +273,11 @@ namespace ProspectManagement.Core.ViewModels
 
         public void OnLoadingDataFromBackendCompleted()
         {
+            Analytics.TrackEvent("Prospects Searched", new Dictionary<string, string>
+            {
+                {"Leads Only", FilterActive.ToString()},
+                {"Sales Associate Filter", SelectedSegment == 0 ? "All" : SelectedSegment == 1 ? "Unassigned" : "Mine"},
+            });
             LoadingDataFromBackendCompleted?.Invoke(null, EventArgs.Empty);
         }
 

@@ -81,18 +81,18 @@ namespace ProspectManagement.Core.ViewModels
             _prospectService = prospectService;
             _navigationService = navigationService;
 
-            Messenger.Subscribe<RefreshMessage>(async message => _clearDetailsInteraction.Raise(), MvxReference.Strong);
-            Messenger.Subscribe<ProspectChangedMessage>(async message => Prepare(message.UpdatedProspect), MvxReference.Strong);
-            Messenger.Subscribe<UserLogoutMessage>(async message => UserLogout(), MvxReference.Strong);
-            Messenger.Subscribe<ActivityAddedMessage>(async message => ActivityAdded(message.AddedActivity), MvxReference.Strong);
+            Messenger.Subscribe<RefreshMessage>(message => _clearDetailsInteraction.Raise(), MvxReference.Strong);
+            Messenger.Subscribe<ProspectChangedMessage>(message => Prepare(message.UpdatedProspect), MvxReference.Strong);
+            Messenger.Subscribe<UserLogoutMessage>(message => UserLogout(), MvxReference.Strong);
+            Messenger.Subscribe<ActivityAddedMessage>(message => ActivityAdded(message.AddedActivity), MvxReference.Strong);
         }
 
-        public async void UserLogout()
+        public void UserLogout()
         {
             _clearDetailsInteraction.Raise();
         }
 
-        public async void ActivityAdded(Activity activity)
+        public void ActivityAdded(Activity activity)
         {
             if (Prospect.ProspectCommunity.AddressType.Equals("Lead") && (activity.ActivityType.Equals("VISIT") || activity.ActivityType.Equals("APPOINTMENT")))
             {
@@ -277,13 +277,7 @@ namespace ProspectManagement.Core.ViewModels
             }
         }
 
-        public override async void Start()
-        {
-            base.Start();
-            await ReloadDataAsync();
-        }
-
-        public async void Prepare(Prospect prospect)
+        public void Prepare(Prospect prospect)
         {
             Prospect = prospect;
         }

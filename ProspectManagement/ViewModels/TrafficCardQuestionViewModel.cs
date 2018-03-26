@@ -57,9 +57,9 @@ namespace ProspectManagement.Core.ViewModels
         {
             get
             {
-                return new MvxCommand(() =>
+                return new MvxCommand(async () =>
                 {
-                    Close(this);
+                    await _navigationService.Close(this);
                 });
             }
         }
@@ -83,7 +83,7 @@ namespace ProspectManagement.Core.ViewModels
                     {
                         Response.AnswerNumber = originalAnswer;
                     }
-                    Close(this);
+                    await _navigationService.Close(this);
                 });
             }
         }
@@ -94,14 +94,8 @@ namespace ProspectManagement.Core.ViewModels
             _trafficCardResponseService = trafficCardResponseService;
             _navigationService = navigationService;
 
-            Messenger.Subscribe<RefreshMessage>(async message => Close(this), MvxReference.Strong);
+            Messenger.Subscribe<RefreshMessage>(async message => await _navigationService.Close(this), MvxReference.Strong);
            
-        }
-
-        public override async void Start()
-        {
-            base.Start();
-            await ReloadDataAsync();
         }
 
         public void Prepare(KeyValuePair<int, TrafficCardResponse> parameter)

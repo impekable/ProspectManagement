@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Microsoft.AppCenter.Analytics;
 using MvvmCross.Core.Navigation;
 using MvvmCross.Core.ViewModels;
 using MvvmCross.Plugins.Messenger;
@@ -52,7 +54,7 @@ namespace ProspectManagement.Core.ViewModels
         {
             get
             {
-                return _closeCommand ?? (_closeCommand = new MvxCommand(() => Close(this)));
+                return _closeCommand ?? (_closeCommand = new MvxCommand(async () => await _navigationService.Close(this)));
             }
         }
 
@@ -68,13 +70,19 @@ namespace ProspectManagement.Core.ViewModels
                    {
                        Activity.Notes = Note;
                        var activityAdded = await _activityService.AddActivityToProspectAsync(Activity.ProspectAddressNumber, Activity);
-                        if (activityAdded != null)
-                        {
-                            Messenger.Publish(new ActivityAddedMessage(this) { AddedActivity = activityAdded });
-                        }
-                       Close(this);
+                       if (activityAdded != null)
+                       {
+                           Messenger.Publish(new ActivityAddedMessage(this) { AddedActivity = activityAdded });
+                       }
+                       await _navigationService.Close(this);
                    }
                    _hideAlertInteraction.Raise();
+
+                   Analytics.TrackEvent("Activity Added", new Dictionary<string, string>
+                    {
+                        {"ProspectNumber", Activity.ProspectAddressNumber.ToString()},
+                        {"ActivityType", Activity.ActivityType},
+                    });
 
                }));
             }
@@ -100,10 +108,10 @@ namespace ProspectManagement.Core.ViewModels
             ConfigureValidationRules();
             Validator.ResultChanged += OnValidationResultChanged;
 
-            Messenger.Subscribe<RefreshMessage>(async message => Close(this), MvxReference.Strong);
+            Messenger.Subscribe<RefreshMessage>(async message => await _navigationService.Close(this), MvxReference.Strong);
         }
 
-        public async void Prepare(Activity activity)
+        public void Prepare(Activity activity)
         {
             Activity = activity;
         }

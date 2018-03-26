@@ -267,13 +267,13 @@ namespace ProspectManagement.Core.ViewModels
                     {
                         Messenger.Publish(new CobuyerChangedMessage(this) { UpdatedCobuyer = new Cobuyer() { CobuyerAddressNumber = Cobuyer.CobuyerAddressNumber, FirstName = Cobuyer.FirstName, LastName = Cobuyer.LastName } });
 
-                        Close(this);
+                        await _navigationService.Close(this);
                     }
                     else if (cobuyerAdded)
                     {
                         Messenger.Publish(new CobuyerAddedMessage(this) { AddedCobuyer = Cobuyer });
 
-                        Close(this);
+                        await _navigationService.Close(this);
                     }
                     else
                     {
@@ -298,7 +298,7 @@ namespace ProspectManagement.Core.ViewModels
         {
             get
             {
-                return _closeCommand ?? (_closeCommand = new MvxCommand(() => Close(this)));
+                return _closeCommand ?? (_closeCommand = new MvxCommand(async () => await _navigationService.Close(this)));
             }
         }
 
@@ -476,10 +476,10 @@ namespace ProspectManagement.Core.ViewModels
             ConfigureValidationRules();
             Validator.ResultChanged += OnValidationResultChanged;
 
-            Messenger.Subscribe<RefreshMessage>(async message => Close(this), MvxReference.Strong);
+            Messenger.Subscribe<RefreshMessage>(async message => await _navigationService.Close(this), MvxReference.Strong);
         }
 
-        public async void Prepare(Cobuyer cobuyer)
+        public void Prepare(Cobuyer cobuyer)
         {
             Cobuyer = cobuyer;
             if (Cobuyer.CobuyerAddressNumber > 0)
