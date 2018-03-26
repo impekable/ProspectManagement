@@ -207,7 +207,15 @@ namespace ProspectManagement.Core.ViewModels
         {
             get
             {
-                return _selectionChangedCommand ?? (_selectionChangedCommand = new MvxCommand<Prospect>((prospect) => _navigationService.Navigate<SplitDetailViewModel, Prospect>(prospect)));
+                return _selectionChangedCommand ?? (_selectionChangedCommand = new MvxCommand<Prospect>((prospect) =>
+                {
+                    _navigationService.Navigate<SplitDetailViewModel, Prospect>(prospect);
+                    Analytics.TrackEvent("Prospect Selected", new Dictionary<string, string>
+                    {
+                        {"Community", prospect.ProspectCommunity.CommunityNumber + " " + prospect.ProspectCommunity.Community.Description},
+                        {"SalesAssociate", prospect.ProspectCommunity.SalespersonAddressNumber + " " + prospect.ProspectCommunity.SalespersonName},
+                    });
+                }));
             }
         }
 
