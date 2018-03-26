@@ -80,7 +80,8 @@ namespace ProspectManagement.Core.ViewModels
 
                    Analytics.TrackEvent("Activity Added", new Dictionary<string, string>
                     {
-                        {"ProspectNumber", Activity.ProspectAddressNumber.ToString()},
+                        {"SalesAssociate", Activity.SalespersonAddressNumber.ToString()},
+                        {"Community", Activity.Community},
                         {"ActivityType", Activity.ActivityType},
                     });
 

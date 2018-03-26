@@ -107,12 +107,8 @@ namespace ProspectManagement.Core.ViewModels
         {
             Analytics.TrackEvent("Cobuyer Updated", new Dictionary<string, string>
             {
-                {"ProspectNumber", Prospect.ProspectAddressNumber.ToString()},
-                {"ProspectName", Prospect.Name},
-                {"SalesAssociateNumber", Prospect.ProspectCommunity.SalespersonAddressNumber.ToString()},
-                {"SalesAssociateName", Prospect.ProspectCommunity.SalespersonName},
-                {"CobuyerNumber", cobuyer.CobuyerAddressNumber.ToString()},
-                {"CobuyerName", cobuyer.FullName},
+                {"Community", Prospect.ProspectCommunity.CommunityNumber + " " + Prospect.ProspectCommunity.Community.Description},
+                {"SalesAssociate", Prospect.ProspectCommunity.SalespersonAddressNumber + " " + Prospect.ProspectCommunity.SalespersonName},
             });
             var r = CobuyersList.FirstOrDefault(res => res.CobuyerAddressNumber == cobuyer.CobuyerAddressNumber);
             if (r != null)
@@ -126,12 +122,8 @@ namespace ProspectManagement.Core.ViewModels
         {
             Analytics.TrackEvent("Cobuyer Added", new Dictionary<string, string>
             {
-                {"ProspectNumber", Prospect.ProspectAddressNumber.ToString()},
-                {"ProspectName", Prospect.Name},
-                {"SalesAssociateNumber", Prospect.ProspectCommunity.SalespersonAddressNumber.ToString()},
-                {"SalesAssociateName", Prospect.ProspectCommunity.SalespersonName},
-                {"CobuyerNumber", cobuyer.CobuyerAddressNumber.ToString()},
-                {"CobuyerName", cobuyer.FullName},
+                {"Community", Prospect.ProspectCommunity.CommunityNumber + " " + Prospect.ProspectCommunity.Community.Description},
+                {"SalesAssociate", Prospect.ProspectCommunity.SalespersonAddressNumber + " " + Prospect.ProspectCommunity.SalespersonName},
             });
             CobuyersList.Add(cobuyer);
             _addRowInteraction.Raise();
@@ -141,10 +133,8 @@ namespace ProspectManagement.Core.ViewModels
         {
             Analytics.TrackEvent("Cobuyers Viewed", new Dictionary<string, string>
             {
-                {"ProspectNumber", Prospect.ProspectAddressNumber.ToString()},
-                {"ProspectName", Prospect.Name},
-                {"SalesAssociateNumber", Prospect.ProspectCommunity.SalespersonAddressNumber.ToString()},
-                {"SalesAssociateName", Prospect.ProspectCommunity.SalespersonName},
+                {"Community", Prospect.ProspectCommunity.CommunityNumber + " " + Prospect.ProspectCommunity.Community.Description},
+                {"SalesAssociate", Prospect.ProspectCommunity.SalespersonAddressNumber + " " + Prospect.ProspectCommunity.SalespersonName},
             });
             CobuyersList = await _cobuyerService.GetCobuyersForProspectAsync(_prospect.ProspectAddressNumber);
         }

@@ -231,10 +231,8 @@ namespace ProspectManagement.Core.ViewModels
         {
             Analytics.TrackEvent("Prospect Updated", new Dictionary<string, string>
             {
-                {"ProspectNumber", prospect.ProspectAddressNumber.ToString()},
-                {"ProspectName", prospect.Name},
-                {"SalesAssociateNumber", prospect.ProspectCommunity.SalespersonAddressNumber.ToString()},
-                {"SalesAssociateName", prospect.ProspectCommunity.SalespersonName},
+                {"Community", prospect.ProspectCommunity.CommunityNumber + " " + prospect.ProspectCommunity.Community.Description},
+                {"SalesAssociate", prospect.ProspectCommunity.SalespersonAddressNumber + " " + prospect.ProspectCommunity.SalespersonName},
             });
             var request = new TableRow { TableRowToUpdate = Prospects.IndexOf(prospect) };
             _updateRowInteraction.Raise(request);
@@ -244,10 +242,8 @@ namespace ProspectManagement.Core.ViewModels
         {
             Analytics.TrackEvent("Prospect Assigned", new Dictionary<string, string>
             {
-                {"ProspectNumber", prospect.ProspectAddressNumber.ToString()},
-                {"ProspectName", prospect.Name},
-                {"SalesAssociateNumber", prospect.ProspectCommunity.SalespersonAddressNumber.ToString()},
-                {"SalesAssociateName", prospect.ProspectCommunity.SalespersonName},
+                {"Community", prospect.ProspectCommunity.CommunityNumber + " " + prospect.ProspectCommunity.Community.Description},
+                {"SalesAssociate", prospect.ProspectCommunity.SalespersonAddressNumber + " " + prospect.ProspectCommunity.SalespersonName},
             });
             var request = new TableRow { TableRowToUpdate = Prospects.IndexOf(prospect) };
             if (SelectedSegment == 1) //Unassigned
@@ -275,6 +271,7 @@ namespace ProspectManagement.Core.ViewModels
         {
             Analytics.TrackEvent("Prospects Searched", new Dictionary<string, string>
             {
+                {"SalesAssociate", User.AddressNumber + " " + User.AddressBook.Name},
                 {"Leads Only", FilterActive.ToString()},
                 {"Sales Associate Filter", SelectedSegment == 0 ? "All" : SelectedSegment == 1 ? "Unassigned" : "Mine"},
             });

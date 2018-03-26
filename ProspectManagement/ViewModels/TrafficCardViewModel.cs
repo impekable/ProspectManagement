@@ -91,10 +91,8 @@ namespace ProspectManagement.Core.ViewModels
 		{
             Analytics.TrackEvent("Traffic Card Updated", new Dictionary<string, string>
             {
-                {"ProspectNumber", Prospect.ProspectAddressNumber.ToString()},
-                {"ProspectName", Prospect.Name},
-                {"SalesAssociateNumber", Prospect.ProspectCommunity.SalespersonAddressNumber.ToString()},
-                {"SalesAssociateName", Prospect.ProspectCommunity.SalespersonName},
+                {"Community", Prospect.ProspectCommunity.CommunityNumber + " " + Prospect.ProspectCommunity.Community.Description},
+                {"SalesAssociate", Prospect.ProspectCommunity.SalespersonAddressNumber + " " + Prospect.ProspectCommunity.SalespersonName},
             });
             var r = Responses.FirstOrDefault(res => res.ResponseNumber == response.ResponseNumber);
             if (r != null)
@@ -113,10 +111,8 @@ namespace ProspectManagement.Core.ViewModels
         {
             Analytics.TrackEvent("Traffic Card Viewed", new Dictionary<string, string>
             {
-                {"ProspectNumber", Prospect.ProspectAddressNumber.ToString()},
-                {"ProspectName", Prospect.Name},
-                {"SalesAssociateNumber", Prospect.ProspectCommunity.SalespersonAddressNumber.ToString()},
-                {"SalesAssociateName", Prospect.ProspectCommunity.SalespersonName},
+                {"Community", Prospect.ProspectCommunity.CommunityNumber + " " + Prospect.ProspectCommunity.Community.Description},
+                {"SalesAssociate", Prospect.ProspectCommunity.SalespersonAddressNumber + " " + Prospect.ProspectCommunity.SalespersonName},
             });
             Responses = await _trafficCardResponseService.GetTrafficCardResponsesForProspect(Prospect.ProspectAddressNumber, false);
 		}
