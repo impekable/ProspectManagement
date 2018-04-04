@@ -37,11 +37,11 @@ namespace ProspectManagement.Core.ViewModels
 
 		protected override async Task InitializeAsync()
 		{
-			while (User == null || User.AddressNumber == 0)
+			if (User == null || User.AddressNumber == 0)
 			{
 				User = await _userService.GetLoggedInUser();
 			}
-            _navigationService.Navigate<SplitRootViewModel, User>(User);
+            await _navigationService.Navigate<SplitRootViewModel, User>(User);
 		}
     }
 }
