@@ -10,7 +10,7 @@ namespace ProspectManagement.Core.Repositories
 {
     public class TrafficSourceRepository : BaseRepository, ITrafficSourceRepository
     {
-        const string _baseUri = _devUri + "TrafficSources"; 
+        const string _baseUri = _e1Uri + "TrafficSources"; 
 
         public async Task<TrafficSource> GetTrafficSourceDetailsAsync(int sourceId, string accessToken)
         {

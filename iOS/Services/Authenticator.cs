@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
+using ProspectManagement.Core.Constants;
 using ProspectManagement.Core.Services;
 using UIKit;
 
@@ -23,7 +24,7 @@ namespace ProspectManagement.iOS.Services
             }
 
 			var uri = new Uri(returnUri);
-			var authResult = await authContext.AcquireTokenAsync(resource, Constants.PrivateKeys.ProspectMgmtClientId, uri, _platformParams);
+			var authResult = await authContext.AcquireTokenAsync(resource, PrivateKeys.ProspectMgmtClientId, uri, _platformParams);
 			return authResult;
 		}
 

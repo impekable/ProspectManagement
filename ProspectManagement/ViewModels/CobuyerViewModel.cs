@@ -18,13 +18,13 @@ namespace ProspectManagement.Core.ViewModels
     public class CobuyerViewModel : BaseViewModel, IMvxViewModel<Prospect>
     {
         private Prospect _prospect;
+        private User _user;
         private ICommand _showDetailTab;
         private ICommand _showTrafficCardTab;
-        private ICommand _showCobuyerDetail;
-        private ICommand _showCobuyerTab;
         private ICommand _selectionChangedCommand;
         private ICommand _addCobuyerCommand;
 
+        private readonly IUserService _userService;
         private readonly ICobuyerService _cobuyerService;
         protected IMvxMessenger Messenger;
         private readonly IMvxNavigationService _navigationService;
@@ -92,11 +92,12 @@ namespace ProspectManagement.Core.ViewModels
             }
         }
 
-        public CobuyerViewModel(IMvxMessenger messenger, ICobuyerService cobuyerService, IMvxNavigationService navigationService)
+        public CobuyerViewModel(IMvxMessenger messenger, ICobuyerService cobuyerService, IMvxNavigationService navigationService, IUserService userService)
         {
             Messenger = messenger;
             _cobuyerService = cobuyerService;
             _navigationService = navigationService;
+            _userService = userService;
 
             Messenger.Subscribe<RefreshMessage>(message => _clearDetailsInteraction.Raise(), MvxReference.Strong);
             Messenger.Subscribe<CobuyerChangedMessage>(message => CobuyerUpdated(message.UpdatedCobuyer), MvxReference.Strong);
@@ -105,11 +106,6 @@ namespace ProspectManagement.Core.ViewModels
 
         public void CobuyerUpdated(Cobuyer cobuyer)
         {
-            Analytics.TrackEvent("Cobuyer Updated", new Dictionary<string, string>
-            {
-                {"Community", Prospect.ProspectCommunity.CommunityNumber + " " + Prospect.ProspectCommunity.Community.Description},
-                {"SalesAssociate", Prospect.ProspectCommunity.SalespersonAddressNumber + " " + Prospect.ProspectCommunity.SalespersonName},
-            });
             var r = CobuyersList.FirstOrDefault(res => res.CobuyerAddressNumber == cobuyer.CobuyerAddressNumber);
             if (r != null)
             {
@@ -120,23 +116,20 @@ namespace ProspectManagement.Core.ViewModels
 
         public void CobuyerAdded(Cobuyer cobuyer)
         {
-            Analytics.TrackEvent("Cobuyer Added", new Dictionary<string, string>
-            {
-                {"Community", Prospect.ProspectCommunity.CommunityNumber + " " + Prospect.ProspectCommunity.Community.Description},
-                {"SalesAssociate", Prospect.ProspectCommunity.SalespersonAddressNumber + " " + Prospect.ProspectCommunity.SalespersonName},
-            });
             CobuyersList.Add(cobuyer);
             _addRowInteraction.Raise();
         }
 
         public override async Task Initialize()
         {
+            _user = await _userService.GetLoggedInUser();
             Analytics.TrackEvent("Cobuyers Viewed", new Dictionary<string, string>
             {
                 {"Community", Prospect.ProspectCommunity.CommunityNumber + " " + Prospect.ProspectCommunity.Community.Description},
                 {"SalesAssociate", Prospect.ProspectCommunity.SalespersonAddressNumber + " " + Prospect.ProspectCommunity.SalespersonName},
+                {"User", _user.AddressBook.AddressNumber + " " + _user.AddressBook.Name},
             });
-            CobuyersList = await _cobuyerService.GetCobuyersForProspectAsync(_prospect.ProspectAddressNumber);
+            CobuyersList = await _cobuyerService.GetCobuyersForProspectAsync(_prospect);
         }
 
         public void Prepare(Prospect prospect)

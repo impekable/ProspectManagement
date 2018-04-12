@@ -23,11 +23,11 @@
       <CustomCommands>
         <Command>
           <type>BeforeBuild</type>
-          <command>/bin/sh ../local-pre-build.sh</command>
+          <command>/bin/sh ../local-pre-build.sh DEV</command>
         </Command>
         <Command>
           <type>AfterBuild</type>
-          <command>/bin/sh ../local-post-build.sh</command>
+          <command></command>
         </Command>
       </CustomCommands>
     </CustomCommands>
@@ -164,6 +164,7 @@
     <Compile Include="Messages\ActivityAddedMessage.cs" />
     <Compile Include="Interactions\Filter.cs" />
     <Compile Include="Messages\RefreshMessage.cs" />
+    <Compile Include="Constants\ConnectionURIs.cs" />
  </ItemGroup>
   <ItemGroup>
     <Reference Include="MvvmCross.Plugins.Sqlite">

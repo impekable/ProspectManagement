@@ -8,7 +8,7 @@ namespace ProspectManagement.Core.Repositories
 {
 	public class UserDefinedCodeRepository : BaseRepository, IUserDefinedCodeRepository
 	{
-        const string _baseUri = _devUri + "UserDefinedCodes/{0}/{1}";
+        const string _baseUri = _e1Uri + "UserDefinedCodes/{0}/{1}";
 
         public async Task<List<UserDefinedCode>> GetUserDefinedCodesAsync(string productCode, string group, string accessToken)
         {

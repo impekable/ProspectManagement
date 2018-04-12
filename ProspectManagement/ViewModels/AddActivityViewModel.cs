@@ -17,6 +17,7 @@ namespace ProspectManagement.Core.ViewModels
     {
         protected IMvxMessenger Messenger;
         private readonly IMvxNavigationService _navigationService;
+        private readonly IUserService _userService;
 
         private MvxInteraction _hideAlertInteraction = new MvxInteraction();
         public IMvxInteraction HideAlertInteraction => _hideAlertInteraction;
@@ -24,6 +25,7 @@ namespace ProspectManagement.Core.ViewModels
         private readonly IActivityService _activityService;
         private Activity _activity;
         private string _note;
+        private User _user;
 
         private ICommand _saveCommand;
         private ICommand _closeCommand;
@@ -83,6 +85,7 @@ namespace ProspectManagement.Core.ViewModels
                         {"SalesAssociate", Activity.SalespersonAddressNumber.ToString()},
                         {"Community", Activity.Community},
                         {"ActivityType", Activity.ActivityType},
+                        {"User", _user.AddressBook.AddressNumber + " " + _user.AddressBook.Name},
                     });
 
                }));
@@ -100,11 +103,12 @@ namespace ProspectManagement.Core.ViewModels
             }
         }
 
-        public AddActivityViewModel(IMvxMessenger messenger, IActivityService activityService, IMvxNavigationService navigationService)
+        public AddActivityViewModel(IMvxMessenger messenger, IActivityService activityService, IMvxNavigationService navigationService, IUserService userService)
         {
             Messenger = messenger;
             _activityService = activityService;
             _navigationService = navigationService;
+            _userService = userService;
 
             ConfigureValidationRules();
             Validator.ResultChanged += OnValidationResultChanged;
@@ -115,6 +119,11 @@ namespace ProspectManagement.Core.ViewModels
         public void Prepare(Activity activity)
         {
             Activity = activity;
+        }
+
+        public override async Task Initialize()
+        {
+            _user = await _userService.GetLoggedInUser();
         }
 
         protected async void Validate()

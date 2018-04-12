@@ -55,14 +55,17 @@ namespace ProspectManagement.Core.Services
 
         }
 
-        public async Task<List<Cobuyer>> GetCobuyersForProspectAsync(int prospectId)
+        public async Task<List<Cobuyer>> GetCobuyersForProspectAsync(Prospect prospect)
         {
             try
             {
                 var authResult = await _authenticator.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource);
-
-                return await _cobuyerRepository.GetCobuyersForProspectAsync(prospectId, authResult.AccessToken);
-
+                var cobuyers = await _cobuyerRepository.GetCobuyersForProspectAsync(prospect.ProspectAddressNumber, authResult.AccessToken);
+                foreach(Cobuyer cobuyer in cobuyers)
+                {
+                    cobuyer.Prospect = prospect;
+                }
+                return cobuyers; 
 
             }
 

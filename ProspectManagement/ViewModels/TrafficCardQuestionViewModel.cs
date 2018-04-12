@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AppCenter.Analytics;
 using MvvmCross.Core.Navigation;
 using MvvmCross.Core.ViewModels;
 using MvvmCross.Plugins.Messenger;
@@ -10,13 +12,14 @@ using ProspectManagement.Core.Models;
 
 namespace ProspectManagement.Core.ViewModels
 {
-    public class TrafficCardQuestionViewModel : BaseViewModel, IMvxViewModel<KeyValuePair<int, TrafficCardResponse>>
+    public class TrafficCardQuestionViewModel : BaseViewModel, IMvxViewModel<KeyValuePair<Prospect, TrafficCardResponse>>
     {
         private readonly ITrafficCardResponseService _trafficCardResponseService;
         protected IMvxMessenger Messenger;
         private readonly IMvxNavigationService _navigationService;
-
-        private int _prospectNumber;
+        private readonly IUserService _userService;
+        private User _user;
+        private Prospect _prospect;
         private List<TrafficCardResponse> _responses;
         private TrafficCardResponse _response;
         private TrafficCardQuestion _currentQuestion;
@@ -73,7 +76,7 @@ namespace ProspectManagement.Core.ViewModels
                     var originalAnswer = Response.AnswerNumber;
                     Response.AnswerNumber = _currentAnswer != null ? _currentAnswer.AnswerNumber : 0;
 
-                    var result = await _trafficCardResponseService.UpdateTrafficCardResponse(_prospectNumber, _responses);
+                    var result = await _trafficCardResponseService.UpdateTrafficCardResponse(_prospect.ProspectAddressNumber, _responses);
 
                     if (result)
                     {
@@ -83,28 +86,39 @@ namespace ProspectManagement.Core.ViewModels
                     {
                         Response.AnswerNumber = originalAnswer;
                     }
+                    Analytics.TrackEvent("Traffic Card Updated", new Dictionary<string, string>
+                    {
+                        {"Community", _prospect.ProspectCommunity.CommunityNumber + " " + _prospect.ProspectCommunity.Community.Description},
+                        {"SalesAssociate", _prospect.ProspectCommunity.SalespersonAddressNumber + " " + _prospect.ProspectCommunity.SalespersonName},
+                        {"User", _user.AddressBook.AddressNumber + " " + _user.AddressBook.Name},
+                    });
                     await _navigationService.Close(this);
                 });
             }
         }
 
-        public TrafficCardQuestionViewModel(IMvxMessenger messenger, ITrafficCardResponseService trafficCardResponseService, IMvxNavigationService navigationService)
+        public TrafficCardQuestionViewModel(IMvxMessenger messenger, ITrafficCardResponseService trafficCardResponseService, IMvxNavigationService navigationService, IUserService userService)
         {
             Messenger = messenger;
             _trafficCardResponseService = trafficCardResponseService;
             _navigationService = navigationService;
-
+            _userService = userService;
             Messenger.Subscribe<RefreshMessage>(async message => await _navigationService.Close(this), MvxReference.Strong);
-           
+
         }
 
-        public void Prepare(KeyValuePair<int, TrafficCardResponse> parameter)
+        public void Prepare(KeyValuePair<Prospect, TrafficCardResponse> parameter)
         {
             Response = parameter.Value;
-            _prospectNumber = parameter.Key;
+            _prospect = parameter.Key;
             _responses = new List<TrafficCardResponse>();
             _responses.Add(Response);
             CurrentQuestion = Response.TrafficCardQuestion;
+        }
+
+        public override async Task Initialize()
+        {
+            _user = await _userService.GetLoggedInUser();
         }
     }
 }

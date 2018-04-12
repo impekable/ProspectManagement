@@ -16,8 +16,7 @@ namespace ProspectManagement.Core.Repositories
     public class BaseRepository : IBaseRepository
     {
 
-        protected const string _devUri = "https://mobilitye1dv.khov.com/DV910/resources/JR550027/";
-        //protected const string _devUri = "http://njrdbkedev1:7101/context-root-JR550027/resources/JR550027/";
+        protected const string _e1Uri = Constants.ConnectionURIs.E1Uri;
         static readonly TimeSpan _httpTimeout = TimeSpan.FromSeconds(20);
         static readonly HttpClient _httpClient = CreateHttpClient();
         static readonly HttpClient _httpClientWithAccessToken = CreateHttpClient();

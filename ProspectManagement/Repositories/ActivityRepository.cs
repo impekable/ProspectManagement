@@ -8,7 +8,7 @@ namespace ProspectManagement.Core.Repositories
 {
     public class ActivityRepository: BaseRepository, IActivityRepository
     {
-        const string _baseUri = _devUri + "Prospects/{0}/Activity/";
+        const string _baseUri = _e1Uri + "Prospects/{0}/Activity/";
 
         public async Task<Activity> AddProspectActivityAsync(int prospectId, Activity activity, string accessToken)
         {

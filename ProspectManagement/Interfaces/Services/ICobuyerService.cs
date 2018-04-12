@@ -7,7 +7,7 @@ namespace ProspectManagement.Core.Interfaces.Services
 {
 	public interface ICobuyerService
 	{
-		Task<List<Cobuyer>> GetCobuyersForProspectAsync(int prospectId);
+		Task<List<Cobuyer>> GetCobuyersForProspectAsync(Prospect prospect);
 
         Task<Cobuyer> GetCobuyerAsync(int prospectId, int cobuyerId, string authToken);
 

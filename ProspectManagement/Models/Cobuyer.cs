@@ -40,6 +40,8 @@ namespace ProspectManagement.Core.Models
 
         public string FullName => LastName + ", " + FirstName;
 
+        public Prospect Prospect { get; set; }
+
         public Cobuyer ShallowCopy()
 		{
             return (Cobuyer)this.MemberwiseClone();

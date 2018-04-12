@@ -226,6 +226,9 @@
     <Folder Include="Resources\Assets.xcassets\ic-email.imageset\" />
     <Folder Include="Resources\Assets.xcassets\ic-filter-active.imageset\" />
     <Folder Include="Resources\Assets.xcassets\ic-filter-inactive.imageset\" />
+    <Folder Include="Resources\Assets.xcassets\AppIcons-DEV.appiconset\" />
+    <Folder Include="Resources\Assets.xcassets\AppIcons-PY.appiconset\" />
+    <Folder Include="Resources\Assets.xcassets\AppIcons-TRN.appiconset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Main.storyboard" />
@@ -462,6 +465,36 @@
     <ImageAsset Include="Resources\Assets.xcassets\ic-filter-active.imageset\filter active 90.png" />
     <ImageAsset Include="Resources\Assets.xcassets\ic-filter-active.imageset\filter active 60.png" />
     <ImageAsset Include="Resources\Assets.xcassets\ic-filter-active.imageset\filter active 30.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons-DEV.appiconset\Contents.json" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons-DEV.appiconset\KHovnanian-Homes-Logo-29x29.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons-DEV.appiconset\KHovnanian-Homes-Logo-40x40.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons-DEV.appiconset\KHovnanian-Homes-Logo-80x80.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons-DEV.appiconset\KHovnanian-Homes-Logo-76x76.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons-DEV.appiconset\KHovnanian-Homes-Logo-152x152.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons-DEV.appiconset\KHovnanian-Homes-Logo-167x167.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons-PY.appiconset\Contents.json" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons-TRN.appiconset\Contents.json" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons-DEV.appiconset\KHovnanian-Homes-Logo-120x120.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons-DEV.appiconset\KHovnanian-Homes-Logo-180x180.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons-DEV.appiconset\KHovnanian-Homes-Logo-58x58.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons-PY.appiconset\KHovnanian-Homes-Logo-120x120.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons-PY.appiconset\KHovnanian-Homes-Logo-180x180.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons-PY.appiconset\KHovnanian-Homes-Logo-29x29.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons-PY.appiconset\KHovnanian-Homes-Logo-58x58.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons-PY.appiconset\KHovnanian-Homes-Logo-40x40.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons-PY.appiconset\KHovnanian-Homes-Logo-80x80.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons-PY.appiconset\KHovnanian-Homes-Logo-76x76.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons-PY.appiconset\KHovnanian-Homes-Logo-152x152.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons-PY.appiconset\KHovnanian-Homes-Logo-167x167.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons-TRN.appiconset\KHovnanian-Homes-Logo-120x120.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons-TRN.appiconset\KHovnanian-Homes-Logo-180x180.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons-TRN.appiconset\KHovnanian-Homes-Logo-29x29.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons-TRN.appiconset\KHovnanian-Homes-Logo-58x58.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons-TRN.appiconset\KHovnanian-Homes-Logo-40x40.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons-TRN.appiconset\KHovnanian-Homes-Logo-80x80.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons-TRN.appiconset\KHovnanian-Homes-Logo-76x76.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons-TRN.appiconset\KHovnanian-Homes-Logo-152x152.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\AppIcons-TRN.appiconset\KHovnanian-Homes-Logo-167x167.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

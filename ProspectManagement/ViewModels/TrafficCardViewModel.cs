@@ -20,6 +20,7 @@ namespace ProspectManagement.Core.ViewModels
         private readonly ITrafficCardResponseService _trafficCardResponseService;
         protected IMvxMessenger Messenger;
         private readonly IMvxNavigationService _navigationService;
+        private readonly IUserService _userService;
 
 		private MvxInteraction<TableRow> _updateRowInteraction = new MvxInteraction<TableRow>();
 		public IMvxInteraction<TableRow> UpdateRowInteraction => _updateRowInteraction;
@@ -28,6 +29,7 @@ namespace ProspectManagement.Core.ViewModels
         public IMvxInteraction ClearDetailsInteraction => _clearDetailsInteraction;
 
 		private Prospect _prospect;
+        private User _user;
         private List<TrafficCardResponse> _responses;
 
 		private ICommand _showDetailTab;
@@ -38,7 +40,7 @@ namespace ProspectManagement.Core.ViewModels
 		{
 			get
 			{
-                return _selectionChangedCommand ?? (_selectionChangedCommand = new MvxCommand<TrafficCardResponse>((response) =>  _navigationService.Navigate<TrafficCardQuestionViewModel, KeyValuePair<int, TrafficCardResponse>>(new KeyValuePair<int, TrafficCardResponse>(Prospect.ProspectAddressNumber,  response))));
+                return _selectionChangedCommand ?? (_selectionChangedCommand = new MvxCommand<TrafficCardResponse>((response) =>  _navigationService.Navigate<TrafficCardQuestionViewModel, KeyValuePair<Prospect, TrafficCardResponse>>(new KeyValuePair<Prospect, TrafficCardResponse>(Prospect,  response))));
 			}
 		}
 
@@ -77,11 +79,12 @@ namespace ProspectManagement.Core.ViewModels
 			}
 		}
 
-        public TrafficCardViewModel(IMvxMessenger messenger, ITrafficCardResponseService trafficCardResponseService, IMvxNavigationService navigationService)
+        public TrafficCardViewModel(IMvxMessenger messenger, ITrafficCardResponseService trafficCardResponseService, IMvxNavigationService navigationService, IUserService userService)
         {
             Messenger = messenger;
 			_trafficCardResponseService = trafficCardResponseService;
             _navigationService = navigationService;
+            _userService = userService;
 
             Messenger.Subscribe<RefreshMessage>(message => _clearDetailsInteraction.Raise(), MvxReference.Strong);
             Messenger.Subscribe<TrafficCardResponseChangedMessage>(message => ResponseUpdated(message.ChangedResponse), MvxReference.Strong);
@@ -89,11 +92,6 @@ namespace ProspectManagement.Core.ViewModels
 
 		public void ResponseUpdated(TrafficCardResponse response)
 		{
-            Analytics.TrackEvent("Traffic Card Updated", new Dictionary<string, string>
-            {
-                {"Community", Prospect.ProspectCommunity.CommunityNumber + " " + Prospect.ProspectCommunity.Community.Description},
-                {"SalesAssociate", Prospect.ProspectCommunity.SalespersonAddressNumber + " " + Prospect.ProspectCommunity.SalespersonName},
-            });
             var r = Responses.FirstOrDefault(res => res.ResponseNumber == response.ResponseNumber);
             if (r != null)
             {
@@ -109,10 +107,12 @@ namespace ProspectManagement.Core.ViewModels
 
         public override async Task Initialize()
         {
+            _user = await _userService.GetLoggedInUser();
             Analytics.TrackEvent("Traffic Card Viewed", new Dictionary<string, string>
             {
                 {"Community", Prospect.ProspectCommunity.CommunityNumber + " " + Prospect.ProspectCommunity.Community.Description},
                 {"SalesAssociate", Prospect.ProspectCommunity.SalespersonAddressNumber + " " + Prospect.ProspectCommunity.SalespersonName},
+                {"User", _user.AddressBook.AddressNumber + " " + _user.AddressBook.Name},
             });
             Responses = await _trafficCardResponseService.GetTrafficCardResponsesForProspect(Prospect.ProspectAddressNumber, false);
 		}

@@ -10,7 +10,7 @@ namespace ProspectManagement.Core.Repositories
 {
     public class UserRepository : BaseRepository, IUserRepository
     {
-		const string _baseUri = _devUri + "Users/{0}";
+        const string _baseUri = _e1Uri + "Users/{0}";
         public async Task<User> GetUserByIdAsync(string userId, string accessToken)
         {
             return await GetDataObjectFromAPI<User>(string.Format(_baseUri, userId), accessToken);

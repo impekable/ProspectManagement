@@ -9,7 +9,7 @@ namespace ProspectManagement.Core.Repositories
 {
 	public class TrafficCardResponseRepository : BaseRepository, ITrafficCardResponseRepository
 	{
-		const string _baseUri = _devUri + "Prospects/{0}/TrafficCardResponses";
+        const string _baseUri = _e1Uri + "Prospects/{0}/TrafficCardResponses";
 
 		public async Task<List<TrafficCardResponse>> GetTrafficCardResponsesForProspectAsync(int prospectAddressNumber, bool requiredOnly, string accessToken)
 		{

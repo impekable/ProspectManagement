@@ -8,7 +8,7 @@ namespace ProspectManagement.Core.Repositories
 {
     public class CobuyerRepository: BaseRepository, ICobuyerRepository
     {
-        const string _baseUri = _devUri + "Prospects/{0}/Cobuyers/";
+        const string _baseUri = _e1Uri + "Prospects/{0}/Cobuyers/";
 
         public async Task<Cobuyer> AddCobuyerToProspectAsync(int prospectId, Cobuyer cobuyer, string accessToken)
         {

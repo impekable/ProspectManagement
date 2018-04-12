@@ -12,6 +12,8 @@ using System.Linq;
 using MvvmCross.Plugins.Messenger;
 using ProspectManagement.Core.Messages;
 using MvvmCross.Core.Navigation;
+using Microsoft.AppCenter.Analytics;
+using System.Collections.Generic;
 
 namespace ProspectManagement.Core.ViewModels
 {
@@ -34,7 +36,7 @@ namespace ProspectManagement.Core.ViewModels
         private PhoneNumber _workPhoneNumber;
         private PhoneNumber _homePhoneNumber;
         private Email _email;
-
+        private User _user;
         private bool _addressSameAsBuyer;
 
         private readonly IAuthenticator _authenticator;
@@ -46,6 +48,7 @@ namespace ProspectManagement.Core.ViewModels
         private readonly ICobuyerService _cobuyerService;
         private readonly IProspectService _prospectService;
         private readonly IMvxNavigationService _navigationService;
+        private readonly IUserService _userService;
 
         protected IMvxMessenger Messenger;
 
@@ -265,12 +268,24 @@ namespace ProspectManagement.Core.ViewModels
 
                     if (cobuyerUpdated)
                     {
+                        Analytics.TrackEvent("Cobuyer Updated", new Dictionary<string, string>
+                        {
+                            {"Community", Cobuyer.Prospect.ProspectCommunity.CommunityNumber + " " + Cobuyer.Prospect.ProspectCommunity.Community.Description},
+                            {"SalesAssociate", Cobuyer.Prospect.ProspectCommunity.SalespersonAddressNumber + " " + Cobuyer.Prospect.ProspectCommunity.SalespersonName},
+                            {"User", _user.AddressBook.AddressNumber + " " + _user.AddressBook.Name},
+                        });
                         Messenger.Publish(new CobuyerChangedMessage(this) { UpdatedCobuyer = new Cobuyer() { CobuyerAddressNumber = Cobuyer.CobuyerAddressNumber, FirstName = Cobuyer.FirstName, LastName = Cobuyer.LastName } });
 
                         await _navigationService.Close(this);
                     }
                     else if (cobuyerAdded)
                     {
+                        Analytics.TrackEvent("Cobuyer Added", new Dictionary<string, string>
+                        {
+                            {"Community", Cobuyer.Prospect.ProspectCommunity.CommunityNumber + " " + Cobuyer.Prospect.ProspectCommunity.Community.Description},
+                            {"SalesAssociate", Cobuyer.Prospect.ProspectCommunity.SalespersonAddressNumber + " " + Cobuyer.Prospect.ProspectCommunity.SalespersonName},
+                            {"User", _user.AddressBook.AddressNumber + " " + _user.AddressBook.Name},
+                        });
                         Messenger.Publish(new CobuyerAddedMessage(this) { AddedCobuyer = Cobuyer });
 
                         await _navigationService.Close(this);
@@ -453,14 +468,14 @@ namespace ProspectManagement.Core.ViewModels
             {
                 _addressSameAsBuyer = value;
                 if (_addressSameAsBuyer)
-                    UpdateCobuyerAddressWithProspectAddress(Cobuyer.ProspectAddressNumber);
+                    UpdateCobuyerAddressWithProspectAddress();
                 RaisePropertyChanged(() => AddressSameAsBuyer);
                 RaisePropertyChanged(() => EnableAddressFields);
                 Validator.ValidateAsync(nameof(AddressSameAsBuyer));
             }
         }
 
-        public CobuyerDetailViewModel(IAuthenticator authenticator, IMvxMessenger messenger, IProspectService prospectService, IUserDefinedCodeService userDefinedCodeService, IStreetValidationService streetValidationService, IDialogService dialogService, IPhoneNumberValidationService phoneNumberValidationService, IEmailValidationService emailValidationService, ICobuyerService cobuyerService, IMvxNavigationService navigationService)
+        public CobuyerDetailViewModel(IAuthenticator authenticator, IMvxMessenger messenger, IProspectService prospectService, IUserDefinedCodeService userDefinedCodeService, IStreetValidationService streetValidationService, IDialogService dialogService, IPhoneNumberValidationService phoneNumberValidationService, IEmailValidationService emailValidationService, ICobuyerService cobuyerService, IMvxNavigationService navigationService, IUserService userService)
         {
             Messenger = messenger;
             _dialogService = dialogService;
@@ -472,6 +487,7 @@ namespace ProspectManagement.Core.ViewModels
             _authenticator = authenticator;
             _prospectService = prospectService;
             _navigationService = navigationService;
+            _userService = userService;
 
             ConfigureValidationRules();
             Validator.ResultChanged += OnValidationResultChanged;
@@ -507,6 +523,8 @@ namespace ProspectManagement.Core.ViewModels
 
         public override async Task Initialize()
         {
+            _user = await _userService.GetLoggedInUser();
+
             _originalCobuyer = Cobuyer.ShallowCopy();
             _originalCobuyer.StreetAddress = StreetAddress.ShallowCopy();
             _originalCobuyer.MobilePhoneNumber = MobilePhone.ShallowCopy();
@@ -550,20 +568,18 @@ namespace ProspectManagement.Core.ViewModels
             WorkPhoneNumberError = Validator.GetResult(nameof(WorkPhone)).ToString();
         }
 
-        private async void UpdateCobuyerAddressWithProspectAddress(int ProspectAddressNumber)
+        private void UpdateCobuyerAddressWithProspectAddress()
         {
-            _prospect = await _prospectService.GetProspectAsync(ProspectAddressNumber);
-
-            if (_prospect.StreetAddress != null)
+            if (Cobuyer.Prospect.StreetAddress != null)
             {
-                StreetAddress = _prospect.StreetAddress.ShallowCopy();
+                StreetAddress = Cobuyer.Prospect.StreetAddress.ShallowCopy();
                 ActiveState = States.FirstOrDefault(p => p.Code == StreetAddress.State);
                 ActiveCountry = Countries.FirstOrDefault(p => p.Code == StreetAddress.Country);
             }
 
-            if (_prospect.HomePhoneNumber != null)
+            if (Cobuyer.Prospect.HomePhoneNumber != null)
             {
-                HomePhoneNumber = _prospect.HomePhoneNumber.Phone;
+                HomePhoneNumber = Cobuyer.Prospect.HomePhoneNumber.Phone;
             }
         }
 
