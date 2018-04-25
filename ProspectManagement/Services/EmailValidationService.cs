@@ -11,8 +11,8 @@ namespace ProspectManagement.Core.Services
 	{
         static Regex ValidEmailRegex = CreateValidEmailRegex();
 
-        const string pubkey = "pubkey-265011f5238d3f1e5adf310b73430c07"; //unpaid account
-        //const string pubkey = "pubkey-158b8ca3bef9268b931533281b59ec35"; //paid account
+        //const string pubkey = "pubkey-265011f5238d3f1e5adf310b73430c07"; //unpaid account
+        const string pubkey = "pubkey-158b8ca3bef9268b931533281b59ec35"; //paid account
         protected const string _mailgunUri = "https://api.mailgun.net/v3/address/validate?address={0}";
 
         private static Regex CreateValidEmailRegex()

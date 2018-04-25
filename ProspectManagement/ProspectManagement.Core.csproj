@@ -27,7 +27,7 @@
         </Command>
         <Command>
           <type>AfterBuild</type>
-          <command></command>
+          <command>/bin/sh ../local-post-build.sh </command>
         </Command>
       </CustomCommands>
     </CustomCommands>

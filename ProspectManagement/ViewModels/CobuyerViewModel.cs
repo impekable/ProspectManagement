@@ -68,7 +68,7 @@ namespace ProspectManagement.Core.ViewModels
         {
             get
             {
-                return _addCobuyerCommand ?? (_addCobuyerCommand = new MvxCommand(() => _navigationService.Navigate<CobuyerDetailViewModel, Cobuyer>(new Cobuyer() { ProspectAddressNumber = _prospect.ProspectAddressNumber })));
+                return _addCobuyerCommand ?? (_addCobuyerCommand = new MvxCommand(() => _navigationService.Navigate<CobuyerDetailViewModel, Cobuyer>(new Cobuyer() { ProspectAddressNumber = _prospect.ProspectAddressNumber, Prospect = Prospect })));
             }
         }
 
