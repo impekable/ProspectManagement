@@ -26,8 +26,8 @@ elif [ "${ENVIRONMENT}" == "TRN" ]; then
     plutil -replace XSAppIconAssets -string Resources/Assets.xcassets/AppIcons-TRN.appiconset $KEYPATH/iOS/info.plist
 elif [ "${ENVIRONMENT}" == "PROD" ]; then
     echo "Changing REST endpoint to bssve1pd.khov.com/PD910"
-    sed -i '' "s#https://REST_ENDPOINT#http://bssve1pd.khov.com/PD910#g" ../ProspectManagement/Constants/ConnectionURIs.cs
-    plutil -replace CFBundleDisplayName -string "Prospects" ../iOS/info.plist
-    #plutil -replace CFBundleIdentifier -string com.khov.prospects ../iOS/info.plist
+    sed -i '' "s#https://REST_ENDPOINT#http://bssve1pd.khov.com/PD910#g" $KEYPATH/ProspectManagement/Constants/ConnectionURIs.cs
+    plutil -replace CFBundleDisplayName -string "Prospects" $KEYPATH/iOS/info.plist
+    #plutil -replace CFBundleIdentifier -string com.khov.prospects $KEYPATH/iOS/info.plist
     plutil -replace XSAppIconAssets -string Resources/Assets.xcassets/AppIcons.appiconset $KEYPATH/iOS/info.plist
 fi
