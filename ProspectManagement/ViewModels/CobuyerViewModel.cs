@@ -100,6 +100,7 @@ namespace ProspectManagement.Core.ViewModels
             _userService = userService;
 
             Messenger.Subscribe<RefreshMessage>(message => _clearDetailsInteraction.Raise(), MvxReference.Strong);
+            Messenger.Subscribe<UserLogoutMessage>(message => _clearDetailsInteraction.Raise(), MvxReference.Strong);
             Messenger.Subscribe<CobuyerChangedMessage>(message => CobuyerUpdated(message.UpdatedCobuyer), MvxReference.Strong);
             Messenger.Subscribe<CobuyerAddedMessage>(message => CobuyerAdded(message.AddedCobuyer), MvxReference.Strong);
         }

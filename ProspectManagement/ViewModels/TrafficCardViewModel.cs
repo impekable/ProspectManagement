@@ -87,6 +87,7 @@ namespace ProspectManagement.Core.ViewModels
             _userService = userService;
 
             Messenger.Subscribe<RefreshMessage>(message => _clearDetailsInteraction.Raise(), MvxReference.Strong);
+            Messenger.Subscribe<UserLogoutMessage>(message => _clearDetailsInteraction.Raise(), MvxReference.Strong);
             Messenger.Subscribe<TrafficCardResponseChangedMessage>(message => ResponseUpdated(message.ChangedResponse), MvxReference.Strong);
 		}
 
