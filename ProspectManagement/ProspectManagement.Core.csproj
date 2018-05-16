@@ -25,10 +25,6 @@
           <type>BeforeBuild</type>
           <command>/bin/sh ../local-pre-build.sh DEV</command>
         </Command>
-        <Command>
-          <type>AfterBuild</type>
-          <command>/bin/sh ../local-post-build.sh </command>
-        </Command>
       </CustomCommands>
     </CustomCommands>
   </PropertyGroup>
