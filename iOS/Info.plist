@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDisplayName</key>
-	<string>Prospects Dev</string>
+	<string>Prospects</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.khov.prospects</string>
 	<key>CFBundleName</key>

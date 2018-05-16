@@ -10,6 +10,7 @@ using MvvmCross.Core.ViewModels;
 using MvvmCross.iOS.Platform;
 using MvvmCross.iOS.Views.Presenters;
 using MvvmCross.Platform;
+using ProspectManagement.Core.Constants;
 using UIKit;
 
 namespace ProspectManagement.iOS
@@ -33,10 +34,9 @@ namespace ProspectManagement.iOS
 			startup.Start();
 
 			Window.MakeKeyAndVisible();
+                     
+			AppCenter.Start(PrivateKeys.AppCenterAnalyticsAppSecret, typeof(Analytics), typeof(Crashes));
 
-            AppCenter.Start("85a96bc0-a6ca-410e-a703-f4f1188ec592",
-                   typeof(Analytics), typeof(Crashes));
-            
 			return true;
         }
     }

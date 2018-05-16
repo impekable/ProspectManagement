@@ -10,6 +10,7 @@ using System.Net.Http.Headers;
 using ProspectManagement.Core.Interfaces.Repositories;
 using ProspectManagement.Core.Models.App;
 using Newtonsoft.Json;
+using ProspectManagement.Core.Constants;
 
 namespace ProspectManagement.Core.Repositories
 {
@@ -33,6 +34,7 @@ namespace ProspectManagement.Core.Repositories
         private HttpClient SetAccessTokenHttpClient(string accessToken)
         {
             _httpClientWithAccessToken.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            _httpClientWithAccessToken.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", PrivateKeys.AzureSubscriptionKey);
             return _httpClientWithAccessToken;
         }
 
