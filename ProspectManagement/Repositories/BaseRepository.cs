@@ -34,7 +34,10 @@ namespace ProspectManagement.Core.Repositories
         private HttpClient SetAccessTokenHttpClient(string accessToken)
         {
             _httpClientWithAccessToken.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-            _httpClientWithAccessToken.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", PrivateKeys.AzureSubscriptionKey);
+			if (!_httpClientWithAccessToken.DefaultRequestHeaders.Contains("Ocp-Apim-Subscription-Key"))
+			{
+				_httpClientWithAccessToken.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", PrivateKeys.AzureSubscriptionKey);
+			}
             return _httpClientWithAccessToken;
         }
 
