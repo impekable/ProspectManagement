@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Input;
 using MvvmCross.Core.Navigation;
 using MvvmCross.Core.ViewModels;
@@ -10,9 +11,10 @@ using ProspectManagement.Core.Models;
 
 namespace ProspectManagement.Core.ViewModels
 {
-    public class SplitDetailViewModel : BaseViewModel, IMvxViewModel<Prospect>
+	public class SplitDetailViewModel : BaseViewModel, IMvxViewModel<KeyValuePair<Prospect, User>>
     {
         private Prospect _prospect;
+		private User _user;
         private bool _assigned;
         private string _workPhoneLabel;
         private string _homePhoneLabel;
@@ -82,7 +84,7 @@ namespace ProspectManagement.Core.ViewModels
             _navigationService = navigationService;
 
             Messenger.Subscribe<RefreshMessage>(message => _clearDetailsInteraction.Raise(), MvxReference.Strong);
-            Messenger.Subscribe<ProspectChangedMessage>(message => Prepare(message.UpdatedProspect), MvxReference.Strong);
+			Messenger.Subscribe<ProspectChangedMessage>(message => Prepare(new KeyValuePair<Prospect, User>(message.UpdatedProspect, User)), MvxReference.Strong);
             Messenger.Subscribe<UserLogoutMessage>(message => UserLogout(), MvxReference.Strong);
             Messenger.Subscribe<ActivityAddedMessage>(message => ActivityAdded(message.AddedActivity), MvxReference.Strong);
         }
@@ -210,6 +212,17 @@ namespace ProspectManagement.Core.ViewModels
             }
         }
 
+		public User User
+		{
+			get { return _user; }
+			set { _user = value; }
+		}
+
+		public string AssignText
+        {
+			get { return "Assign Prospect To Me (" + _user?.AddressBook?.Name + ")"; }
+        }
+
         public Prospect Prospect
         {
             get { return _prospect; }
@@ -277,9 +290,10 @@ namespace ProspectManagement.Core.ViewModels
             }
         }
 
-        public void Prepare(Prospect prospect)
+		public void Prepare(KeyValuePair<Prospect, User> param)
         {
-            Prospect = prospect;
+            Prospect = param.Key;
+			User = param.Value;
         }
     }
 

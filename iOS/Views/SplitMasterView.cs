@@ -13,6 +13,7 @@ using MvvmCross.Core.ViewModels;
 using ProspectManagement.Core.Interactions;
 using MvvmCross.Platform.Core;
 using ProspectManagement.Core.Converters;
+using CoreGraphics;
 
 namespace ProspectManagement.iOS.Views
 {
@@ -146,7 +147,8 @@ namespace ProspectManagement.iOS.Views
                 MasterTableView.Hidden = true;
                 FilterStackView.Hidden = true;
                 setTableViewSource(set);
-                this.NavigationItem.RightBarButtonItem.Title = "Login";
+				this.NavigationItem.RightBarButtonItem.Title = "Login";
+				setNavigationTitle();
             };
 
             ViewModel.LoginCompleted += (sender, e) =>
@@ -157,6 +159,7 @@ namespace ProspectManagement.iOS.Views
                 FilterStackView.Hidden = false;
                 setTableViewSource(set);
                 this.NavigationItem.RightBarButtonItem.Title = "Logout";
+				setNavigationTitle();
             };
 
             FilterSearchBar.CancelButtonClicked += (sender, e) =>
@@ -205,17 +208,39 @@ namespace ProspectManagement.iOS.Views
             NavigationController.NavigationBar.TitleTextAttributes = stringAttributes;
 
             if (ViewModel.User != null && ViewModel.User.AddressNumber != 0)
-            {
-                InvokeOnMainThread(() => refreshControl.BeginRefreshing());
-            }
-            else
-            {
-                b.Title = "Login";
-                FilterSearchBar.Hidden = true;
-                FilterSegmentControl.Hidden = true;
-                MasterTableView.Hidden = true;
-                FilterStackView.Hidden = true;
-            }
-        }
-    }
+			{
+				setNavigationTitle();
+				InvokeOnMainThread(() => refreshControl.BeginRefreshing());
+			}
+			else
+			{
+				b.Title = "Login";
+				FilterSearchBar.Hidden = true;
+				FilterSegmentControl.Hidden = true;
+				MasterTableView.Hidden = true;
+				FilterStackView.Hidden = true;
+			}
+		}
+
+		private void setNavigationTitle()
+		{
+			var view = new UIView(new CGRect(0, 0, 150, 40));
+
+			var titleLabel = new UILabel(new CGRect(0, 0, 150, 24));
+			titleLabel.Font = UIFont.FromName("Raleway-Bold", 18);
+			titleLabel.Text = "My Prospects";
+			titleLabel.TextColor = UIColor.Black;
+			titleLabel.TextAlignment = UITextAlignment.Center;
+			view.AddSubview(titleLabel);
+
+			var userLabel = new UILabel(new CGRect(0, 24, 150, 16));
+			userLabel.Font = UIFont.FromName("Raleway-Italic", 14);
+			userLabel.Text = ViewModel?.User?.AddressBook?.Name;
+			userLabel.TextColor = ProspectManagementColors.DarkColor;
+			userLabel.TextAlignment = UITextAlignment.Center;
+			view.AddSubview(userLabel);
+
+			this.NavigationItem.TitleView = view;
+		}
+	}
 }

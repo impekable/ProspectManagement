@@ -48,7 +48,7 @@ namespace ProspectManagement.Core.ViewModels
 		{
 			get
 			{
-                return _showDetailTab ?? (_showDetailTab = new MvxCommand<Prospect>((prospect) => _navigationService.Navigate<SplitDetailViewModel, Prospect>(Prospect)));
+				return _showDetailTab ?? (_showDetailTab = new MvxCommand<Prospect>((prospect) => _navigationService.Navigate<SplitDetailViewModel, KeyValuePair<Prospect, User>>(new KeyValuePair <Prospect, User>(Prospect, _user))));
 			}
 		}
 		public ICommand ShowCobuyerTab

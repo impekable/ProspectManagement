@@ -44,7 +44,7 @@ namespace ProspectManagement.Core.ViewModels
         {
             get
             {
-                return _showDetailTab ?? (_showDetailTab = new MvxCommand<Prospect>((prospect) => _navigationService.Navigate<SplitDetailViewModel, Prospect>(_prospect)));
+				return _showDetailTab ?? (_showDetailTab = new MvxCommand<Prospect>((prospect) => _navigationService.Navigate<SplitDetailViewModel, KeyValuePair<Prospect, User>>(new KeyValuePair<Prospect, User>(_prospect, _user))));
             }
         }
 

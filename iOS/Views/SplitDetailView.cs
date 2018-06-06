@@ -134,6 +134,7 @@ namespace ProspectManagement.iOS.Views
             set.Bind(ContactPreferenceLabel).To(vm => vm.Prospect.FollowUpSettings.PreferredContactMethod);
             set.Bind(AssignButton).For(c => c.Hidden).To(vm => vm.Assigned);
             set.Bind(AssignButton).To(vm => vm.AssignCommand);
+			set.Bind(AssignButton).For("Title").To(vm => vm.AssignText);
 
             set.Bind(AddNoteButton).To(vm => vm.AddNoteCommand);
             set.Bind(CompleteApptButton).To(vm => vm.CompleteApptCommand);

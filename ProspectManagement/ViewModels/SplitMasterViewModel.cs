@@ -209,7 +209,7 @@ namespace ProspectManagement.Core.ViewModels
             {
                 return _selectionChangedCommand ?? (_selectionChangedCommand = new MvxCommand<Prospect>((prospect) =>
                 {
-                    _navigationService.Navigate<SplitDetailViewModel, Prospect>(prospect);
+					_navigationService.Navigate<SplitDetailViewModel, KeyValuePair<Prospect, User>>(new KeyValuePair<Prospect, User>(prospect, User));
                     Analytics.TrackEvent("Prospect Selected", new Dictionary<string, string>
                     {
                         {"Community", prospect.ProspectCommunity.CommunityNumber + " " + prospect.ProspectCommunity.Community.Description},
