@@ -6,7 +6,6 @@ using System.Reflection;
 using Foundation;
 using MvvmCross.Binding;
 using MvvmCross.Binding.Bindings.Target;
-using MvvmCross.Platform.Platform;
 using ProspectManagement.Core.Models;
 using ProspectManagement.iOS.Utility;
 using ProspectManagement.iOS.Views;

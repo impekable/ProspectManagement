@@ -1,5 +1,5 @@
 ﻿﻿using System;
-using MvvmCross.Plugins.Messenger;
+using MvvmCross.Plugin.Messenger;
 using ProspectManagement.Core.Models;
 
 namespace ProspectManagement.Core

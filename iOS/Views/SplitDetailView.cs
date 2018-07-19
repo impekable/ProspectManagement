@@ -1,18 +1,18 @@
 using Foundation;
 using System;
 using UIKit;
-using MvvmCross.iOS.Views;
-using MvvmCross.iOS.Views.Presenters.Attributes;
 using ProspectManagement.Core.ViewModels;
 using MvvmCross.Binding.BindingContext;
 using ProspectManagement.Core.Converters;
-using MvvmCross.Core.ViewModels;
 using ProspectManagement.iOS.Utility;
+using MvvmCross.Platforms.Ios.Views;
+using MvvmCross.Platforms.Ios.Presenters.Attributes;
+using MvvmCross.ViewModels;
 
 namespace ProspectManagement.iOS.Views
 {
     [MvxFromStoryboard("Main")]
-    [MvxDetailSplitViewPresentation(WrapInNavigationController = true)]
+	[MvxSplitViewPresentation(Position = MasterDetailPosition.Detail)]
     public partial class SplitDetailView : MvxViewController<SplitDetailViewModel>
     {
         protected SplitDetailViewModel SplitDetailViewModel => ViewModel as SplitDetailViewModel;

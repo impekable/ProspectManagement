@@ -1,23 +1,19 @@
 using Foundation;
 using System;
 using UIKit;
-using MvvmCross.iOS.Views;
-using MvvmCross.iOS.Views.Presenters.Attributes;
 using ProspectManagement.Core.ViewModels;
 using MvvmCross.Binding.BindingContext;
-using MvvmCross.Binding.iOS.Views;
-using Sequence.Plugins.InfiniteScroll.iOS;
-using ProspectManagement.iOS.Utility;
-using System.Threading.Tasks;
-using MvvmCross.Core.ViewModels;
 using ProspectManagement.Core.Interactions;
-using MvvmCross.Platform.Core;
-using System.Linq;
+using MvvmCross.Platforms.Ios.Views;
+using MvvmCross.Platforms.Ios.Presenters.Attributes;
+using MvvmCross.Platforms.Ios.Binding.Views;
+using MvvmCross.ViewModels;
+using MvvmCross.Base;
 
 namespace ProspectManagement.iOS.Views
 {
     [MvxFromStoryboard("Main")]
-    [MvxDetailSplitViewPresentation(WrapInNavigationController = true)]
+    [MvxSplitViewPresentation(Position = MasterDetailPosition.Detail)]
     public partial class CobuyerView : MvxViewController<CobuyerViewModel>
     {
         private UIBarButtonItem _AddButton;

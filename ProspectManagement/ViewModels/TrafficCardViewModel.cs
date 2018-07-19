@@ -4,14 +4,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Microsoft.AppCenter.Analytics;
-using MvvmCross.Core.Navigation;
-using MvvmCross.Core.ViewModels;
-using MvvmCross.Plugins.Messenger;
+using MvvmCross.Navigation;
+using MvvmCross.ViewModels;
+using MvvmCross.Plugin.Messenger;
 using ProspectManagement.Core.Interactions;
 using ProspectManagement.Core.Interfaces.Repositories;
 using ProspectManagement.Core.Interfaces.Services;
 using ProspectManagement.Core.Messages;
 using ProspectManagement.Core.Models;
+using MvvmCross.Commands;
 
 namespace ProspectManagement.Core.ViewModels
 {

@@ -5,20 +5,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ProspectManagement.Core.Models;
-using MvvmCross.Plugins.Sqlite;
 using SQLite;
 
 namespace ProspectManagement.Core.Repositories
 {
     public class DefaultCommunityRepository : IDefaultCommunityRepository
     {        
-		private readonly IMvxSqliteConnectionFactory _sqlFactory;
 		private readonly SQLiteAsyncConnection _connection;
 
-		public DefaultCommunityRepository(IMvxSqliteConnectionFactory sqlFactory)
+		public DefaultCommunityRepository()
 		{
-			_sqlFactory = sqlFactory;
-			_connection = _sqlFactory.GetAsyncConnection("defaultCommunity");
+			_connection = new SQLiteAsyncConnection("defaultCommunity");
 			_connection.CreateTableAsync<Community>();
 		}
 

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Drawing;
-using MvvmCross.Binding.iOS.Views;
+using MvvmCross.Platforms.Ios.Binding.Views;
 using UIKit;
 
 namespace ProspectManagement.iOS.Views

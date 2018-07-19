@@ -1,27 +1,26 @@
 using Foundation;
 using System;
 using UIKit;
-using MvvmCross.iOS.Views;
-using MvvmCross.iOS.Views.Presenters.Attributes;
+using MvvmCross.Platforms.Ios.Views;
 using ProspectManagement.Core.ViewModels;
 using MvvmCross.Binding.BindingContext;
-using MvvmCross.Binding.iOS.Views;
-using Sequence.Plugins.InfiniteScroll.iOS;
+using MvvmCross.Platforms.Ios.Presenters.Attributes;
 using ProspectManagement.iOS.Utility;
 using System.Threading.Tasks;
-using MvvmCross.Core.ViewModels;
+using MvvmCross.ViewModels;
 using ProspectManagement.Core.Interactions;
-using MvvmCross.Platform.Core;
 using ProspectManagement.Core.Converters;
 using CoreGraphics;
+using MvvmCross.Base;
+using ProspectManagement.iOS.Sources;
 
 namespace ProspectManagement.iOS.Views
 {
     [MvxFromStoryboard("Main")]
-    [MvxMasterSplitViewPresentation]
+    [MvxSplitViewPresentation(Position = MasterDetailPosition.Master)]
     public partial class SplitMasterView : MvxViewController<SplitMasterViewModel>
     {
-        private IncrementalTableViewSource source;
+        private ProspectTableViewSource source;
         private NSObject _notificationHandle;
         private DateTime loadTime;
 
@@ -85,15 +84,17 @@ namespace ProspectManagement.iOS.Views
             ViewModel.Page = 0;
             ViewModel.Prospects = null;
 
-            source = new IncrementalTableViewSource(MasterTableView, ProspectViewCell.Key); // new MvxSimpleTableViewSource(MasterTableView, ProspectViewCell.Key, ProspectViewCell.Key, null);
-            source.CreateBinding<SplitMasterViewModel>(this, vm => vm.Prospects);
+            source = new ProspectTableViewSource(MasterTableView);
             MasterTableView.Source = source;
             MasterTableView.RowHeight = UITableView.AutomaticDimension;
             MasterTableView.EstimatedRowHeight = 40;
             MasterTableView.ReloadData();
-            set.Bind(source).For(s => s.SelectionChangedCommand).To(vm => vm.SelectionChangedCommand);
+			set.Bind(source).For(s => s.ItemsSource).To(vm => vm.Prospects);
+			set.Bind(source).For(s => s.SelectionChangedCommand).To(vm => vm.SelectionChangedCommand);
+			set.Bind(source).For(s => s.FetchCommand).To(vm => vm.FetchProspectsCommand);
             set.Apply();
-            loadTime = DateTime.Now;         }          public override void ViewWillAppear(bool animated)         {
+            loadTime = DateTime.Now;
+			ViewModel.LoadProspectsCommand.Execute(null);         }          public override void ViewWillAppear(bool animated)         {
             if (_notificationHandle == null)
             {                 _notificationHandle = NSNotificationCenter.DefaultCenter.AddObserver(UIApplication.WillEnterForegroundNotification, HandleAppWillEnterForeground);             }
         }          private void HandleAppWillEnterForeground(NSNotification notification)         {

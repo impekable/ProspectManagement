@@ -1,4 +1,4 @@
-﻿using MvvmCross.iOS.Views;
+﻿using MvvmCross.Platforms.Ios.Views;
 using ProspectManagement.iOS.Utility;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using UIKit;
 using Foundation;
 using System.Drawing;
 using CoreGraphics;
-using ProspectManagement.iOS.Extensions;
+//using ProspectManagement.iOS.Extensions;
 
 namespace ProspectManagement.iOS.Views
 {

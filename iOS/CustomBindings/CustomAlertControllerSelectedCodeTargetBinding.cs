@@ -4,7 +4,6 @@ using System.Reflection;
 using Foundation;
 using MvvmCross.Binding;
 using MvvmCross.Binding.Bindings.Target;
-using MvvmCross.Platform.Platform;
 using ProspectManagement.iOS.Views;
 using UIKit;
 
@@ -23,8 +22,7 @@ namespace ProspectManagement.iOS.CustomBindings
             var customAlertController = View;
             if (customAlertController == null)
             {
-                MvxBindingTrace.Trace(MvxTraceLevel.Error, "Error - customAlertController is null in CustomAlertControllerSelectedCodeTargetBinding");
-                return;
+				return;
             }
 
             _subscribed = true;

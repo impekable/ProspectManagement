@@ -2,21 +2,16 @@ using Foundation;
 using System;
 using UIKit;
 using ProspectManagement.Core.ViewModels;
-using MvvmCross.iOS.Views;
-using MvvmCross.iOS.Views.Presenters.Attributes;
 using MvvmCross.Binding.BindingContext;
 using System.Linq;
-using MvvmCross.Binding.iOS.Views;
 using ProspectManagement.Core.Converters;
 using CoreGraphics;
 using ProspectManagement.iOS.Utility;
-using MvvmCross.Core.ViewModels;
-using MvvmCross.Platform.Core;
-using ProspectManagement.iOS.Extensions;
-using ProspectManagement.Core.Models;
-using System.Threading.Tasks;
-using CoreFoundation;
-using System.Collections.ObjectModel;
+//using ProspectManagement.iOS.Extensions;
+using MvvmCross.Platforms.Ios.Views;
+using MvvmCross.Platforms.Ios.Presenters.Attributes;
+using MvvmCross.Platforms.Ios.Binding.Views;
+using MvvmCross.ViewModels;
 
 namespace ProspectManagement.iOS.Views
 {
@@ -90,10 +85,10 @@ namespace ProspectManagement.iOS.Views
 
             set.Bind(PrefixTextField).To(vm => vm.ActivePrefix.Description1);
             set.Bind(FirstNameTextField).To(vm => vm.FirstName).WithConversion(new TitleCaseValueConverter());
-            set.Bind(MiddleNameTextField).To(vm => vm.MiddleName).WithConversion(new TitleCaseValueConverter());;
-            set.Bind(LastNameTextField).To(vm => vm.LastName).WithConversion(new TitleCaseValueConverter());;
+            set.Bind(MiddleNameTextField).To(vm => vm.MiddleName).WithConversion(new TitleCaseValueConverter());
+            set.Bind(LastNameTextField).To(vm => vm.LastName).WithConversion(new TitleCaseValueConverter());
             set.Bind(SuffixTextField).To(vm => vm.ActiveSuffix.Description1);
-            set.Bind(AliasTextField).To(vm => vm.NickName).WithConversion(new TitleCaseValueConverter());;
+            set.Bind(AliasTextField).To(vm => vm.NickName).WithConversion(new TitleCaseValueConverter());
             set.Bind(MobilePhoneTextField).To(vm => vm.MobilePhoneNumber).WithConversion(new PhoneNumberValueConverter());
             set.Bind(WorkPhoneTextField).To(vm => vm.WorkPhoneNumber).WithConversion(new PhoneNumberValueConverter());
             set.Bind(HomePhoneTextField).To(vm => vm.HomePhoneNumber).WithConversion(new PhoneNumberValueConverter());

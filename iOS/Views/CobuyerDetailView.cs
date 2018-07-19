@@ -1,18 +1,16 @@
 using Foundation;
 using System;
 using UIKit;
-using MvvmCross.iOS.Views;
 using ProspectManagement.Core.ViewModels;
-using MvvmCross.iOS.Views.Presenters.Attributes;
 using MvvmCross.Binding.BindingContext;
-using System.Linq;
-using MvvmCross.Binding.iOS.Views;
 using ProspectManagement.Core.Converters;
 using CoreGraphics;
 using ProspectManagement.iOS.Utility;
-using MvvmCross.Core.ViewModels;
-using MvvmCross.Platform.Core;
-using ProspectManagement.iOS.Extensions;
+//using ProspectManagement.iOS.Extensions;
+using MvvmCross.Platforms.Ios.Views;
+using MvvmCross.Platforms.Ios.Presenters.Attributes;
+using MvvmCross.Platforms.Ios.Binding.Views;
+using MvvmCross.ViewModels;
 
 namespace ProspectManagement.iOS.Views
 {

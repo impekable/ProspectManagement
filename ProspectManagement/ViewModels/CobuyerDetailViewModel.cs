@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Input;
-using MvvmCross.Core.ViewModels;
+using MvvmCross.ViewModels;
 using System.Collections.ObjectModel;
 using MvvmValidation;
 using ProspectManagement.Core.Interfaces.Repositories;
@@ -9,11 +9,12 @@ using ProspectManagement.Core.Models;
 using ProspectManagement.Core.Extensions;
 using System.Threading.Tasks;
 using System.Linq;
-using MvvmCross.Plugins.Messenger;
+using MvvmCross.Plugin.Messenger;
 using ProspectManagement.Core.Messages;
-using MvvmCross.Core.Navigation;
+using MvvmCross.Navigation;
 using Microsoft.AppCenter.Analytics;
 using System.Collections.Generic;
+using MvvmCross.Commands;
 
 namespace ProspectManagement.Core.ViewModels
 {

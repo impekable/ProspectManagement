@@ -1,20 +1,20 @@
 using Foundation;
 using System;
 using UIKit;
-using MvvmCross.iOS.Views;
-using MvvmCross.iOS.Views.Presenters.Attributes;
 using ProspectManagement.Core.ViewModels;
 using MvvmCross.Binding.BindingContext;
-using MvvmCross.Binding.iOS.Views;
-using MvvmCross.Core.ViewModels;
 using ProspectManagement.Core.Interactions;
-using MvvmCross.Platform.Core;
+using MvvmCross.Platforms.Ios.Views;
+using MvvmCross.Platforms.Ios.Presenters.Attributes;
+using MvvmCross.ViewModels;
+using MvvmCross.Base;
+using MvvmCross.Platforms.Ios.Binding.Views;
 
 namespace ProspectManagement.iOS.Views
 {
 	[MvxFromStoryboard("Main")]
-	[MvxDetailSplitViewPresentation(WrapInNavigationController = true)]
-    public partial class TrafficCardView : MvxViewController<TrafficCardViewModel>
+	[MvxSplitViewPresentation(Position = MasterDetailPosition.Detail)]
+	public partial class TrafficCardView : MvxViewController<TrafficCardViewModel>
     {
 		protected TrafficCardViewModel TrafficCardViewModel => ViewModel as TrafficCardViewModel;
 

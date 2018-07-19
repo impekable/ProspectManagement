@@ -5,16 +5,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Microsoft.AppCenter.Analytics;
-using MvvmCross.Core.Navigation;
-using MvvmCross.Core.ViewModels;
-using MvvmCross.Plugins.Messenger;
+using MvvmCross.Navigation;
+using MvvmCross.ViewModels;
+using MvvmCross.Plugin.Messenger;
 using ProspectManagement.Core.Extensions;
 using ProspectManagement.Core.Interactions;
 using ProspectManagement.Core.Interfaces.Repositories;
 using ProspectManagement.Core.Interfaces.Services;
 using ProspectManagement.Core.Messages;
 using ProspectManagement.Core.Models;
-using Sequence.Plugins.InfiniteScroll;
+using MvvmCross.Commands;
 
 namespace ProspectManagement.Core.ViewModels
 {
@@ -32,8 +32,7 @@ namespace ProspectManagement.Core.ViewModels
         private readonly IProspectService _prospectService;
         protected IMvxMessenger Messenger;
         private readonly IMvxNavigationService _navigationService;
-
-        private readonly IIncrementalCollectionFactory _collectionFactory;
+        
         private ObservableCollection<Prospect> _prospects;
 
         private ICommand _selectionChangedCommand;
@@ -54,6 +53,9 @@ namespace ProspectManagement.Core.ViewModels
 
         private MvxInteraction<Filter> _filterInteraction = new MvxInteraction<Filter>();
         public IMvxInteraction<Filter> FilterInteraction => _filterInteraction;
+
+		public IMvxCommand LoadProspectsCommand => new MvxCommand(FetchProspects);
+		public IMvxCommand FetchProspectsCommand => new MvxCommand(FetchProspects);
 
         public ICommand RefreshCommand
         {
@@ -133,36 +135,10 @@ namespace ProspectManagement.Core.ViewModels
             }
         }
 
-        public ObservableCollection<Prospect> Prospects
+		public ObservableCollection<Prospect> Prospects
         {
             get
-            {
-                if (_prospects == null)
-                {
-                    _prospects = _collectionFactory.GetCollection(async (count, pageSize) =>
-                                    {
-                                        var authResult = await _authService.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource);
-                                        var newProspects = new ObservableCollection<Prospect>();
-                                        if (authResult != null && !String.IsNullOrEmpty(authResult.AccessToken))
-                                        {
-                                            if (_communities == null)
-                                            {
-                                                _communities = await _communityService.GetCommunitiesBySalesperson(User.AddressNumber);
-                                            }
-                                            await Task.Run(async () =>
-                                            {
-                                                Page++;
-                                                var searchType = FilterActive ? "Lead" : null;
-                                                var salespersonId = SelectedSegment == 0 ? (int?)null : SelectedSegment == 1 ? 0 : User.AddressNumber;
-                                                var prospectList = await _prospectService.GetProspectsAsync(authResult.AccessToken, _communities, salespersonId, searchType, Page, pageSize, SearchTerm);
-                                                newProspects = prospectList.ToObservableCollection();
-                                                OnLoadingDataFromBackendCompleted();
-                                            });
-                                        }
-                                        return newProspects;
-                                    }, _pageSize);
-
-                }
+			{
                 return _prospects;
             }
             set
@@ -220,7 +196,36 @@ namespace ProspectManagement.Core.ViewModels
             }
         }
 
-        public SplitMasterViewModel(IMvxMessenger messenger, IDialogService dialogService, IUserService userService, IAuthenticator authService, ICommunityService communityService, IProspectService prospectService, IIncrementalCollectionFactory collectionFactory, IMvxNavigationService navigationService)
+		private async void FetchProspects()
+		{
+			if (_page == 0)
+            {
+                Prospects?.Clear();
+            }
+            var authResult = await _authService.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource);
+            var newProspects = new ObservableCollection<Prospect>();
+            if (authResult != null && !String.IsNullOrEmpty(authResult.AccessToken))
+            {
+                if (_communities == null)
+                {
+                    _communities = await _communityService.GetCommunitiesBySalesperson(User.AddressNumber);
+                }
+                Page++;
+                var searchType = FilterActive ? "Lead" : null;
+                var salespersonId = SelectedSegment == 0 ? (int?)null : SelectedSegment == 1 ? 0 : User.AddressNumber;
+                var prospectList = await _prospectService.GetProspectsAsync(authResult.AccessToken, _communities, salespersonId, searchType, Page, _pageSize, SearchTerm);
+                newProspects = prospectList?.ToObservableCollection();
+                OnLoadingDataFromBackendCompleted();
+                if (Prospects == null)
+                    Prospects = new MvxObservableCollection<Prospect>();
+				foreach (var prospect in newProspects)
+				{
+					Prospects.Add(prospect);
+				}
+            }
+        }
+
+        public SplitMasterViewModel(IMvxMessenger messenger, IDialogService dialogService, IUserService userService, IAuthenticator authService, ICommunityService communityService, IProspectService prospectService, IMvxNavigationService navigationService)
         {
             Messenger = messenger;
             _dialogService = dialogService;
@@ -228,12 +233,10 @@ namespace ProspectManagement.Core.ViewModels
             _authService = authService;
             _communityService = communityService;
             _prospectService = prospectService;
-            _collectionFactory = collectionFactory;
             _navigationService = navigationService;
 
             Messenger.Subscribe<ProspectChangedMessage>(message => ProspectUpdated(message.UpdatedProspect), MvxReference.Strong);
-            Messenger.Subscribe<ProspectAssignedMessage>(message => ProspectAssigned(message.AssignedProspect), MvxReference.Strong);
-
+			Messenger.Subscribe<ProspectAssignedMessage>(message => ProspectAssigned(message.AssignedProspect), MvxReference.Strong);
         }
 
         public void ProspectUpdated(Prospect prospect)
@@ -273,7 +276,7 @@ namespace ProspectManagement.Core.ViewModels
             User = parameter;
         }
 
-        public void OnLoadingDataFromBackendStarted()
+		public void OnLoadingDataFromBackendStarted()
         {
             LoadingDataFromBackendStarted?.Invoke(null, EventArgs.Empty);
         }

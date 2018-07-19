@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AppCenter.Analytics;
-using MvvmCross.Core.Navigation;
-using MvvmCross.Core.ViewModels;
-using MvvmCross.Plugins.Messenger;
+using MvvmCross.Navigation;
+using MvvmCross.ViewModels;
+using MvvmCross.Plugin.Messenger;
 using ProspectManagement.Core.Interfaces.Services;
 using ProspectManagement.Core.Messages;
 using ProspectManagement.Core.Models;
+using MvvmCross.Commands;
 
 namespace ProspectManagement.Core.ViewModels
 {

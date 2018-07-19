@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using MvvmCross.Core.Navigation;
-using MvvmCross.Core.ViewModels;
+using MvvmCross.Navigation;
+using MvvmCross.ViewModels;
 using ProspectManagement.Core.Interfaces.Services;
 using ProspectManagement.Core.Models;
 
@@ -35,13 +35,15 @@ namespace ProspectManagement.Core.ViewModels
 			await ReloadDataAsync();
 		}
 
-		protected override async Task InitializeAsync()
+		public async override void ViewAppeared()
 		{
+			base.ViewAppeared();
 			if (User == null || User.AddressNumber == 0)
-			{
-				User = await _userService.GetLoggedInUser();
-			}
+            {
+              User = await _userService.GetLoggedInUser();
+            }
             await _navigationService.Navigate<SplitRootViewModel, User>(User);
 		}
+        
     }
 }

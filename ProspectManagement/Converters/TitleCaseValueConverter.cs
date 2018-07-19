@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Globalization;
-using MvvmCross.Platform.Converters;
+using MvvmCross.Converters;
 using System.Linq;
 
 namespace ProspectManagement.Core.Converters

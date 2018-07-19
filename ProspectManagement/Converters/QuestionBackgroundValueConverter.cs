@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Globalization;
-using MvvmCross.Platform.Converters;
-using MvvmCross.Platform.UI;
-using MvvmCross.Plugins.Color;
+using MvvmCross.Converters;
+using MvvmCross.UI;
+using MvvmCross.Plugin.Color;
 using ProspectManagement.Core.Models;
 
 namespace ProspectManagement.Core.Converters

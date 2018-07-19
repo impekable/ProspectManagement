@@ -1,9 +1,7 @@
-﻿using MvvmCross.iOS.Views;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using MvvmCross.Core.ViewModels;
+﻿using System;
 using UIKit;
+using MvvmCross.Platforms.Ios.Views;
+using MvvmCross.ViewModels;
 
 namespace ProspectManagement.iOS
 {

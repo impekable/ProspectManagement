@@ -1,8 +1,7 @@
 ﻿using System;
-
 using Foundation;
 using MvvmCross.Binding.BindingContext;
-using MvvmCross.Binding.iOS.Views;
+using MvvmCross.Platforms.Ios.Binding.Views;
 using ProspectManagement.Core.Converters;
 using ProspectManagement.Core.Models;
 using UIKit;

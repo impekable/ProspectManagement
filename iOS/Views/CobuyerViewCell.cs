@@ -2,8 +2,8 @@
 using Foundation;
 using UIKit;
 using MvvmCross.Binding.BindingContext;
-using MvvmCross.Binding.iOS.Views;
 using ProspectManagement.Core.Models;
+using MvvmCross.Platforms.Ios.Binding.Views;
 
 namespace ProspectManagement.iOS.Views
 {

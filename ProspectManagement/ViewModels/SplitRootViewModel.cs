@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using MvvmCross.Core.Navigation;
-using MvvmCross.Core.ViewModels;
+using MvvmCross.Commands;
+using MvvmCross.Navigation;
+using MvvmCross.ViewModels;
 using ProspectManagement.Core.Interfaces.Services;
 using ProspectManagement.Core.Models;
 
@@ -40,7 +41,7 @@ namespace ProspectManagement.Core.ViewModels
             _navigationService.Navigate<SplitMasterViewModel, User>(User);
         }
 
-        public SplitRootViewModel(IUserDefinedCodeService userDefinedCodeService, IMvxNavigationService navigationService)
+		public SplitRootViewModel(IUserDefinedCodeService userDefinedCodeService, IMvxNavigationService navigationService)
         {
             _userDefinedCodeService = userDefinedCodeService;
             _navigationService = navigationService;

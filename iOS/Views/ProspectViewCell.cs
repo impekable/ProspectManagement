@@ -2,9 +2,12 @@
 using Foundation;
 using UIKit;
 using MvvmCross.Binding.BindingContext;
-using MvvmCross.Binding.iOS.Views;
 using ProspectManagement.Core.Models;
 using ProspectManagement.Core.Converters;
+using MvvmCross.Platforms.Ios.Binding.Views;
+using FFImageLoading.Cross;
+using FFImageLoading;
+using Cirrious.FluentLayouts.Touch;
 
 namespace ProspectManagement.iOS.Views
 {
@@ -12,29 +15,50 @@ namespace ProspectManagement.iOS.Views
     {
         public static readonly NSString Key = new NSString("ProspectViewCell");
         public static readonly UINib Nib;
-        private readonly MvxImageViewLoader imageViewLoader;
+		private MvxCachedImageView _imageControl;
+		private bool _constraintsCreated;
 
         static ProspectViewCell()
         {
             Nib = UINib.FromName("ProspectViewCell", NSBundle.MainBundle);
         }
-
+        
         protected ProspectViewCell(IntPtr handle) : base(handle)
         {
-            imageViewLoader = new MvxImageViewLoader(() => SalespersonImage);
+			_imageControl = new MvxCachedImageView();
+            
+			ContentView.AddSubview(_imageControl);
+			ContentView.SubviewsDoNotTranslateAutoresizingMaskIntoConstraints();
+
+			SetNeedsUpdateConstraints();
 
             // Note: this .ctor should not contain any initialization logic.
             this.DelayBind(() =>
-            {
+			{
                 var set = this.CreateBindingSet<ProspectViewCell, Prospect>();
                 set.Bind(ProspectLabel).To(v => v.Name);
                 set.Bind(CommunityLabel).To(v => v.ProspectCommunity.Community.Description);
                 set.Bind(EnteredDateLabel).To(v => v.ProspectCommunity.EnteredDate).WithConversion(new ElapsedTimeConverter());;
 				set.Bind(SalespersonLabel).To(v => v.ProspectCommunity.SalespersonName);
-				
-                set.Bind(imageViewLoader).For(i => i.DefaultImagePath).To(v => v.ProspectCommunity.SalespersonAddressNumber).WithConversion(new ImageValueConverter());
+                
+				set.Bind(_imageControl).For(i => i.ImagePath).To(v => v.ProspectCommunity.SalespersonAddressNumber).WithConversion(new ImageValueConverter());
 				set.Apply();
             });
         }
+
+        public override void UpdateConstraints()
+		{
+			if (!_constraintsCreated)
+			{
+				ContentView.AddConstraints(
+					_imageControl.WithSameLeft(SalespersonImage),
+					_imageControl.WithSameTop(SalespersonImage),
+					_imageControl.WithSameWidth(SalespersonImage),
+					_imageControl.WithSameHeight(SalespersonImage)
+				);
+				_constraintsCreated = true;
+			}
+			base.UpdateConstraints();
+		}
     }
 }

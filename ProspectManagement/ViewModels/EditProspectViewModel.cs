@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using MvvmCross.Core.ViewModels;
+using MvvmCross.ViewModels;
 using MvvmValidation;
 using ProspectManagement.Core.Interfaces.Repositories;
 using ProspectManagement.Core.Interfaces.Services;
@@ -9,9 +9,10 @@ using ProspectManagement.Core.Models;
 using ProspectManagement.Core.Extensions;
 using System.Threading.Tasks;
 using System.Linq;
-using MvvmCross.Plugins.Messenger;
+using MvvmCross.Plugin.Messenger;
 using ProspectManagement.Core.Messages;
-using MvvmCross.Core.Navigation;
+using MvvmCross.Navigation;
+using MvvmCross.Commands;
 
 namespace ProspectManagement.Core.ViewModels
 {
