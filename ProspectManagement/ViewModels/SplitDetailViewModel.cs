@@ -9,6 +9,8 @@ using ProspectManagement.Core.Interfaces.Services;
 using ProspectManagement.Core.Messages;
 using ProspectManagement.Core.Models;
 using MvvmCross.Commands;
+using MvvmCross.Plugin.PhoneCall;
+using MvvmCross.Plugin.Email;
 
 namespace ProspectManagement.Core.ViewModels
 {
@@ -30,8 +32,70 @@ namespace ProspectManagement.Core.ViewModels
         private readonly IProspectService _prospectService;
         protected IMvxMessenger Messenger;
         private readonly IMvxNavigationService _navigationService;
+		private readonly IMvxPhoneCallTask _phoneCallTask;
+		private readonly IMvxComposeEmailTask _emailTask;
 
-        public bool IsLead
+		public IMvxCommand MobilePhoneCallCommand => new MvxCommand(CallProspectMobile);
+		public IMvxCommand WorkPhoneCallCommand => new MvxCommand(CallProspectWork);
+		public IMvxCommand HomePhoneCallCommand => new MvxCommand(CallProspectHome);
+		public IMvxCommand ComposeEmailCommand => new MvxCommand(ComposeEmailToProspect);
+
+		private Activity createAdHocActivity(string contactMethod, string subject)
+		{
+			return new Activity
+			{
+				ActivityType = "ADHOC",
+				ContactMethod = contactMethod,
+				Subject = subject,
+				TimeDateStart = DateTime.UtcNow,
+				TimeDateEnd = DateTime.UtcNow,
+				DateCompleted = DateTime.UtcNow,
+				ProspectAddressNumber = Prospect.ProspectAddressNumber,
+				SalespersonAddressNumber = Prospect.ProspectCommunity.SalespersonAddressNumber,
+				ProspectCommunityId = Prospect.ProspectCommunity.ProspectCommunityId,
+				Community = Prospect.ProspectCommunity.CommunityNumber
+			};
+		}
+
+		private void ComposeEmailToProspect()
+        {
+			var activity = createAdHocActivity("Email", "Emailed from App");
+            _navigationService.Navigate<AddActivityViewModel, Activity>(activity);
+			_emailTask.ComposeEmail(_prospect.Email.EmailAddress);
+        }
+
+		private void CallProspectMobile()
+		{
+			var activity = createAdHocActivity("Phone", "Called from App");
+            _navigationService.Navigate<AddActivityViewModel, Activity>(activity);
+			_phoneCallTask.MakePhoneCall(_prospect.Name, _prospect.MobilePhoneNumber.Phone);
+		}
+
+		private void CallProspectWork()
+        {
+			var activity = createAdHocActivity("Phone", "Called from App");
+            _navigationService.Navigate<AddActivityViewModel, Activity>(activity);
+			_phoneCallTask.MakePhoneCall(_prospect.Name, _prospect.WorkPhoneNumber.Phone);
+        }
+
+		private void CallProspectHome()
+        {
+			var activity = createAdHocActivity("Phone", "Called from App");
+            _navigationService.Navigate<AddActivityViewModel, Activity>(activity);
+			_phoneCallTask.MakePhoneCall(_prospect.Name, _prospect.HomePhoneNumber.Phone);
+        }
+
+		public bool AllowCalling
+        {
+			get { return Prospect.FollowUpSettings.ConsentToPhone && Assigned; }
+        }
+
+		public bool AllowEmailing
+        {
+			get { return Prospect.FollowUpSettings.ConsentToEmail && Assigned; }
+        }
+
+		public bool IsLead
         {
             get { return Prospect.ProspectCommunity.AddressType.Equals("Lead"); }
         }
@@ -77,18 +141,29 @@ namespace ProspectManagement.Core.ViewModels
 
         private MvxInteraction _assignedProspectInteraction = new MvxInteraction();
         public IMvxInteraction AssignedProspectInteraction => _assignedProspectInteraction;
-
-        public SplitDetailViewModel(IMvxMessenger messenger, IProspectService prospectService, IMvxNavigationService navigationService)
+        
+		public SplitDetailViewModel(IMvxComposeEmailTask emailTask, IMvxPhoneCallTask phoneCallTask, IMvxMessenger messenger, IProspectService prospectService, IMvxNavigationService navigationService)
         {
             Messenger = messenger;
             _prospectService = prospectService;
             _navigationService = navigationService;
+			_phoneCallTask = phoneCallTask;
+			_emailTask = emailTask;
 
             Messenger.Subscribe<RefreshMessage>(message => _clearDetailsInteraction.Raise(), MvxReference.Strong);
 			Messenger.Subscribe<ProspectChangedMessage>(message => Prepare(new KeyValuePair<Prospect, User>(message.UpdatedProspect, User)), MvxReference.Strong);
             Messenger.Subscribe<UserLogoutMessage>(message => UserLogout(), MvxReference.Strong);
             Messenger.Subscribe<ActivityAddedMessage>(message => ActivityAdded(message.AddedActivity), MvxReference.Strong);
-        }
+			Messenger.Subscribe<ProspectChangedMessage>(message => 
+            			{   RaisePropertyChanged(() => EmailEntered); 
+            				RaisePropertyChanged(() => StreetAddressEntered);
+            				RaisePropertyChanged(() => MobilePhoneEntered);
+            				RaisePropertyChanged(() => HomePhoneEntered);
+            				RaisePropertyChanged(() => WorkPhoneEntered);
+            			}, 
+                        MvxReference.Strong);
+
+		}
 
         public void UserLogout()
         {
@@ -121,6 +196,8 @@ namespace ProspectManagement.Core.ViewModels
                     if (_assignedTo != null)
                     {
                         Assigned = true;
+						RaisePropertyChanged(() => AllowCalling);
+						RaisePropertyChanged(() => AllowEmailing);
                         Prospect.ProspectCommunity.SalespersonAddressNumber = _assignedTo.AddressNumber;
                         Prospect.ProspectCommunity.SalespersonName = _assignedTo.Name;
                         Messenger.Publish(new ProspectAssignedMessage(this) { AssignedProspect = Prospect });

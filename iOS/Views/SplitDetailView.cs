@@ -123,15 +123,30 @@ namespace ProspectManagement.iOS.Views
             set.Bind(NameLabel).To(vm => vm.Prospect.Name);
             set.Bind(AddressLine1Label).To(vm => vm.Prospect.StreetAddress.AddressLine1);
             set.Bind(CityStateZipLabel).To(vm => vm.Prospect.StreetAddress).WithConversion(new CityStateZipConverter()); ;
-            set.Bind(EmailLabel).To(vm => vm.Prospect.Email.EmailAddress);
-            set.Bind(WorkPhoneLabel).To(vm => vm.Prospect.WorkPhoneNumber.Phone);
+
+			set.Bind(ComposeEmailButton).For(v => v.Enabled).To(vm => vm.AllowEmailing);
+            set.Bind(ComposeEmailButton).For("Title").To(vm => vm.Prospect.Email.EmailAddress);
+			set.Bind(ComposeEmailButton).To(vm => vm.ComposeEmailCommand);
+
+			set.Bind(CallWorkButton).For(v => v.Enabled).To(vm => vm.AllowCalling);
+			set.Bind(CallWorkButton).For("Title").To(vm => vm.Prospect.WorkPhoneNumber.Phone);
+			set.Bind(CallWorkButton).To(vm => vm.WorkPhoneCallCommand);
             set.Bind(WorkLabel).To(vm => vm.WorkPhoneLabel);
-            set.Bind(HomePhoneLabel).To(vm => vm.Prospect.HomePhoneNumber.Phone);
+
+			set.Bind(CallHomeButton).For(v => v.Enabled).To(vm => vm.AllowCalling);
+			set.Bind(CallHomeButton).For("Title").To(vm => vm.Prospect.HomePhoneNumber.Phone);
+			set.Bind(CallHomeButton).To(vm => vm.HomePhoneCallCommand);
             set.Bind(HomeLabel).To(vm => vm.HomePhoneLabel);
-            set.Bind(MobilePhoneLabel).To(vm => vm.Prospect.MobilePhoneNumber.Phone);
-            set.Bind(MobileLabel).To(vm => vm.MobilePhoneLabel);
+
+			set.Bind(CallMobileButton).For(v => v.Enabled).To(vm => vm.AllowCalling);
+			set.Bind(CallMobileButton).For("Title").To(vm => vm.Prospect.MobilePhoneNumber.Phone);
+			set.Bind(CallMobileButton).To(vm => vm.MobilePhoneCallCommand);
+			set.Bind(MobileLabel).To(vm => vm.MobilePhoneLabel);
+
             set.Bind(ConsentLabel).To(vm => vm.Prospect.FollowUpSettings).WithConversion(new FollowUpSettingsValueConverter());
             set.Bind(ContactPreferenceLabel).To(vm => vm.Prospect.FollowUpSettings.PreferredContactMethod);
+			set.Bind(AppointmentDateTimeLabel).To(vm => vm.Prospect.ProspectCommunity.AppointmentDate).WithConversion(new DateTimeConverter());
+            
             set.Bind(AssignButton).For(c => c.Hidden).To(vm => vm.Assigned);
             set.Bind(AssignButton).To(vm => vm.AssignCommand);
 			set.Bind(AssignButton).For("Title").To(vm => vm.AssignText);
@@ -152,7 +167,8 @@ namespace ProspectManagement.iOS.Views
 
             set.Bind(ExcludeStackView).For(v => v.Hidden).To(vm => vm.Prospect.FollowUpSettings.ExcludeFromFollowup).WithConversion(new InverseValueConverter());
             set.Bind(ConsentStackView).For(v => v.Hidden).To(vm => vm.Prospect.FollowUpSettings.ExcludeFromFollowup);
-
+			set.Bind(AppointmentStackView).For(v => v.Hidden).To(vm => vm.IsLeadWithAppointment).WithConversion(new InverseValueConverter());
+            
             set.Bind(this).For(view => view.HideAlertInteraction).To(viewModel => viewModel.HideAlertInteraction).OneWay();
             set.Bind(this).For(view => view.ShowAlertInteraction).To(viewModel => viewModel.ShowAlertInteraction).OneWay();
             set.Bind(this).For(view => view.ClearDetailsInteraction).To(viewModel => viewModel.ClearDetailsInteraction).OneWay();

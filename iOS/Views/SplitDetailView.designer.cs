@@ -28,7 +28,27 @@ namespace ProspectManagement.iOS.Views
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UILabel AppointmentDateTimeLabel { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIStackView AppointmentStackView { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UIButton AssignButton { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIButton CallHomeButton { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIButton CallMobileButton { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIButton CallWorkButton { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
@@ -37,6 +57,10 @@ namespace ProspectManagement.iOS.Views
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UIButton CompleteApptButton { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIButton ComposeEmailButton { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
@@ -56,10 +80,6 @@ namespace ProspectManagement.iOS.Views
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UILabel EmailLabel { get; set; }
-
-        [Outlet]
-        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UIStackView EmailStackView { get; set; }
 
         [Outlet]
@@ -72,19 +92,11 @@ namespace ProspectManagement.iOS.Views
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UILabel HomePhoneLabel { get; set; }
-
-        [Outlet]
-        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UIStackView HomeStackView { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UILabel MobileLabel { get; set; }
-
-        [Outlet]
-        [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UILabel MobilePhoneLabel { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
@@ -124,10 +136,6 @@ namespace ProspectManagement.iOS.Views
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UILabel WorkPhoneLabel { get; set; }
-
-        [Outlet]
-        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UIStackView WorkStackView { get; set; }
 
         void ReleaseDesignerOutlets ()
@@ -147,9 +155,34 @@ namespace ProspectManagement.iOS.Views
                 AddVisitButton = null;
             }
 
+            if (AppointmentDateTimeLabel != null) {
+                AppointmentDateTimeLabel.Dispose ();
+                AppointmentDateTimeLabel = null;
+            }
+
+            if (AppointmentStackView != null) {
+                AppointmentStackView.Dispose ();
+                AppointmentStackView = null;
+            }
+
             if (AssignButton != null) {
                 AssignButton.Dispose ();
                 AssignButton = null;
+            }
+
+            if (CallHomeButton != null) {
+                CallHomeButton.Dispose ();
+                CallHomeButton = null;
+            }
+
+            if (CallMobileButton != null) {
+                CallMobileButton.Dispose ();
+                CallMobileButton = null;
+            }
+
+            if (CallWorkButton != null) {
+                CallWorkButton.Dispose ();
+                CallWorkButton = null;
             }
 
             if (CityStateZipLabel != null) {
@@ -160,6 +193,11 @@ namespace ProspectManagement.iOS.Views
             if (CompleteApptButton != null) {
                 CompleteApptButton.Dispose ();
                 CompleteApptButton = null;
+            }
+
+            if (ComposeEmailButton != null) {
+                ComposeEmailButton.Dispose ();
+                ComposeEmailButton = null;
             }
 
             if (ConsentLabel != null) {
@@ -182,11 +220,6 @@ namespace ProspectManagement.iOS.Views
                 DetailStackView = null;
             }
 
-            if (EmailLabel != null) {
-                EmailLabel.Dispose ();
-                EmailLabel = null;
-            }
-
             if (EmailStackView != null) {
                 EmailStackView.Dispose ();
                 EmailStackView = null;
@@ -202,11 +235,6 @@ namespace ProspectManagement.iOS.Views
                 HomeLabel = null;
             }
 
-            if (HomePhoneLabel != null) {
-                HomePhoneLabel.Dispose ();
-                HomePhoneLabel = null;
-            }
-
             if (HomeStackView != null) {
                 HomeStackView.Dispose ();
                 HomeStackView = null;
@@ -215,11 +243,6 @@ namespace ProspectManagement.iOS.Views
             if (MobileLabel != null) {
                 MobileLabel.Dispose ();
                 MobileLabel = null;
-            }
-
-            if (MobilePhoneLabel != null) {
-                MobilePhoneLabel.Dispose ();
-                MobilePhoneLabel = null;
             }
 
             if (MobileStackView != null) {
@@ -265,11 +288,6 @@ namespace ProspectManagement.iOS.Views
             if (WorkLabel != null) {
                 WorkLabel.Dispose ();
                 WorkLabel = null;
-            }
-
-            if (WorkPhoneLabel != null) {
-                WorkPhoneLabel.Dispose ();
-                WorkPhoneLabel = null;
             }
 
             if (WorkStackView != null) {

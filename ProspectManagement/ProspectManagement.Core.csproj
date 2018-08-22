@@ -26,6 +26,8 @@
     <Folder Include="Repositories\" />
     <Folder Include="Services\" />
     <Folder Include="ViewModels\" />
+    <Folder Include="Interfaces\InfiniteScroll\" />
+    <Folder Include="Shared\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Properties\AssemblyInfo.cs" />
@@ -41,5 +43,7 @@
     <PackageReference Include="MvvmCross" Version="6.1.2" />
     <PackageReference Include="MvvmCross.Plugin.Color" Version="6.1.2" />
     <PackageReference Include="MvvmCross.Plugin.Messenger" Version="6.1.2" />
+    <PackageReference Include="MvvmCross.Plugin.PhoneCall" Version="6.1.2" />
+    <PackageReference Include="MvvmCross.Plugin.Email" Version="6.1.2" />
   </ItemGroup>
 </Project>

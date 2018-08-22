@@ -22,11 +22,13 @@ namespace ProspectManagement.Core.Models
         [JsonProperty("appointmentStatus")]
         public string AppointmentStatus { get; set; }
         [JsonProperty("startDate")]
-        public string StartDate { get; set; }
+		public DateTime StartDate { get; set; }
         [JsonProperty("endDate")]
-        public string EndDate { get; set; }
+		public DateTime EndDate { get; set; }
         [JsonProperty("enteredDate")]
         public DateTime EnteredDate { get; set; }
+		[JsonProperty("appointmentDate")]
+        public DateTime? AppointmentDate { get; set; }
         public Community Community { get; set; }
     }
 }

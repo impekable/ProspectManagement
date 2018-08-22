@@ -19,7 +19,11 @@ namespace ProspectManagement.iOS.Views
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UILabel EnteredDateLabel { get; set; }
+        UIKit.UILabel FirstVisitLabel { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UILabel LastVisitLabel { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
@@ -33,6 +37,10 @@ namespace ProspectManagement.iOS.Views
         [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UILabel SalespersonLabel { get; set; }
 
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIStackView TopStackView { get; set; }
+
         void ReleaseDesignerOutlets ()
         {
             if (CommunityLabel != null) {
@@ -40,9 +48,14 @@ namespace ProspectManagement.iOS.Views
                 CommunityLabel = null;
             }
 
-            if (EnteredDateLabel != null) {
-                EnteredDateLabel.Dispose ();
-                EnteredDateLabel = null;
+            if (FirstVisitLabel != null) {
+                FirstVisitLabel.Dispose ();
+                FirstVisitLabel = null;
+            }
+
+            if (LastVisitLabel != null) {
+                LastVisitLabel.Dispose ();
+                LastVisitLabel = null;
             }
 
             if (ProspectLabel != null) {
@@ -58,6 +71,11 @@ namespace ProspectManagement.iOS.Views
             if (SalespersonLabel != null) {
                 SalespersonLabel.Dispose ();
                 SalespersonLabel = null;
+            }
+
+            if (TopStackView != null) {
+                TopStackView.Dispose ();
+                TopStackView = null;
             }
         }
     }

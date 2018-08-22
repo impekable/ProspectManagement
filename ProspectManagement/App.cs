@@ -21,7 +21,11 @@ namespace ProspectManagement.Core
                 .EndingWith("Service")
                 .AsInterfaces()
                 .RegisterAsLazySingleton();
-
+			CreatableTypes()
+				.Containing("IncrementalCollection")
+                .AsInterfaces()
+                .RegisterAsLazySingleton();
+			
 			//RegisterCustomAppStart<AppStart>();
 			RegisterAppStart<RootViewModel>();
         }
