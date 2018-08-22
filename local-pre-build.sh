@@ -7,6 +7,10 @@ echo "REST_RESOURCE_NAME is ${REST_RESOURCE_NAME}"
 echo "AZURE_KEY is ${AZURE_KEY}"
 echo "APPCENTER_SECRET is ${APPCENTER_SECRET}"
 echo "REST_ENDPOINT is ${REST_ENDPOINT}"
+echo "COGNITIVE_VISION_URI is ${COGNITIVE_VISION_URI}"
+echo "COGNITIVE_VISION_KEY is ${COGNITIVE_VISION_KEY}"
+sed -i '' "s#COGNITIVE_VISION_URI#${COGNITIVE_VISION_URI}#g" ../ProspectManagement/Constants/ConnectionURIs.cs
+sed -i '' "s/COGNITIVE_VISION_KEY/${COGNITIVE_VISION_KEY}/g" ../ProspectManagement/Constants/PrivateKeys.cs
 sed -i '' "s#REST_ENDPOINT#${REST_ENDPOINT}#g" ../ProspectManagement/Constants/ConnectionURIs.cs
 sed -i '' "s/REST_RESOURCE_NAME/${REST_RESOURCE_NAME}/g" ../ProspectManagement/Constants/PrivateKeys.cs
 sed -i '' "s/CLIENT_ID/${CLIENT_ID}/g" ../ProspectManagement/Constants/PrivateKeys.cs

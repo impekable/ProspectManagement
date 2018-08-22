@@ -16,9 +16,9 @@ namespace ProspectManagement.Core.Models
         [JsonProperty("community")]
         public string Community { get; set; }
 		[JsonProperty("timeDateStart")]
-		public DateTime TimeDateStart { get; set; }
+		public DateTime? TimeDateStart { get; set; }
 		[JsonProperty("timeDateEnd")]
-		public DateTime TimeDateEnd { get; set; }
+		public DateTime? TimeDateEnd { get; set; }
         [JsonProperty("dateCompleted")]
         public DateTime DateCompleted { get; set; }
         [JsonProperty("prospectAddressBook")]

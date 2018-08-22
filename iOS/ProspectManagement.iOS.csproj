@@ -199,6 +199,21 @@
     <Reference Include="MvvmCross.Plugin.Email">
       <HintPath>..\packages\MvvmCross.Plugin.Email.6.1.2\lib\xamarinios10\MvvmCross.Plugin.Email.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.ProjectOxford.Vision">
+      <HintPath>..\packages\Microsoft.ProjectOxford.Vision.1.0.393\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\Microsoft.ProjectOxford.Vision.dll</HintPath>
+    </Reference>
+    <Reference Include="Plugin.Permissions">
+      <HintPath>..\packages\Plugin.Permissions.3.0.0.12\lib\xamarinios10\Plugin.Permissions.dll</HintPath>
+    </Reference>
+    <Reference Include="Plugin.Permissions">
+      <HintPath>..\packages\Plugin.Permissions.3.0.0.12\lib\xamarinios10\Plugin.Permissions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ProjectOxford.Vision">
+      <HintPath>..\packages\Microsoft.ProjectOxford.Vision.1.0.393\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\Microsoft.ProjectOxford.Vision.dll</HintPath>
+    </Reference>
+    <Reference Include="Plugin.Media">
+      <HintPath>..\packages\Xam.Plugin.Media.4.0.1.5\lib\xamarinios10\Plugin.Media.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -311,6 +326,7 @@
     <Compile Include="StoryBoardContainer.cs" />
     <Compile Include="Sources\ProspectTableViewSource.cs" />
     <Compile Include="Sources\IncrementalTableViewSource.cs" />
+    <Compile Include="Views\HandwritingView.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\ITunesArtwork" />

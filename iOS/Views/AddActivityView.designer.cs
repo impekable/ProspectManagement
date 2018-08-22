@@ -16,6 +16,22 @@ namespace ProspectManagement.iOS.Views
     {
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIBarButtonItem ClearWritingBarButton { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIBarButtonItem ConvertWritingBarButton { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIView HandwritingContainerView { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIToolbar HandwritingToolbar { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UILabel NoteErrorLabel { get; set; }
 
         [Outlet]
@@ -24,6 +40,26 @@ namespace ProspectManagement.iOS.Views
 
         void ReleaseDesignerOutlets ()
         {
+            if (ClearWritingBarButton != null) {
+                ClearWritingBarButton.Dispose ();
+                ClearWritingBarButton = null;
+            }
+
+            if (ConvertWritingBarButton != null) {
+                ConvertWritingBarButton.Dispose ();
+                ConvertWritingBarButton = null;
+            }
+
+            if (HandwritingContainerView != null) {
+                HandwritingContainerView.Dispose ();
+                HandwritingContainerView = null;
+            }
+
+            if (HandwritingToolbar != null) {
+                HandwritingToolbar.Dispose ();
+                HandwritingToolbar = null;
+            }
+
             if (NoteErrorLabel != null) {
                 NoteErrorLabel.Dispose ();
                 NoteErrorLabel = null;
