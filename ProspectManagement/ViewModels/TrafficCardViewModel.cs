@@ -35,6 +35,7 @@ namespace ProspectManagement.Core.ViewModels
 
 		private ICommand _showDetailTab;
 		private ICommand _showCobuyerTab;
+        private ICommand _showContactHistoryTab;
         private ICommand _selectionChangedCommand;
 
 		public ICommand SelectionChangedCommand
@@ -59,6 +60,14 @@ namespace ProspectManagement.Core.ViewModels
                 return _showCobuyerTab ?? (_showCobuyerTab = new MvxCommand<Prospect>((prospect) => _navigationService.Navigate<CobuyerViewModel, Prospect>(Prospect)));
 			}
 		}
+        public ICommand ShowContactHistoryTab
+        {
+            get
+            {
+                return _showContactHistoryTab ?? (_showContactHistoryTab = new MvxCommand<Prospect>((prospect) => _navigationService.Navigate<ActivitiesViewModel, Prospect>(_prospect)));
+            }
+        }
+
 
 		public Prospect Prospect
 		{

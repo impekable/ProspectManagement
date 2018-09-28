@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Raleway-Bold.ttf">
+            <string>Raleway-Bold</string>
+        </array>
+        <array key="Raleway-Regular.ttf">
+            <string>Raleway-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="44" id="cxk-wN-pdQ" customClass="ActivitiesViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cxk-wN-pdQ" id="YTl-1W-gDM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="6nW-YS-QLp">
+                        <rect key="frame" x="10" y="0.0" width="310" height="43.5"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PHJ-dt-e4f">
+                                <rect key="frame" x="0.0" y="0.0" width="310" height="19"/>
+                                <fontDescription key="fontDescription" name="Raleway-Bold" family="Raleway" pointSize="16"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="63n-Vw-8a4">
+                                <rect key="frame" x="0.0" y="19" width="310" height="24.5"/>
+                                <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="10"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                    </stackView>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="6nW-YS-QLp" secondAttribute="bottom" id="FT0-Uw-u1i"/>
+                    <constraint firstItem="6nW-YS-QLp" firstAttribute="top" secondItem="YTl-1W-gDM" secondAttribute="top" id="bbP-zF-Ra8"/>
+                    <constraint firstAttribute="trailing" secondItem="6nW-YS-QLp" secondAttribute="trailing" id="mTj-vw-6ri"/>
+                    <constraint firstItem="6nW-YS-QLp" firstAttribute="leading" secondItem="YTl-1W-gDM" secondAttribute="leading" constant="10" id="yef-b2-uRr"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="DateTimeLabel" destination="63n-Vw-8a4" id="name-outlet-63n-Vw-8a4"/>
+                <outlet property="DescriptionLabel" destination="PHJ-dt-e4f" id="name-outlet-PHJ-dt-e4f"/>
+            </connections>
+            <point key="canvasLocation" x="30" y="-148"/>
+        </tableViewCell>
+    </objects>
+</document>

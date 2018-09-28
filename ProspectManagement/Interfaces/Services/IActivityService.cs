@@ -7,9 +7,11 @@ namespace ProspectManagement.Core.Interfaces.Services
 {
     public interface IActivityService
     {
-        Task<List<Activity>> GetActivitiesForProspectAsync(int prospectId, int page, int pageSize);
+        Task<List<Activity>> GetActivitiesForProspectAsync(int prospectId);
 
         Task<Activity> AddActivityToProspectAsync(int prospectId, Activity activity);
+
+        Task<Activity> GetActivityForProspectAsync(int prospectId, string activityId);
 
         Task<Activity> AddNoteToProspectAsync(Prospect prospect, String note);
 

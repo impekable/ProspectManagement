@@ -29,6 +29,7 @@ namespace ProspectManagement.Core.ViewModels
         private ICommand _addVisitCommand;
         private ICommand _showCobuyerTab;
         private ICommand _showTrafficCardTab;
+        private ICommand _showContactHistoryTab;
         private readonly IProspectService _prospectService;
         protected IMvxMessenger Messenger;
         private readonly IMvxNavigationService _navigationService;
@@ -289,6 +290,14 @@ namespace ProspectManagement.Core.ViewModels
                 return _showTrafficCardTab ?? (_showTrafficCardTab = new MvxCommand<Prospect>((prospect) => _navigationService.Navigate<TrafficCardViewModel, Prospect>(_prospect)));
             }
         }
+        public ICommand ShowContactHistoryTab
+        {
+            get
+            {
+                return _showContactHistoryTab ?? (_showContactHistoryTab = new MvxCommand<Prospect>((prospect) => _navigationService.Navigate<ActivitiesViewModel, Prospect>(_prospect)));
+            }
+        }
+
 
 		public User User
 		{

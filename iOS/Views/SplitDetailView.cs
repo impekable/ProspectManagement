@@ -223,6 +223,10 @@ namespace ProspectManagement.iOS.Views
                         ViewModel.ShowCobuyerTab.Execute(null);
                     else if (e.Item.Tag == 2)
                         ViewModel.ShowTrafficCardTab.Execute(null);
+                    else if (e.Item.Tag == 3)
+                        ViewModel.ShowContactHistoryTab.Execute(null);
+                    
+                    
                 };
             }
             else

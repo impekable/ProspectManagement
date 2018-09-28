@@ -113,6 +113,8 @@ namespace ProspectManagement.iOS.Views
 					ViewModel.ShowDetailTab.Execute(null);
 				else if (e.Item.Tag == 1)
 					ViewModel.ShowCobuyerTab.Execute(null);
+                else if (e.Item.Tag == 3)
+                    ViewModel.ShowContactHistoryTab.Execute(null);
 			};
 
             //this.NavigationItem.Title = TrafficCardViewModel.Prospect.FirstName + " " + TrafficCardViewModel.Prospect.LastName + " Traffic Card";

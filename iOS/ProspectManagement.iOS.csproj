@@ -1,11 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
     <ProjectGuid>{53078905-1D15-4441-9B41-569DE902177F}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <OutputType>Exe</OutputType>   
+    <OutputType>Exe</OutputType>
     <RootNamespace>ProspectManagement.iOS</RootNamespace>
     <AssemblyName>ProspectManagement.iOS</AssemblyName>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
@@ -18,7 +17,7 @@
     <DefineConstants>DEBUG;ENABLE_TEST_CLOUD;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodesignKey>iPhone Developer: dszot_22@yahoo.com (U88UP27GY2)</CodesignKey>
+    <CodesignKey>iPhone Developer</CodesignKey>
     <DeviceSpecificBuild>true</DeviceSpecificBuild>
     <MtouchDebug>true</MtouchDebug>
     <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
@@ -193,9 +192,6 @@
     <Reference Include="Cirrious.FluentLayouts.Touch">
       <HintPath>..\packages\Cirrious.FluentLayout.2.7.0\lib\Xamarin.iOS10\Cirrious.FluentLayouts.Touch.dll</HintPath>
     </Reference>
-    <Reference Include="MvvmCross.Plugin.PhoneCall">
-      <HintPath>..\packages\MvvmCross.Plugin.PhoneCall.6.1.2\lib\xamarinios10\MvvmCross.Plugin.PhoneCall.dll</HintPath>
-    </Reference>
     <Reference Include="MvvmCross.Plugin.Email">
       <HintPath>..\packages\MvvmCross.Plugin.Email.6.1.2\lib\xamarinios10\MvvmCross.Plugin.Email.dll</HintPath>
     </Reference>
@@ -213,6 +209,9 @@
     </Reference>
     <Reference Include="Plugin.Media">
       <HintPath>..\packages\Xam.Plugin.Media.4.0.1.5\lib\xamarinios10\Plugin.Media.dll</HintPath>
+    </Reference>
+    <Reference Include="MvvmCross.Plugin.PhoneCall">
+      <HintPath>..\packages\MvvmCross.Plugin.PhoneCall.6.1.2\lib\xamarinios10\MvvmCross.Plugin.PhoneCall.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -237,6 +236,7 @@
     <Folder Include="Resources\Assets.xcassets\AppIcons-TRN.appiconset\" />
     <Folder Include="Bootstrap\" />
     <Folder Include="Sources\" />
+    <Folder Include="Resources\Assets.xcassets\ic-contacthistory.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Main.storyboard" />
@@ -245,11 +245,24 @@
     <InterfaceDefinition Include="Views\QuestionViewCell.xib" />
     <InterfaceDefinition Include="Views\AnswerViewCell.xib" />
     <InterfaceDefinition Include="Views\CobuyerViewCell.xib" />
+    <InterfaceDefinition Include="Views\ActivitiesViewCell.xib" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
     <None Include="Entitlements.plist" />
     <None Include="packages.config" />
+    <Compile Include="Views\ActivitiesView.cs" />
+    <Compile Include="Views\ActivitiesView.designer.cs">
+      <DependentUpon>ActivitiesView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ActivitiesViewCell.cs" />
+    <Compile Include="Views\ActivitiesViewCell.designer.cs">
+      <DependentUpon>ActivitiesViewCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ActivityDetailView.cs" />
+    <Compile Include="Views\ActivityDetailView.designer.cs">
+      <DependentUpon>ActivityDetailView.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
@@ -490,6 +503,10 @@
     <ImageAsset Include="Resources\Assets.xcassets\AppIcons-TRN.appiconset\KHovnanian-Homes-Logo-76x76.png" />
     <ImageAsset Include="Resources\Assets.xcassets\AppIcons-TRN.appiconset\KHovnanian-Homes-Logo-152x152.png" />
     <ImageAsset Include="Resources\Assets.xcassets\AppIcons-TRN.appiconset\KHovnanian-Homes-Logo-167x167.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\ic-contacthistory.imageset\Contents.json" />
+    <ImageAsset Include="Resources\Assets.xcassets\ic-contacthistory.imageset\contact history 30.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\ic-contacthistory.imageset\contact history 60.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\ic-contacthistory.imageset\contact history 90.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ProspectManagement\ProspectManagement.Core.csproj">
