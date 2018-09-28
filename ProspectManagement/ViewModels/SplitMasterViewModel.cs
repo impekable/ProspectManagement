@@ -248,7 +248,7 @@ namespace ProspectManagement.Core.ViewModels
 					var prospect = Prospects.FirstOrDefault(p => p.ProspectAddressNumber == activity.ProspectAddressNumber);
 					if (prospect != null)
 					{
-						prospect.ProspectCommunity.EndDate = activity.DateCompleted;
+						prospect.ProspectCommunity.EndDate = (DateTime)activity.DateCompleted;
 						var request = new TableRow { TableRowToUpdate = Prospects.IndexOf(prospect) };
 						_updateRowInteraction.Raise(request);
 					}
