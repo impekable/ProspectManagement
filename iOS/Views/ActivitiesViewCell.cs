@@ -25,9 +25,10 @@ namespace ProspectManagement.iOS.Views
             {
                 var set = this.CreateBindingSet<ActivitiesViewCell, Activity>();
                 set.Bind(DescriptionLabel).To(v => v).WithConversion(new ActivityLabelValueConverter());
+                set.Bind(NotesLabel).To(v => v.Notes);
                 set.Bind(DateTimeLabel).To(v => v.DateCompleted).WithConversion(new DateOnlyConverter());
                 set.Apply();
             });
         }
-    }
+    } 
 }

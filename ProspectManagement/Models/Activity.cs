@@ -30,6 +30,8 @@ namespace ProspectManagement.Core.Models
 		public DateTime? TimeDateEnd { get; set; }
         [JsonProperty("dateCompleted")]
         public DateTime? DateCompleted { get; set; }
+        [JsonProperty("updatedDate")]
+        public DateTime? UpdatedDate { get; set; }
         [JsonProperty("prospectAddressBook")]
         public int ProspectAddressNumber { get; set; }
         [JsonProperty("prospectCommunityId")]

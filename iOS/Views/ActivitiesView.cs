@@ -53,6 +53,8 @@ namespace ProspectManagement.iOS.Views
 
             var source = new MvxSimpleTableViewSource(ActivitiesTableView, ActivitiesViewCell.Key, ActivitiesViewCell.Key, null);
             ActivitiesTableView.Source = source;
+            ActivitiesTableView.RowHeight = UITableView.AutomaticDimension;
+            ActivitiesTableView.EstimatedRowHeight = 40;
 
             var set = this.CreateBindingSet<ActivitiesView, ActivitiesViewModel>();
             set.Bind(source).To(vm => vm.ActivitiesList);

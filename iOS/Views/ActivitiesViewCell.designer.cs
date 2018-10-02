@@ -21,6 +21,10 @@ namespace ProspectManagement.iOS.Views
         [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UILabel DescriptionLabel { get; set; }
 
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UILabel NotesLabel { get; set; }
+
         void ReleaseDesignerOutlets ()
         {
             if (DateTimeLabel != null) {
@@ -31,6 +35,11 @@ namespace ProspectManagement.iOS.Views
             if (DescriptionLabel != null) {
                 DescriptionLabel.Dispose ();
                 DescriptionLabel = null;
+            }
+
+            if (NotesLabel != null) {
+                NotesLabel.Dispose ();
+                NotesLabel = null;
             }
         }
     }

@@ -19,7 +19,7 @@ namespace ProspectManagement.iOS.Sources
 
 		public IncrementalTableViewSource(UITableView tableView, NSString cellIdentifier) : base(tableView, new NSString("ProspectViewCell"))
         {
-            DeselectAutomatically = true;
+            DeselectAutomatically = false;
             tableView.RegisterNibForCellReuse(UINib.FromName("ProspectViewCell", NSBundle.MainBundle),
                                               cellIdentifier);
         }

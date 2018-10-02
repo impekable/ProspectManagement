@@ -74,7 +74,7 @@ namespace ProspectManagement.Core.Services
             {
                 var authResult = await _authenticator.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource);
                 var allActivities = await _activityRepository.GetProspectActivitiesAsync(prospectId, EmailFormat.None, authResult.AccessToken);
-                var activities = allActivities.Where(a => a.DateCompleted != null).OrderBy(a => a.DateCompleted).ToList();
+                var activities = allActivities.Where(a => a.DateCompleted != null).OrderBy(a => a.DateCompleted).ThenBy(a => a.UpdatedDate).ToList();
                 return activities;
             } 
 

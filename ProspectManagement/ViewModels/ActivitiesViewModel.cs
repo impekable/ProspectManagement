@@ -67,14 +67,20 @@ namespace ProspectManagement.Core.ViewModels
             {
                 return _selectionChangedCommand ?? (_selectionChangedCommand = new MvxCommand<Activity>(async (activity) =>
                  {
+
                      activity = await _activitiesService.GetActivityForProspectAsync(_prospect.ProspectAddressNumber, activity.InstanceID);
-                     Analytics.TrackEvent("Contact History Detail Viewed", new Dictionary<string, string>
+
+                    // if (activity.EmailActivity != null)
+                     {
+                         Analytics.TrackEvent("Contact History Detail Viewed", new Dictionary<string, string>
                         {
                             {"Community", Prospect.ProspectCommunity.CommunityNumber + " " + Prospect.ProspectCommunity.Community.Description},
                             {"SalesAssociate", Prospect.ProspectCommunity.SalespersonAddressNumber + " " + Prospect.ProspectCommunity.SalespersonName},
                             {"User", _user.AddressBook.AddressNumber + " " + _user.AddressBook.Name},
                         });
-                     _navigationService.Navigate<ActivityDetailViewModel, KeyValuePair<Prospect, Activity>>(new KeyValuePair<Prospect, Activity>(_prospect, activity));
+                         _navigationService.Navigate<ActivityDetailViewModel, KeyValuePair<Prospect, Activity>>(new KeyValuePair<Prospect, Activity>(_prospect, activity));
+
+                     }
                  }));
             }
         }
