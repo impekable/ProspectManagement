@@ -32,9 +32,10 @@ namespace ProspectManagement.Core.ViewModels
         private ICommand _showContactHistoryTab;
         private readonly IProspectService _prospectService;
         protected IMvxMessenger Messenger;
+		private readonly IDialogService _dialogService;
         private readonly IMvxNavigationService _navigationService;
 		private readonly IMvxPhoneCallTask _phoneCallTask;
-		private readonly IMvxComposeEmailTask _emailTask;
+		private readonly IMvxComposeEmailTaskEx _emailTask;
 
 		public IMvxCommand MobilePhoneCallCommand => new MvxCommand(CallProspectMobile);
 		public IMvxCommand WorkPhoneCallCommand => new MvxCommand(CallProspectWork);
@@ -60,9 +61,16 @@ namespace ProspectManagement.Core.ViewModels
 
 		private void ComposeEmailToProspect()
         {
-			var activity = createAdHocActivity("Email", "Emailed from App");
-            _navigationService.Navigate<AddActivityViewModel, Activity>(activity);
-			_emailTask.ComposeEmail(_prospect.Email.EmailAddress);
+			if (_emailTask.CanSendEmail)
+			{
+				var activity = createAdHocActivity("Email", "Emailed from App");
+				_navigationService.Navigate<AddActivityViewModel, Activity>(activity);
+				_emailTask.ComposeEmail(_prospect.Email.EmailAddress);
+			}
+			else
+			{
+				_dialogService.ShowAlertAsync("Please configure email on this device and then try again.", "Email Not Configured", "Close");
+			}
         }
 
 		private void CallProspectMobile()
@@ -143,13 +151,14 @@ namespace ProspectManagement.Core.ViewModels
         private MvxInteraction _assignedProspectInteraction = new MvxInteraction();
         public IMvxInteraction AssignedProspectInteraction => _assignedProspectInteraction;
         
-		public SplitDetailViewModel(IMvxComposeEmailTask emailTask, IMvxPhoneCallTask phoneCallTask, IMvxMessenger messenger, IProspectService prospectService, IMvxNavigationService navigationService)
+		public SplitDetailViewModel(IDialogService dialogService, IMvxComposeEmailTaskEx emailTask, IMvxPhoneCallTask phoneCallTask, IMvxMessenger messenger, IProspectService prospectService, IMvxNavigationService navigationService)
         {
             Messenger = messenger;
             _prospectService = prospectService;
             _navigationService = navigationService;
 			_phoneCallTask = phoneCallTask;
 			_emailTask = emailTask;
+			_dialogService = dialogService;
 
             Messenger.Subscribe<RefreshMessage>(message => _clearDetailsInteraction.Raise(), MvxReference.Strong);
 			Messenger.Subscribe<ProspectChangedMessage>(message => Prepare(new KeyValuePair<Prospect, User>(message.UpdatedProspect, User)), MvxReference.Strong);

@@ -114,6 +114,7 @@ namespace ProspectManagement.iOS.Views
 				HandwritingToolbar.Hidden = false;
 				NoteTextView.ResignFirstResponder();
 				NoteTextView.Hidden = true;
+				handwritingView.Clear();
 			});
 			var photoButton = new UIBarButtonItem("Scan Note", UIBarButtonItemStyle.Bordered, async (sender, e) =>
 			{
@@ -132,14 +133,22 @@ namespace ProspectManagement.iOS.Views
                 {
                     photo = await CrossMedia.Current.PickPhotoAsync();
                 }
-                using (var photoStream = photo.GetStream())
-                {
-					var bounds = UIScreen.MainScreen.Bounds;
-					alertOverlay = new AlertOverlay(bounds, "Converting Photo to Text...");
-                    View.Add(alertOverlay);
-					NoteTextView.Text = await cognitiveVisionService.ReadHandwrittenText(photoStream);
-					alertOverlay.Hide();
-                }
+
+				if (photo != null)
+				{
+					using (var photoStream = photo.GetStream())
+					{
+						var bounds = UIScreen.MainScreen.Bounds;
+						alertOverlay = new AlertOverlay(bounds, "Converting Photo to Text...");
+						View.Add(alertOverlay);
+						NoteTextView.Text = await cognitiveVisionService.ReadHandwrittenText(photoStream);
+						alertOverlay.Hide();
+					}
+				}
+				else
+				{
+					NoteTextView.BecomeFirstResponder();
+				}
 			});
 			toolbar.SetItems(new[] { handWriteButton, new UIBarButtonItem(UIBarButtonSystemItem.FlexibleSpace), photoButton}, false);
 			NoteTextView.KeyboardAppearance = UIKeyboardAppearance.Default;
