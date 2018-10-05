@@ -52,8 +52,10 @@ namespace ProspectManagement.Core.Models
         public string FollowUpMethod { get; set; }
         [JsonProperty("emailActivity")]
         public EmailActivityDetail EmailActivity { get; set; }
+		[JsonProperty("additionalNotesExist")]
+        public bool AdditionalNotesExist { get; set; }
 
-        public class EmailActivityDetail 
+		public class EmailActivityDetail 
         {
             [JsonProperty("exchangeID")]
             public string ExchangeId { get; set; }

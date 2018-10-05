@@ -5,6 +5,7 @@ using MvvmCross.Platforms.Ios.Presenters.Attributes;
 using MvvmCross.Platforms.Ios.Views;
 using MvvmCross.ViewModels;
 using ProspectManagement.Core.ViewModels;
+using ProspectManagement.iOS.Sources;
 using System;
 using UIKit;
 
@@ -14,9 +15,6 @@ namespace ProspectManagement.iOS.Views
     [MvxSplitViewPresentation(Position = MasterDetailPosition.Detail)]
     public partial class ActivitiesView : MvxViewController<ActivitiesViewModel>
     {
-
-        private MvxSimpleTableViewSource source;
-
         private IMvxInteraction _clearDetailsInteraction;
         public IMvxInteraction ClearDetailsInteraction
         {
@@ -48,10 +46,10 @@ namespace ProspectManagement.iOS.Views
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
-
+            
             ActivitiesTableView.TableFooterView = new UIView();
 
-            var source = new MvxSimpleTableViewSource(ActivitiesTableView, ActivitiesViewCell.Key, ActivitiesViewCell.Key, null);
+			var source = new ActivityTableViewSource(ActivitiesTableView, ActivitiesViewCell.Key);
             ActivitiesTableView.Source = source;
             ActivitiesTableView.RowHeight = UITableView.AutomaticDimension;
             ActivitiesTableView.EstimatedRowHeight = 40;

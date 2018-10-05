@@ -170,6 +170,8 @@ namespace ProspectManagement.Core.ViewModels
             				RaisePropertyChanged(() => MobilePhoneEntered);
             				RaisePropertyChanged(() => HomePhoneEntered);
             				RaisePropertyChanged(() => WorkPhoneEntered);
+            				RaisePropertyChanged(() => AllowCalling);
+            				RaisePropertyChanged(() => AllowEmailing);
             			}, 
                         MvxReference.Strong);
 

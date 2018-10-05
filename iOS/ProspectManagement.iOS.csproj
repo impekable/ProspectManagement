@@ -263,6 +263,7 @@
     <Compile Include="Views\ActivityDetailView.designer.cs">
       <DependentUpon>ActivityDetailView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Sources\ActivityTableViewSource.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />

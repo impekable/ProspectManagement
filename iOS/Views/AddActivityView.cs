@@ -142,6 +142,7 @@ namespace ProspectManagement.iOS.Views
 						alertOverlay = new AlertOverlay(bounds, "Converting Photo to Text...");
 						View.Add(alertOverlay);
 						NoteTextView.Text = await cognitiveVisionService.ReadHandwrittenText(photoStream);
+						AddActivityViewModel.AddAnalyticsScanPhotoCommand.Execute(null);
 						alertOverlay.Hide();
 					}
 				}
@@ -168,6 +169,7 @@ namespace ProspectManagement.iOS.Views
                 alertOverlay = new AlertOverlay(bounds, "Converting Writing to Text...");
                 View.Add(alertOverlay);
 				NoteTextView.Text = await cognitiveVisionService.ReadHandwrittenText(jpgStream);
+				AddActivityViewModel.AddAnalyticsHandwritingCommand.Execute(null);
 				alertOverlay.Hide();
 
 				HandwritingContainerView.Hidden = true;

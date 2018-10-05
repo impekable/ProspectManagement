@@ -30,6 +30,8 @@ namespace ProspectManagement.Core.ViewModels
 
 		private ICommand _saveCommand;
 		private ICommand _closeCommand;
+		private ICommand _addAnalyticsScanPhotoCommand;
+		private ICommand _addAnalyticsHandwritingCommand;
 
 		private string _noteError;
 
@@ -52,6 +54,36 @@ namespace ProspectManagement.Core.ViewModels
 				RaisePropertyChanged(() => Activity);
 			}
 		}
+
+		public ICommand AddAnalyticsScanPhotoCommand
+		{
+			get
+			{
+				return _addAnalyticsScanPhotoCommand ?? (_addAnalyticsScanPhotoCommand = new MvxCommand(() =>
+					Analytics.TrackEvent("Converted Photo", new Dictionary<string, string>
+					{
+						{"SalesAssociate", Activity.SalespersonAddressNumber.ToString()},
+						{"Community", Activity.Community},
+						{"ActivityType", Activity.ActivityType},
+						{"User", _user.AddressBook.AddressNumber + " " + _user.AddressBook.Name},
+				})));
+			}
+		}
+        
+		public ICommand AddAnalyticsHandwritingCommand
+        {
+            get
+            {
+				return _addAnalyticsHandwritingCommand ?? (_addAnalyticsHandwritingCommand = new MvxCommand(() =>
+                    Analytics.TrackEvent("Converted Writing", new Dictionary<string, string>
+                    {
+                        {"SalesAssociate", Activity.SalespersonAddressNumber.ToString()},
+                        {"Community", Activity.Community},
+                        {"ActivityType", Activity.ActivityType},
+                        {"User", _user.AddressBook.AddressNumber + " " + _user.AddressBook.Name},
+                })));
+            }
+        }
 
 		public ICommand CloseCommand
 		{

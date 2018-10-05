@@ -9,7 +9,7 @@
       <CustomCommands>
         <Command>
           <type>BeforeBuild</type>
-          <command>/bin/sh ../local-pre-build.sh LOCALDEV</command>
+          <command>/bin/sh ../local-pre-build.sh DEV</command>
         </Command>
       </CustomCommands>
     </CustomCommands>

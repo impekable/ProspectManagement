@@ -70,7 +70,7 @@ namespace ProspectManagement.Core.ViewModels
 
                      activity = await _activitiesService.GetActivityForProspectAsync(_prospect.ProspectAddressNumber, activity.InstanceID);
 
-                    // if (activity.EmailActivity != null)
+                     if (activity.AdditionalNotesExist)
                      {
                          Analytics.TrackEvent("Contact History Detail Viewed", new Dictionary<string, string>
                         {
