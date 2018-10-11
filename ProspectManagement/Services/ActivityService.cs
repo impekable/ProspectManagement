@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AppCenter.Crashes;
 using ProspectManagement.Core.Interfaces.Repositories;
 using ProspectManagement.Core.Interfaces.Services;
 using ProspectManagement.Core.Models;
@@ -34,6 +35,7 @@ namespace ProspectManagement.Core.Services
             }
             catch (Exception ex)
             {
+				Crashes.TrackError(ex);
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
                 _dialogService.ShowAlertAsync("Seems like there was a problem.", "Oops", "Close");
                 return null;
@@ -80,6 +82,7 @@ namespace ProspectManagement.Core.Services
 
             catch (Exception ex)
             {
+				Crashes.TrackError(ex);
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
                 _dialogService.ShowAlertAsync("Seems like there was a problem.", "Oops", "Close");
                 return null;
@@ -96,6 +99,7 @@ namespace ProspectManagement.Core.Services
 
             catch (Exception ex)
             {
+				Crashes.TrackError(ex);
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
                 _dialogService.ShowAlertAsync("Seems like there was a problem.", "Oops", "Close");
                 return null;

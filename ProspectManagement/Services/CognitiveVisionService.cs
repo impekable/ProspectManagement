@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Microsoft.AppCenter.Crashes;
 using Newtonsoft.Json.Linq;
 using ProspectManagement.Core.Constants;
 
@@ -221,6 +222,7 @@ namespace ProspectManagement.Core.Services
 			}
 			catch (Exception e)
 			{
+				Crashes.TrackError(e);
 				Console.WriteLine("\n" + e.Message);
 			}
 			return String.Empty;

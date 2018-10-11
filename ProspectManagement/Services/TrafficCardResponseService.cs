@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AppCenter.Crashes;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using ProspectManagement.Core.Interfaces.Repositories;
 using ProspectManagement.Core.Interfaces.Services;
@@ -34,6 +35,7 @@ namespace ProspectManagement.Core.Services
             }
             catch (Exception ex)
             {
+				Crashes.TrackError(ex);
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
                 _dialogService.ShowAlertAsync("Seems like there was a problem." + ex.Message, "Oops", "Close");
                 return false;
@@ -49,6 +51,7 @@ namespace ProspectManagement.Core.Services
             }
             catch (Exception ex)
             {
+				Crashes.TrackError(ex);
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
                 _dialogService.ShowAlertAsync("Seems like there was a problem." + ex.Message, "Oops", "Close");
                 return default(List<TrafficCardResponse>);
