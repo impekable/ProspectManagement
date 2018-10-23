@@ -11,6 +11,7 @@ using ProspectManagement.Core.Models;
 using MvvmCross.Commands;
 using MvvmCross.Plugin.PhoneCall;
 using MvvmCross.Plugin.Email;
+using Microsoft.AppCenter.Analytics;
 
 namespace ProspectManagement.Core.ViewModels
 {
@@ -66,7 +67,14 @@ namespace ProspectManagement.Core.ViewModels
 				var activity = createAdHocActivity("Email", "Emailed from App");
 				_navigationService.Navigate<AddActivityViewModel, Activity>(activity);
 				_emailTask.ComposeEmail(_prospect.Email.EmailAddress);
-			}
+                Analytics.TrackEvent("Emailed From App", new Dictionary<string, string>
+                    {
+                        {"SalesAssociate", _prospect.ProspectCommunity.SalespersonAddressNumber.ToString()},
+                        {"Community", _prospect.ProspectCommunity.CommunityNumber},
+                        {"User", _user.AddressBook.AddressNumber + " " + _user.AddressBook.Name},
+                });
+
+            }
 			else
 			{
 				_dialogService.ShowAlertAsync("Please configure email on this device and then try again.", "Email Not Configured", "Close");
@@ -78,13 +86,25 @@ namespace ProspectManagement.Core.ViewModels
 			var activity = createAdHocActivity("Phone", "Called from App");
             _navigationService.Navigate<AddActivityViewModel, Activity>(activity);
 			_phoneCallTask.MakePhoneCall(_prospect.Name, _prospect.MobilePhoneNumber.Phone);
-		}
+            Analytics.TrackEvent("Called From App", new Dictionary<string, string>
+                    {
+                        {"SalesAssociate", _prospect.ProspectCommunity.SalespersonAddressNumber.ToString()},
+                        {"Community", _prospect.ProspectCommunity.CommunityNumber},
+                        {"User", _user.AddressBook.AddressNumber + " " + _user.AddressBook.Name},
+                });
+        }
 
 		private void CallProspectWork()
         {
 			var activity = createAdHocActivity("Phone", "Called from App");
             _navigationService.Navigate<AddActivityViewModel, Activity>(activity);
 			_phoneCallTask.MakePhoneCall(_prospect.Name, _prospect.WorkPhoneNumber.Phone);
+            Analytics.TrackEvent("Called From App", new Dictionary<string, string>
+                    {
+                        {"SalesAssociate", _prospect.ProspectCommunity.SalespersonAddressNumber.ToString()},
+                        {"Community", _prospect.ProspectCommunity.CommunityNumber},
+                        {"User", _user.AddressBook.AddressNumber + " " + _user.AddressBook.Name},
+                });
         }
 
 		private void CallProspectHome()
@@ -92,6 +112,12 @@ namespace ProspectManagement.Core.ViewModels
 			var activity = createAdHocActivity("Phone", "Called from App");
             _navigationService.Navigate<AddActivityViewModel, Activity>(activity);
 			_phoneCallTask.MakePhoneCall(_prospect.Name, _prospect.HomePhoneNumber.Phone);
+            Analytics.TrackEvent("Called From App", new Dictionary<string, string>
+                    {
+                        {"SalesAssociate", _prospect.ProspectCommunity.SalespersonAddressNumber.ToString()},
+                        {"Community", _prospect.ProspectCommunity.CommunityNumber},
+                        {"User", _user.AddressBook.AddressNumber + " " + _user.AddressBook.Name},
+                });
         }
 
 		public bool AllowCalling

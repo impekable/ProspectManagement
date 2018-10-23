@@ -11,6 +11,8 @@ using ProspectManagement.Core.Interfaces.Repositories;
 using ProspectManagement.Core.Models.App;
 using Newtonsoft.Json;
 using ProspectManagement.Core.Constants;
+using Microsoft.AppCenter.Crashes;
+using System.Collections.Generic;
 
 namespace ProspectManagement.Core.Repositories
 {
@@ -201,12 +203,15 @@ namespace ProspectManagement.Core.Repositories
                             try
                             {
                                 var error = _serializer.Deserialize<ServiceError>(jsonReader);
+                                Crashes.TrackError(new Exception(response.ToString()), new Dictionary<string, string>{
+                                                { "apiUrl", apiUrl },
+                                                { "error", error?.ErrorDescription }
+                                            });
                                 OnRetrievingDataFailed(error.ErrorDescription);
-                                //var error = DeserializeObject<ServiceError>(contentNew);
-                                //OnRetrievingDataFailed(error.ErrorDescription);
                             }
                             catch (Exception e)
                             {
+                                Crashes.TrackError(e, new Dictionary<string, string> { { "apiUrl", apiUrl } });
                                 OnRetrievingDataFailed("Error occurred");
                             }
                         }
@@ -242,14 +247,16 @@ namespace ProspectManagement.Core.Repositories
                                 if (jsonReader == null)
                                     return false;
                                 var error = _serializer.Deserialize<ServiceError>(jsonReader);
+                                Crashes.TrackError(new Exception(response.ToString()), new Dictionary<string, string>{
+                                                { "apiUrl", apiUrl },
+                                                { "error", error?.ErrorDescription }
+                                            });
                                 OnRetrievingDataFailed(error.ErrorDescription);
                             }
-                            //var contentNew = await response.Content.ReadAsStringAsync();
-                            //var error = DeserializeObject<ServiceError>(contentNew);
-                            //OnRetrievingDataFailed(error.ErrorDescription);
                         }
                         catch (Exception e)
                         {
+                            Crashes.TrackError(e, new Dictionary<string, string> { { "apiUrl", apiUrl } });
                             OnRetrievingDataFailed("Error occurred");
                         }
                     }
