@@ -56,8 +56,9 @@ namespace ProspectManagement.Core.ViewModels
 				ProspectAddressNumber = Prospect.ProspectAddressNumber,
 				SalespersonAddressNumber = Prospect.ProspectCommunity.SalespersonAddressNumber,
 				ProspectCommunityId = Prospect.ProspectCommunity.ProspectCommunityId,
-				Community = Prospect.ProspectCommunity.CommunityNumber
-			};
+				Community = Prospect.ProspectCommunity.CommunityNumber,
+                ProspectCommunity = Prospect.ProspectCommunity
+            };
 		}
 
 		private void ComposeEmailToProspect()
@@ -69,8 +70,8 @@ namespace ProspectManagement.Core.ViewModels
 				_emailTask.ComposeEmail(_prospect.Email.EmailAddress);
                 Analytics.TrackEvent("Emailed From App", new Dictionary<string, string>
                     {
-                        {"SalesAssociate", _prospect.ProspectCommunity.SalespersonAddressNumber.ToString()},
-                        {"Community", _prospect.ProspectCommunity.CommunityNumber},
+                        {"SalesAssociate", _prospect.ProspectCommunity.SalespersonAddressNumber.ToString() + " " + _prospect.ProspectCommunity.SalespersonName },
+                        {"Community", _prospect.ProspectCommunity.CommunityNumber + " " + _prospect.ProspectCommunity.Community.Description},
                         {"User", _user.AddressBook.AddressNumber + " " + _user.AddressBook.Name},
                 });
 
@@ -88,8 +89,8 @@ namespace ProspectManagement.Core.ViewModels
 			_phoneCallTask.MakePhoneCall(_prospect.Name, _prospect.MobilePhoneNumber.Phone);
             Analytics.TrackEvent("Called From App", new Dictionary<string, string>
                     {
-                        {"SalesAssociate", _prospect.ProspectCommunity.SalespersonAddressNumber.ToString()},
-                        {"Community", _prospect.ProspectCommunity.CommunityNumber},
+                        {"SalesAssociate", _prospect.ProspectCommunity.SalespersonAddressNumber.ToString() + " " + _prospect.ProspectCommunity.SalespersonName },
+                        {"Community", _prospect.ProspectCommunity.CommunityNumber + " " + _prospect.ProspectCommunity.Community.Description},
                         {"User", _user.AddressBook.AddressNumber + " " + _user.AddressBook.Name},
                 });
         }
@@ -101,8 +102,8 @@ namespace ProspectManagement.Core.ViewModels
 			_phoneCallTask.MakePhoneCall(_prospect.Name, _prospect.WorkPhoneNumber.Phone);
             Analytics.TrackEvent("Called From App", new Dictionary<string, string>
                     {
-                        {"SalesAssociate", _prospect.ProspectCommunity.SalespersonAddressNumber.ToString()},
-                        {"Community", _prospect.ProspectCommunity.CommunityNumber},
+                        {"SalesAssociate", _prospect.ProspectCommunity.SalespersonAddressNumber.ToString() + " " + _prospect.ProspectCommunity.SalespersonName },
+                        {"Community", _prospect.ProspectCommunity.CommunityNumber + " " + _prospect.ProspectCommunity.Community.Description},
                         {"User", _user.AddressBook.AddressNumber + " " + _user.AddressBook.Name},
                 });
         }
@@ -114,8 +115,8 @@ namespace ProspectManagement.Core.ViewModels
 			_phoneCallTask.MakePhoneCall(_prospect.Name, _prospect.HomePhoneNumber.Phone);
             Analytics.TrackEvent("Called From App", new Dictionary<string, string>
                     {
-                        {"SalesAssociate", _prospect.ProspectCommunity.SalespersonAddressNumber.ToString()},
-                        {"Community", _prospect.ProspectCommunity.CommunityNumber},
+                        {"SalesAssociate", _prospect.ProspectCommunity.SalespersonAddressNumber.ToString() + " " + _prospect.ProspectCommunity.SalespersonName },
+                        {"Community", _prospect.ProspectCommunity.CommunityNumber + " " + _prospect.ProspectCommunity.Community.Description},
                         {"User", _user.AddressBook.AddressNumber + " " + _user.AddressBook.Name},
                 });
         }
@@ -257,7 +258,8 @@ namespace ProspectManagement.Core.ViewModels
                         DateCompleted = DateTime.UtcNow,
                         ProspectAddressNumber = Prospect.ProspectAddressNumber,
                         SalespersonAddressNumber = Prospect.ProspectCommunity.SalespersonAddressNumber,
-                        ProspectCommunityId = Prospect.ProspectCommunity.ProspectCommunityId
+                        ProspectCommunityId = Prospect.ProspectCommunity.ProspectCommunityId,
+                        ProspectCommunity = Prospect.ProspectCommunity
                     };
                     _navigationService.Navigate<AddActivityViewModel, Activity>(activity);
                 }));
@@ -277,7 +279,8 @@ namespace ProspectManagement.Core.ViewModels
                         DateCompleted = DateTime.UtcNow,
                         ProspectAddressNumber = Prospect.ProspectAddressNumber,
                         SalespersonAddressNumber = Prospect.ProspectCommunity.SalespersonAddressNumber,
-                        ProspectCommunityId = Prospect.ProspectCommunity.ProspectCommunityId
+                        ProspectCommunityId = Prospect.ProspectCommunity.ProspectCommunityId,
+                        ProspectCommunity = Prospect.ProspectCommunity
                     };
                     _navigationService.Navigate<AddActivityViewModel, Activity>(activity);
                 }));
@@ -297,7 +300,8 @@ namespace ProspectManagement.Core.ViewModels
                         DateCompleted = DateTime.UtcNow,
                         ProspectAddressNumber = Prospect.ProspectAddressNumber,
                         SalespersonAddressNumber = Prospect.ProspectCommunity.SalespersonAddressNumber,
-                        ProspectCommunityId = Prospect.ProspectCommunity.ProspectCommunityId
+                        ProspectCommunityId = Prospect.ProspectCommunity.ProspectCommunityId,
+                        ProspectCommunity = Prospect.ProspectCommunity
                     };
                     _navigationService.Navigate<AddActivityViewModel, Activity>(activity);
                 }));

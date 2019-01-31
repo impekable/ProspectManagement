@@ -120,9 +120,9 @@ namespace ProspectManagement.iOS.Views
             base.ViewDidLoad();
 
             var set = this.CreateBindingSet<SplitDetailView, SplitDetailViewModel>();
-            set.Bind(NameLabel).To(vm => vm.Prospect.Name);
+            set.Bind(NameLabel).To(vm => vm.Prospect).WithConversion(new NameConverter());
             set.Bind(AddressLine1Label).To(vm => vm.Prospect.StreetAddress.AddressLine1);
-            set.Bind(CityStateZipLabel).To(vm => vm.Prospect.StreetAddress).WithConversion(new CityStateZipConverter()); ;
+            set.Bind(CityStateZipLabel).To(vm => vm.Prospect.StreetAddress).WithConversion(new CityStateZipConverter());
 
 			set.Bind(ComposeEmailButton).For(v => v.Enabled).To(vm => vm.AllowEmailing);
             set.Bind(ComposeEmailButton).For("Title").To(vm => vm.Prospect.Email.EmailAddress);

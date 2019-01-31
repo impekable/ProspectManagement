@@ -62,8 +62,8 @@ namespace ProspectManagement.Core.ViewModels
 				return _addAnalyticsScanPhotoCommand ?? (_addAnalyticsScanPhotoCommand = new MvxCommand(() =>
 					Analytics.TrackEvent("Converted Photo", new Dictionary<string, string>
 					{
-						{"SalesAssociate", Activity.SalespersonAddressNumber.ToString()},
-						{"Community", Activity.Community},
+						{"SalesAssociate", Activity.SalespersonAddressNumber.ToString() + " " + Activity.ProspectCommunity.SalespersonName},
+						{"Community", Activity.ProspectCommunity.CommunityNumber + " " + Activity.ProspectCommunity.Community.Description},
 						{"ActivityType", Activity.ActivityType},
 						{"User", _user.AddressBook.AddressNumber + " " + _user.AddressBook.Name},
 				})));
@@ -77,8 +77,8 @@ namespace ProspectManagement.Core.ViewModels
 				return _addAnalyticsHandwritingCommand ?? (_addAnalyticsHandwritingCommand = new MvxCommand(() =>
                     Analytics.TrackEvent("Converted Writing", new Dictionary<string, string>
                     {
-                        {"SalesAssociate", Activity.SalespersonAddressNumber.ToString()},
-                        {"Community", Activity.Community},
+                        {"SalesAssociate", Activity.SalespersonAddressNumber.ToString() + " " + Activity.ProspectCommunity.SalespersonName},
+                        {"Community", Activity.ProspectCommunity.CommunityNumber + " " + Activity.ProspectCommunity.Community.Description},
                         {"ActivityType", Activity.ActivityType},
                         {"User", _user.AddressBook.AddressNumber + " " + _user.AddressBook.Name},
                 })));
@@ -115,9 +115,9 @@ namespace ProspectManagement.Core.ViewModels
 
 				   Analytics.TrackEvent("Activity Added", new Dictionary<string, string>
 					{
-						{"SalesAssociate", Activity.SalespersonAddressNumber.ToString()},
-						{"Community", Activity.Community},
-						{"ActivityType", Activity.ActivityType},
+                        {"SalesAssociate", Activity.SalespersonAddressNumber.ToString() + " " + Activity.ProspectCommunity.SalespersonName},
+                        {"Community", Activity.ProspectCommunity.CommunityNumber + " " + Activity.ProspectCommunity.Community.Description},
+                        {"ActivityType", Activity.ActivityType},
 						{"User", _user.AddressBook.AddressNumber + " " + _user.AddressBook.Name},
 					});
 

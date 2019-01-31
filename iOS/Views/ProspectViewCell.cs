@@ -37,12 +37,14 @@ namespace ProspectManagement.iOS.Views
 			{
                 var set = this.CreateBindingSet<ProspectViewCell, Prospect>();
                 set.Bind(ProspectLabel).To(v => v.Name);
+                set.Bind(ProspectLabel).For(v=> v.TextColor).To(v => v).WithConversion(new ProspectColorValueConverter());
                 set.Bind(CommunityLabel).To(v => v.ProspectCommunity.Community.Description);
                 set.Bind(SalespersonLabel).To(v => v.ProspectCommunity.SalespersonName);
 				set.Bind(FirstVisitLabel).To(v => v.ProspectCommunity.StartDate).WithConversion(new DateOnlyConverter());
 				set.Bind(LastVisitLabel).To(v => v.ProspectCommunity.EndDate).WithConversion(new DateOnlyConverter());
+                //set.Bind(this).For(u => u.BackgroundColor).To(v => v).WithConversion(new ProspectBackgroundColorValueConverter());
 
-				set.Bind(_imageControl).For(i => i.ImagePath).To(v => v.ProspectCommunity.SalespersonAddressNumber).WithConversion(new ImageValueConverter());
+                set.Bind(_imageControl).For(i => i.ImagePath).To(v => v.ProspectCommunity.SalespersonAddressNumber).WithConversion(new ImageValueConverter());
 				set.Apply();
             });
         }

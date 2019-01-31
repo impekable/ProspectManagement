@@ -95,7 +95,7 @@ namespace ProspectManagement.Core.Services
 				Crashes.TrackError(ex);
 				System.Diagnostics.Debug.WriteLine(ex.ToString());
 				_dialogService.ShowAlertAsync("Seems like there was a problem." + ex.Message, "Oops", "Close");
-				return default(List<UserDefinedCode>);
+				return new List<UserDefinedCode>();
 			}
         }
     }

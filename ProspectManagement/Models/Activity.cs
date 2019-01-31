@@ -55,7 +55,9 @@ namespace ProspectManagement.Core.Models
 		[JsonProperty("additionalNotesExist")]
         public bool AdditionalNotesExist { get; set; }
 
-		public class EmailActivityDetail 
+        public ProspectCommunity ProspectCommunity { get; set; }
+
+        public class EmailActivityDetail 
         {
             [JsonProperty("exchangeID")]
             public string ExchangeId { get; set; }

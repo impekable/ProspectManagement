@@ -14,19 +14,28 @@ namespace ProspectManagement.iOS.Services
 		public override async Task<AuthenticationResult> AuthenticateUser(string resource)
 		{
             var controller = UIApplication.SharedApplication.KeyWindow.RootViewController;
-			var _platformParams = new PlatformParameters(controller);
+            var _platformParams = new PlatformParameters(controller);
+            var uri = new Uri(returnUri);
+            var authContext = new AuthenticationContext(authority);
 
-			var authContext = new AuthenticationContext(authority);
             if (authContext.TokenCache.ReadItems().Any())
             {
                 if (authContext.TokenCache.ReadItems().First().Authority.Equals(authority))
                     authContext = new AuthenticationContext(authContext.TokenCache.ReadItems().First().Authority);
             }
 
-			var uri = new Uri(returnUri);
-			var authResult = await authContext.AcquireTokenAsync(resource, PrivateKeys.ProspectMgmtClientId, uri, _platformParams);
-			return authResult;
-		}
+            try
+            {
+                var authResult = await authContext.AcquireTokenAsync(resource, PrivateKeys.ProspectMgmtClientId, uri, _platformParams);
+                return authResult;
+            }
+            catch (AdalException ex)
+            {
+                Logout();
+                var authResult = await authContext.AcquireTokenAsync(resource, PrivateKeys.ProspectMgmtClientId, uri, _platformParams);
+                return authResult;
+            }
+        }
 
         public override async void Logout()
         {
