@@ -24,9 +24,9 @@ namespace ProspectManagement.Core.Services
 
             _userRepository.RetrievingDataFailed += async (sender, e) =>
             {
-                if (e.RetrievingDataFailureMessage.Contains("404"))
+                if (e.RetrievingDataFailureMessage.Contains("403") || e.RetrievingDataFailureMessage.Contains("404"))
                 {
-                    await _dialogService.ShowAlertAsync("Could not find an E1 user for credentials entered.", "Oops", "Close");
+                    await _dialogService.ShowAlertAsync("Could not get an E1 user for credentials entered. " + e.RetrievingDataFailureMessage, "Oops", "Close");
                     _authenticator.Logout();
                 }
                 else
