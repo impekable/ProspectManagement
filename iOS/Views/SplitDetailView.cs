@@ -12,7 +12,7 @@ using MvvmCross.ViewModels;
 namespace ProspectManagement.iOS.Views
 {
     [MvxFromStoryboard("Main")]
-	[MvxSplitViewPresentation(Position = MasterDetailPosition.Detail)]
+    [MvxSplitViewPresentation(Position = MasterDetailPosition.Detail)]
     public partial class SplitDetailView : MvxViewController<SplitDetailViewModel>
     {
         protected SplitDetailViewModel SplitDetailViewModel => ViewModel as SplitDetailViewModel;
@@ -21,7 +21,7 @@ namespace ProspectManagement.iOS.Views
         private IMvxInteraction _assignedProspectInteraction;
         public IMvxInteraction AssignedProspectInteraction
         {
-            get => _hideAlertInteraction;
+            get => _assignedProspectInteraction;
             set
             {
                 if (_assignedProspectInteraction != null)
@@ -40,7 +40,7 @@ namespace ProspectManagement.iOS.Views
         private IMvxInteraction _showAlertInteraction;
         public IMvxInteraction ShowAlertInteraction
         {
-            get => _hideAlertInteraction;
+            get => _showAlertInteraction;
             set
             {
                 if (_showAlertInteraction != null)
@@ -124,40 +124,32 @@ namespace ProspectManagement.iOS.Views
             set.Bind(AddressLine1Label).To(vm => vm.Prospect.StreetAddress.AddressLine1);
             set.Bind(CityStateZipLabel).To(vm => vm.Prospect.StreetAddress).WithConversion(new CityStateZipConverter());
 
-			set.Bind(ComposeEmailButton).For(v => v.Enabled).To(vm => vm.AllowEmailing);
+            set.Bind(ComposeEmailButton).For(v => v.Enabled).To(vm => vm.AllowEmailing);
             set.Bind(ComposeEmailButton).For("Title").To(vm => vm.Prospect.Email.EmailAddress);
-			set.Bind(ComposeEmailButton).To(vm => vm.ComposeEmailCommand);
+            set.Bind(ComposeEmailButton).To(vm => vm.ComposeEmailCommand);
 
-			set.Bind(CallWorkButton).For(v => v.Enabled).To(vm => vm.AllowCalling);
-			set.Bind(CallWorkButton).For("Title").To(vm => vm.Prospect.WorkPhoneNumber.Phone);
-			set.Bind(CallWorkButton).To(vm => vm.WorkPhoneCallCommand);
+            set.Bind(CallWorkButton).For(v => v.Enabled).To(vm => vm.AllowCalling);
+            set.Bind(CallWorkButton).For("Title").To(vm => vm.Prospect.WorkPhoneNumber.Phone);
+            set.Bind(CallWorkButton).To(vm => vm.WorkPhoneCallCommand);
             set.Bind(WorkLabel).To(vm => vm.WorkPhoneLabel);
 
-			set.Bind(CallHomeButton).For(v => v.Enabled).To(vm => vm.AllowCalling);
-			set.Bind(CallHomeButton).For("Title").To(vm => vm.Prospect.HomePhoneNumber.Phone);
-			set.Bind(CallHomeButton).To(vm => vm.HomePhoneCallCommand);
+            set.Bind(CallHomeButton).For(v => v.Enabled).To(vm => vm.AllowCalling);
+            set.Bind(CallHomeButton).For("Title").To(vm => vm.Prospect.HomePhoneNumber.Phone);
+            set.Bind(CallHomeButton).To(vm => vm.HomePhoneCallCommand);
             set.Bind(HomeLabel).To(vm => vm.HomePhoneLabel);
 
-			set.Bind(CallMobileButton).For(v => v.Enabled).To(vm => vm.AllowCalling);
-			set.Bind(CallMobileButton).For("Title").To(vm => vm.Prospect.MobilePhoneNumber.Phone);
-			set.Bind(CallMobileButton).To(vm => vm.MobilePhoneCallCommand);
-			set.Bind(MobileLabel).To(vm => vm.MobilePhoneLabel);
+            set.Bind(CallMobileButton).For(v => v.Enabled).To(vm => vm.AllowCalling);
+            set.Bind(CallMobileButton).For("Title").To(vm => vm.Prospect.MobilePhoneNumber.Phone);
+            set.Bind(CallMobileButton).To(vm => vm.MobilePhoneCallCommand);
+            set.Bind(MobileLabel).To(vm => vm.MobilePhoneLabel);
 
             set.Bind(ConsentLabel).To(vm => vm.Prospect.FollowUpSettings).WithConversion(new FollowUpSettingsValueConverter());
             set.Bind(ContactPreferenceLabel).To(vm => vm.Prospect.FollowUpSettings.PreferredContactMethod);
-			set.Bind(AppointmentDateTimeLabel).To(vm => vm.Prospect.ProspectCommunity.AppointmentDate).WithConversion(new DateTimeConverter());
-            
+            set.Bind(AppointmentDateTimeLabel).To(vm => vm.Prospect.ProspectCommunity.AppointmentDate).WithConversion(new DateTimeConverter());
+
             set.Bind(AssignButton).For(c => c.Hidden).To(vm => vm.Assigned);
             set.Bind(AssignButton).To(vm => vm.AssignCommand);
-			set.Bind(AssignButton).For("Title").To(vm => vm.AssignText);
-
-            set.Bind(AddNoteButton).To(vm => vm.AddNoteCommand);
-            set.Bind(CompleteApptButton).To(vm => vm.CompleteApptCommand);
-            set.Bind(AddVisitButton).To(vm => vm.AddVisitCommand);
-
-            set.Bind(AddNoteButton).For(c => c.Hidden).To(vm => vm.AssignedProspect).WithConversion(new InverseValueConverter());
-            set.Bind(CompleteApptButton).For(v => v.Hidden).To(vm => vm.IsLeadWithAppointment).WithConversion(new InverseValueConverter());
-            set.Bind(AddVisitButton).For(v => v.Hidden).To(vm => vm.AssignedWithoutAppointment).WithConversion(new InverseValueConverter());
+            set.Bind(AssignButton).For("Title").To(vm => vm.AssignText);
 
             set.Bind(StreetAddressStackView).For(v => v.Hidden).To(vm => vm.StreetAddressEntered).WithConversion(new InverseValueConverter());
             set.Bind(EmailStackView).For(v => v.Hidden).To(vm => vm.EmailEntered).WithConversion(new InverseValueConverter());
@@ -167,19 +159,58 @@ namespace ProspectManagement.iOS.Views
 
             set.Bind(ExcludeStackView).For(v => v.Hidden).To(vm => vm.Prospect.FollowUpSettings.ExcludeFromFollowup).WithConversion(new InverseValueConverter());
             set.Bind(ConsentStackView).For(v => v.Hidden).To(vm => vm.Prospect.FollowUpSettings.ExcludeFromFollowup);
-			set.Bind(AppointmentStackView).For(v => v.Hidden).To(vm => vm.IsLeadWithAppointment).WithConversion(new InverseValueConverter());
-            
+            set.Bind(AppointmentStackView).For(v => v.Hidden).To(vm => vm.IsLeadWithAppointment).WithConversion(new InverseValueConverter());
+
             set.Bind(this).For(view => view.HideAlertInteraction).To(viewModel => viewModel.HideAlertInteraction).OneWay();
             set.Bind(this).For(view => view.ShowAlertInteraction).To(viewModel => viewModel.ShowAlertInteraction).OneWay();
             set.Bind(this).For(view => view.ClearDetailsInteraction).To(viewModel => viewModel.ClearDetailsInteraction).OneWay();
             set.Bind(this).For(view => view.AssignedProspectInteraction).To(viewModel => viewModel.AssignedProspectInteraction).OneWay();
             set.Apply();
 
+            ProspectTabBar.SelectedItem = ProspectTabBar.Items[0];
+            ProspectTabBar.ItemSelected += (sender, e) =>
+            {
+                if (e.Item.Tag == 1)
+                    ViewModel.ShowCobuyerTab.Execute(null);
+                else if (e.Item.Tag == 2)
+                    ViewModel.ShowTrafficCardTab.Execute(null);
+                else if (e.Item.Tag == 3)
+                    ViewModel.ShowContactHistoryTab.Execute(null);
+            };
+
             setNavigation();
         }
 
         private void setNavigation()
         {
+            foreach (UITabBarItem item in ProspectTabBar.Items)
+            {
+                ProspectTabBar.Items[item.Tag].Enabled = true;
+
+                if (item.Tag == 0)
+                {
+                    item.SetTitleTextAttributes(new UITextAttributes()
+                    {
+                        Font = UIFont.FromName("Raleway-Bold", 10),
+                        TextColor = UIColor.Black
+                    }, UIControlState.Normal);
+
+                }
+                else
+                {
+                    item.SetTitleTextAttributes(new UITextAttributes()
+                    {
+                        Font = UIFont.FromName("Raleway-Regular", 10),
+                        TextColor = UIColor.Black
+                    }, UIControlState.Normal);
+                }
+
+                if (ViewModel.IsLead && (item.Tag == 1 || item.Tag == 2))
+                {
+                    ProspectTabBar.Items[item.Tag].Enabled = false;
+                }
+            }
+
             if (ViewModel.AssignedProspect)
             {
                 _EditButton = new UIBarButtonItem("Edit", UIBarButtonItemStyle.Plain, (sender, e) =>
@@ -194,44 +225,12 @@ namespace ProspectManagement.iOS.Views
 
                 this.NavigationItem.SetRightBarButtonItem(_EditButton, true);
 
-                foreach (UITabBarItem item in ProspectTabBar.Items)
-                {
-                    if (item.Tag == 0)
-                    {
-                        item.SetTitleTextAttributes(new UITextAttributes()
-                        {
-                            Font = UIFont.FromName("Raleway-Bold", 10),
-                            TextColor = UIColor.Black
-                        }, UIControlState.Normal);
-
-                    }
-                    else
-                    {
-                        item.SetTitleTextAttributes(new UITextAttributes()
-                        {
-                            Font = UIFont.FromName("Raleway-Regular", 10),
-                            TextColor = UIColor.Black
-                        }, UIControlState.Normal);
-                    }
-                }
-
                 ProspectTabBar.Hidden = false;
-                ProspectTabBar.SelectedItem = ProspectTabBar.Items[0];
-                ProspectTabBar.ItemSelected += (sender, e) =>
-                {
-                    if (e.Item.Tag == 1)
-                        ViewModel.ShowCobuyerTab.Execute(null);
-                    else if (e.Item.Tag == 2)
-                        ViewModel.ShowTrafficCardTab.Execute(null);
-                    else if (e.Item.Tag == 3)
-                        ViewModel.ShowContactHistoryTab.Execute(null);
-                    
-                    
-                };
             }
             else
             {
-                ProspectTabBar.Hidden = true;
+                if (!ViewModel.IsLead)
+                    ProspectTabBar.Hidden = true;
             }
         }
     }

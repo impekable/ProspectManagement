@@ -137,6 +137,11 @@ namespace ProspectManagement.iOS.Views
             set.Bind(this).For(view => view.FilterInteraction).To(viewModel => viewModel.FilterInteraction).OneWay();
             setTableViewSource(set);
 
+            FilterSearchBar.ScopeButtonTitles = new string[] { "All", "Name", "Notes", "Phone", "Email", "Address" };
+            FilterSearchBar.SelectedScopeButtonIndexChanged += (sender, e) => {
+                ViewModel.ScopeFilter = FilterSearchBar.ScopeButtonTitles[(int)e.SelectedScope];
+            };
+
             var refreshControl = new UIRefreshControl();
             refreshControl.ValueChanged += (sender, e) =>
             {
@@ -179,6 +184,7 @@ namespace ProspectManagement.iOS.Views
 
             FilterSearchBar.CancelButtonClicked += (sender, e) =>
            {
+               FilterSearchBar.ShowsScopeBar = false;
                ViewModel.SearchTerm = null;
                setTableViewSource(set);
                ((UISearchBar)sender).ResignFirstResponder();
@@ -186,16 +192,18 @@ namespace ProspectManagement.iOS.Views
 
             FilterSearchBar.SearchButtonClicked += (sender, e) =>
            {
+               FilterSearchBar.ShowsScopeBar = false;
                ((UISearchBar)sender).ResignFirstResponder();
                setTableViewSource(set);
            };
 
-            FilterSearchBar.TextChanged += (sender, e) =>
+            FilterSearchBar.OnEditingStarted += (sender, e) =>
             {
-                if (String.IsNullOrEmpty(FilterSearchBar.Text))
-                {
-                    setTableViewSource(set);
-                }
+                FilterSearchBar.ShowsScopeBar = true;
+                //if (String.IsNullOrEmpty(FilterSearchBar.Text))
+                //{
+                //    setTableViewSource(set);
+                //}
             };
 
             var inactiveFilterImage = UIImage.FromBundle("ic-filter-inactive");

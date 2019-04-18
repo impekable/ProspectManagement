@@ -18,5 +18,13 @@ namespace ProspectManagement.iOS
             textView.Changed += (sender, args) => { textView.Text = ""; }; 
             textView.TextStorage.DidProcessEditing += (sender, e) => textView.Text = "";
         }
+
+        public void Include(UISearchBar searchBar)
+        {
+            searchBar.Text = searchBar.Text + "";
+            searchBar.Placeholder = searchBar.Placeholder + "";
+            searchBar.TextChanged += (s, e) => { };
+            searchBar.OnEditingStarted += (s, e) => { };
+        }
     }
 }

@@ -20,10 +20,10 @@ namespace ProspectManagement.Core.Repositories
             return await GetDataObjectFromAPI<Prospect>(string.Format(_e1Uri + "Prospects/{0}?Fields=prospectCommunity", prospectId), accessToken);
         }
 
-        public async Task<List<Prospect>> GetProspectsAsync(string accessToken, int? salespersonId, string type, List<Community> communities, int page = 1, int pageSize = 20, string searchTerm = null)
+        public async Task<List<Prospect>> GetProspectsAsync(string accessToken, int? salespersonId, string type, List<Community> communities, int page = 1, int pageSize = 20, string searchTerm = null, string searchTermScope = null)
         {
             var communityList = string.Join(",",communities.Select(c => c.CommunityNumber));
-            return await GetDataObjectFromAPI <List<Prospect>>(string.Format(_e1Uri + "Prospects?CommunityList={0}&SalespersonId={1}&Page={2}&PageSize={3}&SearchTerm={4}&Type={5}", communityList, salespersonId == null ? "" : salespersonId.Value.ToString(), page, pageSize, searchTerm, type), accessToken);
+            return await GetDataObjectFromAPI <List<Prospect>>(string.Format(_e1Uri + "Prospects?CommunityList={0}&SalespersonId={1}&Page={2}&PageSize={3}&SearchTerm={4}&Type={5}&SearchTermScope={6}", communityList, salespersonId == null ? "" : salespersonId.Value.ToString(), page, pageSize, searchTerm, type, searchTermScope), accessToken);
         }
 
         public async Task<bool> UpdateProspectAsync(Prospect prospect, string accessToken)

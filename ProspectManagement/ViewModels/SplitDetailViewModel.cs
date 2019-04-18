@@ -25,9 +25,7 @@ namespace ProspectManagement.Core.ViewModels
         private string _mobilePhoneLabel;
         private ICommand _editProspectCommand;
         private ICommand _assignCommand;
-        private ICommand _addNoteCommand;
-        private ICommand _completeApptCommand;
-        private ICommand _addVisitCommand;
+
         private ICommand _showCobuyerTab;
         private ICommand _showTrafficCardTab;
         private ICommand _showContactHistoryTab;
@@ -38,10 +36,42 @@ namespace ProspectManagement.Core.ViewModels
 		private readonly IMvxPhoneCallTask _phoneCallTask;
 		private readonly IMvxComposeEmailTaskEx _emailTask;
 
-		public IMvxCommand MobilePhoneCallCommand => new MvxCommand(CallProspectMobile);
-		public IMvxCommand WorkPhoneCallCommand => new MvxCommand(CallProspectWork);
-		public IMvxCommand HomePhoneCallCommand => new MvxCommand(CallProspectHome);
-		public IMvxCommand ComposeEmailCommand => new MvxCommand(ComposeEmailToProspect);
+        private IMvxCommand _mobilePhoneCallCommand;
+        private IMvxCommand _workPhoneCallCommand;
+        private IMvxCommand _homePhoneCallCommand;
+        private IMvxCommand _composeEmailCommand;
+
+        public IMvxCommand MobilePhoneCallCommand
+        {
+            get
+            {
+                return _mobilePhoneCallCommand ?? (_mobilePhoneCallCommand = new MvxCommand(CallProspectMobile, () => AllowCalling));
+            }
+        }
+
+        public IMvxCommand WorkPhoneCallCommand
+        {
+            get
+            {
+                return _workPhoneCallCommand ?? (_workPhoneCallCommand = new MvxCommand(CallProspectWork, () => AllowCalling));
+            }
+        }
+
+        public IMvxCommand HomePhoneCallCommand
+        {
+            get
+            {
+                return _homePhoneCallCommand ?? (_homePhoneCallCommand = new MvxCommand(CallProspectHome, () => AllowCalling));
+            }
+        }
+
+        public IMvxCommand ComposeEmailCommand
+        {
+            get
+            {
+                return _composeEmailCommand ?? (_composeEmailCommand = new MvxCommand(ComposeEmailToProspect, () => AllowEmailing));
+            }
+        }
 
 		private Activity createAdHocActivity(string contactMethod, string subject)
 		{
@@ -211,14 +241,17 @@ namespace ProspectManagement.Core.ViewModels
 
         public void ActivityAdded(Activity activity)
         {
-            if (Prospect.ProspectCommunity.AddressType.Equals("Lead") && (activity.ActivityType.Equals("VISIT") || activity.ActivityType.Equals("APPOINTMENT")))
+            if (activity.ProspectAddressNumber == Prospect.ProspectAddressNumber)
             {
-                Prospect.ProspectCommunity.AddressType = "Prospect";
-                RaisePropertyChanged(() => IsLead);
-                RaisePropertyChanged(() => AssignedProspect);
-                RaisePropertyChanged(() => IsLeadWithAppointment);
-                RaisePropertyChanged(() => AssignedWithoutAppointment);
-                _assignedProspectInteraction.Raise();
+                if (activity.ActivityType.Equals("VISIT") || activity.ActivityType.Equals("APPOINTMENT"))
+                {
+                    Prospect.ProspectCommunity.AddressType = "Prospect";
+                    RaisePropertyChanged(() => IsLead);
+                    RaisePropertyChanged(() => AssignedProspect);
+                    RaisePropertyChanged(() => IsLeadWithAppointment);
+                    RaisePropertyChanged(() => AssignedWithoutAppointment);
+                    _assignedProspectInteraction.Raise();
+                }
             }
         }
 
@@ -246,67 +279,7 @@ namespace ProspectManagement.Core.ViewModels
             }
         }
 
-        public ICommand AddNoteCommand
-        {
-            get
-            {
-                return _addNoteCommand ?? (_addNoteCommand = new MvxCommand(() =>
-                {
-                    var activity = new Activity
-                    {
-                        ActivityType = "COMMENT",
-                        DateCompleted = DateTime.UtcNow,
-                        ProspectAddressNumber = Prospect.ProspectAddressNumber,
-                        SalespersonAddressNumber = Prospect.ProspectCommunity.SalespersonAddressNumber,
-                        ProspectCommunityId = Prospect.ProspectCommunity.ProspectCommunityId,
-                        ProspectCommunity = Prospect.ProspectCommunity
-                    };
-                    _navigationService.Navigate<AddActivityViewModel, Activity>(activity);
-                }));
-            }
-        }
 
-        public ICommand CompleteApptCommand
-        {
-            get
-            {
-                return _completeApptCommand ?? (_completeApptCommand = new MvxCommand(() =>
-                {
-                    var activity = new Activity
-                    {
-                        ActivityType = "APPOINTMENT",
-                        ContactMethod = "In-Person",
-                        DateCompleted = DateTime.UtcNow,
-                        ProspectAddressNumber = Prospect.ProspectAddressNumber,
-                        SalespersonAddressNumber = Prospect.ProspectCommunity.SalespersonAddressNumber,
-                        ProspectCommunityId = Prospect.ProspectCommunity.ProspectCommunityId,
-                        ProspectCommunity = Prospect.ProspectCommunity
-                    };
-                    _navigationService.Navigate<AddActivityViewModel, Activity>(activity);
-                }));
-            }
-        }
-
-        public ICommand AddVisitCommand
-        {
-            get
-            {
-                return _addVisitCommand ?? (_addVisitCommand = new MvxCommand(() =>
-                {
-                    var activity = new Activity
-                    {
-                        ActivityType = "VISIT",
-                        ContactMethod = "In-Person",
-                        DateCompleted = DateTime.UtcNow,
-                        ProspectAddressNumber = Prospect.ProspectAddressNumber,
-                        SalespersonAddressNumber = Prospect.ProspectCommunity.SalespersonAddressNumber,
-                        ProspectCommunityId = Prospect.ProspectCommunity.ProspectCommunityId,
-                        ProspectCommunity = Prospect.ProspectCommunity
-                    };
-                    _navigationService.Navigate<AddActivityViewModel, Activity>(activity);
-                }));
-            }
-        }
 
         public ICommand EditProspectCommand
         {
@@ -363,6 +336,8 @@ namespace ProspectManagement.Core.ViewModels
                 HomePhoneLabel = _prospect.HomePhoneNumber == null || string.IsNullOrEmpty(_prospect.HomePhoneNumber.Phone) ? null : "Home";
                 RaisePropertyChanged(() => Prospect);
                 RaisePropertyChanged(() => StreetAddressEntered);
+                RaisePropertyChanged(() => AllowCalling);
+                RaisePropertyChanged(() => AllowEmailing);
             }
         }
 
@@ -373,7 +348,7 @@ namespace ProspectManagement.Core.ViewModels
 
         public bool AssignedWithoutAppointment
         {
-            get { return AssignedProspect ||(IsLead && !Prospect.ProspectCommunity.AppointmentStatus.Equals("Pending")); }
+            get { return AssignedProspect || (IsLead && !Prospect.ProspectCommunity.AppointmentStatus.Equals("Pending")); }
         }
 
         public bool Assigned
@@ -421,7 +396,9 @@ namespace ProspectManagement.Core.ViewModels
 		public void Prepare(KeyValuePair<Prospect, User> param)
         {
             Prospect = param.Key;
-			User = param.Value;
+            User = param.Value;
+            RaisePropertyChanged(() => AllowCalling);
+            RaisePropertyChanged(() => AllowEmailing);
         }
     }
 

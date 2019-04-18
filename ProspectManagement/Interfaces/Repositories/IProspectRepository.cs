@@ -7,7 +7,7 @@ namespace ProspectManagement.Core.Interfaces.Repositories
 {
 	public interface IProspectRepository: IBaseRepository
 	{
-        Task<List<Prospect>> GetProspectsAsync(string accessToken, int? salespersonId, string type, List<Community> communities, int page, int pageSize, string searchTerm);
+        Task<List<Prospect>> GetProspectsAsync(string accessToken, int? salespersonId, string type, List<Community> communities, int page, int pageSize, string searchTerm, string searchTermScope);
 
 		Task<Prospect> GetProspectAsync(int prospectId, string accessToken);
 

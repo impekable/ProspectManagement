@@ -17,7 +17,7 @@ namespace ProspectManagement.Core.Repositories
 
         public async Task<List<Community>> GetCommunitiesBySalespersonAsync(int salespersonId, string accessToken)
         {
-            return await GetDataObjectFromAPI<List<Community>>(string.Format(_e1Uri + "Salesperson/{0}/Communities", salespersonId), accessToken);
+            return await GetDataObjectFromAPI<List<Community>>(string.Format(_e1Uri + "Salesperson/{0}/Communities?Page=1&PageSize=999", salespersonId), accessToken);
         }
     }
 }

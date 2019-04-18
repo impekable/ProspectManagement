@@ -20,6 +20,18 @@ namespace ProspectManagement.iOS.Views
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIButton AddNoteButton { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIButton AddVisitButton { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIButton CompleteApptButton { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UITabBar ProspectTabBar { get; set; }
 
         void ReleaseDesignerOutlets ()
@@ -27,6 +39,21 @@ namespace ProspectManagement.iOS.Views
             if (ActivitiesTableView != null) {
                 ActivitiesTableView.Dispose ();
                 ActivitiesTableView = null;
+            }
+
+            if (AddNoteButton != null) {
+                AddNoteButton.Dispose ();
+                AddNoteButton = null;
+            }
+
+            if (AddVisitButton != null) {
+                AddVisitButton.Dispose ();
+                AddVisitButton = null;
+            }
+
+            if (CompleteApptButton != null) {
+                CompleteApptButton.Dispose ();
+                CompleteApptButton = null;
             }
 
             if (ProspectTabBar != null) {

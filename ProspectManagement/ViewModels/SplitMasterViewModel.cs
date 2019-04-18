@@ -42,6 +42,7 @@ namespace ProspectManagement.Core.ViewModels
 		private ICommand _filterCommand;
 		private ICommand _refreshCommand;
 
+        private string _scopeFilter;
 		private int _selectedSegment;
 		private int _page = 0;
 		private int _pageSize = 10;
@@ -99,7 +100,17 @@ namespace ProspectManagement.Core.ViewModels
 			}
 		}
 
-		public int Page
+        public string ScopeFilter
+        {
+            get { return _scopeFilter; }
+            set
+            {
+                _scopeFilter = value;
+                RaisePropertyChanged(() => ScopeFilter);
+            }
+        }
+
+        public int Page
 		{
 			get { return _page; }
 			set
@@ -156,7 +167,7 @@ namespace ProspectManagement.Core.ViewModels
 									Page++;
 									var searchType = FilterActive ? "Lead" : null;
 									var salespersonId = SelectedSegment == 0 ? (int?)null : SelectedSegment == 1 ? 0 : User.AddressNumber;
-									var prospectList = await _prospectService.GetProspectsAsync(authResult.AccessToken, _communities, salespersonId, searchType, Page, pageSize, SearchTerm);
+									var prospectList = await _prospectService.GetProspectsAsync(authResult.AccessToken, _communities, salespersonId, searchType, Page, pageSize, SearchTerm, ScopeFilter);
 									newProspects = prospectList.ToObservableCollection();
 									OnLoadingDataFromBackendCompleted();
 								});
@@ -294,10 +305,11 @@ namespace ProspectManagement.Core.ViewModels
 
 		public void Prepare(User parameter)
 		{
-			User = parameter;
+			User = parameter; 
+            ScopeFilter = "All";
 		}
 
-		public void OnLoadingDataFromBackendStarted()
+        public void OnLoadingDataFromBackendStarted()
 		{
 			LoadingDataFromBackendStarted?.Invoke(null, EventArgs.Empty);
 		}

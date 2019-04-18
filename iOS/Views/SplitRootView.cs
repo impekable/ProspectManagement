@@ -22,7 +22,7 @@ namespace ProspectManagement.iOS.Views
 		{
 			base.ViewDidLoad();
 
-			PreferredPrimaryColumnWidthFraction = .3f;
+			PreferredPrimaryColumnWidthFraction = .35f;
 		}
 
 		public override void ViewWillAppear(bool animated)

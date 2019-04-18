@@ -13,33 +13,48 @@ using MvvmCross.Navigation;
 using System.Threading.Tasks;
 using Microsoft.AppCenter.Analytics;
 using MvvmCross.Commands;
+using System.Collections.ObjectModel;
+using ProspectManagement.Core.Extensions;
 
 namespace ProspectManagement.Core.ViewModels
 {
     public class ActivitiesViewModel : BaseViewModel, IMvxViewModel<Prospect>
     {
+        public event EventHandler LoadingDataFromBackendStarted;
+        public event EventHandler LoadingDataFromBackendCompleted;
+
         private Prospect _prospect;
         private User _user;
+        private bool _assigned;
         private Activity _activity;
+
         private ICommand _showDetailTab;
         private ICommand _showTrafficCardTab;
         private ICommand _showCobuyerTab;
+
         private ICommand _selectionChangedCommand;
+        private ICommand _completeApptCommand;
+        private ICommand _addNoteCommand;
+        private ICommand _addVisitCommand;
+        private ICommand _refreshCommand;
+
 
         private readonly IUserService _userService;
         private readonly IActivityService _activitiesService;
-
         protected IMvxMessenger Messenger;
         private readonly IMvxNavigationService _navigationService;
 
         private MvxInteraction _clearDetailsInteraction = new MvxInteraction();
         public IMvxInteraction ClearDetailsInteraction => _clearDetailsInteraction;
 
-        private List<Activity> _activities;
+        private MvxInteraction _activityAddedInteraction = new MvxInteraction();
+        public IMvxInteraction ActivityAddedInteraction => _activityAddedInteraction;
+
+        private ObservableCollection<Activity> _activities;
 
         public ICommand ShowDetailTab
-        {
-            get
+        {            
+            get   
             {
                 return _showDetailTab ?? (_showDetailTab = new MvxCommand<Prospect>((prospect) => _navigationService.Navigate<SplitDetailViewModel, KeyValuePair<Prospect, User>>(new KeyValuePair<Prospect, User>(_prospect, _user))));
             }
@@ -58,6 +73,114 @@ namespace ProspectManagement.Core.ViewModels
             get
             {
                 return _showCobuyerTab ?? (_showCobuyerTab = new MvxCommand<Prospect>((prospect) => _navigationService.Navigate<CobuyerViewModel, Prospect>(_prospect)));
+            }
+        }
+
+        public bool AssignedWithoutAppointment
+        {
+            get { return AssignedProspect || (IsLead && !Prospect.ProspectCommunity.AppointmentStatus.Equals("Pending")); }
+        }
+
+        public bool AssignedProspect
+        {
+            get { return Assigned && !IsLead; }
+        }
+
+        public bool Assigned
+        {
+            get { return _assigned; }
+            set
+            {
+                _assigned = value;
+                RaisePropertyChanged(() => AssignedWithoutAppointment);
+                RaisePropertyChanged(() => AssignedProspect);
+                RaisePropertyChanged(() => Assigned);
+            }
+        }
+
+        public bool IsLead
+        {
+            get { return Prospect.ProspectCommunity.AddressType.Equals("Lead"); }
+        }
+
+        public bool IsLeadWithAppointment
+        {
+            get { return IsLead && Prospect.ProspectCommunity.AppointmentStatus.Equals("Pending"); }
+        }
+
+        public ICommand RefreshCommand
+        {
+            get
+            {
+                return _refreshCommand ?? (_refreshCommand = new MvxCommand(async () =>
+                {
+                    //Messenger.Publish(new RefreshMessage(this));
+                    var list = await _activitiesService.GetActivitiesForProspectAsync(_prospect.ProspectAddressNumber);
+                    ActivitiesList = list.ToObservableCollection();
+                    OnLoadingDataFromBackendCompleted();
+                }));
+            }
+        }
+
+        public ICommand CompleteApptCommand
+        {
+            get
+            {
+                return _completeApptCommand ?? (_completeApptCommand = new MvxCommand(() =>
+                {
+                    var activity = new Activity
+                    {
+                        ActivityType = "APPOINTMENT",
+                        ContactMethod = "In-Person",
+                        DateCompleted = DateTime.UtcNow,
+                        ProspectAddressNumber = Prospect.ProspectAddressNumber,
+                        SalespersonAddressNumber = Prospect.ProspectCommunity.SalespersonAddressNumber,
+                        ProspectCommunityId = Prospect.ProspectCommunity.ProspectCommunityId,
+                        ProspectCommunity = Prospect.ProspectCommunity
+                    };
+                    _navigationService.Navigate<AddActivityViewModel, Activity>(activity);
+                }));
+            }
+        }
+
+        public ICommand AddNoteCommand
+        {
+            get
+            {
+                return _addNoteCommand ?? (_addNoteCommand = new MvxCommand(() =>
+                {
+                    var activity = new Activity
+                    {
+                        ActivityType = "COMMENT",
+                        DateCompleted = DateTime.UtcNow,
+                        ProspectAddressNumber = Prospect.ProspectAddressNumber,
+                        SalespersonAddressNumber = Prospect.ProspectCommunity.SalespersonAddressNumber,
+                        ProspectCommunityId = Prospect.ProspectCommunity.ProspectCommunityId,
+                        ProspectCommunity = Prospect.ProspectCommunity
+                    };
+                    _navigationService.Navigate<AddActivityViewModel, Activity>(activity);
+                }));
+            }
+        }
+
+        public ICommand AddVisitCommand
+        {
+            get
+            {
+                return _addVisitCommand ?? (_addVisitCommand = new MvxCommand(() =>
+                {
+                    var activity = new Activity
+                    {
+                        ActivityType = "VISIT",
+                        ContactMethod = "In-Person",
+                        DateCompleted = DateTime.UtcNow,
+                        ProspectAddressNumber = Prospect.ProspectAddressNumber,
+                        SalespersonAddressNumber = Prospect.ProspectCommunity.SalespersonAddressNumber,
+                        ProspectCommunityId = Prospect.ProspectCommunity.ProspectCommunityId,
+                        ProspectCommunity = Prospect.ProspectCommunity
+                    };
+                    _navigationService.Navigate<AddActivityViewModel, Activity>(activity);
+                }));
             }
         }
 
@@ -91,11 +214,12 @@ namespace ProspectManagement.Core.ViewModels
             set
             {
                 _prospect = value;
+                Assigned = _prospect.ProspectCommunity.SalespersonAddressNumber > 0;
                 RaisePropertyChanged(() => Prospect);
             }
         }
 
-        public List<Activity> ActivitiesList
+        public ObservableCollection<Activity> ActivitiesList
         {
             get { return _activities; }
             set
@@ -114,6 +238,20 @@ namespace ProspectManagement.Core.ViewModels
 
             Messenger.Subscribe<RefreshMessage>(message => _clearDetailsInteraction.Raise(), MvxReference.Strong);
             Messenger.Subscribe<UserLogoutMessage>(message => _clearDetailsInteraction.Raise(), MvxReference.Strong);
+            Messenger.Subscribe<ActivityAddedMessage>(message => ActivityAdded(message.AddedActivity), MvxReference.Strong);
+        }
+
+        public void ActivityAdded(Activity activity)
+        {
+            if (activity.ProspectAddressNumber == _prospect.ProspectAddressNumber)
+            { 
+                RaisePropertyChanged(() => IsLead);
+                RaisePropertyChanged(() => AssignedProspect);
+                RaisePropertyChanged(() => IsLeadWithAppointment);
+                RaisePropertyChanged(() => AssignedWithoutAppointment);
+                ActivitiesList.Add(activity);
+                _activityAddedInteraction.Raise();
+            }
         }
 
         public override async Task Initialize()
@@ -126,12 +264,25 @@ namespace ProspectManagement.Core.ViewModels
                 {"User", _user.AddressBook.AddressNumber + " " + _user.AddressBook.Name},
             });
 
-            ActivitiesList = await _activitiesService.GetActivitiesForProspectAsync(_prospect.ProspectAddressNumber);
+            OnLoadingDataFromBackendStarted();
+            var list = await _activitiesService.GetActivitiesForProspectAsync(_prospect.ProspectAddressNumber);
+            ActivitiesList = list.ToObservableCollection();
+            OnLoadingDataFromBackendCompleted();
         }
 
         public void Prepare(Prospect prospect)
         {
             Prospect = prospect;
+        }
+
+        public void OnLoadingDataFromBackendStarted()
+        {
+            LoadingDataFromBackendStarted?.Invoke(null, EventArgs.Empty);
+        }
+
+        public void OnLoadingDataFromBackendCompleted()
+        {
+            LoadingDataFromBackendCompleted?.Invoke(null, EventArgs.Empty);
         }
     }
 }
