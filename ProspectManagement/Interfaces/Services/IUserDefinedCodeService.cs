@@ -13,5 +13,6 @@ namespace ProspectManagement.Core.Interfaces.Services
         Task<List<UserDefinedCode>> GetStateUserDefinedCodes();
         Task<List<UserDefinedCode>> GetCountryUserDefinedCodes();
         Task<List<UserDefinedCode>> GetExcludeReasonUserDefinedCodes();
+        Task<List<UserDefinedCode>> GetRankingUserDefinedCodes();
     }
 }

@@ -38,7 +38,17 @@ namespace ProspectManagement.Core.ViewModels
         private ICommand _showContactHistoryTab;
         private ICommand _selectionChangedCommand;
 
-		public ICommand SelectionChangedCommand
+        private IMvxCommand _showRankingCommand;
+
+        public IMvxCommand ShowRankingCommand
+        {
+            get
+            {
+                return _showRankingCommand ?? (_showRankingCommand = new MvxCommand<Prospect>((prospect) => _navigationService.Navigate<BuyerDecisionsViewModel, Prospect>(Prospect)));
+            }
+        }
+
+        public ICommand SelectionChangedCommand
 		{
 			get
 			{

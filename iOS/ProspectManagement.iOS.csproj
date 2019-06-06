@@ -252,6 +252,7 @@
     <Folder Include="Bootstrap\" />
     <Folder Include="Sources\" />
     <Folder Include="Resources\Assets.xcassets\ic-contacthistory.imageset\" />
+    <Folder Include="Resources\Assets.xcassets\ic-ranking.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Main.storyboard" />
@@ -279,6 +280,10 @@
       <DependentUpon>ActivityDetailView.cs</DependentUpon>
     </Compile>
     <Compile Include="Sources\ActivityTableViewSource.cs" />
+    <Compile Include="Views\BuyerDecisionsView.cs" />
+    <Compile Include="Views\BuyerDecisionsView.designer.cs">
+      <DependentUpon>BuyerDecisionsView.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
@@ -523,6 +528,10 @@
     <ImageAsset Include="Resources\Assets.xcassets\ic-contacthistory.imageset\contact history 30.png" />
     <ImageAsset Include="Resources\Assets.xcassets\ic-contacthistory.imageset\contact history 60.png" />
     <ImageAsset Include="Resources\Assets.xcassets\ic-contacthistory.imageset\contact history 90.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\ic-ranking.imageset\Contents.json" />
+    <ImageAsset Include="Resources\Assets.xcassets\ic-ranking.imageset\123-icon-30.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\ic-ranking.imageset\123-icon-60.png" />
+    <ImageAsset Include="Resources\Assets.xcassets\ic-ranking.imageset\123-icon-90.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ProspectManagement\ProspectManagement.Core.csproj">

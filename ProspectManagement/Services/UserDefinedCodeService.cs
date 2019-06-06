@@ -20,6 +20,7 @@ namespace ProspectManagement.Core.Services
         private List<UserDefinedCode> _excludeReasons;
         private List<UserDefinedCode> _states;
 		private List<UserDefinedCode> _countries;
+        private List<UserDefinedCode> _rankings;
 
         public UserDefinedCodeService(IUserDefinedCodeRepository userDefinedCodeRepository, IAuthenticator authenticator, IDialogService dialogService)
         {
@@ -80,6 +81,15 @@ namespace ProspectManagement.Core.Services
                 _suffixes?.Add(new UserDefinedCode() { Code = "", Description1 = " " });
             }
             return _suffixes.OrderBy(p => p.Description1).ToList();
+        }
+
+        public async Task<List<UserDefinedCode>> GetRankingUserDefinedCodes()
+        {
+            if (_rankings == null)
+            {
+                _rankings = await getUserDefinedCodes("01", "17");
+            }
+            return _rankings.OrderBy(p => p.Description1).ToList();
         }
 
         private async Task<List<UserDefinedCode>> getUserDefinedCodes(string productCode, string group)

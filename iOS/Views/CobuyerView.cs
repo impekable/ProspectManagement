@@ -150,7 +150,9 @@ namespace ProspectManagement.iOS.Views
                     ViewModel.ShowTrafficCardTab.Execute(null);
                 else if (e.Item.Tag == 3)
                     ViewModel.ShowContactHistoryTab.Execute(null);
-                    
+                else if (e.Item.Tag == 4)
+                    ViewModel.ShowRankingCommand.Execute(null);
+
             };
 
         }

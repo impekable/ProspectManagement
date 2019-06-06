@@ -151,6 +151,8 @@ namespace ProspectManagement.iOS.Views
             set.Bind(AssignButton).To(vm => vm.AssignCommand);
             set.Bind(AssignButton).For("Title").To(vm => vm.AssignText);
 
+            //set.Bind(RankingButton).To(vm => vm.ShowRankingCommand);
+
             set.Bind(StreetAddressStackView).For(v => v.Hidden).To(vm => vm.StreetAddressEntered).WithConversion(new InverseValueConverter());
             set.Bind(EmailStackView).For(v => v.Hidden).To(vm => vm.EmailEntered).WithConversion(new InverseValueConverter());
             set.Bind(WorkStackView).For(v => v.Hidden).To(vm => vm.WorkPhoneEntered).WithConversion(new InverseValueConverter());
@@ -176,6 +178,8 @@ namespace ProspectManagement.iOS.Views
                     ViewModel.ShowTrafficCardTab.Execute(null);
                 else if (e.Item.Tag == 3)
                     ViewModel.ShowContactHistoryTab.Execute(null);
+                else if (e.Item.Tag == 4)
+                    ViewModel.ShowRankingCommand.Execute(null);
             };
 
             setNavigation();
@@ -205,7 +209,7 @@ namespace ProspectManagement.iOS.Views
                     }, UIControlState.Normal);
                 }
 
-                if (ViewModel.IsLead && (item.Tag == 1 || item.Tag == 2))
+                if (ViewModel.IsLead && (item.Tag == 1 || item.Tag == 2 || item.Tag == 4))
                 {
                     ProspectTabBar.Items[item.Tag].Enabled = false;
                 }

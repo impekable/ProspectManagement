@@ -42,6 +42,16 @@ namespace ProspectManagement.Core.ViewModels
 
         private List<Cobuyer> _cobuyers;
 
+        private IMvxCommand _showRankingCommand;
+
+        public IMvxCommand ShowRankingCommand
+        {
+            get
+            {
+                return _showRankingCommand ?? (_showRankingCommand = new MvxCommand<Prospect>((prospect) => _navigationService.Navigate<BuyerDecisionsViewModel, Prospect>(Prospect)));
+            }
+        }
+
         public ICommand ShowDetailTab
         {
             get

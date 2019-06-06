@@ -41,6 +41,16 @@ namespace ProspectManagement.Core.ViewModels
         private IMvxCommand _homePhoneCallCommand;
         private IMvxCommand _composeEmailCommand;
 
+        private IMvxCommand _showRankingCommand;
+
+        public IMvxCommand ShowRankingCommand
+        {
+            get
+            {
+                return _showRankingCommand ?? (_showRankingCommand = new MvxCommand<Prospect>((prospect) => _navigationService.Navigate<BuyerDecisionsViewModel, Prospect>(Prospect)));
+            }
+        }
+
         public IMvxCommand MobilePhoneCallCommand
         {
             get
