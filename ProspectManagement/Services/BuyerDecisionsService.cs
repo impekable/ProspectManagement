@@ -29,7 +29,9 @@ namespace ProspectManagement.Core.Services
             try
             {
                 var authResult = await _authenticator.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource);
-                return await _buyerDecisionsRepository.GetBuyerDecisionsAsync(prospectId, authResult.AccessToken);
+                var decisions = await _buyerDecisionsRepository.GetBuyerDecisionsAsync(prospectId, authResult.AccessToken);
+
+                return decisions ?? new BuyerDecisions { ProspectAddressNumber =  prospectId };
             }
 
             catch (Exception ex)
