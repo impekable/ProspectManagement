@@ -108,7 +108,7 @@ namespace ProspectManagement.iOS.Views
         {
             System.Diagnostics.Debug.WriteLine("Being notified of ViewWillAppear " + this.Handle);
             var timeSinceLoad = DateTime.Now - loadTime;
-            if (timeSinceLoad.Minutes > 5)
+            if (timeSinceLoad.TotalMinutes > 5)
             {
                 var set = this.CreateBindingSet<SplitMasterView, SplitMasterViewModel>();
                 setTableViewSource(set);

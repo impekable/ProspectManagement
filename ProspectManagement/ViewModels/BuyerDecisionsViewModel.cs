@@ -5,16 +5,20 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using MvvmCross.Commands;
 using MvvmCross.Navigation;
+using MvvmCross.Plugin.Messenger;
 using MvvmCross.ViewModels;
 using MvvmValidation;
 using ProspectManagement.Core.Extensions;
 using ProspectManagement.Core.Interfaces.Services;
+using ProspectManagement.Core.Messages;
 using ProspectManagement.Core.Models;
 
 namespace ProspectManagement.Core.ViewModels
 {
     public class BuyerDecisionsViewModel : BaseViewModel, IMvxViewModel<Prospect>
     {
+        protected IMvxMessenger Messenger;
+
         private MvxInteraction _hideAlertInteraction = new MvxInteraction();
         public IMvxInteraction HideAlertInteraction => _hideAlertInteraction;
 
@@ -109,8 +113,9 @@ namespace ProspectManagement.Core.ViewModels
                 RaisePropertyChanged(() => ActiveRankingError);
             }
         }
-        public BuyerDecisionsViewModel(IUserDefinedCodeService userDefinedCodeService, IDialogService dialogService, IBuyerDecisionsService buyerDecisionsService, IMvxNavigationService navigationService)
+        public BuyerDecisionsViewModel(IMvxMessenger messenger, IUserDefinedCodeService userDefinedCodeService, IDialogService dialogService, IBuyerDecisionsService buyerDecisionsService, IMvxNavigationService navigationService)
         {
+            Messenger = messenger;
             _dialogService = dialogService;
             _buyerDecisionsService = buyerDecisionsService;
             _userDefinedCodeService = userDefinedCodeService;
@@ -118,6 +123,9 @@ namespace ProspectManagement.Core.ViewModels
 
             ConfigureValidationRules();
             Validator.ResultChanged += OnValidationResultChanged;
+
+            Messenger.Subscribe<RefreshMessage>(async message => await _navigationService.Close(this), MvxReference.Strong);
+
         }
 
         public void Prepare(Prospect prospect)
