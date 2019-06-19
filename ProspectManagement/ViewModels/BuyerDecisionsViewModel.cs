@@ -6,6 +6,7 @@ using System.Windows.Input;
 using MvvmCross.Commands;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
+using MvvmValidation;
 using ProspectManagement.Core.Extensions;
 using ProspectManagement.Core.Interfaces.Services;
 using ProspectManagement.Core.Models;
@@ -23,6 +24,7 @@ namespace ProspectManagement.Core.ViewModels
         private UserDefinedCode _activeRanking;
         private ICommand _saveCommand;
         private ICommand _closeCommand;
+        private string _activeRankingError;
         private readonly IDialogService _dialogService;
         private readonly IBuyerDecisionsService _buyerDecisionsService;
         private readonly IUserDefinedCodeService _userDefinedCodeService;
@@ -75,15 +77,17 @@ namespace ProspectManagement.Core.ViewModels
             {
                 return _saveCommand ?? (_saveCommand = new MvxCommand(async () =>
                 {
-                    var decisionsUpdated = await _buyerDecisionsService.UpdateBuyerDecisionsAsync(BuyerDecisions);
-                    _hideAlertInteraction.Raise();
-
-                    if (decisionsUpdated)
+                    await ValidateAsync();
+                    if (IsValid.GetValueOrDefault())
                     {
-                        //Messenger.Publish(new ProspectChangedMessage(this) { UpdatedProspect = Prospect });
-
-                        await _navigationService.Close(this);
+                        var decisionsUpdated = await _buyerDecisionsService.UpdateBuyerDecisionsAsync(BuyerDecisions);
+                        if (decisionsUpdated)
+                        {
+                            //Messenger.Publish(new ProspectChangedMessage(this) { UpdatedProspect = Prospect });
+                            await _navigationService.Close(this);
+                        }
                     }
+                    _hideAlertInteraction.Raise();
                 }));
             }
         }
@@ -96,12 +100,24 @@ namespace ProspectManagement.Core.ViewModels
             }
         }
 
+        public string ActiveRankingError
+        {
+            get { return _activeRankingError; }
+            set
+            {
+                _activeRankingError = value;
+                RaisePropertyChanged(() => ActiveRankingError);
+            }
+        }
         public BuyerDecisionsViewModel(IUserDefinedCodeService userDefinedCodeService, IDialogService dialogService, IBuyerDecisionsService buyerDecisionsService, IMvxNavigationService navigationService)
         {
             _dialogService = dialogService;
             _buyerDecisionsService = buyerDecisionsService;
             _userDefinedCodeService = userDefinedCodeService;
             _navigationService = navigationService;
+
+            ConfigureValidationRules();
+            Validator.ResultChanged += OnValidationResultChanged;
         }
 
         public void Prepare(Prospect prospect)
@@ -116,6 +132,45 @@ namespace ProspectManagement.Core.ViewModels
 
             ActiveRanking = BuyerDecisions != null ? Rankings.FirstOrDefault(p => p.Code == BuyerDecisions.Ranking) : null;
             //ActiveRanking = ranking != null ? ranking.Code : null;
+        }
+
+        protected async void Validate()
+        {
+            await ValidateAsync();
+        }
+
+        protected async Task ValidateAsync()
+        {
+            var result = await Validator.ValidateAllAsync();
+
+            UpdateValidationSummaryAndDetails(result);
+        }
+
+        private void UpdateValidationSummaryAndDetails(ValidationResult validationResult)
+        {
+            UpdateValidationSummary(validationResult);
+            ActiveRankingError = Validator.GetResult(nameof(ActiveRanking)).ToString();
+        }
+
+        private void OnValidationResultChanged(object sender, ValidationResultChangedEventArgs e)
+        {
+            if (!IsValid.GetValueOrDefault(true))
+            {
+                ValidationResult validationResult = Validator.GetResult();
+
+                UpdateValidationSummaryAndDetails(validationResult);
+            }
+        }
+
+        private void ConfigureValidationRules()
+        {
+            Validator.AddRule(() => ActiveRanking,
+                    () =>
+                    {
+                        var result = !(ActiveRanking == null || String.IsNullOrEmpty(ActiveRanking.Code));
+                        return RuleResult.Assert(result, string.Format("Category is required"));
+                    });
+                  
         }
     }
 }

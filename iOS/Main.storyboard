@@ -2575,17 +2575,23 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="fkO-hp-C1O">
                                 <rect key="frame" x="30" y="30" width="708" height="984"/>
                                 <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CategoryError" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k9u-ZY-OsU">
+                                        <rect key="frame" x="0.0" y="0.0" width="708" height="54"/>
+                                        <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="12"/>
+                                        <color key="textColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="xnG-Jt-4lU">
-                                        <rect key="frame" x="0.0" y="0.0" width="708" height="58"/>
+                                        <rect key="frame" x="0.0" y="62" width="708" height="54"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Category" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kl6-6M-MaP">
-                                                <rect key="frame" x="0.0" y="0.0" width="350" height="58"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="350" height="54"/>
                                                 <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="16"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3h7-SU-Kgm">
-                                                <rect key="frame" x="358" y="0.0" width="350" height="58"/>
+                                                <rect key="frame" x="358" y="0.0" width="350" height="54"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" name="Raleway-Bold" family="Raleway" pointSize="16"/>
                                                 <textInputTraits key="textInputTraits"/>
@@ -2593,16 +2599,16 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XS0-xx-aeg">
-                                        <rect key="frame" x="0.0" y="66" width="708" height="58.5"/>
+                                        <rect key="frame" x="0.0" y="124" width="708" height="54"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="System Category" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="smw-1l-fdr">
-                                                <rect key="frame" x="0.0" y="0.0" width="358" height="58.5"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="System Category" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="smw-1l-fdr">
+                                                <rect key="frame" x="0.0" y="0.0" width="591.5" height="54"/>
                                                 <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="16"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="System Ranking" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6vq-1O-1xP">
-                                                <rect key="frame" x="358" y="0.0" width="350" height="58.5"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="System Ranking" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6vq-1O-1xP">
+                                                <rect key="frame" x="591.5" y="0.0" width="116.5" height="54"/>
                                                 <fontDescription key="fontDescription" name="Raleway-Bold" family="Raleway" pointSize="16"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -2610,204 +2616,201 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="98" translatesAutoresizingMaskIntoConstraints="NO" id="PEo-eW-F4h">
-                                        <rect key="frame" x="0.0" y="132.5" width="708" height="58"/>
+                                        <rect key="frame" x="0.0" y="186" width="708" height="54"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1. Unsatisifed" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qZm-h7-wl6">
-                                                <rect key="frame" x="0.0" y="0.0" width="561" height="58"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="561" height="54"/>
                                                 <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="16"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uJe-j5-uLU">
-                                                <rect key="frame" x="659" y="0.0" width="51" height="58"/>
+                                                <rect key="frame" x="659" y="0.0" width="51" height="54"/>
                                                 <color key="onTintColor" red="0.45490196078431372" green="0.68235294117647061" blue="0.70588235294117641" alpha="1" colorSpace="calibratedRGB"/>
                                             </switch>
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="135" translatesAutoresizingMaskIntoConstraints="NO" id="UlK-51-Ni8">
-                                        <rect key="frame" x="0.0" y="198.5" width="708" height="58"/>
+                                        <rect key="frame" x="0.0" y="248" width="708" height="54"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2. Home" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3aQ-9I-oZT">
-                                                <rect key="frame" x="0.0" y="0.0" width="524" height="58"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="524" height="54"/>
                                                 <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="16"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oQA-kn-15f">
-                                                <rect key="frame" x="659" y="0.0" width="51" height="58"/>
+                                                <rect key="frame" x="659" y="0.0" width="51" height="54"/>
                                                 <color key="onTintColor" red="0.4549019608" green="0.68235294120000001" blue="0.70588235290000001" alpha="1" colorSpace="calibratedRGB"/>
                                             </switch>
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="128" translatesAutoresizingMaskIntoConstraints="NO" id="3G7-9t-1FR">
-                                        <rect key="frame" x="0.0" y="264.5" width="708" height="58"/>
+                                        <rect key="frame" x="0.0" y="310" width="708" height="54"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3. Competition" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="heH-Sf-R1L">
-                                                <rect key="frame" x="0.0" y="0.0" width="531" height="58"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="531" height="54"/>
                                                 <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="16"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="h7E-Mi-htg">
-                                                <rect key="frame" x="659" y="0.0" width="51" height="58"/>
+                                                <rect key="frame" x="659" y="0.0" width="51" height="54"/>
                                                 <color key="onTintColor" red="0.4549019608" green="0.68235294120000001" blue="0.70588235290000001" alpha="1" colorSpace="calibratedRGB"/>
                                             </switch>
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="130" translatesAutoresizingMaskIntoConstraints="NO" id="Hgk-S1-q0a">
-                                        <rect key="frame" x="0.0" y="330.5" width="708" height="58.5"/>
+                                        <rect key="frame" x="0.0" y="372" width="708" height="54"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="4. Builder" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cdq-kM-sOL">
-                                                <rect key="frame" x="0.0" y="0.0" width="529" height="58.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="529" height="54"/>
                                                 <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="16"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IDO-Nm-pNX">
-                                                <rect key="frame" x="659" y="0.0" width="51" height="58.5"/>
+                                                <rect key="frame" x="659" y="0.0" width="51" height="54"/>
                                                 <color key="onTintColor" red="0.4549019608" green="0.68235294120000001" blue="0.70588235290000001" alpha="1" colorSpace="calibratedRGB"/>
                                             </switch>
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="149" translatesAutoresizingMaskIntoConstraints="NO" id="0r4-xQ-kyn">
-                                        <rect key="frame" x="0.0" y="397" width="708" height="58"/>
+                                        <rect key="frame" x="0.0" y="434" width="708" height="54"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="5. Area" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L6S-BC-a8e">
-                                                <rect key="frame" x="0.0" y="0.0" width="510" height="58"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="510" height="54"/>
                                                 <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="16"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Smq-Y7-S2V">
-                                                <rect key="frame" x="659" y="0.0" width="51" height="58"/>
+                                                <rect key="frame" x="659" y="0.0" width="51" height="54"/>
                                                 <color key="onTintColor" red="0.4549019608" green="0.68235294120000001" blue="0.70588235290000001" alpha="1" colorSpace="calibratedRGB"/>
                                             </switch>
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="96" translatesAutoresizingMaskIntoConstraints="NO" id="SGZ-mM-n7N">
-                                        <rect key="frame" x="0.0" y="463" width="708" height="58"/>
+                                        <rect key="frame" x="0.0" y="496" width="708" height="54"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="6. Community" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D1b-uP-Kn1">
-                                                <rect key="frame" x="0.0" y="0.0" width="563" height="58"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="563" height="54"/>
                                                 <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="16"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="70e-e0-63k">
-                                                <rect key="frame" x="659" y="0.0" width="51" height="58"/>
+                                                <rect key="frame" x="659" y="0.0" width="51" height="54"/>
                                                 <color key="onTintColor" red="0.4549019608" green="0.68235294120000001" blue="0.70588235290000001" alpha="1" colorSpace="calibratedRGB"/>
                                             </switch>
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="107" translatesAutoresizingMaskIntoConstraints="NO" id="UeZ-rB-1DJ">
-                                        <rect key="frame" x="0.0" y="529" width="708" height="58"/>
+                                        <rect key="frame" x="0.0" y="558" width="708" height="54"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="7. Home Site" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I2B-8a-r1S">
-                                                <rect key="frame" x="0.0" y="0.0" width="552" height="58"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="552" height="54"/>
                                                 <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="16"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xxS-6f-iTG">
-                                                <rect key="frame" x="659" y="0.0" width="51" height="58"/>
+                                                <rect key="frame" x="659" y="0.0" width="51" height="54"/>
                                                 <color key="onTintColor" red="0.4549019608" green="0.68235294120000001" blue="0.70588235290000001" alpha="1" colorSpace="calibratedRGB"/>
                                             </switch>
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="TEP-xh-Dvr">
-                                        <rect key="frame" x="0.0" y="595" width="708" height="58.5"/>
+                                        <rect key="frame" x="0.0" y="620" width="708" height="54"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="8. Circumstantial Urgency" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dYQ-jZ-2mh">
-                                                <rect key="frame" x="0.0" y="0.0" width="654" height="58.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="654" height="54"/>
                                                 <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="16"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9UG-jH-PFD">
-                                                <rect key="frame" x="659" y="0.0" width="51" height="58.5"/>
+                                                <rect key="frame" x="659" y="0.0" width="51" height="54"/>
                                                 <color key="onTintColor" red="0.4549019608" green="0.68235294120000001" blue="0.70588235290000001" alpha="1" colorSpace="calibratedRGB"/>
                                             </switch>
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="46" translatesAutoresizingMaskIntoConstraints="NO" id="0P5-5K-pSu">
-                                        <rect key="frame" x="0.0" y="661.5" width="708" height="58"/>
+                                        <rect key="frame" x="0.0" y="682" width="708" height="54"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="9. Economic Climate" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FsY-eQ-Ppv">
-                                                <rect key="frame" x="0.0" y="0.0" width="613" height="58"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="613" height="54"/>
                                                 <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="16"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="s5m-eu-2me">
-                                                <rect key="frame" x="659" y="0.0" width="51" height="58"/>
+                                                <rect key="frame" x="659" y="0.0" width="51" height="54"/>
                                                 <color key="onTintColor" red="0.4549019608" green="0.68235294120000001" blue="0.70588235290000001" alpha="1" colorSpace="calibratedRGB"/>
                                             </switch>
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="106" translatesAutoresizingMaskIntoConstraints="NO" id="8iS-lr-3Tm">
-                                        <rect key="frame" x="0.0" y="727.5" width="708" height="58"/>
+                                        <rect key="frame" x="0.0" y="744" width="708" height="54"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10. Financing" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1L4-Vh-FkY">
-                                                <rect key="frame" x="0.0" y="0.0" width="553" height="58"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="553" height="54"/>
                                                 <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="16"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Z7a-si-0Nb">
-                                                <rect key="frame" x="659" y="0.0" width="51" height="58"/>
+                                                <rect key="frame" x="659" y="0.0" width="51" height="54"/>
                                                 <color key="onTintColor" red="0.4549019608" green="0.68235294120000001" blue="0.70588235290000001" alpha="1" colorSpace="calibratedRGB"/>
                                             </switch>
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="125" translatesAutoresizingMaskIntoConstraints="NO" id="ZLk-w4-EnS">
-                                        <rect key="frame" x="0.0" y="793.5" width="708" height="58"/>
+                                        <rect key="frame" x="0.0" y="806" width="708" height="54"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="11. Xfactor" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IBT-Rz-UfS">
-                                                <rect key="frame" x="0.0" y="0.0" width="534" height="58"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="534" height="54"/>
                                                 <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="16"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fGB-nj-Oz5">
-                                                <rect key="frame" x="659" y="0.0" width="51" height="58"/>
+                                                <rect key="frame" x="659" y="0.0" width="51" height="54"/>
                                                 <color key="onTintColor" red="0.4549019608" green="0.68235294120000001" blue="0.70588235290000001" alpha="1" colorSpace="calibratedRGB"/>
                                             </switch>
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="74" translatesAutoresizingMaskIntoConstraints="NO" id="J0a-P1-t3j">
-                                        <rect key="frame" x="0.0" y="859.5" width="708" height="58.5"/>
+                                        <rect key="frame" x="0.0" y="868" width="708" height="54"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12. Final Decision" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fyy-Se-xQi">
-                                                <rect key="frame" x="0.0" y="0.0" width="585" height="58.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="585" height="54"/>
                                                 <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="16"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="awC-rq-CYb">
-                                                <rect key="frame" x="659" y="0.0" width="51" height="58.5"/>
+                                                <rect key="frame" x="659" y="0.0" width="51" height="54"/>
                                                 <color key="onTintColor" red="0.4549019608" green="0.68235294120000001" blue="0.70588235290000001" alpha="1" colorSpace="calibratedRGB"/>
                                             </switch>
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="mEf-s6-wWh">
-                                        <rect key="frame" x="0.0" y="926" width="708" height="58"/>
+                                        <rect key="frame" x="0.0" y="930" width="708" height="54"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="13. 2nd Final Decision" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xlS-HH-ZMg">
-                                                <rect key="frame" x="0.0" y="0.0" width="619" height="58"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="619" height="54"/>
                                                 <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="16"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="asV-gR-JgH">
-                                                <rect key="frame" x="659" y="0.0" width="51" height="58"/>
+                                                <rect key="frame" x="659" y="0.0" width="51" height="54"/>
                                                 <color key="onTintColor" red="0.4549019608" green="0.68235294120000001" blue="0.70588235290000001" alpha="1" colorSpace="calibratedRGB"/>
                                             </switch>
                                         </subviews>
                                     </stackView>
                                 </subviews>
-                                <constraints>
-                                    <constraint firstItem="6vq-1O-1xP" firstAttribute="leading" secondItem="3h7-SU-Kgm" secondAttribute="leading" id="OfK-Zi-BJg"/>
-                                </constraints>
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -2821,6 +2824,7 @@
                     <connections>
                         <outlet property="AreaSwitch" destination="Smq-Y7-S2V" id="name-outlet-Smq-Y7-S2V"/>
                         <outlet property="BuilderSwitch" destination="IDO-Nm-pNX" id="name-outlet-IDO-Nm-pNX"/>
+                        <outlet property="CategoryErrorLabel" destination="k9u-ZY-OsU" id="name-outlet-k9u-ZY-OsU"/>
                         <outlet property="CircumstantialSwitch" destination="9UG-jH-PFD" id="name-outlet-9UG-jH-PFD"/>
                         <outlet property="CommunitySwitch" destination="70e-e0-63k" id="name-outlet-70e-e0-63k"/>
                         <outlet property="EconomicClimateSwitch" destination="s5m-eu-2me" id="name-outlet-s5m-eu-2me"/>
@@ -2846,6 +2850,6 @@
         <image name="ic-cobuyers" width="1024" height="1024"/>
         <image name="ic-contacthistory" width="30" height="30"/>
         <image name="ic-detail" width="60" height="60"/>
-        <image name="ic-ranking" width="16" height="16"/>
+        <image name="ic-ranking" width="30" height="30"/>
     </resources>
 </document>

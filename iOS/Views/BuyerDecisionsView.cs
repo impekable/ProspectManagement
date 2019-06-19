@@ -52,7 +52,7 @@ namespace ProspectManagement.iOS.Views
             CreateAlertViewBindings(set);
 
             set.Bind(RankingTextField).To(vm => vm.ActiveRanking);
-
+            set.Bind(CategoryErrorLabel).To(vm => vm.ActiveRankingError);
             set.Bind(UnstatisifedSwitch).To(vm => vm.BuyerDecisions.Unsatisified);
             set.Bind(HomeSwitch).To(vm => vm.BuyerDecisions.Home);
             set.Bind(MarketSwitch).To(vm => vm.BuyerDecisions.Market);

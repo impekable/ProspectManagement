@@ -24,6 +24,10 @@ namespace ProspectManagement.iOS.Views
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UILabel CategoryErrorLabel { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UISwitch CircumstantialSwitch { get; set; }
 
         [Outlet]
@@ -84,6 +88,11 @@ namespace ProspectManagement.iOS.Views
             if (BuilderSwitch != null) {
                 BuilderSwitch.Dispose ();
                 BuilderSwitch = null;
+            }
+
+            if (CategoryErrorLabel != null) {
+                CategoryErrorLabel.Dispose ();
+                CategoryErrorLabel = null;
             }
 
             if (CircumstantialSwitch != null) {
