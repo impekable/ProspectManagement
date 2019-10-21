@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
 using ProspectManagement.Core.ViewModels;
@@ -15,9 +16,9 @@ namespace ProspectManagement.Core
 
         }
 
-		protected override void NavigateToFirstViewModel(object hint = null)
+		protected override Task NavigateToFirstViewModel(object hint = null)
 		{
-			_mvxNavigationService.Navigate<RootViewModel>();
+			return _mvxNavigationService.Navigate<RootViewModel>();
 		}
 	}
 }

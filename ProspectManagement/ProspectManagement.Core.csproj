@@ -43,17 +43,17 @@
     <Compile Remove="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.IdentityModel.Clients.ActiveDirectory" Version="3.19.8" />
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-    <PackageReference Include="sqlite-net-pcl" Version="1.4.118" />
-    <PackageReference Include="Microsoft.AppCenter" Version="1.7.0" />
-    <PackageReference Include="Microsoft.AppCenter.Analytics" Version="1.7.0" />
-    <PackageReference Include="Microsoft.AppCenter.Crashes" Version="1.7.0" />
+    <PackageReference Include="Microsoft.IdentityModel.Clients.ActiveDirectory" Version="5.2.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="sqlite-net-pcl" Version="1.6.292" />
+    <PackageReference Include="Microsoft.AppCenter" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AppCenter.Analytics" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AppCenter.Crashes" Version="2.1.1" />
     <PackageReference Include="MvvmValidation" Version="3.1.0" />
-    <PackageReference Include="MvvmCross" Version="6.1.2" />
-    <PackageReference Include="MvvmCross.Plugin.Color" Version="6.1.2" />
-    <PackageReference Include="MvvmCross.Plugin.Messenger" Version="6.1.2" />
-    <PackageReference Include="MvvmCross.Plugin.PhoneCall" Version="6.1.2" />
-    <PackageReference Include="MvvmCross.Plugin.Email" Version="6.1.2" />
+    <PackageReference Include="MvvmCross" Version="6.4.1" />
+    <PackageReference Include="MvvmCross.Plugin.Color" Version="6.4.1" />
+    <PackageReference Include="MvvmCross.Plugin.Messenger" Version="6.4.1" />
+    <PackageReference Include="MvvmCross.Plugin.PhoneCall" Version="6.4.1" />
+    <PackageReference Include="MvvmCross.Plugin.Email" Version="6.4.1" />
   </ItemGroup>
 </Project>

@@ -189,31 +189,16 @@ namespace ProspectManagement.Core.ViewModels
 		{
 			get
 			{
-				return _logoutCommand ?? (_logoutCommand = new MvxCommand(async () =>
-				{
-					if (User == null || User.AddressNumber == 0)
-					{
-						User = await _userService.GetLoggedInUser();
-						if (User != null && User.AddressNumber != 0)
-						{
-							OnLoginCompleted();
-						}
-					}
-					else
-					{
-						var result = await _dialogService.ShowAlertAsync("Confirm", "Logout?", "Yes", "No");
-						if (result == 0)
-						{
-							_communities = null;
-							_prospects = null;
-							_authService.Logout();
-							User = null;
-							OnLogoutCompleted();
-							Messenger.Publish(new UserLogoutMessage(this));
-						}
-					}
-				}));
-			}
+                return _logoutCommand ?? (_logoutCommand = new MvxCommand(async () =>
+                {
+                    var result = await _dialogService.ShowAlertAsync("Confirm", "Logout?", "Yes", "No");
+                    if (result == 0)
+                    {
+                        _authService.Logout();
+                        _navigationService.Navigate<RootViewModel, bool>(false);
+                    }
+                }));
+            }
 		}
 
 		public ICommand SelectionChangedCommand

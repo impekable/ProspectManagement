@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Globalization;
 using MvvmCross.Plugin.Color;
 using MvvmCross.UI;
@@ -8,12 +9,15 @@ namespace ProspectManagement.Core.Converters
 {
     public class ProspectColorValueConverter : MvxColorValueConverter<Prospect>
     {
-        protected override MvxColor Convert(Prospect value, object parameter, CultureInfo culture)
+        protected override Color Convert(Prospect value, object parameter, CultureInfo culture)
         {
             if (value.FollowUpSettings.ExcludeFromFollowup)
-                return MvxColors.Red;
+                return Color.Red;
+            else if (value.Status.Equals("Inactive"))
+                return Color.Gray;
             else
-                return MvxColors.Black;
+            
+                return Color.Black;
         }
     }
 }

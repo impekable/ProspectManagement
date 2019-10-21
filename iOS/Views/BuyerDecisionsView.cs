@@ -18,6 +18,7 @@ namespace ProspectManagement.iOS.Views
         AlertOverlay alertOverlay;
 
         private TextFieldWithPopup rankingPopup;
+        private TextFieldWithPopup deactiveReasonPopup;
 
         protected BuyerDecisionsViewModel BuyerDecisionsViewModel => ViewModel as BuyerDecisionsViewModel;
 
@@ -51,8 +52,10 @@ namespace ProspectManagement.iOS.Views
             var set = this.CreateBindingSet<BuyerDecisionsView, BuyerDecisionsViewModel>();
             CreateAlertViewBindings(set);
 
+            set.Bind(DeactiveReasonTextField).To(vm => vm.CurrentDeactiveReason);
+            set.Bind(DeactiveReasonTextField).For(v => v.Enabled).To(vm => vm.Deactive);
             set.Bind(RankingTextField).To(vm => vm.ActiveRanking);
-            set.Bind(CategoryErrorLabel).To(vm => vm.ActiveRankingError);
+            set.Bind(CategoryErrorLabel).To(vm => vm.ValidationErrorsString);
             set.Bind(UnstatisifedSwitch).To(vm => vm.BuyerDecisions.Unsatisified);
             set.Bind(HomeSwitch).To(vm => vm.BuyerDecisions.Home);
             set.Bind(MarketSwitch).To(vm => vm.BuyerDecisions.Market);
@@ -111,6 +114,11 @@ namespace ProspectManagement.iOS.Views
             rankingPopup.CustomAlertController = new CustomAlertController("Category");
             set.Bind(rankingPopup.CustomAlertController).For(p => p.AlertController).To(vm => vm.Rankings);
             set.Bind(rankingPopup.CustomAlertController).For(p => p.SelectedCode).To(vm => vm.ActiveRanking);
+
+            deactiveReasonPopup = new TextFieldWithPopup(DeactiveReasonTextField, this);
+            deactiveReasonPopup.CustomAlertController = new CustomAlertController("Deactive Reason");
+            set.Bind(deactiveReasonPopup.CustomAlertController).For(p => p.AlertController).To(vm => vm.DeactiveReasons);
+            set.Bind(deactiveReasonPopup.CustomAlertController).For(p => p.SelectedCode).To(vm => vm.CurrentDeactiveReason);
         }
     }
 }

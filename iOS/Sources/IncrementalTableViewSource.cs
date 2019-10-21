@@ -6,7 +6,7 @@ using MvvmCross.Binding.BindingContext;
 using MvvmCross.Binding.Extensions;
 using MvvmCross.Platforms.Ios.Binding.Views;
 using MvvmCross.Platforms.Ios.Views;
-using Nito.AsyncEx;
+using Nito.Mvvm;
 using ProspectManagement.Core.Interfaces.InfiniteScroll;
 using UIKit;
 
@@ -46,7 +46,7 @@ namespace ProspectManagement.iOS.Sources
 
         private void LoadMoreItems()
         {
-            INotifyTaskCompletion taskCompletion = NotifyTaskCompletion.Create(LoadMoreItemsAsync());
+            NotifyTask taskCompletion = NotifyTask.Create(LoadMoreItemsAsync());
         }
 
         public async Task LoadMoreItemsAsync()

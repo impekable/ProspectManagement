@@ -52,6 +52,9 @@ namespace ProspectManagement.Core.Models
 
         [JsonProperty("ranking")]
         public string Ranking { get; set; }
+
+        [JsonProperty("deactiveReason")]
+        public string DeactiveReason { get; set; }
     }
 }
 

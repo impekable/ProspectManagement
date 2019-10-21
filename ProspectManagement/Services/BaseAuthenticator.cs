@@ -8,7 +8,7 @@ namespace ProspectManagement.Core.Services
 {
 	public abstract class BaseAuthenticator: IAuthenticator
 	{
-		protected static string authority = "https://login.windows.net/khov.onmicrosoft.com/oauth2/token";
+		protected static string authority = "https://login.windows.net/khov.onmicrosoft.com";
 		protected static string returnUri = "http://ProspectManagementClient.azure-mobile.net";
 
 		public abstract Task<AuthenticationResult> AuthenticateUser(string resource);

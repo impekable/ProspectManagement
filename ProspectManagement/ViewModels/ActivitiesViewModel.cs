@@ -93,7 +93,7 @@ namespace ProspectManagement.Core.ViewModels
 
         public bool AssignedProspect
         {
-            get { return Assigned && !IsLead; }
+            get { return Assigned && Prospect.Status.Equals("Active") && !IsLead; }
         }
 
         public bool Assigned
@@ -115,7 +115,7 @@ namespace ProspectManagement.Core.ViewModels
 
         public bool IsLeadWithAppointment
         {
-            get { return IsLead && Prospect.ProspectCommunity.AppointmentStatus.Equals("Pending"); }
+            get { return IsLead && Prospect.Status.Equals("Active") && Prospect.ProspectCommunity.AppointmentStatus.Equals("Pending"); }
         }
 
         public ICommand RefreshCommand
@@ -249,6 +249,17 @@ namespace ProspectManagement.Core.ViewModels
             Messenger.Subscribe<RefreshMessage>(message => _clearDetailsInteraction.Raise(), MvxReference.Strong);
             Messenger.Subscribe<UserLogoutMessage>(message => _clearDetailsInteraction.Raise(), MvxReference.Strong);
             Messenger.Subscribe<ActivityAddedMessage>(message => ActivityAdded(message.AddedActivity), MvxReference.Strong);
+            Messenger.Subscribe<ProspectChangedMessage>(message => ProspectChanged(message.UpdatedProspect), MvxReference.Strong);
+
+        }
+
+        public void ProspectChanged(Prospect updatedProspect)
+        {
+            Prospect = updatedProspect;
+            RaisePropertyChanged(() => AssignedWithoutAppointment);
+            RaisePropertyChanged(() => AssignedProspect);
+            RaisePropertyChanged(() => Assigned);
+            RaisePropertyChanged(() => IsLeadWithAppointment);
         }
 
         public void ActivityAdded(Activity activity)

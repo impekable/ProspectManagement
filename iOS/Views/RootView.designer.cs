@@ -14,8 +14,37 @@ namespace ProspectManagement.iOS.Views
     [Register ("RootView")]
     partial class RootView
     {
-        void ReleaseDesignerOutlets ()
+        [Outlet]
+        [GeneratedCode("iOS Designer", "1.0")]
+        UIKit.UILabel AttemptingLoginLabel { get; set; }
+
+        [Outlet]
+        [GeneratedCode("iOS Designer", "1.0")]
+        UIKit.UIActivityIndicatorView LoginActivityIndicator { get; set; }
+
+        [Outlet]
+        [GeneratedCode("iOS Designer", "1.0")]
+        UIKit.UIButton LoginButton { get; set; }
+
+        void ReleaseDesignerOutlets()
         {
+            if (AttemptingLoginLabel != null)
+            {
+                AttemptingLoginLabel.Dispose();
+                AttemptingLoginLabel = null;
+            }
+
+            if (LoginActivityIndicator != null)
+            {
+                LoginActivityIndicator.Dispose();
+                LoginActivityIndicator = null;
+            }
+
+            if (LoginButton != null)
+            {
+                LoginButton.Dispose();
+                LoginButton = null;
+            }
         }
     }
 }

@@ -63,6 +63,10 @@ namespace ProspectManagement.iOS.Views
         UIKit.UITextField RankingTextField { get; set; }
 
         [Outlet]
+        [GeneratedCode("iOS Designer", "1.0")]
+        UIKit.UITextField DeactiveReasonTextField { get; set; }
+
+        [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UISwitch SecondFinalDecisionSwitch { get; set; }
 
@@ -138,6 +142,12 @@ namespace ProspectManagement.iOS.Views
             if (RankingTextField != null) {
                 RankingTextField.Dispose ();
                 RankingTextField = null;
+            }
+
+            if (DeactiveReasonTextField != null)
+            {
+                DeactiveReasonTextField.Dispose();
+                DeactiveReasonTextField = null;
             }
 
             if (SecondFinalDecisionSwitch != null) {

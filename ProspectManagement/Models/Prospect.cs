@@ -45,15 +45,17 @@ namespace ProspectManagement.Core.Models
         public ProspectCommunity ProspectCommunity { get; set; }
 		[JsonProperty("followUpSettings")]
 		public FollowUpSettings FollowUpSettings { get; set; }
+        [JsonProperty("status")]
+        public string Status { get; set; }
 
-		public Prospect ShallowCopy()
+        public Prospect ShallowCopy()
 		{
 			return (Prospect)this.MemberwiseClone();
 		}
 
         public override string ToString()
         {
-            return string.Format("{0}", Name);
+            return string.Format("{0} {1}", Name , Status.Equals("Inactive") ? "***Inactive***" : "");
         }
 	}
 

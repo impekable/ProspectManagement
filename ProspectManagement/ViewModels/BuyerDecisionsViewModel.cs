@@ -24,8 +24,10 @@ namespace ProspectManagement.Core.ViewModels
 
         private Prospect _prospect;
         private ObservableCollection<UserDefinedCode> _rankings;
+        private ObservableCollection<UserDefinedCode> _deactiveReasons;
         private BuyerDecisions _buyerDecisions;
         private UserDefinedCode _activeRanking;
+        private UserDefinedCode _currentDeactiveReason;
         private ICommand _saveCommand;
         private ICommand _closeCommand;
         private string _activeRankingError;
@@ -54,6 +56,32 @@ namespace ProspectManagement.Core.ViewModels
             }
         }
 
+        public ObservableCollection<UserDefinedCode> DeactiveReasons
+        {
+            get { return _deactiveReasons; }
+            set
+            {
+                _deactiveReasons = value;
+                RaisePropertyChanged(() => DeactiveReasons);
+            }
+        }
+
+        public bool Deactive
+        {
+            get { return _activeRanking != null && _activeRanking.Code == "D"; }
+        }
+
+        public UserDefinedCode CurrentDeactiveReason
+        {
+            get { return _currentDeactiveReason; }
+            set
+            {
+                _currentDeactiveReason = value;
+                BuyerDecisions.DeactiveReason = _currentDeactiveReason?.Code;
+                RaisePropertyChanged(() => CurrentDeactiveReason);
+            }
+        }
+
         public ObservableCollection<UserDefinedCode> Rankings
         {
             get { return _rankings; }
@@ -71,7 +99,17 @@ namespace ProspectManagement.Core.ViewModels
             {
                 _activeRanking = value;
                 BuyerDecisions.Ranking = _activeRanking.Code;
+                if (_activeRanking.Code != "D")
+                {
+                    CurrentDeactiveReason = null;
+                    Prospect.Status = "Active";
+                }
+                else
+                {
+                    Prospect.Status = "Inactive";
+                }
                 RaisePropertyChanged(() => ActiveRanking);
+                RaisePropertyChanged(() => Deactive);
             }
         }
 
@@ -87,7 +125,7 @@ namespace ProspectManagement.Core.ViewModels
                         var decisionsUpdated = await _buyerDecisionsService.UpdateBuyerDecisionsAsync(BuyerDecisions);
                         if (decisionsUpdated)
                         {
-                            //Messenger.Publish(new ProspectChangedMessage(this) { UpdatedProspect = Prospect });
+                            Messenger.Publish(new ProspectChangedMessage(this) { UpdatedProspect = Prospect });
                             await _navigationService.Close(this);
                         }
                     }
@@ -136,9 +174,11 @@ namespace ProspectManagement.Core.ViewModels
         public override async Task Initialize()
         {
             Rankings = (await _userDefinedCodeService.GetRankingUserDefinedCodes()).ToObservableCollection();
+            DeactiveReasons = (await _userDefinedCodeService.GetDeactiveReasonUserDefinedCodes()).ToObservableCollection();
             BuyerDecisions = await _buyerDecisionsService.GetBuyerDecisionsAsync(Prospect.ProspectAddressNumber);
 
             ActiveRanking = BuyerDecisions != null ? Rankings.FirstOrDefault(p => p.Code == BuyerDecisions.Ranking) : null;
+            CurrentDeactiveReason = BuyerDecisions != null ? DeactiveReasons.FirstOrDefault(p => p.Code == BuyerDecisions.DeactiveReason) : null;
             //ActiveRanking = ranking != null ? ranking.Code : null;
         }
 
@@ -178,7 +218,14 @@ namespace ProspectManagement.Core.ViewModels
                         var result = !(ActiveRanking == null || String.IsNullOrEmpty(ActiveRanking.Code));
                         return RuleResult.Assert(result, string.Format("Category is required"));
                     });
-                  
+
+            Validator.AddRule(() => CurrentDeactiveReason,
+                    () =>
+                    {
+                        var result = !(Deactive && String.IsNullOrEmpty(BuyerDecisions.DeactiveReason));
+
+                        return RuleResult.Assert(result, string.Format("Deactive Reason required"));
+                    });
         }
     }
 }
