@@ -119,7 +119,7 @@ namespace ProspectManagement.iOS.Views
         {
             foreach (UITabBarItem item in ProspectTabBar.Items)
             {
-                if (ViewModel.IsLead && (item.Tag == 1 || item.Tag == 2))
+                if (ViewModel.IsLead && (item.Tag == 1 || item.Tag == 2 || item.Tag == 4))
                 {
                     ProspectTabBar.Items[item.Tag].Enabled = false;
                 }
