@@ -115,6 +115,18 @@ namespace ProspectManagement.iOS.Views
             setTabBar();
         }
 
+        private void TabBar_ItemSelected(Object sender, UITabBarItemEventArgs e)
+        {
+            if (e.Item.Tag == 0)
+                ViewModel.ShowDetailTab.Execute(null);
+            else if (e.Item.Tag == 1)
+                ViewModel.ShowCobuyerTab.Execute(null);
+            else if (e.Item.Tag == 2)
+                ViewModel.ShowTrafficCardTab.Execute(null);
+            else if (e.Item.Tag == 4)
+                ViewModel.ShowRankingCommand.Execute(null);
+
+        }
         private void setTabBar()
         {
             foreach (UITabBarItem item in ProspectTabBar.Items)
@@ -148,17 +160,8 @@ namespace ProspectManagement.iOS.Views
             }
 
             ProspectTabBar.SelectedItem = ProspectTabBar.Items[3];
-            ProspectTabBar.ItemSelected += (sender, e) =>
-            {
-                if (e.Item.Tag == 0)
-                    ViewModel.ShowDetailTab.Execute(null);
-                else if (e.Item.Tag == 1)
-                    ViewModel.ShowCobuyerTab.Execute(null);
-                else if (e.Item.Tag == 2)
-                    ViewModel.ShowTrafficCardTab.Execute(null);
-                else if (e.Item.Tag == 4)
-                    ViewModel.ShowRankingCommand.Execute(null);
-            };
+            ProspectTabBar.ItemSelected -= TabBar_ItemSelected;
+            ProspectTabBar.ItemSelected += TabBar_ItemSelected;
         }
     }
 }
