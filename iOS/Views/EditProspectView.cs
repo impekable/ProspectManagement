@@ -93,9 +93,9 @@ namespace ProspectManagement.iOS.Views
             set.Bind(WorkPhoneTextField).To(vm => vm.WorkPhoneNumber).WithConversion(new PhoneNumberValueConverter());
             set.Bind(HomePhoneTextField).To(vm => vm.HomePhoneNumber).WithConversion(new PhoneNumberValueConverter());
             set.Bind(WorkExtentionTextField).To(vm => vm.WorkPhone.PhoneExtension);
-            set.Bind(EmailTextField).To(vm => vm.Email.EmailAddress);
+            set.Bind(EmailTextField).To(vm => vm.EmailAddress);
 
-            set.Bind(AddressLine1TextField).To(vm => vm.StreetAddress.AddressLine1);
+            set.Bind(AddressLine1TextField).To(vm => vm.AddressLine1);
             set.Bind(AddressLine2TextField).To(vm => vm.StreetAddress.AddressLine2);
             set.Bind(CityTextField).To(vm => vm.StreetAddress.City);
             set.Bind(StateTextField).To(vm => vm.ActiveState.Description1);

@@ -16,6 +16,10 @@ namespace ProspectManagement.iOS.Views
     {
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UILabel CategoryLabel { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UIBarButtonItem ClearWritingBarButton { get; set; }
 
         [Outlet]
@@ -38,8 +42,17 @@ namespace ProspectManagement.iOS.Views
         [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UITextView NoteTextView { get; set; }
 
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UITextField RankingTextField { get; set; }
+
         void ReleaseDesignerOutlets ()
         {
+            if (CategoryLabel != null) {
+                CategoryLabel.Dispose ();
+                CategoryLabel = null;
+            }
+
             if (ClearWritingBarButton != null) {
                 ClearWritingBarButton.Dispose ();
                 ClearWritingBarButton = null;
@@ -68,6 +81,11 @@ namespace ProspectManagement.iOS.Views
             if (NoteTextView != null) {
                 NoteTextView.Dispose ();
                 NoteTextView = null;
+            }
+
+            if (RankingTextField != null) {
+                RankingTextField.Dispose ();
+                RankingTextField = null;
             }
         }
     }

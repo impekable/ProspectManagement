@@ -472,12 +472,28 @@ namespace ProspectManagement.Core.ViewModels
             }
         }
 
+        public String AddressLine1
+        {
+            get { return _streetAddress.AddressLine1; }
+            set
+            {
+                _streetAddress.AddressLine1 = value;
+                if (_originalProspect != null && String.IsNullOrEmpty(_originalProspect.StreetAddress.AddressLine1) && !String.IsNullOrEmpty(_streetAddress.AddressLine1))
+                {
+                    FollowUpSettings.ConsentToMail = true;
+                    RaisePropertyChanged(() => FollowUpSettings);
+                }
+
+                RaisePropertyChanged(() => MobilePhoneNumber);
+            }
+        }
+
         public StreetAddress StreetAddress
         {
             get { return _streetAddress; }
             set
             {
-                _streetAddress = value;
+                _streetAddress = value;              
                 RaisePropertyChanged(() => StreetAddress);
             }
         }
@@ -532,6 +548,12 @@ namespace ProspectManagement.Core.ViewModels
             set
             {
                 _mobilePhoneNumber.Phone = value;
+                if (_originalProspect != null && String.IsNullOrEmpty(_originalProspect.MobilePhoneNumber.Phone) && !String.IsNullOrEmpty(_mobilePhoneNumber.Phone))
+                {
+                    FollowUpSettings.ConsentToPhone = true;
+                    RaisePropertyChanged(() => FollowUpSettings);
+                }
+                
                 RaisePropertyChanged(() => MobilePhoneNumber);
             }
         }
@@ -552,6 +574,11 @@ namespace ProspectManagement.Core.ViewModels
             set
             {
                 _workPhoneNumber.Phone = value;
+                if (_originalProspect != null && String.IsNullOrEmpty(_originalProspect.WorkPhoneNumber.Phone) && !String.IsNullOrEmpty(_workPhoneNumber.Phone))
+                {
+                    FollowUpSettings.ConsentToPhone = true;
+                    RaisePropertyChanged(() => FollowUpSettings);
+                }
                 RaisePropertyChanged(() => WorkPhoneNumber);
             }
         }
@@ -572,7 +599,28 @@ namespace ProspectManagement.Core.ViewModels
             set
             {
                 _homePhoneNumber.Phone = value;
+                if (_originalProspect != null && String.IsNullOrEmpty(_originalProspect.WorkPhoneNumber.Phone) && !String.IsNullOrEmpty(_homePhoneNumber.Phone))
+                {
+                    FollowUpSettings.ConsentToPhone = true;
+                    RaisePropertyChanged(() => FollowUpSettings);
+                }
                 RaisePropertyChanged(() => HomePhoneNumber);
+            }
+        }
+
+        public String EmailAddress
+        {
+            get { return _email.EmailAddress; }
+            set
+            {
+                _email.EmailAddress = value;
+                if (_originalProspect != null && String.IsNullOrEmpty(_originalProspect.Email.EmailAddress) && !String.IsNullOrEmpty(_email.EmailAddress))
+                {
+                    FollowUpSettings.ConsentToEmail = true;
+                    RaisePropertyChanged(() => FollowUpSettings);
+                }
+
+                RaisePropertyChanged(() => MobilePhoneNumber);
             }
         }
 

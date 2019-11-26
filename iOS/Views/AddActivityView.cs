@@ -10,6 +10,7 @@ using Plugin.Media.Abstractions;
 using Plugin.Media;
 using Microsoft.ProjectOxford.Vision;
 using ProspectManagement.Core.Services;
+using ProspectManagement.Core.Converters;
 
 namespace ProspectManagement.iOS.Views
 {
@@ -18,7 +19,10 @@ namespace ProspectManagement.iOS.Views
 	public partial class AddActivityView : BaseView
 	{
 		AlertOverlay alertOverlay;
-		CognitiveVisionService cognitiveVisionService;
+
+        private TextFieldWithPopup rankingPopup;
+
+        CognitiveVisionService cognitiveVisionService;
 		protected AddActivityViewModel AddActivityViewModel => ViewModel as AddActivityViewModel;
 
 		private IMvxInteraction _hideAlertInteraction;
@@ -53,14 +57,40 @@ namespace ProspectManagement.iOS.Views
 			this.HandwritingContainerView.Add(handwritingView);
 
 			var set = this.CreateBindingSet<AddActivityView, AddActivityViewModel>();
+            CreateAlertViewBindings(set);
 
-			set.Bind(NoteErrorLabel).To(vm => vm.NoteError);
+            set.Bind(CategoryLabel).For(v => v.Hidden).To(vm => vm.NeedCategory).WithConversion(new InverseValueConverter());
+            set.Bind(RankingTextField).For(v => v.Hidden).To(vm => vm.NeedCategory).WithConversion(new InverseValueConverter());
+            set.Bind(RankingTextField).To(vm => vm.ActiveRanking);
+            set.Bind(NoteErrorLabel).To(vm => vm.ValidationErrorsString);
 			set.Bind(NoteTextView).For(v => v.Text).To(vm => vm.Note);
 			set.Bind(this).For(view => view.HideAlertInteraction).To(viewModel => viewModel.HideAlertInteraction).OneWay();
 
 			set.Apply();
 
-			var cancelButton = new UIBarButtonItem("Cancel", UIBarButtonItemStyle.Plain, (sender, e) =>
+            NoteTextView.Started += (sender, e) =>
+            {
+                if (NoteTextView.Text.Equals("Enter Note Here..."))
+                {
+                    AddActivityViewModel.Note = "";
+                    NoteTextView.Text = "";
+                }
+                NoteTextView.TextColor = UIColor.Black; //optional
+                NoteTextView.BecomeFirstResponder();
+            };
+
+            NoteTextView.Ended += (sender, e) =>
+            {
+                if (NoteTextView.Text.Equals(""))
+                {
+                    AddActivityViewModel.Note = @"Enter Note Here...";
+                    NoteTextView.Text = "Enter Note Here...";
+                    NoteTextView.TextColor = UIColor.LightGray; //optional
+                }
+                NoteTextView.ResignFirstResponder();
+            };
+
+            var cancelButton = new UIBarButtonItem("Cancel", UIBarButtonItemStyle.Plain, (sender, e) =>
 			{
 				AddActivityViewModel.CloseCommand.Execute(null);
 			});
@@ -183,5 +213,13 @@ namespace ProspectManagement.iOS.Views
             };
 		}
 
-	}
+        private void CreateAlertViewBindings(MvxFluentBindingDescriptionSet<AddActivityView, AddActivityViewModel> set)
+        {
+            rankingPopup = new TextFieldWithPopup(RankingTextField, this);
+            rankingPopup.CustomAlertController = new CustomAlertController("Category");
+            set.Bind(rankingPopup.CustomAlertController).For(p => p.AlertController).To(vm => vm.Rankings);
+            set.Bind(rankingPopup.CustomAlertController).For(p => p.SelectedCode).To(vm => vm.ActiveRanking);
+            
+        }
+    }
 }

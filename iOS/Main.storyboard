@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="160">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="160">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -2461,19 +2461,38 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="I7K-Un-Gdr">
-                                <rect key="frame" x="36" y="20" width="303" height="583"/>
+                                <rect key="frame" x="36" y="20" width="303" height="603"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mIZ-eV-FnL">
-                                        <rect key="frame" x="0.0" y="0.0" width="303" height="20"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mIZ-eV-FnL">
+                                        <rect key="frame" x="0.0" y="0.0" width="303" height="40"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="20" id="MVn-By-Mvb"/>
+                                            <constraint firstAttribute="height" constant="40" id="MVn-By-Mvb"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="18"/>
+                                        <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="12"/>
                                         <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Mlc-7A-Ief">
+                                        <rect key="frame" x="0.0" y="40" width="303" height="30"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Category" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tmm-46-Ihk">
+                                                <rect key="frame" x="0.0" y="0.0" width="147.5" height="30"/>
+                                                <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="16"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Bt3-hO-Jmw">
+                                                <rect key="frame" x="155.5" y="0.0" width="147.5" height="30"/>
+                                                <fontDescription key="fontDescription" name="Raleway-Bold" family="Raleway" pointSize="16"/>
+                                                <textInputTraits key="textInputTraits"/>
+                                            </textField>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="gJB-Kf-cam"/>
+                                        </constraints>
+                                    </stackView>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="NO9-MD-0nR">
-                                        <rect key="frame" x="0.0" y="20" width="303" height="300"/>
+                                        <rect key="frame" x="0.0" y="70" width="303" height="300"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="300" id="kpQ-wY-Hfu"/>
@@ -2482,13 +2501,13 @@
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="icm-Bz-xo7">
-                                        <rect key="frame" x="0.0" y="320" width="303" height="263"/>
+                                        <rect key="frame" x="0.0" y="370" width="303" height="233"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </view>
                                 </subviews>
                             </stackView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gCl-ME-uMm">
-                                <rect key="frame" x="0.0" y="603" width="375" height="64"/>
+                                <rect key="frame" x="0.0" y="623" width="375" height="44"/>
                                 <items>
                                     <barButtonItem title="Convert" id="XVt-MB-s5m"/>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="Jtu-XJ-D1P"/>
@@ -2508,12 +2527,14 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="CategoryLabel" destination="tmm-46-Ihk" id="name-outlet-tmm-46-Ihk"/>
                         <outlet property="ClearWritingBarButton" destination="imG-Tv-LcK" id="name-outlet-imG-Tv-LcK"/>
                         <outlet property="ConvertWritingBarButton" destination="XVt-MB-s5m" id="name-outlet-XVt-MB-s5m"/>
                         <outlet property="HandwritingContainerView" destination="icm-Bz-xo7" id="name-outlet-icm-Bz-xo7"/>
                         <outlet property="HandwritingToolbar" destination="gCl-ME-uMm" id="name-outlet-gCl-ME-uMm"/>
                         <outlet property="NoteErrorLabel" destination="mIZ-eV-FnL" id="name-outlet-mIZ-eV-FnL"/>
                         <outlet property="NoteTextView" destination="NO9-MD-0nR" id="name-outlet-NO9-MD-0nR"/>
+                        <outlet property="RankingTextField" destination="Bt3-hO-Jmw" id="name-outlet-Bt3-hO-Jmw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1257" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2908,10 +2929,10 @@
         </scene>
     </scenes>
     <resources>
-        <image name="ic-card" width="90" height="90"/>
-        <image name="ic-cobuyers" width="1024" height="1024"/>
+        <image name="ic-card" width="30" height="30"/>
+        <image name="ic-cobuyers" width="30" height="30"/>
         <image name="ic-contacthistory" width="30" height="30"/>
-        <image name="ic-detail" width="60" height="60"/>
+        <image name="ic-detail" width="30" height="30"/>
         <image name="ic-ranking" width="30" height="30"/>
     </resources>
 </document>

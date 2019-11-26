@@ -11,70 +11,121 @@ using ProspectManagement.Core.Interfaces.Services;
 using ProspectManagement.Core.Messages;
 using ProspectManagement.Core.Models;
 using MvvmCross.Commands;
+using System.Collections.ObjectModel;
+using System.Linq;
+using ProspectManagement.Core.Extensions;
 
 namespace ProspectManagement.Core.ViewModels
 {
-	public class AddActivityViewModel : BaseViewModel, IMvxViewModel<Activity>
-	{
-		protected IMvxMessenger Messenger;
-		private readonly IMvxNavigationService _navigationService;
-		private readonly IUserService _userService;
+    public class AddActivityViewModel : BaseViewModel, IMvxViewModel<Activity>
+    {
+        protected IMvxMessenger Messenger;
+        private readonly IMvxNavigationService _navigationService;
+        private readonly IUserService _userService;
+        private readonly IBuyerDecisionsService _buyerDecisionsService;
+        private readonly IUserDefinedCodeService _userDefinedCodeService;
 
-		private MvxInteraction _hideAlertInteraction = new MvxInteraction();
-		public IMvxInteraction HideAlertInteraction => _hideAlertInteraction;
+        private MvxInteraction _hideAlertInteraction = new MvxInteraction();
+        public IMvxInteraction HideAlertInteraction => _hideAlertInteraction;
 
-		private readonly IActivityService _activityService;
-		private Activity _activity;
-		private string _note;
-		private User _user;
+        private readonly IActivityService _activityService;
+        private Activity _activity;
+        private string _note;
+        private User _user;
+        private ObservableCollection<UserDefinedCode> _rankings;
+        private BuyerDecisions _buyerDecisions;
+        private UserDefinedCode _activeRanking;
 
-		private ICommand _saveCommand;
-		private ICommand _closeCommand;
-		private ICommand _addAnalyticsScanPhotoCommand;
-		private ICommand _addAnalyticsHandwritingCommand;
+        private ICommand _saveCommand;
+        private ICommand _closeCommand;
+        private ICommand _addAnalyticsScanPhotoCommand;
+        private ICommand _addAnalyticsHandwritingCommand;
 
-		private string _noteError;
+        private string _noteError;
+        private bool _noteEntered;
+        private bool _needCategory;
 
-		public string NoteError
-		{
-			get { return _noteError; }
-			set
-			{
-				_noteError = value;
-				RaisePropertyChanged(() => NoteError);
-			}
-		}
+        public bool NeedCategory
+        {
+            get { return _needCategory; }
+            set
+            {
+                _needCategory = value;
+                RaisePropertyChanged(() => NeedCategory);
+            }
+        }
 
-		public Activity Activity
-		{
-			get { return _activity; }
-			set
-			{
-				_activity = value;
-				RaisePropertyChanged(() => Activity);
-			}
-		}
+        public string NoteError
+        {
+            get { return _noteError; }
+            set
+            {
+                _noteError = value;
+                RaisePropertyChanged(() => NoteError);
+            }
+        }
 
-		public ICommand AddAnalyticsScanPhotoCommand
-		{
-			get
-			{
-				return _addAnalyticsScanPhotoCommand ?? (_addAnalyticsScanPhotoCommand = new MvxCommand(() =>
-					Analytics.TrackEvent("Converted Photo", new Dictionary<string, string>
-					{
-						{"SalesAssociate", Activity.SalespersonAddressNumber.ToString() + " " + Activity.ProspectCommunity.SalespersonName},
-						{"Community", Activity.ProspectCommunity.CommunityNumber + " " + Activity.ProspectCommunity.Community.Description},
-						{"ActivityType", Activity.ActivityType},
-						{"User", _user.AddressBook.AddressNumber + " " + _user.AddressBook.Name},
-				})));
-			}
-		}
-        
-		public ICommand AddAnalyticsHandwritingCommand
+        public Activity Activity
+        {
+            get { return _activity; }
+            set
+            {
+                _activity = value;
+                RaisePropertyChanged(() => Activity);
+            }
+        }
+
+        public BuyerDecisions BuyerDecisions
+        {
+            get { return _buyerDecisions; }
+            set
+            {
+                _buyerDecisions = value;
+                RaisePropertyChanged(() => BuyerDecisions);
+            }
+        }
+
+        public ObservableCollection<UserDefinedCode> Rankings
+        {
+            get { return _rankings; }
+            set
+            {
+                _rankings = value;
+                RaisePropertyChanged(() => Rankings);
+            }
+        }
+
+        public UserDefinedCode ActiveRanking
+        {
+            get { return _activeRanking; }
+            set
+            {
+                _activeRanking = value;
+                BuyerDecisions.Ranking = _activeRanking.Code;
+                RaisePropertyChanged(() => ActiveRanking);
+            }
+        }
+
+        public ICommand AddAnalyticsScanPhotoCommand
         {
             get
             {
-				return _addAnalyticsHandwritingCommand ?? (_addAnalyticsHandwritingCommand = new MvxCommand(() =>
+                return _addAnalyticsScanPhotoCommand ?? (_addAnalyticsScanPhotoCommand = new MvxCommand(() =>
+                    Analytics.TrackEvent("Converted Photo", new Dictionary<string, string>
+                    {
+                        {"SalesAssociate", Activity.SalespersonAddressNumber.ToString() + " " + Activity.ProspectCommunity.SalespersonName},
+                        {"Community", Activity.ProspectCommunity.CommunityNumber + " " + Activity.ProspectCommunity.Community.Description},
+                        {"ActivityType", Activity.ActivityType},
+                        {"User", _user.AddressBook.AddressNumber + " " + _user.AddressBook.Name},
+                })));
+            }
+        }
+
+        public ICommand AddAnalyticsHandwritingCommand
+        {
+            get
+            {
+                return _addAnalyticsHandwritingCommand ?? (_addAnalyticsHandwritingCommand = new MvxCommand(() =>
                     Analytics.TrackEvent("Converted Writing", new Dictionary<string, string>
                     {
                         {"SalesAssociate", Activity.SalespersonAddressNumber.ToString() + " " + Activity.ProspectCommunity.SalespersonName},
@@ -85,112 +136,141 @@ namespace ProspectManagement.Core.ViewModels
             }
         }
 
-		public ICommand CloseCommand
-		{
-			get
-			{
-				return _closeCommand ?? (_closeCommand = new MvxCommand(async () => await _navigationService.Close(this)));
-			}
-		}
+        public ICommand CloseCommand
+        {
+            get
+            {
+                return _closeCommand ?? (_closeCommand = new MvxCommand(async () => await _navigationService.Close(this)));
+            }
+        }
 
-		public ICommand SaveCommand
-		{
-			get
-			{
-				return _saveCommand ?? (_saveCommand = new MvxCommand(async () =>
-			   {
+        public ICommand SaveCommand
+        {
+            get
+            {
+                return _saveCommand ?? (_saveCommand = new MvxCommand(async () =>
+               {
 
-				   await ValidateAsync();
-				   if (IsValid.GetValueOrDefault())
-				   {
-					   Activity.Notes = Note;
-					   var activityAdded = await _activityService.AddActivityToProspectAsync(Activity.ProspectAddressNumber, Activity);
-					   if (activityAdded != null)
-					   {
-						   Messenger.Publish(new ActivityAddedMessage(this) { AddedActivity = activityAdded });
-					   }
-					   await _navigationService.Close(this);
-				   }
-				   _hideAlertInteraction.Raise();
+                   await ValidateAsync();
+                   if (IsValid.GetValueOrDefault())
+                   {
+                       Activity.Notes = _noteEntered ? Note : "";
+                       var activityAdded = await _activityService.AddActivityToProspectAsync(Activity.ProspectAddressNumber, Activity);
+                       if (activityAdded != null)
+                       {
+                           var decisionsUpdated = await _buyerDecisionsService.UpdateBuyerDecisionsAsync(BuyerDecisions);
+                       }
 
-				   Analytics.TrackEvent("Activity Added", new Dictionary<string, string>
-					{
+                       await _navigationService.Close(this);
+                       if (activityAdded != null)
+                       {
+                           Messenger.Publish(new ActivityAddedMessage(this) { AddedActivity = activityAdded });
+                       }
+                   }
+                   _hideAlertInteraction.Raise();
+
+                   Analytics.TrackEvent("Activity Added", new Dictionary<string, string>
+                    {
                         {"SalesAssociate", Activity.SalespersonAddressNumber.ToString() + " " + Activity.ProspectCommunity.SalespersonName},
                         {"Community", Activity.ProspectCommunity.CommunityNumber + " " + Activity.ProspectCommunity.Community.Description},
                         {"ActivityType", Activity.ActivityType},
-						{"User", _user.AddressBook.AddressNumber + " " + _user.AddressBook.Name},
-					});
+                        {"User", _user.AddressBook.AddressNumber + " " + _user.AddressBook.Name},
+                    });
 
-			   }));
-			}
-		}
+               }));
+            }
+        }
 
-		public string Note
-		{
-			get { return _note; }
-			set
-			{
-				_note = value;
-				RaisePropertyChanged(() => Note);
-				Validator.ValidateAsync(nameof(Note));
-			}
-		}
+        public string Note
+        {
+            get { return _note; }
+            set
+            {
+                _note = value;
+                _noteEntered = !_note.Equals("Enter Note Here...") && !String.IsNullOrEmpty(_note);
+                RaisePropertyChanged(() => Note);
+                Validator.ValidateAsync(nameof(Note));
+            }
+        }
 
-		public AddActivityViewModel(IMvxMessenger messenger, IActivityService activityService, IMvxNavigationService navigationService, IUserService userService)
-		{
-			Messenger = messenger;
-			_activityService = activityService;
-			_navigationService = navigationService;
-			_userService = userService;
+        public AddActivityViewModel(IMvxMessenger messenger, IBuyerDecisionsService buyerDecisionsService, IUserDefinedCodeService userDefinedCodeService, IActivityService activityService, IMvxNavigationService navigationService, IUserService userService)
+        {
+            Messenger = messenger;
+            _activityService = activityService;
+            _navigationService = navigationService;
+            _userService = userService;
+            _buyerDecisionsService = buyerDecisionsService;
+            _userDefinedCodeService = userDefinedCodeService;
 
-			ConfigureValidationRules();
-			Validator.ResultChanged += OnValidationResultChanged;
+            ConfigureValidationRules();
+            Validator.ResultChanged += OnValidationResultChanged;
 
-			Messenger.Subscribe<RefreshMessage>(async message => await _navigationService.Close(this), MvxReference.Strong);
-		}
+            Messenger.Subscribe<RefreshMessage>(async message => await _navigationService.Close(this), MvxReference.Strong);
+        }
 
-		public void Prepare(Activity activity)
-		{
-			Activity = activity;
-		}
+        public void Prepare(Activity activity)
+        {
+            Activity = activity;
+            Note = "Enter Note Here...";
+        }
 
-		public override async Task Initialize()
-		{
-			_user = await _userService.GetLoggedInUser();
-		}
+        public override async Task Initialize()
+        {
+            _user = await _userService.GetLoggedInUser();
 
-		protected async void Validate()
-		{
-			await ValidateAsync();
-		}
+            BuyerDecisions = await _buyerDecisionsService.GetBuyerDecisionsAsync(Activity.ProspectAddressNumber);
 
-		protected async Task ValidateAsync()
-		{
-			var result = await Validator.ValidateAllAsync();
+            Rankings = (await _userDefinedCodeService.GetRankingUserDefinedCodes())
+                            .Where(r => !r.Code.Equals("0") && !r.Code.Equals("D")).ToObservableCollection();
 
-			UpdateValidationSummaryAndDetails(result);
-		}
+            if (BuyerDecisions != null && !String.IsNullOrEmpty(BuyerDecisions.Ranking))
+            {
+                ActiveRanking = Rankings.FirstOrDefault(p => p.Code == BuyerDecisions.Ranking);
+            }
 
-		private void UpdateValidationSummaryAndDetails(ValidationResult validationResult)
-		{
-			UpdateValidationSummary(validationResult);
-			NoteError = Validator.GetResult(nameof(Note)).ToString();
-		}
+            NeedCategory = Activity.ContactMethod == "In-Person" && (ActiveRanking == null || String.IsNullOrEmpty(ActiveRanking.Code));
 
-		private void OnValidationResultChanged(object sender, ValidationResultChangedEventArgs e)
-		{
-			if (!IsValid.GetValueOrDefault(true))
-			{
-				ValidationResult validationResult = Validator.GetResult();
+        }
 
-				UpdateValidationSummaryAndDetails(validationResult);
-			}
-		}
+        protected async void Validate()
+        {
+            await ValidateAsync();
+        }
 
-		private void ConfigureValidationRules()
-		{
-			Validator.AddRule(nameof(Note),
-							  () => RuleResult.Assert(!string.IsNullOrEmpty(Note) && Note.Length <= 1999, "Note is required and cannot be more than 1999 characters"));
-		}
-	}
+        protected async Task ValidateAsync()
+        {
+            var result = await Validator.ValidateAllAsync();
+
+            UpdateValidationSummaryAndDetails(result);
+        }
+
+        private void UpdateValidationSummaryAndDetails(ValidationResult validationResult)
+        {
+            UpdateValidationSummary(validationResult);
+            NoteError = Validator.GetResult(nameof(Note)).ToString();
+        }
+
+        private void OnValidationResultChanged(object sender, ValidationResultChangedEventArgs e)
+        {
+            if (!IsValid.GetValueOrDefault(true))
+            {
+                ValidationResult validationResult = Validator.GetResult();
+
+                UpdateValidationSummaryAndDetails(validationResult);
+            }
+        }
+
+        private void ConfigureValidationRules()
+        {
+            Validator.AddRule(() => ActiveRanking,
+                   () =>
+                   {
+                       var result = !(Activity.ContactMethod == "In-Person" && (ActiveRanking == null || String.IsNullOrEmpty(ActiveRanking.Code)));
+                       return RuleResult.Assert(result, string.Format("Category is required"));
+                   });
+
+            Validator.AddRule(nameof(Note),
+                              () => RuleResult.Assert(_noteEntered && Note.Length <= 1999, "Note is required and cannot be more than 1999 characters"));
+        }
+    }
 }
