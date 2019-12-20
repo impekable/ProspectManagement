@@ -551,6 +551,8 @@ namespace ProspectManagement.Core.ViewModels
                 if (_originalProspect != null && String.IsNullOrEmpty(_originalProspect.MobilePhoneNumber.Phone) && !String.IsNullOrEmpty(_mobilePhoneNumber.Phone))
                 {
                     FollowUpSettings.ConsentToPhone = true;
+                    FollowUpSettings.PreferredContactMethod = "Phone";
+                    ActiveContactPreference = ContactPreferences.FirstOrDefault(p => p.Description1.Equals("Phone"));
                     RaisePropertyChanged(() => FollowUpSettings);
                 }
                 
@@ -577,6 +579,8 @@ namespace ProspectManagement.Core.ViewModels
                 if (_originalProspect != null && String.IsNullOrEmpty(_originalProspect.WorkPhoneNumber.Phone) && !String.IsNullOrEmpty(_workPhoneNumber.Phone))
                 {
                     FollowUpSettings.ConsentToPhone = true;
+                    FollowUpSettings.PreferredContactMethod = "Phone";
+                    ActiveContactPreference = ContactPreferences.FirstOrDefault(p => p.Description1.Equals("Phone"));
                     RaisePropertyChanged(() => FollowUpSettings);
                 }
                 RaisePropertyChanged(() => WorkPhoneNumber);
@@ -599,9 +603,11 @@ namespace ProspectManagement.Core.ViewModels
             set
             {
                 _homePhoneNumber.Phone = value;
-                if (_originalProspect != null && String.IsNullOrEmpty(_originalProspect.WorkPhoneNumber.Phone) && !String.IsNullOrEmpty(_homePhoneNumber.Phone))
+                if (_originalProspect != null && String.IsNullOrEmpty(_originalProspect.HomePhoneNumber.Phone) && !String.IsNullOrEmpty(_homePhoneNumber.Phone))
                 {
                     FollowUpSettings.ConsentToPhone = true;
+                    FollowUpSettings.PreferredContactMethod = "Phone";
+                    ActiveContactPreference = ContactPreferences.FirstOrDefault(p => p.Description1.Equals("Phone"));
                     RaisePropertyChanged(() => FollowUpSettings);
                 }
                 RaisePropertyChanged(() => HomePhoneNumber);
