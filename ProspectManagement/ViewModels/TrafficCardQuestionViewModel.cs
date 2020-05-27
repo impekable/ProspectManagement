@@ -104,8 +104,6 @@ namespace ProspectManagement.Core.ViewModels
             _trafficCardResponseService = trafficCardResponseService;
             _navigationService = navigationService;
             _userService = userService;
-            Messenger.Subscribe<RefreshMessage>(async message => await _navigationService.Close(this), MvxReference.Strong);
-
         }
 
         public void Prepare(KeyValuePair<Prospect, TrafficCardResponse> parameter)

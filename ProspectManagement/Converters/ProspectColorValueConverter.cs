@@ -4,6 +4,7 @@ using System.Globalization;
 using MvvmCross.Plugin.Color;
 using MvvmCross.UI;
 using ProspectManagement.Core.Models;
+using ProspectManagement.Core.Models.App;
 
 namespace ProspectManagement.Core.Converters
 {
@@ -16,8 +17,12 @@ namespace ProspectManagement.Core.Converters
             else if (value.Status.Equals("Inactive"))
                 return Color.Gray;
             else
-            
-                return Color.Black;
+            {
+                if ((Theme)parameter == Theme.Light)
+                    return Color.Black;
+                else
+                    return Color.White;
+            }
         }
     }
 }

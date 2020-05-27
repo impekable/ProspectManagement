@@ -161,9 +161,6 @@ namespace ProspectManagement.Core.ViewModels
 
             ConfigureValidationRules();
             Validator.ResultChanged += OnValidationResultChanged;
-
-            Messenger.Subscribe<RefreshMessage>(async message => await _navigationService.Close(this), MvxReference.Strong);
-
         }
 
         public void Prepare(Prospect prospect)

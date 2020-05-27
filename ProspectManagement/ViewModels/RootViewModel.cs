@@ -49,7 +49,10 @@ namespace ProspectManagement.Core.ViewModels
                     User = await _userService.GetLoggedInUser();
                     if (User != null && User.AddressNumber != 0)
                     {
-                        await _navigationService.Navigate<SplitRootViewModel, User>(User);
+                        if (User.UsingTelephony)
+                            await _navigationService.Navigate<LandingViewModel, User>(User);
+                        else
+                            await _navigationService.Navigate<SplitRootViewModel, User>(User);
                     }
                     AttemptingLogin = false;
                 }));
@@ -88,7 +91,10 @@ namespace ProspectManagement.Core.ViewModels
 
                 if (User != null && User.AddressNumber > 0)
                 {
-                    await _navigationService.Navigate<SplitRootViewModel, User>(User);
+                    if (User.UsingTelephony)
+                        await _navigationService.Navigate<LandingViewModel, User>(User);
+                    else
+                        await _navigationService.Navigate<SplitRootViewModel, User>(User);
                 }
                 else
                 {

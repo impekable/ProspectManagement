@@ -107,6 +107,28 @@ namespace ProspectManagement.Core.Repositories
 			});
 		}
 
+        protected async Task<String> GetFromAPI(string apiUrl)
+        {
+            return await Task.Run(async () =>
+            {
+                try
+                {
+                    using (var stream = await _httpClient.GetStreamAsync(apiUrl).ConfigureAwait(false))
+                    using (var json = new StreamContent(stream))
+                    {
+                        if (json == null)
+                            return null;
+                        return await json.ReadAsStringAsync();
+                    }
+                }
+                catch (Exception e)
+                {
+                    OnRetrievingDataFailed(e.Message);
+                    return null;
+                }
+            });
+        }
+
         protected async Task<T> GetDataObjectFromAPI<T>(string apiUrl, string accessToken)
         {
             return await Task.Run(async () =>

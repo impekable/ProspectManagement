@@ -15,8 +15,10 @@ namespace ProspectManagement.Core.Models
         public string Description { get; set; }
         [JsonProperty("division")]
         public string Division { get; set; }
+        [JsonProperty("salesOffice")]
+        public SalesOffice SalesOffice { get; set; }
 
-		public override string ToString()
+        public override string ToString()
 		{
 			return string.Format("{0}", Description);
 		}

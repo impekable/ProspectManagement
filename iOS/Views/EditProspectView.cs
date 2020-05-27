@@ -7,7 +7,6 @@ using System.Linq;
 using ProspectManagement.Core.Converters;
 using CoreGraphics;
 using ProspectManagement.iOS.Utility;
-//using ProspectManagement.iOS.Extensions;
 using MvvmCross.Platforms.Ios.Views;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
 using MvvmCross.Platforms.Ios.Binding.Views;
@@ -109,6 +108,7 @@ namespace ProspectManagement.iOS.Views
             set.Bind(ConsentEmailSwitch).To(vm => vm.FollowUpSettings.ConsentToEmail);
             set.Bind(ConsentPhoneSwitch).To(vm => vm.FollowUpSettings.ConsentToPhone);
             set.Bind(ConsentMailSwitch).To(vm => vm.FollowUpSettings.ConsentToMail);
+            set.Bind(ConsentTextSwitch).To(vm => vm.FollowUpSettings.ConsentToText);
             set.Bind(ExcludeFollowUpSwitch).To(vm => vm.ExcludeFromFollowup);
             set.Bind(ExcludeReasonTextField).To(vm => vm.ActiveExcludeReason.Description1);
 

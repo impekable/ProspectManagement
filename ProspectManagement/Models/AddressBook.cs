@@ -9,5 +9,7 @@ namespace ProspectManagement.Core.Models
         public int AddressNumber { get; set; }
         [JsonProperty("name")]
         public string Name { get; set; }
+        [JsonProperty("costCenter")]
+        public string Area { get; set; }
     }
 }

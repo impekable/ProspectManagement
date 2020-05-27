@@ -10,13 +10,15 @@ namespace ProspectManagement.Core.Converters
 		{
             var settingsString = ""; //value.ExcludeFromFollowup ? "Excluded From Follow Up" : "Consented To";
 
+			if (value.ConsentToText)
+				settingsString += "Text, ";
+			if (value.ConsentToPhone)
+				settingsString += "Phone, ";
 			if (value.ConsentToEmail)
 				settingsString += "Email, ";
 			if (value.ConsentToMail)
 				settingsString += "Mail, ";
-			if (value.ConsentToPhone)
-				settingsString += "Phone";
-            
+			
 			return settingsString.TrimEnd(',',' ');
 		}
     }

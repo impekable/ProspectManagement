@@ -47,8 +47,10 @@ namespace ProspectManagement.Core.Models
 		public FollowUpSettings FollowUpSettings { get; set; }
         [JsonProperty("status")]
         public string Status { get; set; }
+		[JsonProperty("ranking")]
+		public string Ranking { get; set; }
 
-        public Prospect ShallowCopy()
+		public Prospect ShallowCopy()
 		{
 			return (Prospect)this.MemberwiseClone();
 		}

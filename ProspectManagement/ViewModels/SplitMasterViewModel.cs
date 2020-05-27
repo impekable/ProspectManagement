@@ -23,13 +23,10 @@ namespace ProspectManagement.Core.ViewModels
 	{
 		public event EventHandler LoadingDataFromBackendStarted;
 		public event EventHandler LoadingDataFromBackendCompleted;
-		public event EventHandler LoginCompleted;
-		public event EventHandler LogoutCompleted;
 
 		private readonly IDialogService _dialogService;
 		private readonly IAuthenticator _authService;
 		private readonly ICommunityService _communityService;
-		private readonly IUserService _userService;
 		private readonly IProspectService _prospectService;
 		protected IMvxMessenger Messenger;
 		private readonly IMvxNavigationService _navigationService;
@@ -38,6 +35,7 @@ namespace ProspectManagement.Core.ViewModels
 		private ObservableCollection<Prospect> _prospects;
 
 		private ICommand _selectionChangedCommand;
+		private ICommand _homeCommand;
 		private ICommand _logoutCommand;
 		private ICommand _filterCommand;
 		private ICommand _refreshCommand;
@@ -56,6 +54,17 @@ namespace ProspectManagement.Core.ViewModels
 
 		private MvxInteraction<Filter> _filterInteraction = new MvxInteraction<Filter>();
 		public IMvxInteraction<Filter> FilterInteraction => _filterInteraction;
+
+		public ICommand HomeCommand
+		{
+			get
+			{
+				return _homeCommand ?? (_homeCommand = new MvxCommand(() =>
+				{
+					_navigationService.Navigate<LandingViewModel, User>(User);
+				}));
+			}
+		}
 
 		public ICommand RefreshCommand
 		{
@@ -189,16 +198,16 @@ namespace ProspectManagement.Core.ViewModels
 		{
 			get
 			{
-                return _logoutCommand ?? (_logoutCommand = new MvxCommand(async () =>
-                {
-                    var result = await _dialogService.ShowAlertAsync("Confirm", "Logout?", "Yes", "No");
-                    if (result == 0)
-                    {
-                        _authService.Logout();
-                        _navigationService.Navigate<RootViewModel, bool>(false);
-                    }
-                }));
-            }
+				return _logoutCommand ?? (_logoutCommand = new MvxCommand(async () =>
+				{
+					var result = await _dialogService.ShowAlertAsync("Confirm", "Logout?", "Yes", "No");
+					if (result == 0)
+					{
+						_authService.Logout();
+						await _navigationService.Navigate<RootViewModel, bool>(false);
+					}
+				}));
+			}
 		}
 
 		public ICommand SelectionChangedCommand
@@ -218,11 +227,10 @@ namespace ProspectManagement.Core.ViewModels
 			}
 		}
 
-		public SplitMasterViewModel(IMvxMessenger messenger, IDialogService dialogService, IUserService userService, IAuthenticator authService, ICommunityService communityService, IProspectService prospectService, IIncrementalCollectionFactory collectionFactory, IMvxNavigationService navigationService)
+		public SplitMasterViewModel(IMvxMessenger messenger, IDialogService dialogService, IAuthenticator authService, ICommunityService communityService, IProspectService prospectService, IIncrementalCollectionFactory collectionFactory, IMvxNavigationService navigationService)
 		{
 			Messenger = messenger;
 			_dialogService = dialogService;
-			_userService = userService;
 			_authService = authService;
 			_communityService = communityService;
 			_prospectService = prospectService;
@@ -308,16 +316,6 @@ namespace ProspectManagement.Core.ViewModels
 				{"Sales Associate Filter", SelectedSegment == 0 ? "All" : SelectedSegment == 1 ? "Unassigned" : "Mine"},
 			});
 			LoadingDataFromBackendCompleted?.Invoke(null, EventArgs.Empty);
-		}
-
-		public void OnLogoutCompleted()
-		{
-			LogoutCompleted?.Invoke(null, EventArgs.Empty);
-		}
-
-		public void OnLoginCompleted()
-		{
-			LoginCompleted?.Invoke(null, EventArgs.Empty);
 		}
 	}
 }

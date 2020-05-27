@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Raleway-Bold.ttf">
+            <string>Raleway-Bold</string>
+        </array>
+        <array key="Raleway-Regular.ttf">
+            <string>Raleway-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="152" id="cxk-wN-pdQ" customClass="FollowUpViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="387" height="152"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cxk-wN-pdQ" id="YTl-1W-gDM">
+                <rect key="frame" x="0.0" y="0.0" width="387" height="151"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="5CX-il-wdz">
+                        <rect key="frame" x="0.0" y="5" width="387" height="142"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="KPF-4w-ehY">
+                                <rect key="frame" x="0.0" y="0.0" width="387" height="19"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="ProspectLabel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pcj-85-V98">
+                                        <rect key="frame" x="0.0" y="0.0" width="300.5" height="19"/>
+                                        <fontDescription key="fontDescription" name="Raleway-Bold" family="Raleway" pointSize="16"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="CategoryLabel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qoK-cF-bJH">
+                                        <rect key="frame" x="304.5" y="0.0" width="82.5" height="19"/>
+                                        <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="12"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="Dqv-vW-VGm">
+                                <rect key="frame" x="0.0" y="21" width="387" height="19"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CommunityLabel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lSd-PM-HB3">
+                                        <rect key="frame" x="0.0" y="0.0" width="200.5" height="19"/>
+                                        <fontDescription key="fontDescription" name="Raleway-Bold" family="Raleway" pointSize="16"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="DayCountLabel" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="647">
+                                        <rect key="frame" x="204.5" y="0.0" width="182.5" height="19"/>
+                                        <fontDescription key="fontDescription" name="Raleway-Bold" family="Raleway" pointSize="16"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="lpa-Nq-Prm">
+                                <rect key="frame" x="0.0" y="42" width="387" height="58"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="TaskLabel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kuv-a2-imF">
+                                        <rect key="frame" x="0.0" y="0.0" width="187.5" height="58"/>
+                                        <fontDescription key="fontDescription" name="Raleway-Bold" family="Raleway" pointSize="16"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="TaskDueLabel" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gXw-Fa-vKN">
+                                        <rect key="frame" x="191.5" y="0.0" width="195.5" height="58"/>
+                                        <fontDescription key="fontDescription" name="Raleway-Regular" family="Raleway" pointSize="12"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="qfd-CR-tzC">
+                                <rect key="frame" x="0.0" y="102" width="387" height="40"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QgJ-4E-HeR">
+                                        <rect key="frame" x="0.0" y="0.0" width="127.5" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="UDr-t5-VKe"/>
+                                            <constraint firstAttribute="width" constant="40" id="dLk-ls-K9b"/>
+                                        </constraints>
+                                        <state key="normal" image="ic-phone"/>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EJf-QP-zUg">
+                                        <rect key="frame" x="129.5" y="0.0" width="128" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="40" id="ADz-UX-SVf"/>
+                                            <constraint firstAttribute="height" constant="40" id="PTg-he-u4w"/>
+                                        </constraints>
+                                        <state key="normal" image="ic-message"/>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s2T-YM-7if">
+                                        <rect key="frame" x="259.5" y="0.0" width="127.5" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="aHX-ra-Owi"/>
+                                            <constraint firstAttribute="width" constant="40" id="mDG-A6-z6O"/>
+                                        </constraints>
+                                        <state key="normal" image="ic-email"/>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                    </stackView>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="5CX-il-wdz" secondAttribute="bottom" constant="5" id="LUP-lQ-IxW"/>
+                    <constraint firstAttribute="trailing" secondItem="5CX-il-wdz" secondAttribute="trailing" id="Tag-AO-Ae5"/>
+                    <constraint firstItem="5CX-il-wdz" firstAttribute="top" secondItem="YTl-1W-gDM" secondAttribute="top" constant="5" id="d0i-2p-R5W"/>
+                    <constraint firstItem="5CX-il-wdz" firstAttribute="leading" secondItem="YTl-1W-gDM" secondAttribute="leading" id="onG-Px-c9q"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="CallButton" destination="QgJ-4E-HeR" id="name-outlet-QgJ-4E-HeR"/>
+                <outlet property="CategoryLabel" destination="qoK-cF-bJH" id="name-outlet-qoK-cF-bJH"/>
+                <outlet property="CommunityLabel" destination="lSd-PM-HB3" id="name-outlet-lSd-PM-HB3"/>
+                <outlet property="DayCountLabel" destination="647" id="name-outlet-647"/>
+                <outlet property="EmailButton" destination="s2T-YM-7if" id="name-outlet-s2T-YM-7if"/>
+                <outlet property="ProspectLabel" destination="pcj-85-V98" id="name-outlet-pcj-85-V98"/>
+                <outlet property="SMSButton" destination="EJf-QP-zUg" id="name-outlet-EJf-QP-zUg"/>
+                <outlet property="TaskDueLabel" destination="gXw-Fa-vKN" id="name-outlet-gXw-Fa-vKN"/>
+                <outlet property="TaskLabel" destination="kuv-a2-imF" id="name-outlet-kuv-a2-imF"/>
+            </connections>
+            <point key="canvasLocation" x="144.20289855072465" y="89.732142857142847"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="ic-email" width="30" height="30"/>
+        <image name="ic-message" width="30" height="30"/>
+        <image name="ic-phone" width="30" height="30"/>
+    </resources>
+</document>

@@ -13,7 +13,7 @@ namespace ProspectManagement.Core.Repositories
         const string _baseUri = _e1Uri + "Users/{0}";
         public async Task<User> GetUserByIdAsync(string userId, string accessToken)
         {
-            return await GetDataObjectFromAPI<User>(string.Format(_baseUri, userId), accessToken);
+            return await GetDataObjectFromAPI<User>(string.Format(_baseUri + "?Fields=usingTelephony,phoneNumbers,unreadSMSCount", userId), accessToken);
         }
     }
 }

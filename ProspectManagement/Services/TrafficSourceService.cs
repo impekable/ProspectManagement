@@ -15,13 +15,11 @@ namespace ProspectManagement.Core.Services
         private readonly IAuthenticator _authenticator;
         private IDialogService _dialogService;
         private readonly ITrafficSourceRepository _trafficSourceRepository;
-        private readonly IDefaultCommunityRepository _defaultCommunityRepository;
 
-        public TrafficSourceService(IDefaultCommunityRepository defaultCommunityRepository, ITrafficSourceRepository trafficSourceRepository, IAuthenticator authenticator, IDialogService dialogService)
+        public TrafficSourceService(ITrafficSourceRepository trafficSourceRepository, IAuthenticator authenticator, IDialogService dialogService)
         {
             _dialogService = dialogService;
             _authenticator = authenticator;
-            _defaultCommunityRepository = defaultCommunityRepository;
             _trafficSourceRepository = trafficSourceRepository;
         }
         public async Task<TrafficSource> GetTrafficSourceDetails(int sourceId)
@@ -48,23 +46,6 @@ namespace ProspectManagement.Core.Services
                 var authResult = await _authenticator.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource);
 
                 return await _trafficSourceRepository.GetTrafficSourcesByDivisionAsync(divisionCode, authResult.AccessToken);
-            }
-            catch (Exception ex)
-            {
-				Crashes.TrackError(ex);
-                System.Diagnostics.Debug.WriteLine(ex.ToString());
-                _dialogService.ShowAlertAsync("Seems like there was a problem." + ex.Message, "Oops", "Close");
-                return default(List<TrafficSource>);
-            }
-        }
-
-        public async Task<List<TrafficSource>> GetTrafficSourcesForDefaultCommunity()
-        {
-            try
-            {
-                var authResult = await _authenticator.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource);
-                var community = await _defaultCommunityRepository.GetDefaultCommunity();
-                return await _trafficSourceRepository.GetTrafficSourcesByDivisionAsync(community.Division, authResult.AccessToken);
             }
             catch (Exception ex)
             {

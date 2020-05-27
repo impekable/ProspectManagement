@@ -15,5 +15,6 @@ namespace ProspectManagement.Core.Interfaces.Services
         Task<List<UserDefinedCode>> GetExcludeReasonUserDefinedCodes();
         Task<List<UserDefinedCode>> GetRankingUserDefinedCodes();
         Task<List<UserDefinedCode>> GetDeactiveReasonUserDefinedCodes();
+        Task<List<UserDefinedCode>> GetCallResultUserDefinedCodes();
     }
 }

@@ -88,7 +88,6 @@ namespace ProspectManagement.Core.ViewModels
             _activitiesService = activitiesService;
             _navigationService = navigationService;
             //_userService = userService;
-            Messenger.Subscribe<RefreshMessage>(async message => await _navigationService.Close(this), MvxReference.Strong);
         }
 
         public void Prepare(KeyValuePair<Prospect, Activity> parameter)

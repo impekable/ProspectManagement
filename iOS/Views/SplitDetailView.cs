@@ -8,6 +8,10 @@ using ProspectManagement.iOS.Utility;
 using MvvmCross.Platforms.Ios.Views;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
 using MvvmCross.ViewModels;
+using ProspectManagement.iOS.Services;
+using MvvmCross.Base;
+using ProspectManagement.Core.Models.App;
+using CallKit;
 
 namespace ProspectManagement.iOS.Views
 {
@@ -17,6 +21,7 @@ namespace ProspectManagement.iOS.Views
     {
         protected SplitDetailViewModel SplitDetailViewModel => ViewModel as SplitDetailViewModel;
         private UIBarButtonItem _EditButton;
+        private CustomAlertController _CallAlertController;
 
         private IMvxInteraction _assignedProspectInteraction;
         public IMvxInteraction AssignedProspectInteraction
@@ -32,7 +37,7 @@ namespace ProspectManagement.iOS.Views
             }
         }
 
-        private async void OnAssignedProspectInteractionRequested(object sender, EventArgs eventArgs)
+        private void OnAssignedProspectInteractionRequested(object sender, EventArgs eventArgs)
         {
             setNavigation();
         }
@@ -51,7 +56,7 @@ namespace ProspectManagement.iOS.Views
             }
         }
 
-        private async void OnShowAlertInteractionRequested(object sender, EventArgs eventArgs)
+        private void OnShowAlertInteractionRequested(object sender, EventArgs eventArgs)
         {
             UIAlertController myAlert = UIAlertController.Create("", "", UIAlertControllerStyle.Alert);
             var activity = new UIActivityIndicatorView() { ActivityIndicatorViewStyle = UIActivityIndicatorViewStyle.WhiteLarge };
@@ -79,7 +84,7 @@ namespace ProspectManagement.iOS.Views
         }
 
 
-        private async void OnHideAlertInteractionRequested(object sender, EventArgs eventArgs)
+        private void OnHideAlertInteractionRequested(object sender, EventArgs eventArgs)
         {
             DismissViewController(true, null);
         }
@@ -99,7 +104,7 @@ namespace ProspectManagement.iOS.Views
         }
 
 
-        private async void OnClearDetailsInteractionRequested(object sender, EventArgs eventArgs)
+        private void OnClearDetailsInteractionRequested(object sender, EventArgs eventArgs)
         {
             DetailStackView.Hidden = true;
             ProspectTabBar.Hidden = true;
@@ -111,6 +116,48 @@ namespace ProspectManagement.iOS.Views
             this.NavigationItem.Title = "";
         }
 
+        //private IMvxInteraction<TwilioCallParameters> _makeCallInteraction;
+        //public IMvxInteraction<TwilioCallParameters> MakeCallInteraction
+        //{
+        //    get => _makeCallInteraction;
+        //    set
+        //    {
+        //        if (_makeCallInteraction != null)
+        //            _makeCallInteraction.Requested -= OnMakeCallInteractionRequested;
+
+        //        _makeCallInteraction = value;
+        //        _makeCallInteraction.Requested += OnMakeCallInteractionRequested;
+        //    }
+        //}
+
+
+        //private void OnMakeCallInteractionRequested(object sender, MvxValueEventArgs<TwilioCallParameters> eventArgs)
+        //{
+        //    var config = new CXProviderConfiguration("Call Prospect");
+        //    config.MaximumCallGroups = 1;
+        //    config.MaximumCallsPerCallGroup = 1;
+            
+        //    var callKitProvider = new CXProvider(config);
+        //    var callKitController = new CXCallController();
+
+        //    callKitProvider.SetDelegate(null, null);
+
+        //    var twilioVoice = new TwilioVoiceHelperService();
+        //    var keys = new[]
+        //    {
+        //        new NSString("To"),
+        //        new NSString("From")
+        //    };
+        //    var objects = new NSString[]
+        //    {
+        //        new NSString(eventArgs.Value.ToPhoneNumber),
+        //        new NSString(eventArgs.Value.FromPhoneNumber)
+        //    };
+
+        //    var parameters = new NSDictionary<NSString, NSString>(keys, objects);
+        //    twilioVoice.MakeCall(eventArgs.Value.AccessToken, parameters);
+        //}
+
         public SplitDetailView(IntPtr handle) : base(handle)
         {
         }
@@ -118,6 +165,8 @@ namespace ProspectManagement.iOS.Views
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
+
+            _CallAlertController = new CustomAlertController("Call");
 
             var set = this.CreateBindingSet<SplitDetailView, SplitDetailViewModel>();
             set.Bind(NameLabel).To(vm => vm.Prospect).WithConversion(new NameConverter());
@@ -151,6 +200,14 @@ namespace ProspectManagement.iOS.Views
             set.Bind(AssignButton).To(vm => vm.AssignCommand);
             set.Bind(AssignButton).For("Title").To(vm => vm.AssignText);
 
+            set.Bind(MessageButton).To(vm => vm.SMSCommand);
+            set.Bind(MessageButton).For(v => v.Enabled).To(vm => vm.AllowTexting);
+            set.Bind(MessageButton).For(v => v.Hidden).To(vm => vm.User.UsingTelephony).WithConversion(new InverseValueConverter());
+            set.Bind(MessageLabel).For(v => v.Hidden).To(vm => vm.User.UsingTelephony).WithConversion(new InverseValueConverter());
+            set.Bind(PhoneButton).For(v => v.Enabled).To(vm => vm.AllowCalling);
+            //set.Bind(PhoneButton).To(vm => vm.MobilePhoneCallCommand);
+            set.Bind(EmailButton).For(v => v.Enabled).To(vm => vm.AllowEmailing);
+            set.Bind(EmailButton).To(vm => vm.ComposeEmailCommand);
             //set.Bind(RankingButton).To(vm => vm.ShowRankingCommand);
 
             set.Bind(StreetAddressStackView).For(v => v.Hidden).To(vm => vm.StreetAddressEntered).WithConversion(new InverseValueConverter());
@@ -167,6 +224,10 @@ namespace ProspectManagement.iOS.Views
             set.Bind(this).For(view => view.ShowAlertInteraction).To(viewModel => viewModel.ShowAlertInteraction).OneWay();
             set.Bind(this).For(view => view.ClearDetailsInteraction).To(viewModel => viewModel.ClearDetailsInteraction).OneWay();
             set.Bind(this).For(view => view.AssignedProspectInteraction).To(viewModel => viewModel.AssignedProspectInteraction).OneWay();
+            //set.Bind(this).For(view => view.MakeCallInteraction).To(viewModel => viewModel.MakeCallInteraction).OneWay();
+            set.Bind(_CallAlertController).For(p => p.AlertController).To(vm => vm.Phones);
+            set.Bind(_CallAlertController).For(p => p.SelectedCode).To(vm => vm.SelectedCall);
+
             set.Apply();
 
             ProspectTabBar.SelectedItem = ProspectTabBar.Items[0];
@@ -183,6 +244,17 @@ namespace ProspectManagement.iOS.Views
             };
 
             setNavigation();
+
+            PhoneButton.TouchUpInside += (sender, e) =>
+            {
+                var popPresenter = _CallAlertController.AlertController.PopoverPresentationController;
+                if (popPresenter != null)
+                {
+                    popPresenter.SourceView = PhoneButton;
+                    popPresenter.SourceRect = PhoneButton.Bounds;
+                }
+                PresentViewController(_CallAlertController.AlertController, true, null);
+            };
         }
 
         private void setNavigation()
@@ -196,7 +268,7 @@ namespace ProspectManagement.iOS.Views
                     item.SetTitleTextAttributes(new UITextAttributes()
                     {
                         Font = UIFont.FromName("Raleway-Bold", 10),
-                        TextColor = UIColor.Black
+                        TextColor = ProspectManagementColors.LabelColor
                     }, UIControlState.Normal);
 
                 }
@@ -205,7 +277,7 @@ namespace ProspectManagement.iOS.Views
                     item.SetTitleTextAttributes(new UITextAttributes()
                     {
                         Font = UIFont.FromName("Raleway-Regular", 10),
-                        TextColor = UIColor.Black
+                        TextColor = ProspectManagementColors.LabelColor
                     }, UIControlState.Normal);
                 }
 

@@ -12,7 +12,5 @@ namespace ProspectManagement.Core.Interfaces.Services
         Task<List<TrafficSource>> GetTrafficSourcesByDivision(string divisionCode);
 
         Task<TrafficSource> GetTrafficSourceDetails(int sourceId);
-
-        Task<List<TrafficSource>> GetTrafficSourcesForDefaultCommunity();
     }
 }

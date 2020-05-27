@@ -21,8 +21,6 @@ namespace ProspectManagement.iOS.Views
     public partial class SplitMasterView : MvxViewController<SplitMasterViewModel>
     {
         private IncrementalTableViewSource source;
-        private NSObject _notificationHandle;
-        private DateTime loadTime;
 
         private IMvxInteraction<Filter> _filterInteraction;
         public IMvxInteraction<Filter> FilterInteraction
@@ -93,28 +91,6 @@ namespace ProspectManagement.iOS.Views
             set.Bind(source).For(s => s.ItemsSource).To(vm => vm.Prospects);
             set.Bind(source).For(s => s.SelectionChangedCommand).To(vm => vm.SelectionChangedCommand);
             set.Apply();
-            loadTime = DateTime.Now;
-        }
-
-        public override void ViewWillAppear(bool animated)
-        {
-            if (_notificationHandle == null)
-            {
-                _notificationHandle = NSNotificationCenter.DefaultCenter.AddObserver(UIApplication.WillEnterForegroundNotification, HandleAppWillEnterForeground);
-            }
-        }
-
-        private void HandleAppWillEnterForeground(NSNotification notification)
-        {
-            System.Diagnostics.Debug.WriteLine("Being notified of ViewWillAppear " + this.Handle);
-            var timeSinceLoad = DateTime.Now - loadTime;
-            if (timeSinceLoad.TotalMinutes > 5)
-            {
-                var set = this.CreateBindingSet<SplitMasterView, SplitMasterViewModel>();
-                setTableViewSource(set);
-                ViewModel.RefreshCommand.Execute(null);
-                this.NavigationController.PopToRootViewController(true);
-            }
         }
 
         public override void ViewDidLoad()
@@ -138,7 +114,8 @@ namespace ProspectManagement.iOS.Views
             setTableViewSource(set);
 
             FilterSearchBar.ScopeButtonTitles = new string[] { "All", "Name", "Notes", "Phone", "Email", "Address" };
-            FilterSearchBar.SelectedScopeButtonIndexChanged += (sender, e) => {
+            FilterSearchBar.SelectedScopeButtonIndexChanged += (sender, e) =>
+            {
                 ViewModel.ScopeFilter = FilterSearchBar.ScopeButtonTitles[(int)e.SelectedScope];
             };
 
@@ -158,28 +135,6 @@ namespace ProspectManagement.iOS.Views
             ViewModel.LoadingDataFromBackendCompleted += (sender, e) =>
             {
                 InvokeOnMainThread(() => refreshControl.EndRefreshing());
-            };
-
-            ViewModel.LogoutCompleted += (sender, e) =>
-            {
-                FilterSearchBar.Hidden = true;
-                FilterSegmentControl.Hidden = true;
-                MasterTableView.Hidden = true;
-                FilterStackView.Hidden = true;
-                setTableViewSource(set);
-                this.NavigationItem.RightBarButtonItem.Title = "Login";
-                setNavigationTitle();
-            };
-
-            ViewModel.LoginCompleted += (sender, e) =>
-            {
-                FilterSearchBar.Hidden = false;
-                FilterSegmentControl.Hidden = false;
-                MasterTableView.Hidden = false;
-                FilterStackView.Hidden = false;
-                setTableViewSource(set);
-                this.NavigationItem.RightBarButtonItem.Title = "Logout";
-                setNavigationTitle();
             };
 
             FilterSearchBar.CancelButtonClicked += (sender, e) =>
@@ -214,39 +169,42 @@ namespace ProspectManagement.iOS.Views
                 setTableViewSource(set);
             };
 
-            var b = new UIBarButtonItem("Logout", UIBarButtonItemStyle.Plain, (sender, e) =>
+            if (ViewModel.User.UsingTelephony)
             {
-                ViewModel.LogoutCommand.Execute(null);
-            });
+                //Only allow them to go to home screen if using telophony,
+                //since home screen has sms inbox link + my follow up
+                var h = new UIBarButtonItem("Home", UIBarButtonItemStyle.Plain, (sender, e) =>
+                {
+                    ViewModel.HomeCommand.Execute(null);
+                });
 
-            b.SetTitleTextAttributes(new UITextAttributes()
-            {
-                Font = UIFont.FromName("Raleway-Bold", 18),
-                TextColor = ProspectManagementColors.DarkColor
-            }, UIControlState.Normal);
+                h.SetTitleTextAttributes(new UITextAttributes()
+                {
+                    Font = UIFont.FromName("Raleway-Bold", 18),
+                    TextColor = ProspectManagementColors.DarkColor
+                }, UIControlState.Normal);
 
-            this.NavigationItem.SetRightBarButtonItem(b, true);
-
-            var stringAttributes = new UIStringAttributes();
-            stringAttributes.Font = UIFont.FromName("Raleway-Bold", 20);
-            stringAttributes.ForegroundColor = UIColor.Black;
-            //NavigationController.NavigationBar.BarTintColor = ProspectManagementColors.DarkColor;
-            NavigationController.NavigationBar.TintColor = ProspectManagementColors.DarkColor;
-            NavigationController.NavigationBar.TitleTextAttributes = stringAttributes;
-
-            if (ViewModel.User != null && ViewModel.User.AddressNumber != 0)
-            {
-                setNavigationTitle();
-                InvokeOnMainThread(() => refreshControl.BeginRefreshing());
+                NavigationItem.SetLeftBarButtonItem(h, true);
             }
             else
             {
-                b.Title = "Login";
-                FilterSearchBar.Hidden = true;
-                FilterSegmentControl.Hidden = true;
-                MasterTableView.Hidden = true;
-                FilterStackView.Hidden = true;
+                var b = new UIBarButtonItem("Logout", UIBarButtonItemStyle.Plain, (sender, e) =>
+                {
+                    ViewModel.LogoutCommand.Execute(null);
+                });
+
+                b.SetTitleTextAttributes(new UITextAttributes()
+                {
+                    Font = UIFont.FromName("Raleway-Bold", 18),
+                    TextColor = ProspectManagementColors.DarkColor
+                }, UIControlState.Normal);
+
+                NavigationItem.SetRightBarButtonItem(b, true);
+
             }
+            setNavigationTitle();
+            InvokeOnMainThread(() => refreshControl.BeginRefreshing());
+
         }
 
         private void setNavigationTitle(string title = "My Prospects")
@@ -256,7 +214,7 @@ namespace ProspectManagement.iOS.Views
             var titleLabel = new UILabel(new CGRect(0, 0, 150, 24));
             titleLabel.Font = UIFont.FromName("Raleway-Bold", 18);
             titleLabel.Text = title;
-            titleLabel.TextColor = UIColor.Black;
+            titleLabel.TextColor = ProspectManagementColors.LabelColor;
             titleLabel.TextAlignment = UITextAlignment.Center;
             view.AddSubview(titleLabel);
 

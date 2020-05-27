@@ -11,6 +11,8 @@ namespace ProspectManagement.Core.Interfaces.Services
 
 		Task<Prospect> GetProspectAsync(int prospectId);
 
+		Task<List<SmsActivity>> GetProspectSMSActivityAsync(int prospectId);
+
 		Task<bool> UpdateProspectAsync(Prospect prospect);
 
 		Task<AddressBook> AssignProspectToLoggedInUserAsync(string communityNumber, int prospectId);

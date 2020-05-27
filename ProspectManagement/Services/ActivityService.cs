@@ -6,6 +6,8 @@ using Microsoft.AppCenter.Crashes;
 using ProspectManagement.Core.Interfaces.Repositories;
 using ProspectManagement.Core.Interfaces.Services;
 using ProspectManagement.Core.Models;
+using Twilio;
+using Twilio.Rest.Api.V2010.Account;
 
 namespace ProspectManagement.Core.Services
 {
@@ -37,7 +39,25 @@ namespace ProspectManagement.Core.Services
             {
 				Crashes.TrackError(ex);
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
-                _dialogService.ShowAlertAsync("Seems like there was a problem.", "Oops", "Close");
+                await _dialogService.ShowAlertAsync("Seems like there was a problem.", "Oops", "Close");
+                return null;
+            }
+        }
+
+        public async Task<Activity> LogCallAsync(int prospectId, Activity activity)
+        {
+            try
+            {
+                var authResult = await _authenticator.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource);
+                activity.ActivityID = "a";
+                activity.InstanceID = "i";
+                return activity;//await _activityRepository.LogCallAsync(prospectId, activity, authResult.AccessToken);
+            }
+            catch (Exception ex)
+            {
+                Crashes.TrackError(ex);
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                await _dialogService.ShowAlertAsync("Seems like there was a problem.", "Oops", "Close");
                 return null;
             }
         }
@@ -84,7 +104,7 @@ namespace ProspectManagement.Core.Services
             {
 				Crashes.TrackError(ex);
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
-                _dialogService.ShowAlertAsync("Seems like there was a problem.", "Oops", "Close");
+                await _dialogService.ShowAlertAsync("Seems like there was a problem.", "Oops", "Close");
                 return null;
             }
         }
@@ -101,8 +121,174 @@ namespace ProspectManagement.Core.Services
             {
 				Crashes.TrackError(ex);
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
-                _dialogService.ShowAlertAsync("Seems like there was a problem.", "Oops", "Close");
+                await _dialogService.ShowAlertAsync("Seems like there was a problem.", "Oops", "Close");
                 return null;
+            }
+        }
+
+        public async Task<List<Activity>> GetDailyToDoActivitiesAsync(string accessToken, List<UserDefinedCode> categories, int salespersonId, string category, DateTime dueAsOfDate, int page, int pageSize)
+        {
+            try
+            {
+                var activities = await _activityRepository.GetDailyToDoActivitiesAsync(accessToken, salespersonId, category, dueAsOfDate, page, pageSize);
+                var a = activities?.Join(categories, a2 => a2.Prospect.Ranking, c => c.Code, (a2, c) =>
+                {
+                    a2.Prospect.Ranking = c.Description1;
+                    return a2;
+
+                }).ToList();
+                return a;
+            }
+            catch (Exception ex)
+            {
+                Crashes.TrackError(ex);
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                await _dialogService.ShowAlertAsync("Seems like there was a problem." + ex.Message, "Oops", "Close");
+                return default(List<Activity>);
+            }
+        }
+
+        public async Task<bool> UpdateActivityForProspectAsync(Activity activity)
+        {
+            try
+            {
+                var authResult = await _authenticator.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource);
+                return await _activityRepository.UpdateActivityForProspectAsync(activity, authResult.AccessToken);
+            }
+
+            catch (Exception ex)
+            {
+                Crashes.TrackError(ex);
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                await _dialogService.ShowAlertAsync("Seems like there was a problem.", "Oops", "Close");
+                return false;
+            }
+        }
+
+        public async Task<Activity> GetActivityWithTemplateDataAsync(int prospectId, string instanceId, string templateType)
+        {
+            try
+            {
+                var authResult = await _authenticator.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource);
+                return await _activityRepository.GetActivityWithTemplateDataAsync(prospectId, instanceId, templateType, authResult.AccessToken);
+            }
+
+            catch (Exception ex)
+            {
+                Crashes.TrackError(ex);
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                await _dialogService.ShowAlertAsync("Seems like there was a problem.", "Oops", "Close");
+                return null;
+            }
+        }
+
+        public async Task<Activity> SendAdHocSMSAsync(int prospectId, Activity activity)
+        {
+            try
+            {
+                TwilioClient.Init(Constants.PrivateKeys.TwilioAccountSid, Constants.PrivateKeys.TwilioAuthToken);
+
+                var message = MessageResource.Create(
+                            body: activity.Notes,
+                            from: new Twilio.Types.PhoneNumber(activity.Prospect.ProspectCommunity.Community.SalesOffice.TwilioPhoneNumber),
+                            to: new Twilio.Types.PhoneNumber(activity.Prospect.MobilePhoneNumber.Phone)
+                        );
+                if (message.ErrorCode == null)
+                {
+                    return await AddActivityToProspectAsync(prospectId, activity);
+                }
+                else
+                {
+                    await _dialogService.ShowAlertAsync(message.ErrorMessage, "Oops", "Close");
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Crashes.TrackError(ex);
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                await _dialogService.ShowAlertAsync("Seems like there was a problem.", "Oops", "Close");
+                return null;
+            }
+        }
+
+        public async Task<bool> SendSMSAsync(Activity activity)
+        {
+            try
+            {
+                TwilioClient.Init(Constants.PrivateKeys.TwilioAccountSid, Constants.PrivateKeys.TwilioAuthToken);
+
+                var message = MessageResource.Create(
+                            body: activity.Notes,
+                            from: new Twilio.Types.PhoneNumber(activity.Prospect.ProspectCommunity.Community.SalesOffice.TwilioPhoneNumber),
+                            to: new Twilio.Types.PhoneNumber(activity.Prospect.MobilePhoneNumber.Phone)
+                        );
+                if (message.ErrorCode == null)
+                {
+                    return await UpdateActivityForProspectAsync(activity);
+                }
+                else
+                {
+                    await _dialogService.ShowAlertAsync(message.ErrorMessage, "Oops", "Close");
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Crashes.TrackError(ex);
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                await _dialogService.ShowAlertAsync("Seems like there was a problem.", "Oops", "Close");
+                return false;
+            }
+        }
+
+        public async Task<List<SmsActivity>> GetSmsActivitiesAsync(string accessToken, int salespersonId, bool newOnly, int page, int pageSize)
+        {
+            try
+            {
+                var activities = await _activityRepository.GetSmsActivitiesAsync(accessToken, salespersonId, newOnly, page, pageSize);
+                return activities;
+
+                
+            }
+            catch (Exception ex)
+            {
+                Crashes.TrackError(ex);
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                await _dialogService.ShowAlertAsync("Seems like there was a problem." + ex.Message, "Oops", "Close");
+                return default(List<SmsActivity>);
+            }
+        }
+
+        public async Task<PhoneCallActivity> AddAdHocPhoneCallActivityAsync(int prospectId, PhoneCallActivity activity)
+        {
+            try
+            {
+                var authResult = await _authenticator.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource);
+                return await _activityRepository.AddAdHocPhoneCallActivityAsync(prospectId, activity, authResult.AccessToken);
+            }
+            catch (Exception ex)
+            {
+                Crashes.TrackError(ex);
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                await _dialogService.ShowAlertAsync("Seems like there was a problem.", "Oops", "Close");
+                return null;
+            }
+        }
+
+        public async Task<bool> UpdatePhoneCallActivityForProspectAsync(PhoneCallActivity activity)
+        {
+            try
+            {
+                var authResult = await _authenticator.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource);
+                return await _activityRepository.UpdatePhoneCallActivityForProspectAsync(activity, authResult.AccessToken);
+            }
+            catch (Exception ex)
+            {
+                Crashes.TrackError(ex);
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                await _dialogService.ShowAlertAsync("Seems like there was a problem.", "Oops", "Close");
+                return false;
             }
         }
     }

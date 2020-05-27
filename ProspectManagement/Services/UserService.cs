@@ -42,6 +42,7 @@ namespace ProspectManagement.Core.Services
             {
                 var authResult = await _authenticator.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource);
                 var user = await _userRepository.GetUserByIdAsync(authResult.UserInfo.DisplayableId, authResult.AccessToken);
+                //user.UsingTelephony = false;
                 return user;
             }
             catch (Exception e)

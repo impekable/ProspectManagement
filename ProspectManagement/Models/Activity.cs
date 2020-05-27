@@ -54,8 +54,16 @@ namespace ProspectManagement.Core.Models
         public EmailActivityDetail EmailActivity { get; set; }
 		[JsonProperty("additionalNotesExist")]
         public bool AdditionalNotesExist { get; set; }
+        [JsonProperty("templateData")]
+        public string TemplateData { get; set; }
+        [JsonProperty("emailSubject")]
+        public string EmailSubject { get; set; }
+        [JsonProperty("callSid")]
+        public string CallSid { get; set; }
+        [JsonProperty("callPlanId")]
+        public int CallPlanId { get; set; }
 
-        public ProspectCommunity ProspectCommunity { get; set; }
+        public Prospect Prospect { get; set; }
 
         public class EmailActivityDetail 
         {

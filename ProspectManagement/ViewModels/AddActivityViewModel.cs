@@ -113,8 +113,8 @@ namespace ProspectManagement.Core.ViewModels
                 return _addAnalyticsScanPhotoCommand ?? (_addAnalyticsScanPhotoCommand = new MvxCommand(() =>
                     Analytics.TrackEvent("Converted Photo", new Dictionary<string, string>
                     {
-                        {"SalesAssociate", Activity.SalespersonAddressNumber.ToString() + " " + Activity.ProspectCommunity.SalespersonName},
-                        {"Community", Activity.ProspectCommunity.CommunityNumber + " " + Activity.ProspectCommunity.Community.Description},
+                        {"SalesAssociate", Activity.SalespersonAddressNumber.ToString() + " " + Activity.Prospect.ProspectCommunity.SalespersonName},
+                        {"Community", Activity.Prospect.ProspectCommunity.CommunityNumber + " " + Activity.Prospect.ProspectCommunity.Community.Description},
                         {"ActivityType", Activity.ActivityType},
                         {"User", _user.AddressBook.AddressNumber + " " + _user.AddressBook.Name},
                 })));
@@ -128,8 +128,8 @@ namespace ProspectManagement.Core.ViewModels
                 return _addAnalyticsHandwritingCommand ?? (_addAnalyticsHandwritingCommand = new MvxCommand(() =>
                     Analytics.TrackEvent("Converted Writing", new Dictionary<string, string>
                     {
-                        {"SalesAssociate", Activity.SalespersonAddressNumber.ToString() + " " + Activity.ProspectCommunity.SalespersonName},
-                        {"Community", Activity.ProspectCommunity.CommunityNumber + " " + Activity.ProspectCommunity.Community.Description},
+                        {"SalesAssociate", Activity.SalespersonAddressNumber.ToString() + " " + Activity.Prospect.ProspectCommunity.SalespersonName},
+                        {"Community", Activity.Prospect.ProspectCommunity.CommunityNumber + " " + Activity.Prospect.ProspectCommunity.Community.Description},
                         {"ActivityType", Activity.ActivityType},
                         {"User", _user.AddressBook.AddressNumber + " " + _user.AddressBook.Name},
                 })));
@@ -171,8 +171,8 @@ namespace ProspectManagement.Core.ViewModels
 
                    Analytics.TrackEvent("Activity Added", new Dictionary<string, string>
                     {
-                        {"SalesAssociate", Activity.SalespersonAddressNumber.ToString() + " " + Activity.ProspectCommunity.SalespersonName},
-                        {"Community", Activity.ProspectCommunity.CommunityNumber + " " + Activity.ProspectCommunity.Community.Description},
+                        {"SalesAssociate", Activity.SalespersonAddressNumber.ToString() + " " + Activity.Prospect.ProspectCommunity.SalespersonName},
+                        {"Community", Activity.Prospect.ProspectCommunity.CommunityNumber + " " + Activity.Prospect.ProspectCommunity.Community.Description},
                         {"ActivityType", Activity.ActivityType},
                         {"User", _user.AddressBook.AddressNumber + " " + _user.AddressBook.Name},
                     });
@@ -204,8 +204,6 @@ namespace ProspectManagement.Core.ViewModels
 
             ConfigureValidationRules();
             Validator.ResultChanged += OnValidationResultChanged;
-
-            Messenger.Subscribe<RefreshMessage>(async message => await _navigationService.Close(this), MvxReference.Strong);
         }
 
         public void Prepare(Activity activity)

@@ -78,6 +78,19 @@ namespace ProspectManagement.iOS.CustomBindings
                             view.AlertController.AddAction(action);
                         }
                     }
+                    else
+                    {
+                        var pairs = value as ObservableCollection<KeyValuePair<string, string>>;
+                        if (pairs != null)
+                        {
+                            foreach (var pair in pairs)
+                            {
+                                var action = UIAlertAction.Create(pair.Key + "  " + pair.Value, UIAlertActionStyle.Default, a => { view.SelectedCode = pair; });
+                                action.SetValueForKey(ProspectManagementColors.DarkColor, new NSString("titleTextColor"));
+                                view.AlertController.AddAction(action);
+                            }
+                        }
+                    }
                 }
             }
         }

@@ -17,6 +17,21 @@ namespace ProspectManagement.Core.Repositories
             return await PostDataObjectToAPI(string.Format(_baseUri + "Activity", prospectId), activity, accessToken);
         }
 
+        public async Task<Activity> LogCallAsync(int prospectId, Activity activity, string accessToken)
+        {
+            return await PostDataObjectToAPI(string.Format(_baseUri + "LogCall", prospectId), activity, accessToken);
+        }
+
+        public async Task<Activity> GetActivityWithTemplateDataAsync(int prospectId, string instanceId, string templateType, string accessToken)
+        {
+            return await GetDataObjectFromAPI<Activity>(string.Format(_baseUri + "Activity/{1}/Template?TemplateType={2}", prospectId, instanceId, templateType), accessToken);
+        }
+
+        public async Task<List<Activity>> GetDailyToDoActivitiesAsync(string accessToken, int salespersonId, string category, DateTime dueAsOfDate, int page = 1, int pageSize = 20)
+        {
+            return await GetDataObjectFromAPI<List<Activity>>(_e1Uri + $"Salesperson/{salespersonId}/FollowUp?Statuses=Pending,Executed&Fields=prospectCommunity,emailSubject,ranking&DueDate={dueAsOfDate.ToShortDateString()}& CommunityList=&Page={page}&PageSize={pageSize}&Category={category}", accessToken);
+        }
+
         public async Task<List<Activity>> GetProspectActivitiesAsync(int prospectId, EmailFormat emailFormat, string accessToken)
         {
             string _Uri = _baseUri + "Activities";
@@ -47,6 +62,26 @@ namespace ProspectManagement.Core.Repositories
             }
 
             return await GetDataObjectFromAPI<Activity>(string.Format(_Uri, prospectId, instanceId), accessToken);
+        }
+
+        public async Task<List<SmsActivity>> GetSmsActivitiesAsync(string accessToken, int salespersonId, bool newOnly, int page, int pageSize)
+        {
+            return await GetDataObjectFromAPI<List<SmsActivity>>(_e1Uri + $"Salesperson/{salespersonId}/SMSActivity?Fields=prospectCommunity&NewOnly={newOnly}&Page={page}&PageSize={pageSize}", accessToken);
+        }
+
+        public async Task<bool> UpdateActivityForProspectAsync(Activity activity, string accessToken)
+        {
+            return await PutDataObjectToAPI(string.Format(_baseUri + "Activity/{1}", activity.ProspectAddressNumber, activity.InstanceID), activity, accessToken);
+        }
+
+        public async Task<PhoneCallActivity> AddAdHocPhoneCallActivityAsync(int prospectId, PhoneCallActivity activity, string accessToken)
+        {
+            return await PostDataObjectToAPI(string.Format(_baseUri + "PhoneCallActivity", prospectId), activity, accessToken);
+        }
+
+        public async Task<bool> UpdatePhoneCallActivityForProspectAsync(PhoneCallActivity activity, string accessToken)
+        {
+            return await PutDataObjectToAPI(string.Format(_baseUri + "PhoneCallActivity/{1}", activity.ProspectAddressBook, activity.InstanceId), activity, accessToken);
         }
     }
 }

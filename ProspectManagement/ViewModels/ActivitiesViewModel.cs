@@ -146,7 +146,7 @@ namespace ProspectManagement.Core.ViewModels
                         ProspectAddressNumber = Prospect.ProspectAddressNumber,
                         SalespersonAddressNumber = Prospect.ProspectCommunity.SalespersonAddressNumber,
                         ProspectCommunityId = Prospect.ProspectCommunity.ProspectCommunityId,
-                        ProspectCommunity = Prospect.ProspectCommunity
+                        Prospect = Prospect
                     };
                     _navigationService.Navigate<AddActivityViewModel, Activity>(activity);
                 }));
@@ -166,7 +166,7 @@ namespace ProspectManagement.Core.ViewModels
                         ProspectAddressNumber = Prospect.ProspectAddressNumber,
                         SalespersonAddressNumber = Prospect.ProspectCommunity.SalespersonAddressNumber,
                         ProspectCommunityId = Prospect.ProspectCommunity.ProspectCommunityId,
-                        ProspectCommunity = Prospect.ProspectCommunity
+                        Prospect = Prospect
                     };
                     _navigationService.Navigate<AddActivityViewModel, Activity>(activity);
                 }));
@@ -187,7 +187,7 @@ namespace ProspectManagement.Core.ViewModels
                         ProspectAddressNumber = Prospect.ProspectAddressNumber,
                         SalespersonAddressNumber = Prospect.ProspectCommunity.SalespersonAddressNumber,
                         ProspectCommunityId = Prospect.ProspectCommunity.ProspectCommunityId,
-                        ProspectCommunity = Prospect.ProspectCommunity
+                        Prospect = Prospect
                     };
                     _navigationService.Navigate<AddActivityViewModel, Activity>(activity);
                 }));

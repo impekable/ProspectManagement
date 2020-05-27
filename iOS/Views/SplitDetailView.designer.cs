@@ -68,6 +68,10 @@ namespace ProspectManagement.iOS.Views
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIButton EmailButton { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UIStackView EmailStackView { get; set; }
 
         [Outlet]
@@ -84,6 +88,14 @@ namespace ProspectManagement.iOS.Views
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIButton MessageButton { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UILabel MessageLabel { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UILabel MobileLabel { get; set; }
 
         [Outlet]
@@ -93,6 +105,10 @@ namespace ProspectManagement.iOS.Views
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UILabel NameLabel { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIButton PhoneButton { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
@@ -193,6 +209,11 @@ namespace ProspectManagement.iOS.Views
                 DetailStackView = null;
             }
 
+            if (EmailButton != null) {
+                EmailButton.Dispose ();
+                EmailButton = null;
+            }
+
             if (EmailStackView != null) {
                 EmailStackView.Dispose ();
                 EmailStackView = null;
@@ -213,6 +234,16 @@ namespace ProspectManagement.iOS.Views
                 HomeStackView = null;
             }
 
+            if (MessageButton != null) {
+                MessageButton.Dispose ();
+                MessageButton = null;
+            }
+
+            if (MessageLabel != null) {
+                MessageLabel.Dispose ();
+                MessageLabel = null;
+            }
+
             if (MobileLabel != null) {
                 MobileLabel.Dispose ();
                 MobileLabel = null;
@@ -226,6 +257,11 @@ namespace ProspectManagement.iOS.Views
             if (NameLabel != null) {
                 NameLabel.Dispose ();
                 NameLabel = null;
+            }
+
+            if (PhoneButton != null) {
+                PhoneButton.Dispose ();
+                PhoneButton = null;
             }
 
             if (PreferenceLabel != null) {

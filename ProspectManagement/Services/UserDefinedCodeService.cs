@@ -22,6 +22,7 @@ namespace ProspectManagement.Core.Services
 		private List<UserDefinedCode> _countries;
         private List<UserDefinedCode> _rankings;
         private List<UserDefinedCode> _deactiveReasons;
+        private List<UserDefinedCode> _callResults;
 
         public UserDefinedCodeService(IUserDefinedCodeRepository userDefinedCodeRepository, IAuthenticator authenticator, IDialogService dialogService)
         {
@@ -114,9 +115,18 @@ namespace ProspectManagement.Core.Services
 			{
 				Crashes.TrackError(ex);
 				System.Diagnostics.Debug.WriteLine(ex.ToString());
-				_dialogService.ShowAlertAsync("Seems like there was a problem." + ex.Message, "Oops", "Close");
+				await _dialogService.ShowAlertAsync("Seems like there was a problem." + ex.Message, "Oops", "Close");
 				return new List<UserDefinedCode>();
 			}
+        }
+
+        public async Task<List<UserDefinedCode>> GetCallResultUserDefinedCodes()
+        {
+            if (_callResults == null)
+            {
+                _callResults = await getUserDefinedCodes("01", "AF");
+            }
+            return _callResults.OrderBy(p => p.Description1).ToList();
         }
     }
 }

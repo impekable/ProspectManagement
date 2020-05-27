@@ -60,6 +60,10 @@ namespace ProspectManagement.iOS.Views
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UISwitch ConsentTextSwitch { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UITextField ContactPreferenceTextField { get; set; }
 
         [Outlet]
@@ -277,6 +281,11 @@ namespace ProspectManagement.iOS.Views
             if (ConsentPhoneSwitch != null) {
                 ConsentPhoneSwitch.Dispose ();
                 ConsentPhoneSwitch = null;
+            }
+
+            if (ConsentTextSwitch != null) {
+                ConsentTextSwitch.Dispose ();
+                ConsentTextSwitch = null;
             }
 
             if (ContactPreferenceTextField != null) {

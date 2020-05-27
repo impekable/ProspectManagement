@@ -12,13 +12,19 @@ using MvvmCross.Commands;
 using MvvmCross.Plugin.PhoneCall;
 using MvvmCross.Plugin.Email;
 using Microsoft.AppCenter.Analytics;
+using System.Threading.Tasks;
+using Microsoft.AspNet.SignalR.Client;
+using Twilio;
+using Twilio.Rest.Api.V2010.Account;
+using ProspectManagement.Core.Models.App;
+using System.Collections.ObjectModel;
 
 namespace ProspectManagement.Core.ViewModels
 {
-	public class SplitDetailViewModel : BaseViewModel, IMvxViewModel<KeyValuePair<Prospect, User>>
+    public class SplitDetailViewModel : BaseViewModel, IMvxViewModel<KeyValuePair<Prospect, User>>
     {
         private Prospect _prospect;
-		private User _user;
+        private User _user;
         private bool _assigned;
         private string _workPhoneLabel;
         private string _homePhoneLabel;
@@ -30,18 +36,119 @@ namespace ProspectManagement.Core.ViewModels
         private ICommand _showTrafficCardTab;
         private ICommand _showContactHistoryTab;
         private readonly IProspectService _prospectService;
-        protected IMvxMessenger Messenger;
-		private readonly IDialogService _dialogService;
-        private readonly IMvxNavigationService _navigationService;
-		private readonly IMvxPhoneCallTask _phoneCallTask;
-		private readonly IMvxComposeEmailTaskEx _emailTask;
+        private readonly IActivityService _activityService;
 
-        private IMvxCommand _mobilePhoneCallCommand;
-        private IMvxCommand _workPhoneCallCommand;
-        private IMvxCommand _homePhoneCallCommand;
+        protected IMvxMessenger Messenger;
+        private readonly IDialogService _dialogService;
+        private readonly IMvxNavigationService _navigationService;
+        private readonly ITwilioService _twilioService;
+        private readonly IMvxPhoneCallTask _phoneCallTask;
+        private readonly IMvxComposeEmailTaskEx _emailTask;
+
+        private IMvxCommand _smsCommand;
+        private IMvxCommand<String> _mobilePhoneCallCommand;
+        private IMvxCommand<String> _workPhoneCallCommand;
+        private IMvxCommand<String> _twilioPhoneCallCommand;
+        private IMvxCommand<String> _homePhoneCallCommand;
         private IMvxCommand _composeEmailCommand;
 
         private IMvxCommand _showRankingCommand;
+
+        private ObservableCollection<KeyValuePair<string, string>> _phones;
+        private KeyValuePair<string, string> _selectedCall;
+
+        public ObservableCollection<KeyValuePair<string, string>> Phones
+        {
+            get { return _phones; }
+            set
+            {
+                _phones = value;
+                RaisePropertyChanged(() => Phones);
+            }
+        }
+
+        public KeyValuePair<string, string> SelectedCall
+        {
+            get { return _selectedCall; }
+            set
+            {
+                _selectedCall = value;
+                if (_selectedCall.Key.Equals("Mobile"))
+                    if (User.UsingTelephony)
+                        TwilioPhoneCallCommand.Execute(Prospect.MobilePhoneNumber.Phone);
+                    else
+                        CallProspect(Prospect.MobilePhoneNumber.Phone);
+                else if (_selectedCall.Key.Equals("Home"))
+                    if (User.UsingTelephony)
+                        TwilioPhoneCallCommand.Execute(Prospect.HomePhoneNumber.Phone);
+                    else
+                        CallProspect(Prospect.HomePhoneNumber.Phone);
+                else if (_selectedCall.Key.Equals("Work"))
+                    if (User.UsingTelephony)
+                        TwilioPhoneCallCommand.Execute(Prospect.WorkPhoneNumber.Phone);
+                    else
+                        CallProspect(Prospect.WorkPhoneNumber.Phone);
+                RaisePropertyChanged(() => SelectedCall);
+            }
+        }
+
+        public IMvxCommand<String> TwilioPhoneCallCommand
+        {
+            get
+            {
+                return _twilioPhoneCallCommand ?? (_twilioPhoneCallCommand = new MvxCommand<String>(async (param) =>
+                {
+
+                    //var request = new TwilioCallParameters
+                    //{
+                    //    AccessToken = await _twilioService.GetClientToken(User.UserId),
+                    //    ToPhoneNumber = Prospect.WorkPhoneNumber.Phone,
+                    //    FromPhoneNumber = User.TwilioPhoneNumber.Phone
+                    //};
+
+                    //_makeCallInteraction.Raise(request);
+
+                    TwilioClient.Init(Constants.PrivateKeys.TwilioAccountSid, Constants.PrivateKeys.TwilioAuthToken);
+
+                    var call = CallResource.Create(
+                        from: new Twilio.Types.PhoneNumber(Prospect.ProspectCommunity.Community.SalesOffice.TwilioPhoneNumber),
+                        to: new Twilio.Types.PhoneNumber(User.MobilePhoneNumber.Phone),
+                        machineDetection: "Enable",
+                        url: new Uri($"https://optoutdv.khov.com/E1CRMWebApp/Call/Connect?phoneNumber={param}")
+                    );
+
+                    if (!string.IsNullOrEmpty(call.Sid))
+                    {
+                        var callActivity = new Activity()
+                        {
+                            ProspectAddressNumber = Prospect.ProspectAddressNumber,
+                            SalespersonAddressNumber = User.AddressNumber,
+                            ProspectCommunityId = Prospect.ProspectCommunity.ProspectCommunityId,
+                            CallSid = call.Sid
+                        };
+                        var callActivityResult = await _activityService.LogCallAsync(Prospect.ProspectAddressNumber, callActivity);
+                        if (!string.IsNullOrEmpty(callActivityResult.ActivityID))
+                        {
+                            var phoneCallActivity = new PhoneCallActivity()
+                            {
+                                FromPhoneNumber = User.MobilePhoneNumber.Phone,
+                                ToPhoneNumber = param,
+                                PhoneCallActivityId = callActivityResult.ActivityID,
+                                PhoneCallInstanceId = callActivityResult.InstanceID,
+                                CallSid = call.Sid,
+                                ProspectAddressBook = Prospect.ProspectAddressNumber,
+                                ProspectCommunityId = Prospect.ProspectCommunity.ProspectCommunityId,
+                                SalespersonAddressBook = User.AddressNumber,
+                                CallTime = DateTime.UtcNow,
+                                Community = Prospect.ProspectCommunity.CommunityNumber
+                            };
+                            await _navigationService.Close(this);
+                            await _navigationService.Navigate<CallResultViewModel, PhoneCallActivity>(phoneCallActivity);
+                        }
+                    }
+                }));
+            }
+        }
 
         public IMvxCommand ShowRankingCommand
         {
@@ -51,29 +158,47 @@ namespace ProspectManagement.Core.ViewModels
             }
         }
 
-        public IMvxCommand MobilePhoneCallCommand
+        public IMvxCommand SMSCommand
         {
             get
             {
-                return _mobilePhoneCallCommand ?? (_mobilePhoneCallCommand = new MvxCommand(CallProspectMobile, () => AllowCalling));
+                return _smsCommand ?? (_smsCommand = new MvxCommand<Prospect>((prospect) =>
+                {
+                    _navigationService.Navigate<ProspectSMSViewModel, Prospect>(Prospect);
+                }
+                ));
             }
         }
 
-        public IMvxCommand WorkPhoneCallCommand
-        {
-            get
+        public IMvxCommand<String> MobilePhoneCallCommand => _mobilePhoneCallCommand ?? (_mobilePhoneCallCommand = new MvxCommand<String>(param =>
             {
-                return _workPhoneCallCommand ?? (_workPhoneCallCommand = new MvxCommand(CallProspectWork, () => AllowCalling));
-            }
-        }
+                if (User.UsingTelephony)
+                    TwilioPhoneCallCommand.Execute(Prospect.MobilePhoneNumber.Phone);
+                else
+                    CallProspect(Prospect.MobilePhoneNumber.Phone);
+            },
+            param => { return AllowCalling; }
+         ));
 
-        public IMvxCommand HomePhoneCallCommand
-        {
-            get
+        public IMvxCommand<String> WorkPhoneCallCommand => _workPhoneCallCommand ?? (_workPhoneCallCommand = new MvxCommand<String>(param =>
             {
-                return _homePhoneCallCommand ?? (_homePhoneCallCommand = new MvxCommand(CallProspectHome, () => AllowCalling));
-            }
-        }
+                if (User.UsingTelephony)
+                    TwilioPhoneCallCommand.Execute(Prospect.WorkPhoneNumber.Phone);
+                else
+                    CallProspect(Prospect.WorkPhoneNumber.Phone);
+            },
+            param => { return AllowCalling; }
+        ));
+
+        public IMvxCommand<String> HomePhoneCallCommand => _homePhoneCallCommand ?? (_homePhoneCallCommand = new MvxCommand<String>(param =>
+            {
+                if (User.UsingTelephony)
+                    TwilioPhoneCallCommand.Execute(Prospect.HomePhoneNumber.Phone);
+                else
+                    CallProspect(Prospect.HomePhoneNumber.Phone);
+            },
+            param => { return AllowCalling; }
+        ));
 
         public IMvxCommand ComposeEmailCommand
         {
@@ -83,31 +208,31 @@ namespace ProspectManagement.Core.ViewModels
             }
         }
 
-		private Activity createAdHocActivity(string contactMethod, string subject)
-		{
-			return new Activity
-			{
-				ActivityType = "ADHOC",
-				ContactMethod = contactMethod,
-				Subject = subject,
-				TimeDateStart = DateTime.UtcNow,
-				TimeDateEnd = DateTime.UtcNow,
-				DateCompleted = DateTime.UtcNow,
-				ProspectAddressNumber = Prospect.ProspectAddressNumber,
-				SalespersonAddressNumber = Prospect.ProspectCommunity.SalespersonAddressNumber,
-				ProspectCommunityId = Prospect.ProspectCommunity.ProspectCommunityId,
-				Community = Prospect.ProspectCommunity.CommunityNumber,
-                ProspectCommunity = Prospect.ProspectCommunity
-            };
-		}
-
-		private void ComposeEmailToProspect()
+        private Activity createAdHocActivity(string contactMethod, string subject)
         {
-			if (_emailTask.CanSendEmail)
-			{
-				var activity = createAdHocActivity("Email", "Emailed from App");
-				_navigationService.Navigate<AddActivityViewModel, Activity>(activity);
-				_emailTask.ComposeEmail(_prospect.Email.EmailAddress);
+            return new Activity
+            {
+                ActivityType = "ADHOC",
+                ContactMethod = contactMethod,
+                Subject = subject,
+                TimeDateStart = DateTime.UtcNow,
+                TimeDateEnd = DateTime.UtcNow,
+                DateCompleted = DateTime.UtcNow,
+                ProspectAddressNumber = Prospect.ProspectAddressNumber,
+                SalespersonAddressNumber = Prospect.ProspectCommunity.SalespersonAddressNumber,
+                ProspectCommunityId = Prospect.ProspectCommunity.ProspectCommunityId,
+                Community = Prospect.ProspectCommunity.CommunityNumber,
+                Prospect = Prospect
+            };
+        }
+
+        private void ComposeEmailToProspect()
+        {
+            if (_emailTask.CanSendEmail)
+            {
+                var activity = createAdHocActivity("Email", "Emailed from App");
+                _navigationService.Navigate<AddActivityViewModel, Activity>(activity);
+                _emailTask.ComposeEmail(_prospect.Email.EmailAddress);
                 Analytics.TrackEvent("Emailed From App", new Dictionary<string, string>
                     {
                         {"SalesAssociate", _prospect.ProspectCommunity.SalespersonAddressNumber.ToString() + " " + _prospect.ProspectCommunity.SalespersonName },
@@ -116,17 +241,17 @@ namespace ProspectManagement.Core.ViewModels
                 });
 
             }
-			else
-			{
-				_dialogService.ShowAlertAsync("Please configure email on this device and then try again.", "Email Not Configured", "Close");
-			}
+            else
+            {
+                _dialogService.ShowAlertAsync("Please configure email on this device and then try again.", "Email Not Configured", "Close");
+            }
         }
 
-		private void CallProspectMobile()
-		{
-			var activity = createAdHocActivity("Phone", "Called from App");
+        private void CallProspect(string phoneNumber)
+        {
+            var activity = createAdHocActivity("Phone", "Called from App");
             _navigationService.Navigate<AddActivityViewModel, Activity>(activity);
-			_phoneCallTask.MakePhoneCall(_prospect.Name, _prospect.MobilePhoneNumber.Phone);
+            _phoneCallTask.MakePhoneCall(_prospect.Name, phoneNumber);
             Analytics.TrackEvent("Called From App", new Dictionary<string, string>
                     {
                         {"SalesAssociate", _prospect.ProspectCommunity.SalespersonAddressNumber.ToString() + " " + _prospect.ProspectCommunity.SalespersonName },
@@ -135,43 +260,22 @@ namespace ProspectManagement.Core.ViewModels
                 });
         }
 
-		private void CallProspectWork()
+        public bool AllowTexting
         {
-			var activity = createAdHocActivity("Phone", "Called from App");
-            _navigationService.Navigate<AddActivityViewModel, Activity>(activity);
-			_phoneCallTask.MakePhoneCall(_prospect.Name, _prospect.WorkPhoneNumber.Phone);
-            Analytics.TrackEvent("Called From App", new Dictionary<string, string>
-                    {
-                        {"SalesAssociate", _prospect.ProspectCommunity.SalespersonAddressNumber.ToString() + " " + _prospect.ProspectCommunity.SalespersonName },
-                        {"Community", _prospect.ProspectCommunity.CommunityNumber + " " + _prospect.ProspectCommunity.Community.Description},
-                        {"User", _user.AddressBook.AddressNumber + " " + _user.AddressBook.Name},
-                });
+            get { return Prospect.FollowUpSettings.ConsentToText && Assigned; }
         }
 
-		private void CallProspectHome()
+        public bool AllowCalling
         {
-			var activity = createAdHocActivity("Phone", "Called from App");
-            _navigationService.Navigate<AddActivityViewModel, Activity>(activity);
-			_phoneCallTask.MakePhoneCall(_prospect.Name, _prospect.HomePhoneNumber.Phone);
-            Analytics.TrackEvent("Called From App", new Dictionary<string, string>
-                    {
-                        {"SalesAssociate", _prospect.ProspectCommunity.SalespersonAddressNumber.ToString() + " " + _prospect.ProspectCommunity.SalespersonName },
-                        {"Community", _prospect.ProspectCommunity.CommunityNumber + " " + _prospect.ProspectCommunity.Community.Description},
-                        {"User", _user.AddressBook.AddressNumber + " " + _user.AddressBook.Name},
-                });
+            get { return Prospect.FollowUpSettings.ConsentToPhone && Assigned; }
         }
 
-		public bool AllowCalling
+        public bool AllowEmailing
         {
-			get { return Prospect.FollowUpSettings.ConsentToPhone && Assigned; }
+            get { return Prospect.FollowUpSettings.ConsentToEmail && Assigned; }
         }
 
-		public bool AllowEmailing
-        {
-			get { return Prospect.FollowUpSettings.ConsentToEmail && Assigned; }
-        }
-
-		public bool IsLead
+        public bool IsLead
         {
             get { return Prospect.ProspectCommunity.AddressType.Equals("Lead"); }
         }
@@ -217,32 +321,41 @@ namespace ProspectManagement.Core.ViewModels
 
         private MvxInteraction _assignedProspectInteraction = new MvxInteraction();
         public IMvxInteraction AssignedProspectInteraction => _assignedProspectInteraction;
-        
-		public SplitDetailViewModel(IDialogService dialogService, IMvxComposeEmailTaskEx emailTask, IMvxPhoneCallTask phoneCallTask, IMvxMessenger messenger, IProspectService prospectService, IMvxNavigationService navigationService)
+
+        private MvxInteraction<TwilioCallParameters> _makeCallInteraction = new MvxInteraction<TwilioCallParameters>();
+
+        // need to expose it as a public property for binding (only IMvxInteraction is needed in the view)
+        public IMvxInteraction<TwilioCallParameters> MakeCallInteraction => _makeCallInteraction;
+
+        public SplitDetailViewModel(IActivityService activityService, ITwilioService twilioService, IDialogService dialogService, IMvxComposeEmailTaskEx emailTask, IMvxPhoneCallTask phoneCallTask, IMvxMessenger messenger, IProspectService prospectService, IMvxNavigationService navigationService)
         {
             Messenger = messenger;
             _prospectService = prospectService;
             _navigationService = navigationService;
-			_phoneCallTask = phoneCallTask;
-			_emailTask = emailTask;
-			_dialogService = dialogService;
+            _phoneCallTask = phoneCallTask;
+            _emailTask = emailTask;
+            _dialogService = dialogService;
+            _twilioService = twilioService;
+            _activityService = activityService;
 
             Messenger.Subscribe<RefreshMessage>(message => _clearDetailsInteraction.Raise(), MvxReference.Strong);
-			Messenger.Subscribe<ProspectChangedMessage>(message => Prepare(new KeyValuePair<Prospect, User>(message.UpdatedProspect, User)), MvxReference.Strong);
+            Messenger.Subscribe<ProspectChangedMessage>(message => Prepare(new KeyValuePair<Prospect, User>(message.UpdatedProspect, User)), MvxReference.Strong);
             Messenger.Subscribe<UserLogoutMessage>(message => UserLogout(), MvxReference.Strong);
             Messenger.Subscribe<ActivityAddedMessage>(message => ActivityAdded(message.AddedActivity), MvxReference.Strong);
-			Messenger.Subscribe<ProspectChangedMessage>(message => 
-            			{   RaisePropertyChanged(() => EmailEntered); 
-            				RaisePropertyChanged(() => StreetAddressEntered);
-            				RaisePropertyChanged(() => MobilePhoneEntered);
-            				RaisePropertyChanged(() => HomePhoneEntered);
-            				RaisePropertyChanged(() => WorkPhoneEntered);
-            				RaisePropertyChanged(() => AllowCalling);
-            				RaisePropertyChanged(() => AllowEmailing);
-            			}, 
+            Messenger.Subscribe<ProspectChangedMessage>(message =>
+                        {
+                            RaisePropertyChanged(() => EmailEntered);
+                            RaisePropertyChanged(() => StreetAddressEntered);
+                            RaisePropertyChanged(() => MobilePhoneEntered);
+                            RaisePropertyChanged(() => HomePhoneEntered);
+                            RaisePropertyChanged(() => WorkPhoneEntered);
+                            RaisePropertyChanged(() => AllowCalling);
+                            RaisePropertyChanged(() => AllowEmailing);
+                            RaisePropertyChanged(() => AllowTexting);
+                        },
                         MvxReference.Strong);
 
-		}
+        }
 
         public void UserLogout()
         {
@@ -278,8 +391,9 @@ namespace ProspectManagement.Core.ViewModels
                     if (_assignedTo != null)
                     {
                         Assigned = true;
-						RaisePropertyChanged(() => AllowCalling);
-						RaisePropertyChanged(() => AllowEmailing);
+                        RaisePropertyChanged(() => AllowTexting);
+                        RaisePropertyChanged(() => AllowCalling);
+                        RaisePropertyChanged(() => AllowEmailing);
                         Prospect.ProspectCommunity.SalespersonAddressNumber = _assignedTo.AddressNumber;
                         Prospect.ProspectCommunity.SalespersonName = _assignedTo.Name;
                         Messenger.Publish(new ProspectAssignedMessage(this) { AssignedProspect = Prospect });
@@ -295,7 +409,7 @@ namespace ProspectManagement.Core.ViewModels
         {
             get
             {
-                return _editProspectCommand ?? (_editProspectCommand = new MvxCommand(() => _navigationService.Navigate<EditProspectViewModel, Prospect>(_prospect)));
+                return _editProspectCommand ?? (_editProspectCommand = new MvxCommand<Prospect>((prospect) => _navigationService.Navigate<EditProspectViewModel, Prospect>(_prospect)));
             }
         }
 
@@ -323,15 +437,15 @@ namespace ProspectManagement.Core.ViewModels
         }
 
 
-		public User User
-		{
-			get { return _user; }
-			set { _user = value; }
-		}
-
-		public string AssignText
+        public User User
         {
-			get { return "Assign Prospect To Me (" + _user?.AddressBook?.Name + ")"; }
+            get { return _user; }
+            set { _user = value; }
+        }
+
+        public string AssignText
+        {
+            get { return "Assign Prospect To Me (" + _user?.AddressBook?.Name + ")"; }
         }
 
         public Prospect Prospect
@@ -348,6 +462,7 @@ namespace ProspectManagement.Core.ViewModels
                 RaisePropertyChanged(() => StreetAddressEntered);
                 RaisePropertyChanged(() => AllowCalling);
                 RaisePropertyChanged(() => AllowEmailing);
+                RaisePropertyChanged(() => AllowTexting);
             }
         }
 
@@ -403,14 +518,21 @@ namespace ProspectManagement.Core.ViewModels
             }
         }
 
-		public void Prepare(KeyValuePair<Prospect, User> param)
+        public async void Prepare(KeyValuePair<Prospect, User> param)
         {
             Prospect = param.Key;
             User = param.Value;
             RaisePropertyChanged(() => AllowCalling);
             RaisePropertyChanged(() => AllowEmailing);
+            RaisePropertyChanged(() => AllowTexting);
+            Phones = new ObservableCollection<KeyValuePair<string, string>>();
+            if (HomePhoneEntered)
+                Phones.Add(new KeyValuePair<string, string>("Home", Prospect.HomePhoneNumber.Phone));
+            if (MobilePhoneEntered)
+                Phones.Add(new KeyValuePair<string, string>("Mobile", Prospect.MobilePhoneNumber.Phone));
+            if (WorkPhoneEntered)
+                Phones.Add(new KeyValuePair<string, string>("Work", Prospect.WorkPhoneNumber.Phone));
         }
+
     }
-
-
 }

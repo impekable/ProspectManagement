@@ -42,7 +42,7 @@ namespace ProspectManagement.Core.Services
             {
 				Crashes.TrackError(ex);
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
-                _dialogService.ShowAlertAsync("Seems like there was a problem." + ex.Message, "Oops", "Close");
+                await _dialogService.ShowAlertAsync("Seems like there was a problem." + ex.Message, "Oops", "Close");
                 return null;
             }
         }
@@ -58,7 +58,7 @@ namespace ProspectManagement.Core.Services
             {
 				Crashes.TrackError(ex);
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
-                _dialogService.ShowAlertAsync("Seems like there was a problem." + ex.Message, "Oops", "Close");
+                await _dialogService.ShowAlertAsync("Seems like there was a problem." + ex.Message, "Oops", "Close");
                 return default(Prospect);
             }
         }
@@ -80,7 +80,7 @@ namespace ProspectManagement.Core.Services
             {
 				Crashes.TrackError(ex);
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
-                _dialogService.ShowAlertAsync("Seems like there was a problem." + ex.Message, "Oops", "Close");
+                await _dialogService.ShowAlertAsync("Seems like there was a problem." + ex.Message, "Oops", "Close");
                 return default(List<Prospect>);
             }
         }
@@ -96,10 +96,25 @@ namespace ProspectManagement.Core.Services
             {
 				Crashes.TrackError(ex);
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
-                _dialogService.ShowAlertAsync("Seems like there was a problem." + ex.Message, "Oops", "Close");
+                await _dialogService.ShowAlertAsync("Seems like there was a problem." + ex.Message, "Oops", "Close");
                 return false;
             }
         }
 
+        public async Task<List<SmsActivity>> GetProspectSMSActivityAsync(int prospectId)
+        {
+            try
+            {
+                var authResult = await _authenticator.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource);
+                return await _prospectRepository.GetProspectSMSActivityAsync(prospectId, authResult.AccessToken);
+            }
+            catch (Exception ex)
+            {
+                Crashes.TrackError(ex);
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                await _dialogService.ShowAlertAsync("Seems like there was a problem." + ex.Message, "Oops", "Close");
+                return new List<SmsActivity>();
+            }
+        }
     }
 }

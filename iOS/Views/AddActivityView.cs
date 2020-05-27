@@ -11,6 +11,8 @@ using Plugin.Media;
 using Microsoft.ProjectOxford.Vision;
 using ProspectManagement.Core.Services;
 using ProspectManagement.Core.Converters;
+using ProspectManagement.iOS.Services;
+using ProspectManagement.Core.Models.App;
 
 namespace ProspectManagement.iOS.Views
 {
@@ -50,7 +52,10 @@ namespace ProspectManagement.iOS.Views
 
 		public override void ViewDidLoad()
 		{
-			base.ViewDidLoad();
+            var env = new Environment_iOS();
+            var theme = env.GetOperatingSystemTheme();
+
+            base.ViewDidLoad();
 			cognitiveVisionService = new CognitiveVisionService();
 			var handwritingView = new HandwritingView(new System.Drawing.RectangleF(0, 0, (float)this.HandwritingContainerView.Frame.Width, (float)this.HandwritingContainerView.Frame.Height));
 			handwritingView.AutoresizingMask = UIViewAutoresizing.FlexibleDimensions;
@@ -75,7 +80,7 @@ namespace ProspectManagement.iOS.Views
                     AddActivityViewModel.Note = "";
                     NoteTextView.Text = "";
                 }
-                NoteTextView.TextColor = UIColor.Black; //optional
+                NoteTextView.TextColor = theme == Theme.Light ? UIColor.Black : UIColor.White; //optional
                 NoteTextView.BecomeFirstResponder();
             };
 

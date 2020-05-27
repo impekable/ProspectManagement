@@ -29,6 +29,7 @@ namespace ProspectManagement.Core.Models
         public DateTime EnteredDate { get; set; }
 		[JsonProperty("appointmentDate")]
         public DateTime? AppointmentDate { get; set; }
+        [JsonProperty("communityDetail")]
         public Community Community { get; set; }
     }
 }
