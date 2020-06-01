@@ -7,6 +7,7 @@ using MvvmCross.Navigation;
 using MvvmCross.Plugin.Messenger;
 using MvvmCross.ViewModels;
 using ProspectManagement.Core.Extensions;
+using ProspectManagement.Core.Interfaces.InfiniteScroll;
 using ProspectManagement.Core.Interfaces.Services;
 using ProspectManagement.Core.Models;
 
@@ -14,25 +15,42 @@ namespace ProspectManagement.Core.ViewModels
 {
     public class SMSInboxDetailViewModel : BaseViewModel, IMvxViewModel<KeyValuePair<SmsActivity, User>>
     {
-        private SmsActivity _smsActivity;
-        private User _user;
+        public event EventHandler LoadingDataFromBackendStarted;
+        public event EventHandler<int> LoadingDataFromBackendCompleted;
+        private event EventHandler<int> _incrementalLoadFromBackendCompleted;
 
         private MvxInteraction _hideAlertInteraction = new MvxInteraction();
         public IMvxInteraction HideAlertInteraction => _hideAlertInteraction;
         private MvxInteraction _showAlertInteraction = new MvxInteraction();
         public IMvxInteraction ShowAlertInteraction => _showAlertInteraction;
 
+        private readonly IIncrementalCollectionFactory _collectionFactory;
         private ObservableCollection<SmsActivity> _smsMessages;
         private String _smsMessageBody;
-        //private HubConnection _hubConnection;
         private IMvxCommand _sendSMSCommand;
         private IMvxCommand _closeCommand;
 
-        private readonly IUserService _userService;
         protected IMvxMessenger Messenger;
         private readonly IMvxNavigationService _navigationService;
         private readonly IProspectService _prospectService;
+        private readonly IAuthenticator _authService;
         private readonly IActivityService _activityService;
+
+        private int _page = 0;
+        private bool _loadingCompleted;
+
+        public int PageSize { get; set; }
+
+        public int Page
+        {
+            get { return _page; }
+            set
+            {
+                _page = value;
+                OnLoadingDataFromBackendStarted();
+                RaisePropertyChanged(() => Page);
+            }
+        }
 
         public IMvxCommand CloseCommand
         {
@@ -87,7 +105,43 @@ namespace ProspectManagement.Core.ViewModels
 
         public ObservableCollection<SmsActivity> SmsMessages
         {
-            get { return _smsMessages; }
+            get
+            {
+                {
+                    if (_smsMessages == null)
+                    {
+                        _incrementalLoadFromBackendCompleted += (sender, e) =>
+                        {
+                            var numRecordsFetched = Convert.ToInt16(e);
+                            OnLoadingDataFromBackendCompleted(numRecordsFetched);
+                            if (numRecordsFetched < PageSize)
+                                _loadingCompleted = true;
+                        };
+
+                        _smsMessages = _collectionFactory.GetCollection(async (count, pageSize) =>
+                        {
+                            var newSmsMessages = new ObservableCollection<SmsActivity>();
+                            if (!_loadingCompleted)
+                            {
+                                var authResult = await _authService.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource);
+
+                                if (authResult != null && !String.IsNullOrEmpty(authResult.AccessToken))
+                                {
+                                    await Task.Run(async () =>
+                                    {
+                                        Page++;
+                                        var SmsMessagesList = await _prospectService.GetProspectSMSActivityAsync(SmsActivity.Prospect.ProspectAddressNumber, authResult.AccessToken, Page, pageSize);
+                                        newSmsMessages = SmsMessagesList.ToObservableCollection();
+                                    });
+                                }
+
+                            }
+                            return newSmsMessages;
+                        }, _incrementalLoadFromBackendCompleted, PageSize);
+                    }
+                }
+                return _smsMessages;
+            }
             set
             {
                 _smsMessages = value;
@@ -95,36 +149,19 @@ namespace ProspectManagement.Core.ViewModels
             }
         }
 
-        public User User
-        {
-            get { return _user; }
-            set { _user = value; }
-        }
+        public User User { get; set; }
 
-        public SmsActivity SmsActivity
-        {
-            get { return _smsActivity; }
-            set
-            {
-                _smsActivity = value;
-            }
-        }
+        public SmsActivity SmsActivity { get; set; }
 
-        public SMSInboxDetailViewModel(IActivityService activityService, IProspectService prospectService, IMvxMessenger messenger, IMvxNavigationService navigationService, IUserService userService)
+        public SMSInboxDetailViewModel(IAuthenticator authService, IIncrementalCollectionFactory collectionFactory, IActivityService activityService, IProspectService prospectService, IMvxMessenger messenger, IMvxNavigationService navigationService)
         {
+            _authService = authService;
             _activityService = activityService;
             _prospectService = prospectService;
             Messenger = messenger;
             _navigationService = navigationService;
-            _userService = userService;
-        }
-
-        public async override Task Initialize()
-        {
-            _showAlertInteraction.Raise();
-            var smsMessages = await _prospectService.GetProspectSMSActivityAsync(SmsActivity.Prospect.ProspectAddressNumber);
-            SmsMessages = smsMessages.ToObservableCollection();
-            _hideAlertInteraction.Raise();
+            _collectionFactory = collectionFactory;
+            PageSize = 20;
         }
 
         public void Prepare(KeyValuePair<SmsActivity, User> param)
@@ -152,5 +189,16 @@ namespace ProspectManagement.Core.ViewModels
                 Notes = SmsMessageBody
             };
         }
+
+        public void OnLoadingDataFromBackendStarted()
+        {
+            LoadingDataFromBackendStarted?.Invoke(null, EventArgs.Empty);
+        }
+
+        public void OnLoadingDataFromBackendCompleted(int numRecordsFetched)
+        {
+            LoadingDataFromBackendCompleted?.Invoke(null, numRecordsFetched);
+        }
+
     }
 }

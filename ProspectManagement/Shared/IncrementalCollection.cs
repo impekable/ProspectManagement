@@ -9,11 +9,13 @@ namespace ProspectManagement.Core.Shared
     {
         private readonly Func<int, int, Task<ObservableCollection<T>>> _sourceDataFunc;
         private int _defaultPageSize;
+        private event EventHandler<int> _incrementalLoadFromBackendCompleted;
 
-        public IncrementalCollection(Func<int, int, Task<ObservableCollection<T>>> sourceDataFunc, int defaultPageSize)
+        public IncrementalCollection(Func<int, int, Task<ObservableCollection<T>>> sourceDataFunc, int defaultPageSize, EventHandler<int> incrementalLoadFromBackendCompleted)
         {
             _sourceDataFunc = sourceDataFunc;
             _defaultPageSize = defaultPageSize;
+            _incrementalLoadFromBackendCompleted = incrementalLoadFromBackendCompleted;
         }
 
         public int DefaultPageSize
@@ -22,14 +24,31 @@ namespace ProspectManagement.Core.Shared
             set { _defaultPageSize = value; }
         }
 
-        public async Task LoadMoreItemsAsync()
+        public async Task LoadMoreItemsAsync(bool prependItem = false)
         {
             ObservableCollection<T> sourceData = await _sourceDataFunc(Count, _defaultPageSize);
 
-            foreach (T dataItem in sourceData)
+            if (prependItem)
             {
-                Add(dataItem);
+                //add to beginning
+                foreach (T dataItem in sourceData)
+                {
+                    Insert(sourceData.IndexOf(dataItem), dataItem);
+                }
             }
+            else
+            {
+                foreach (T dataItem in sourceData)
+                {
+                    Add(dataItem);
+                }
+            }
+            OnIncrementalLoadFromBackendCompleted(sourceData.Count);
+        }
+
+        public void OnIncrementalLoadFromBackendCompleted(int count)
+        {
+            _incrementalLoadFromBackendCompleted?.Invoke(null, count);
         }
     }
 }

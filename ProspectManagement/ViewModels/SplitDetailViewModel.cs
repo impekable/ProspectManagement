@@ -127,7 +127,7 @@ namespace ProspectManagement.Core.ViewModels
                             CallSid = call.Sid
                         };
                         var callActivityResult = await _activityService.LogCallAsync(Prospect.ProspectAddressNumber, callActivity);
-                        if (!string.IsNullOrEmpty(callActivityResult.ActivityID))
+                        if (callActivityResult != null && !string.IsNullOrEmpty(callActivityResult.ActivityID))
                         {
                             var phoneCallActivity = new PhoneCallActivity()
                             {
@@ -162,9 +162,9 @@ namespace ProspectManagement.Core.ViewModels
         {
             get
             {
-                return _smsCommand ?? (_smsCommand = new MvxCommand<Prospect>((prospect) =>
+                return _smsCommand ?? (_smsCommand = new MvxCommand<Prospect>(async (prospect) =>
                 {
-                    _navigationService.Navigate<ProspectSMSViewModel, Prospect>(Prospect);
+                    await _navigationService.Navigate<ProspectSMSViewModel, Prospect>(Prospect);
                 }
                 ));
             }

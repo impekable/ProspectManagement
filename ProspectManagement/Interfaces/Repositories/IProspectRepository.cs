@@ -11,11 +11,12 @@ namespace ProspectManagement.Core.Interfaces.Repositories
 
 		Task<Prospect> GetProspectAsync(int prospectId, string accessToken);
 
-		Task<List<SmsActivity>> GetProspectSMSActivityAsync(int prospectId, string accessToken);
+		Task<List<SmsActivity>> GetProspectSMSActivityAsync(int prospectId, string accessToken, int page, int pageSize);
 
 		Task<bool> UpdateProspectAsync(Prospect prospect, string accessToken);
 
 		Task<object> AssignProspectToSalespersonAsync(string communityNumber, int prospectId, int salespersonId, string accessToken);
 
+		Task<bool> UpdateProspectSMSActivityAsync(int prospectId, string accessToken);
 	}
 }

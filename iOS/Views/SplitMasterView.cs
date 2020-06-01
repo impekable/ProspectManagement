@@ -50,7 +50,7 @@ namespace ProspectManagement.iOS.Views
             }
         }
 
-        private async void OnFilterInteractionRequested(object sender, MvxValueEventArgs<Filter> eventArgs)
+        private void OnFilterInteractionRequested(object sender, MvxValueEventArgs<Filter> eventArgs)
         {
             if (!ViewModel.FilterActive)
             {
@@ -66,7 +66,7 @@ namespace ProspectManagement.iOS.Views
             setTableViewSource(set);
         }
 
-        private async void OnUpdateRowInteractionRequested(object sender, MvxValueEventArgs<TableRow> eventArgs)
+        private void OnUpdateRowInteractionRequested(object sender, MvxValueEventArgs<TableRow> eventArgs)
         {
             NSIndexPath[] rowsToReload = new NSIndexPath[] { NSIndexPath.FromRowSection(eventArgs.Value.TableRowToUpdate, 0) };// points to second row in the first section of the model
             MasterTableView.ReloadRows(rowsToReload, UITableViewRowAnimation.None);

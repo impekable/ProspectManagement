@@ -9,7 +9,7 @@
       <CustomCommands>
         <Command>
           <type>BeforeBuild</type>
-          <command>/bin/sh ../local-pre-build.sh DEV</command>
+          <command>/bin/sh ../local-pre-build.sh LOCALDEV</command>
         </Command>
       </CustomCommands>
     </CustomCommands>
@@ -45,16 +45,16 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.IdentityModel.Clients.ActiveDirectory" Version="5.2.7" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="Microsoft.AppCenter" Version="3.0.0" />
-    <PackageReference Include="Microsoft.AppCenter.Analytics" Version="3.0.0" />
-    <PackageReference Include="Microsoft.AppCenter.Crashes" Version="3.0.0" />
-    <PackageReference Include="MvvmValidation" Version="3.1.0" />
+    <PackageReference Include="Microsoft.AppCenter" Version="3.2.1" />
+    <PackageReference Include="Microsoft.AppCenter.Analytics" Version="3.2.1" />
+    <PackageReference Include="Microsoft.AppCenter.Crashes" Version="3.2.1" />
+    <PackageReference Include="MvvmValidation" Version="3.1.1" />
     <PackageReference Include="MvvmCross" Version="6.4.2" />
     <PackageReference Include="MvvmCross.Plugin.Color" Version="6.4.2" />
     <PackageReference Include="MvvmCross.Plugin.Messenger" Version="6.4.2" />
     <PackageReference Include="MvvmCross.Plugin.PhoneCall" Version="6.4.2" />
     <PackageReference Include="MvvmCross.Plugin.Email" Version="6.4.2" />
     <PackageReference Include="Microsoft.AspNet.SignalR.Client" Version="2.4.1" />
-    <PackageReference Include="Twilio" Version="5.37.6" />
+    <PackageReference Include="Twilio" Version="5.42.0" />
   </ItemGroup>
 </Project>

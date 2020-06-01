@@ -49,9 +49,7 @@ namespace ProspectManagement.Core.Services
             try
             {
                 var authResult = await _authenticator.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource);
-                activity.ActivityID = "a";
-                activity.InstanceID = "i";
-                return activity;//await _activityRepository.LogCallAsync(prospectId, activity, authResult.AccessToken);
+                return await _activityRepository.LogCallAsync(prospectId, activity, authResult.AccessToken);
             }
             catch (Exception ex)
             {

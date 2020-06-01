@@ -11,9 +11,11 @@ namespace ProspectManagement.Core.Interfaces.Services
 
 		Task<Prospect> GetProspectAsync(int prospectId);
 
-		Task<List<SmsActivity>> GetProspectSMSActivityAsync(int prospectId);
+		Task<List<SmsActivity>> GetProspectSMSActivityAsync(int prospectId, string accessToken = null, int page = 1, int pageSize = 20);
 
 		Task<bool> UpdateProspectAsync(Prospect prospect);
+
+		Task<bool> UpdateProspectSMSActivityAsync(int prospectId);
 
 		Task<AddressBook> AssignProspectToLoggedInUserAsync(string communityNumber, int prospectId);
 	}

@@ -101,12 +101,14 @@ namespace ProspectManagement.Core.Services
             }
         }
 
-        public async Task<List<SmsActivity>> GetProspectSMSActivityAsync(int prospectId)
+        public async Task<List<SmsActivity>> GetProspectSMSActivityAsync(int prospectId, string accessToken = null, int page = 1, int pageSize = 20)
         {
             try
             {
-                var authResult = await _authenticator.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource);
-                return await _prospectRepository.GetProspectSMSActivityAsync(prospectId, authResult.AccessToken);
+                if (string.IsNullOrEmpty(accessToken))
+                    accessToken = (await _authenticator.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource)).AccessToken;
+                var sms = await _prospectRepository.GetProspectSMSActivityAsync(prospectId, accessToken, page, pageSize);
+                return sms.OrderBy(s => s.UpdatedDate).ToList();
             }
             catch (Exception ex)
             {
@@ -114,6 +116,23 @@ namespace ProspectManagement.Core.Services
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
                 await _dialogService.ShowAlertAsync("Seems like there was a problem." + ex.Message, "Oops", "Close");
                 return new List<SmsActivity>();
+            }
+        }
+
+        public async Task<bool> UpdateProspectSMSActivityAsync(int prospectId)
+        {
+            try
+            {
+                var authResult = await _authenticator.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource);
+                var result = await _prospectRepository.UpdateProspectSMSActivityAsync(prospectId, authResult.AccessToken);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Crashes.TrackError(ex);
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                await _dialogService.ShowAlertAsync("Seems like there was a problem." + ex.Message, "Oops", "Close");
+                return false;
             }
         }
     }

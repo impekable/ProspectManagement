@@ -1,3 +1,4 @@
+using CoreAnimation;
 using CoreFoundation;
 using CoreGraphics;
 using Foundation;
@@ -20,6 +21,8 @@ namespace ProspectManagement.iOS.Views
     {
         CGPoint keyboardEndFrameLocation;
         AlertOverlay alertOverlay;
+        private SMSTableViewSource source;
+        CGPoint lastScrollOffset;
 
         private IMvxInteraction _showAlertInteraction;
         public IMvxInteraction ShowAlertInteraction
@@ -49,7 +52,7 @@ namespace ProspectManagement.iOS.Views
             }
         }
 
-        private async void OnShowAlertInteractionRequested(object sender, EventArgs eventArgs)
+        private void OnShowAlertInteractionRequested(object sender, EventArgs eventArgs)
         {
             var bounds = UIScreen.MainScreen.Bounds;
             alertOverlay = new AlertOverlay(bounds, "Sending...");
@@ -57,7 +60,7 @@ namespace ProspectManagement.iOS.Views
             MessagesTableView.ScrollToRow(NSIndexPath.FromRowSection(ViewModel.SmsMessages.Count - 1, 0), UITableViewScrollPosition.Bottom, false);
         }
 
-        private async void OnHideAlertInteractionRequested(object sender, EventArgs eventArgs)
+        private void OnHideAlertInteractionRequested(object sender, EventArgs eventArgs)
         {
             alertOverlay.Hide();
             MessagesTableView.ScrollToRow(NSIndexPath.FromRowSection(ViewModel.SmsMessages.Count - 1, 0), UITableViewScrollPosition.Bottom, false);
@@ -111,7 +114,22 @@ namespace ProspectManagement.iOS.Views
             NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillHideNotification, OnKeyboardNotification);
             NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillShowNotification, OnKeyboardNotification);
         }
-        
+
+        private void setTableViewSource(MvxFluentBindingDescriptionSet<ProspectSMSView, ProspectSMSViewModel> set)
+        {
+            ViewModel.Page = 0;
+            ViewModel.SmsMessages = null;
+
+            source = new SMSTableViewSource(MessagesTableView, SMSMessageViewCell.Key); // new MvxSimpleTableViewSource(MasterTableView, ProspectViewCell.Key, ProspectViewCell.Key, null);
+            source.CreateBinding<SMSInboxDetailViewModel>(this, vm => vm.SmsMessages);
+            MessagesTableView.Source = source;
+            MessagesTableView.RowHeight = UITableView.AutomaticDimension;
+            MessagesTableView.EstimatedRowHeight = 40;
+            MessagesTableView.ReloadData();
+            set.Bind(source).For(s => s.ItemsSource).To(vm => vm.SmsMessages);
+            set.Apply();
+        }
+
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
@@ -132,16 +150,9 @@ namespace ProspectManagement.iOS.Views
 
             MessagesTableView.TableFooterView = new UIView();
 
-            var source = new SMSTableViewSource(MessagesTableView, SMSMessageViewCell.Key);
-            MessagesTableView.AllowsSelection = false;
-            MessagesTableView.Source = source;
-            MessagesTableView.RowHeight = UITableView.AutomaticDimension;
-            MessagesTableView.EstimatedRowHeight = 40;
-
             var set = this.CreateBindingSet<ProspectSMSView, ProspectSMSViewModel>();
-            set.Bind(source).To(vm => vm.SmsMessages);
+            setTableViewSource(set);
             set.Bind(MessageTextView).To(vm => vm.SmsMessageBody);
-            //set.Bind(SendButton).To(vm => vm.SendSMSCommand);
 
             SendButton.TouchUpInside += (sender, e) =>
             {
@@ -165,15 +176,13 @@ namespace ProspectManagement.iOS.Views
             MessageTextView.TranslatesAutoresizingMaskIntoConstraints = true;
             MessageTextView.SizeToFit();
             MessageTextView.ScrollEnabled = false;
+
+            var refreshControl = new UIRefreshControl();
+
+            MessagesTableView.RefreshControl = refreshControl;
+            InvokeOnMainThread(() => refreshControl.BeginRefreshing());
+
             MessagesTableView.ReloadData();
-
-            var popTime = new DispatchTime(DispatchTime.Now, new TimeSpan(0, 0, 0, 500));
-            DispatchQueue.MainQueue.DispatchAfter(popTime, () =>
-             {
-                 MessagesTableView.ScrollToRow(NSIndexPath.FromRowSection(ViewModel.SmsMessages.Count - 1, 0), UITableViewScrollPosition.Middle, false);
-
-             });
-            MessagesTableView.ContentOffset = new CGPoint(MessagesTableView.ContentOffset.X, 50);
 
             var width = (MessageTextView.Frame.Size.Width < 250) ? 250 : MessageTextView.Frame.Size.Width;
             var height = (MessageTextView.Frame.Size.Height < 50) ? 50 : MessageTextView.Frame.Size.Height;
@@ -191,6 +200,25 @@ namespace ProspectManagement.iOS.Views
 
             NavigationItem.SetLeftBarButtonItem(closeButton, true);
             setNavigationTitle();
+
+            ViewModel.LoadingDataFromBackendStarted += (sender, e) =>
+            {
+                InvokeOnMainThread(() => refreshControl.BeginRefreshing());
+            };
+
+            ViewModel.LoadingDataFromBackendCompleted += (sender, e) =>
+            {
+                InvokeOnMainThread(() => refreshControl.EndRefreshing());
+
+                var numRecordsFetched = Convert.ToInt16(e);
+
+                if (numRecordsFetched > 0)
+                    MessagesTableView.ScrollToRow(NSIndexPath.FromRowSection(numRecordsFetched - 1, 0), UITableViewScrollPosition.Top, false);
+
+                if (numRecordsFetched < ViewModel.PageSize)
+                    MessagesTableView.RefreshControl = null;
+                
+            };
         }
 
         private void setNavigationTitle()

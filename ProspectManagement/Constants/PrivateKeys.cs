@@ -8,5 +8,7 @@ namespace ProspectManagement.Core.Constants
         public const string AzureSubscriptionKey = "AZURE_KEY";
         public const string AppCenterAnalyticsAppSecret = "APPCENTER_SECRET";
 		public const string CognitiveVisionSubscriptionKey = "COGNITIVE_VISION_KEY";
+        public const string TwilioAccountSid = "TWILIO_ACCOUNT_SID";
+        public const string TwilioAuthToken = "TWILIO_AUTHTOKEN";
     }
 }

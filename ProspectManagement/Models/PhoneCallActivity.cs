@@ -51,10 +51,10 @@ namespace ProspectManagement.Core.Models
         public string PhoneCallInstanceId { get; set; }
 
         [JsonProperty("followUpTaskStartDate")]
-        public DateTime FollowUpTaskStartDate { get; set; }
+        public DateTime? FollowUpTaskStartDate { get; set; }
 
-        [JsonProperty("followUpTaskStartDate")]
-        public DateTime FollowUpTaskEndDate { get; set; }
+        [JsonProperty("followUpTaskEndDate")]
+        public DateTime? FollowUpTaskEndDate { get; set; }
 
         [JsonProperty("followUpTaskSubject")]
         public string FollowUpTaskSubject { get; set; }

@@ -83,6 +83,10 @@ namespace ProspectManagement.iOS.CustomBindings
                         var pairs = value as ObservableCollection<KeyValuePair<string, string>>;
                         if (pairs != null)
                         {
+                            if (view.AlertController.Actions.Count() > 1)
+                            {
+                                recreateAlertController(view);
+                            }
                             foreach (var pair in pairs)
                             {
                                 var action = UIAlertAction.Create(pair.Key + "  " + pair.Value, UIAlertActionStyle.Default, a => { view.SelectedCode = pair; });

@@ -9,6 +9,7 @@ using MvvmCross.Navigation;
 using MvvmCross.Plugin.Messenger;
 using MvvmCross.ViewModels;
 using ProspectManagement.Core.Extensions;
+using ProspectManagement.Core.Interactions;
 using ProspectManagement.Core.Interfaces.InfiniteScroll;
 using ProspectManagement.Core.Interfaces.Services;
 using ProspectManagement.Core.Messages;
@@ -17,175 +18,189 @@ using ProspectManagement.Core.Models;
 namespace ProspectManagement.Core.ViewModels
 {
     public class SMSInboxViewModel : BaseViewModel, IMvxViewModel<User>
-	{
-		public event EventHandler LoadingDataFromBackendStarted;
-		public event EventHandler LoadingDataFromBackendCompleted;
+    {
+        public event EventHandler LoadingDataFromBackendStarted;
+        public event EventHandler LoadingDataFromBackendCompleted;
+        private event EventHandler<int> _incrementalLoadFromBackendCompleted;
 
-		private readonly IAuthenticator _authService;
-		private readonly IActivityService _activityService;
-		protected IMvxMessenger Messenger;
-		private readonly IMvxNavigationService _navigationService;
-		private readonly IIncrementalCollectionFactory _collectionFactory;
-		private ObservableCollection<SmsActivity> _smsActivities;
+        private readonly IAuthenticator _authService;
+        private readonly IActivityService _activityService;
+        private readonly IProspectService _prospectService;
+        protected IMvxMessenger Messenger;
+        private readonly IMvxNavigationService _navigationService;
+        private readonly IIncrementalCollectionFactory _collectionFactory;
+        private ObservableCollection<SmsActivity> _smsActivities;
 
-		private IMvxCommand _homeCommand;
-		private IMvxCommand _refreshCommand;
-		private IMvxCommand _selectionChangedCommand;
+        private IMvxCommand _homeCommand;
+        private IMvxCommand _refreshCommand;
+        private IMvxCommand _selectionChangedCommand;
 
-		private int _selectedSegment;
-		private int _page = 0;
-		private int _pageSize = 10;
-		private User _user;
-		//private MvxInteraction<TableRow> _updateRowInteraction = new MvxInteraction<TableRow>();
-		//public IMvxInteraction<TableRow> UpdateRowInteraction => _updateRowInteraction;
+        private int _selectedSegment;
+        private int _page = 0;
+        private int _pageSize = 10;
+        private User _user;
 
-		//private MvxInteraction<Filter> _filterInteraction = new MvxInteraction<Filter>();
-		//public IMvxInteraction<Filter> FilterInteraction => _filterInteraction;
+        private MvxInteraction<TableRow> _updateRowInteraction = new MvxInteraction<TableRow>();
+        public IMvxInteraction<TableRow> UpdateRowInteraction => _updateRowInteraction;
 
-		public IMvxCommand SelectionChangedCommand
-		{
-			get
-			{
-				return _selectionChangedCommand ?? (_selectionChangedCommand = new MvxCommand<SmsActivity>((smsActivity) =>
-				{
-					_navigationService.Navigate<SMSInboxDetailViewModel, KeyValuePair<SmsActivity, User>>(new KeyValuePair<SmsActivity, User>(smsActivity, User));
-					Analytics.TrackEvent("SMS Activity Selected", new Dictionary<string, string>
-					{
-						{"Community", smsActivity.Prospect.ProspectCommunity.CommunityNumber + " " + smsActivity.Prospect.ProspectCommunity.Community.Description},
-						{"SalesAssociate", smsActivity.Prospect.ProspectCommunity.SalespersonAddressNumber + " " + smsActivity.Prospect.ProspectCommunity.SalespersonName},
-						{"User", _user.AddressBook.AddressNumber + " " + _user.AddressBook.Name},
-					});
-				}));
-			}
-		}
 
-		public int Page
-		{
-			get { return _page; }
-			set
-			{
-				_page = value;
-				OnLoadingDataFromBackendStarted();
-				RaisePropertyChanged(() => Page);
-			}
-		}
+        public IMvxCommand SelectionChangedCommand
+        {
+            get
+            {
+                return _selectionChangedCommand ?? (_selectionChangedCommand = new MvxCommand<SmsActivity>(async (smsActivity) =>
+                {
+                    await _navigationService.Navigate<SMSInboxDetailViewModel, KeyValuePair<SmsActivity, User>>(new KeyValuePair<SmsActivity, User>(smsActivity, User));
 
-		public User User
-		{
-			get { return _user; }
-			set
-			{
-				_user = value;
-				RaisePropertyChanged(() => User);
-			}
-		}
+                    if (smsActivity.UnreadCount > 0)
+                    {
+                        var success = await _prospectService.UpdateProspectSMSActivityAsync(smsActivity.Prospect.ProspectAddressNumber);
+                        if (success)
+                        {
+                            smsActivity.UnreadCount = 0;
+                            var request = new TableRow { TableRowToUpdate = SMSActivities.IndexOf(smsActivity) };
+                            _updateRowInteraction.Raise(request);
+                        }
+                    }
 
-		public IMvxCommand HomeCommand
-		{
-			get
-			{
-				return _homeCommand ?? (_homeCommand = new MvxCommand(() =>
-				{
-					_navigationService.Navigate<LandingViewModel, User>(User);
-				}));
-			}
-		}
+                    Analytics.TrackEvent("SMS Activity Selected", new Dictionary<string, string>
+                    {
+                        {"Community", smsActivity.Prospect.ProspectCommunity.CommunityNumber + " " + smsActivity.Prospect.ProspectCommunity.Community.Description},
+                        {"SalesAssociate", smsActivity.Prospect.ProspectCommunity.SalespersonAddressNumber + " " + smsActivity.Prospect.ProspectCommunity.SalespersonName},
+                        {"User", _user.AddressBook.AddressNumber + " " + _user.AddressBook.Name},
+                    });
+                }));
+            }
+        }
 
-		public IMvxCommand RefreshCommand
-		{
-			get
-			{
-				return _refreshCommand ?? (_refreshCommand = new MvxCommand(() =>
-				{
-					Messenger.Publish(new RefreshMessage(this));
-				}));
-			}
-		}
+        public int Page
+        {
+            get { return _page; }
+            set
+            {
+                _page = value;
+                OnLoadingDataFromBackendStarted();
+                RaisePropertyChanged(() => Page);
+            }
+        }
 
-		public int SelectedSegment
-		{
-			get { return _selectedSegment; }
-			set
-			{
-				_page = 0;
-				_selectedSegment = value;
-				OnLoadingDataFromBackendStarted();
-				RaisePropertyChanged(() => SelectedSegment);
-			}
-		}
+        public User User
+        {
+            get { return _user; }
+            set
+            {
+                _user = value;
+                RaisePropertyChanged(() => User);
+            }
+        }
 
-		public ObservableCollection<SmsActivity> SMSActivities
-		{
-			get
-			{
-				{
-					if (_smsActivities == null)
-					{
-						_smsActivities = _collectionFactory.GetCollection(async (count, pageSize) =>
-						{
-							var authResult = await _authService.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource);
-							var newActivities = new ObservableCollection<SmsActivity>();
-							if (authResult != null && !String.IsNullOrEmpty(authResult.AccessToken))
-							{
-								await Task.Run(async () =>
-								{
-									Page++;
-									var newOnly = SelectedSegment == 1;
-									var activityList = await _activityService.GetSmsActivitiesAsync(authResult.AccessToken, User.AddressNumber, newOnly, Page, pageSize);
-									newActivities = activityList.ToObservableCollection();
-									OnLoadingDataFromBackendCompleted();
-								});
-							}
-							return newActivities;
-						}, _pageSize);
-					}
-				}
-				return _smsActivities;
-			}
-			set
-			{
-				_smsActivities = value;
-				RaisePropertyChanged(() => SMSActivities);
-			}
-		}
+        public IMvxCommand HomeCommand
+        {
+            get
+            {
+                return _homeCommand ?? (_homeCommand = new MvxCommand(() =>
+                {
+                    _navigationService.Navigate<LandingViewModel, User>(User);
+                }));
+            }
+        }
 
-		public void RemoveTask(SmsActivity activity)
-		{
-			var viewModel = SMSActivities.First(r => r.ActivityId == activity.ActivityId);
+        public IMvxCommand RefreshCommand
+        {
+            get
+            {
+                return _refreshCommand ?? (_refreshCommand = new MvxCommand(() =>
+                {
+                    Messenger.Publish(new RefreshMessage(this));
+                }));
+            }
+        }
 
-			SMSActivities.Remove(viewModel);
-		}
+        public int SelectedSegment
+        {
+            get { return _selectedSegment; }
+            set
+            {
+                _page = 0;
+                _selectedSegment = value;
+                OnLoadingDataFromBackendStarted();
+                RaisePropertyChanged(() => SelectedSegment);
+            }
+        }
 
-		public void OnLoadingDataFromBackendStarted()
-		{
-			LoadingDataFromBackendStarted?.Invoke(null, EventArgs.Empty);
-		}
+        public ObservableCollection<SmsActivity> SMSActivities
+        {
+            get
+            {
+                {
+                    if (_smsActivities == null)
+                    {
+                        _incrementalLoadFromBackendCompleted += (sender, e) =>
+                        {
+                            OnLoadingDataFromBackendCompleted();
+                        };
+                        _smsActivities = _collectionFactory.GetCollection(async (count, pageSize) =>
+                        {
+                            var authResult = await _authService.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource);
+                            var newActivities = new ObservableCollection<SmsActivity>();
+                            if (authResult != null && !String.IsNullOrEmpty(authResult.AccessToken))
+                            {
+                                await Task.Run(async () =>
+                                {
+                                    Page++;
+                                    var newOnly = SelectedSegment == 1;
+                                    var activityList = await _activityService.GetSmsActivitiesAsync(authResult.AccessToken, User.AddressNumber, newOnly, Page, pageSize);
+                                    newActivities = activityList.ToObservableCollection();
+                                });
+                            }
+                            return newActivities;
+                        }, _incrementalLoadFromBackendCompleted, _pageSize);
+                    }
+                }
+                return _smsActivities;
+            }
+            set
+            {
+                _smsActivities = value;
+                RaisePropertyChanged(() => SMSActivities);
+            }
+        }
 
-		public void OnLoadingDataFromBackendCompleted()
-		{
-			Analytics.TrackEvent("SMS Inbox Viewed", new Dictionary<string, string>
-			{
-				{"User", User.AddressNumber + " " + User.AddressBook.Name},
-				{"Unread Filter", SelectedSegment == 0 ? "All" : "Unread" },
-			});
-			LoadingDataFromBackendCompleted?.Invoke(null, EventArgs.Empty);
-		}
+        public void RemoveTask(SmsActivity activity)
+        {
+            var viewModel = SMSActivities.First(r => r.ActivityId == activity.ActivityId);
 
-		public SMSInboxViewModel(IMvxMessenger messenger, IAuthenticator authService, IActivityService activityService, IIncrementalCollectionFactory collectionFactory, IMvxNavigationService navigationService)
-		{
-			Messenger = messenger;
-			_authService = authService;
-			_activityService = activityService;
-			_collectionFactory = collectionFactory;
-			_navigationService = navigationService;
+            SMSActivities.Remove(viewModel);
+        }
 
-			//Messenger.Subscribe<TaskDismissedMessage>(message => RemoveTask(message.Activity), MvxReference.Strong);
-			//Messenger.Subscribe<TaskCompletedMessage>(message => RemoveTask(message.Activity), MvxReference.Strong);
-		}
+        public void OnLoadingDataFromBackendStarted()
+        {
+            LoadingDataFromBackendStarted?.Invoke(null, EventArgs.Empty);
+        }
 
-		public void Prepare(User parameter)
-		{
-			User = parameter;
-		}
-	}
+        public void OnLoadingDataFromBackendCompleted()
+        {
+            Analytics.TrackEvent("SMS Inbox Viewed", new Dictionary<string, string>
+            {
+                {"User", User.AddressNumber + " " + User.AddressBook.Name},
+                {"Unread Filter", SelectedSegment == 0 ? "All" : "Unread" },
+            });
+            LoadingDataFromBackendCompleted?.Invoke(null, EventArgs.Empty);
+        }
+
+        public SMSInboxViewModel(IMvxMessenger messenger, IAuthenticator authService, IProspectService prospectService, IActivityService activityService, IIncrementalCollectionFactory collectionFactory, IMvxNavigationService navigationService)
+        {
+            Messenger = messenger;
+            _authService = authService;
+            _activityService = activityService;
+            _collectionFactory = collectionFactory;
+            _navigationService = navigationService;
+            _prospectService = prospectService;
+        }
+
+        public void Prepare(User parameter)
+        {
+            User = parameter;
+        }
+    }
 }

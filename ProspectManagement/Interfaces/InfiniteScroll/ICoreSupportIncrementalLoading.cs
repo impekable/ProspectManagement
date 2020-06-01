@@ -5,6 +5,6 @@ namespace ProspectManagement.Core.Interfaces.InfiniteScroll
 {
 	public interface ICoreSupportIncrementalLoading
     {
-        Task LoadMoreItemsAsync();
+        Task LoadMoreItemsAsync(bool prependItem = false);
     }
 }

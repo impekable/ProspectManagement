@@ -19,7 +19,6 @@ namespace ProspectManagement.iOS.Views
     [MvxSplitViewPresentation(Position = MasterDetailPosition.Detail)]
     public partial class SplitDetailView : MvxViewController<SplitDetailViewModel>
     {
-        protected SplitDetailViewModel SplitDetailViewModel => ViewModel as SplitDetailViewModel;
         private UIBarButtonItem _EditButton;
         private CustomAlertController _CallAlertController;
 
@@ -166,8 +165,6 @@ namespace ProspectManagement.iOS.Views
         {
             base.ViewDidLoad();
 
-            _CallAlertController = new CustomAlertController("Call");
-
             var set = this.CreateBindingSet<SplitDetailView, SplitDetailViewModel>();
             set.Bind(NameLabel).To(vm => vm.Prospect).WithConversion(new NameConverter());
             set.Bind(AddressLine1Label).To(vm => vm.Prospect.StreetAddress.AddressLine1);
@@ -225,6 +222,8 @@ namespace ProspectManagement.iOS.Views
             set.Bind(this).For(view => view.ClearDetailsInteraction).To(viewModel => viewModel.ClearDetailsInteraction).OneWay();
             set.Bind(this).For(view => view.AssignedProspectInteraction).To(viewModel => viewModel.AssignedProspectInteraction).OneWay();
             //set.Bind(this).For(view => view.MakeCallInteraction).To(viewModel => viewModel.MakeCallInteraction).OneWay();
+
+            _CallAlertController = new CustomAlertController("Call");
             set.Bind(_CallAlertController).For(p => p.AlertController).To(vm => vm.Phones);
             set.Bind(_CallAlertController).For(p => p.SelectedCode).To(vm => vm.SelectedCall);
 

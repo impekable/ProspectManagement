@@ -9,6 +9,10 @@ echo "APPCENTER_SECRET is ${APPCENTER_SECRET}"
 echo "REST_ENDPOINT is ${REST_ENDPOINT}"
 echo "COGNITIVE_VISION_URI is ${COGNITIVE_VISION_URI}"
 echo "COGNITIVE_VISION_KEY is ${COGNITIVE_VISION_KEY}"
+echo "TWILIO_ACCOUNT_SID is ${TWILIO_ACCOUNT_SID}"
+echo "TWILIO_AUTHTOKEN is ${TWILIO_AUTHTOKEN}"
+sed -i '' "s/TWILIO_ACCOUNT_SID/${TWILIO_ACCOUNT_SID}/g" ../ProspectManagement/Constants/PrivateKeys.cs
+sed -i '' "s/TWILIO_AUTHTOKEN/${TWILIO_AUTHTOKEN}/g" ../ProspectManagement/Constants/PrivateKeys.cs
 sed -i '' "s#COGNITIVE_VISION_URI#${COGNITIVE_VISION_URI}#g" ../ProspectManagement/Constants/ConnectionURIs.cs
 sed -i '' "s/COGNITIVE_VISION_KEY/${COGNITIVE_VISION_KEY}/g" ../ProspectManagement/Constants/PrivateKeys.cs
 sed -i '' "s#REST_ENDPOINT#${REST_ENDPOINT}#g" ../ProspectManagement/Constants/ConnectionURIs.cs

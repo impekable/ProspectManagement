@@ -35,6 +35,7 @@
         </Command>
       </CustomCommands>
     </CustomCommands>
+    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>pdbonly</DebugType>
@@ -120,31 +121,31 @@
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Collections.Immutable">
-      <HintPath>..\packages\System.Collections.Immutable.1.7.0\lib\netstandard2.0\System.Collections.Immutable.dll</HintPath>
+      <HintPath>..\packages\System.Collections.Immutable.1.7.1\lib\netstandard2.0\System.Collections.Immutable.dll</HintPath>
     </Reference>
     <Reference Include="MvvmValidation">
-      <HintPath>..\packages\MvvmValidation.3.1.0\lib\netstandard1.0\MvvmValidation.dll</HintPath>
+      <HintPath>..\packages\MvvmValidation.3.1.1\lib\netstandard1.0\MvvmValidation.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.IdentityModel.Clients.ActiveDirectory">
       <HintPath>..\packages\Microsoft.IdentityModel.Clients.ActiveDirectory.5.2.7\lib\xamarinios10\Microsoft.IdentityModel.Clients.ActiveDirectory.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AppCenter">
-      <HintPath>..\packages\Microsoft.AppCenter.3.0.0\lib\Xamarin.iOS10\Microsoft.AppCenter.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AppCenter.3.2.1\lib\Xamarin.iOS10\Microsoft.AppCenter.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AppCenter.iOS.Bindings">
-      <HintPath>..\packages\Microsoft.AppCenter.3.0.0\lib\Xamarin.iOS10\Microsoft.AppCenter.iOS.Bindings.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AppCenter.3.2.1\lib\Xamarin.iOS10\Microsoft.AppCenter.iOS.Bindings.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AppCenter.Analytics">
-      <HintPath>..\packages\Microsoft.AppCenter.Analytics.3.0.0\lib\Xamarin.iOS10\Microsoft.AppCenter.Analytics.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AppCenter.Analytics.3.2.1\lib\Xamarin.iOS10\Microsoft.AppCenter.Analytics.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AppCenter.Analytics.iOS.Bindings">
-      <HintPath>..\packages\Microsoft.AppCenter.Analytics.3.0.0\lib\Xamarin.iOS10\Microsoft.AppCenter.Analytics.iOS.Bindings.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AppCenter.Analytics.3.2.1\lib\Xamarin.iOS10\Microsoft.AppCenter.Analytics.iOS.Bindings.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AppCenter.Crashes">
-      <HintPath>..\packages\Microsoft.AppCenter.Crashes.3.0.0\lib\Xamarin.iOS10\Microsoft.AppCenter.Crashes.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AppCenter.Crashes.3.2.1\lib\Xamarin.iOS10\Microsoft.AppCenter.Crashes.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AppCenter.Crashes.iOS.Bindings">
-      <HintPath>..\packages\Microsoft.AppCenter.Crashes.3.0.0\lib\Xamarin.iOS10\Microsoft.AppCenter.Crashes.iOS.Bindings.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AppCenter.Crashes.3.2.1\lib\Xamarin.iOS10\Microsoft.AppCenter.Crashes.iOS.Bindings.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
@@ -176,12 +177,6 @@
     <Reference Include="MvvmCross.Plugin.Email">
       <HintPath>..\packages\MvvmCross.Plugin.Email.6.4.2\lib\xamarinios10\MvvmCross.Plugin.Email.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.ProjectOxford.Vision">
-      <HintPath>..\packages\Microsoft.ProjectOxford.Vision.1.0.393\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\Microsoft.ProjectOxford.Vision.dll</HintPath>
-    </Reference>
-    <Reference Include="Plugin.Permissions">
-      <HintPath>..\packages\Plugin.Permissions.3.0.0.12\lib\xamarinios10\Plugin.Permissions.dll</HintPath>
-    </Reference>
     <Reference Include="Plugin.Permissions">
       <HintPath>..\packages\Plugin.Permissions.3.0.0.12\lib\xamarinios10\Plugin.Permissions.dll</HintPath>
     </Reference>
@@ -189,7 +184,7 @@
       <HintPath>..\packages\Microsoft.ProjectOxford.Vision.1.0.393\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\Microsoft.ProjectOxford.Vision.dll</HintPath>
     </Reference>
     <Reference Include="Plugin.Media">
-      <HintPath>..\packages\Xam.Plugin.Media.4.0.1.5\lib\xamarinios10\Plugin.Media.dll</HintPath>
+      <HintPath>..\packages\Xam.Plugin.Media.5.0.1\lib\xamarinios10\Plugin.Media.dll</HintPath>
     </Reference>
     <Reference Include="MvvmCross.Plugin.PhoneCall">
       <HintPath>..\packages\MvvmCross.Plugin.PhoneCall.6.4.2\lib\xamarinios10\MvvmCross.Plugin.PhoneCall.dll</HintPath>
@@ -240,16 +235,16 @@
       <HintPath>..\packages\Microsoft.Extensions.Logging.Abstractions.3.1.0\lib\netstandard2.0\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="System.Buffers">
-      <HintPath>..\packages\System.Buffers.4.4.0\lib\netstandard2.0\System.Buffers.dll</HintPath>
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\netstandard2.0\System.Buffers.dll</HintPath>
     </Reference>
     <Reference Include="System.IO.Pipelines">
       <HintPath>..\packages\System.IO.Pipelines.4.7.0\lib\netstandard2.0\System.IO.Pipelines.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.CompilerServices.Unsafe">
-      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.7.1\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="System.Memory">
-      <HintPath>..\packages\System.Memory.4.5.3\lib\netstandard2.0\System.Memory.dll</HintPath>
+      <HintPath>..\packages\System.Memory.4.5.4\lib\netstandard2.0\System.Memory.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Extensions.Primitives">
       <HintPath>..\packages\Microsoft.Extensions.Primitives.3.1.0\lib\netstandard2.0\Microsoft.Extensions.Primitives.dll</HintPath>
@@ -306,22 +301,34 @@
       <HintPath>..\packages\Microsoft.AspNet.SignalR.Client.2.4.1\lib\netstandard2.0\Microsoft.AspNet.SignalR.Client.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.IdentityModel.Logging">
-      <HintPath>..\packages\Microsoft.IdentityModel.Logging.5.6.0\lib\netstandard2.0\Microsoft.IdentityModel.Logging.dll</HintPath>
+      <HintPath>..\packages\Microsoft.IdentityModel.Logging.6.6.0\lib\netstandard2.0\Microsoft.IdentityModel.Logging.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.IdentityModel.Tokens">
-      <HintPath>..\packages\Microsoft.IdentityModel.Tokens.5.6.0\lib\netstandard2.0\Microsoft.IdentityModel.Tokens.dll</HintPath>
+      <HintPath>..\packages\Microsoft.IdentityModel.Tokens.6.6.0\lib\netstandard2.0\Microsoft.IdentityModel.Tokens.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.IdentityModel.JsonWebTokens">
-      <HintPath>..\packages\Microsoft.IdentityModel.JsonWebTokens.5.6.0\lib\netstandard2.0\Microsoft.IdentityModel.JsonWebTokens.dll</HintPath>
+      <HintPath>..\packages\Microsoft.IdentityModel.JsonWebTokens.6.6.0\lib\netstandard2.0\Microsoft.IdentityModel.JsonWebTokens.dll</HintPath>
     </Reference>
     <Reference Include="System.IdentityModel.Tokens.Jwt">
-      <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.5.6.0\lib\netstandard2.0\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+      <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.6.6.0\lib\netstandard2.0\System.IdentityModel.Tokens.Jwt.dll</HintPath>
     </Reference>
     <Reference Include="Twilio">
-      <HintPath>..\packages\Twilio.5.37.6\lib\netstandard2.0\Twilio.dll</HintPath>
+      <HintPath>..\packages\Twilio.5.42.0\lib\netstandard2.0\Twilio.dll</HintPath>
     </Reference>
     <Reference Include="Twilio.Voice.iOS">
-      <HintPath>..\packages\Twilio.Voice.iOS.XamarinBinding.5.0.0\lib\xamarinios10\Twilio.Voice.iOS.dll</HintPath>
+      <HintPath>..\packages\Twilio.Voice.iOS.XamarinBinding.5.2.1\lib\Xamarin.iOS10\Twilio.Voice.iOS.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Rest.ClientRuntime">
+      <HintPath>..\packages\Microsoft.Rest.ClientRuntime.2.3.21\lib\netstandard2.0\Microsoft.Rest.ClientRuntime.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Rest.ClientRuntime.Azure">
+      <HintPath>..\packages\Microsoft.Rest.ClientRuntime.Azure.3.3.19\lib\netstandard2.0\Microsoft.Rest.ClientRuntime.Azure.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Azure.CognitiveServices.Vision.ComputerVision">
+      <HintPath>..\packages\Microsoft.Azure.CognitiveServices.Vision.ComputerVision.5.0.0\lib\netstandard1.4\Microsoft.Azure.CognitiveServices.Vision.ComputerVision.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Essentials">
+      <HintPath>..\packages\Xamarin.Essentials.1.5.2\lib\xamarinios10\Xamarin.Essentials.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

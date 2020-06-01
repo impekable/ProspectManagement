@@ -1,8 +1,11 @@
 using CoreGraphics;
 using Foundation;
+using MvvmCross.Base;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
 using MvvmCross.Platforms.Ios.Views;
+using MvvmCross.ViewModels;
+using ProspectManagement.Core.Interactions;
 using ProspectManagement.Core.ViewModels;
 using ProspectManagement.iOS.Sources;
 using ProspectManagement.iOS.Utility;
@@ -16,6 +19,27 @@ namespace ProspectManagement.iOS.Views
     public partial class SMSInboxView : MvxViewController<SMSInboxViewModel>
     {
         private SMSInboxTableViewSource source;
+
+        private IMvxInteraction<TableRow> _updateRowInteraction;
+        public IMvxInteraction<TableRow> UpdateRowInteraction
+        {
+            get => _updateRowInteraction;
+            set
+            {
+                if (_updateRowInteraction != null)
+                    _updateRowInteraction.Requested -= OnUpdateRowInteractionRequested;
+
+                _updateRowInteraction = value;
+                _updateRowInteraction.Requested += OnUpdateRowInteractionRequested;
+            }
+        }
+
+        private void OnUpdateRowInteractionRequested(object sender, MvxValueEventArgs<TableRow> eventArgs)
+        {
+            NSIndexPath[] rowsToReload = new NSIndexPath[] { NSIndexPath.FromRowSection(eventArgs.Value.TableRowToUpdate, 0) };
+            MasterTableView.ReloadRows(rowsToReload, UITableViewRowAnimation.None);
+            MasterTableView.SelectRow(NSIndexPath.FromRowSection(eventArgs.Value.TableRowToUpdate, 0), true, UITableViewScrollPosition.None);
+        }
 
         public SMSInboxView(IntPtr handle) : base(handle)
         {
@@ -44,6 +68,7 @@ namespace ProspectManagement.iOS.Views
 
             var set = this.CreateBindingSet<SMSInboxView, SMSInboxViewModel>();
             set.Bind(FilterSegmentControl).To(vm => vm.SelectedSegment);
+            set.Bind(this).For(view => view.UpdateRowInteraction).To(viewModel => viewModel.UpdateRowInteraction).OneWay();
             setTableViewSource(set);
 
             var refreshControl = new UIRefreshControl();

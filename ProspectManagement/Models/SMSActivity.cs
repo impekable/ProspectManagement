@@ -29,6 +29,9 @@ namespace ProspectManagement.Core.Models
         [JsonProperty("unreadCount")]
         public int UnreadCount { get; set; }
 
+        [JsonProperty("unread")]
+        public bool Unread { get; set; }
+
         [JsonProperty("direction")]
         public string Direction { get; set; }
 

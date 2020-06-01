@@ -1,8 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 using CoreGraphics;
 using Foundation;
+using MvvmCross.Binding.BindingContext;
+using MvvmCross.Binding.Extensions;
 using MvvmCross.Platforms.Ios.Binding.Views;
+using MvvmCross.Platforms.Ios.Views;
+using Nito.Mvvm;
+using ProspectManagement.Core.Interfaces.InfiniteScroll;
 using ProspectManagement.Core.Models;
 using ProspectManagement.iOS.Views;
 using UIKit;
@@ -13,10 +20,15 @@ namespace ProspectManagement.iOS.Sources
     {
         private static readonly NSString outgoingCellIdentifier = new NSString("OutgoingCell");
         private static readonly NSString incomingCellIdentifier = new NSString("IncomingCell");
-        
+
+        private bool initialScroll;
+
+        public CGPoint OffsetPriorToLoad { get; set; }
+
         public SMSTableViewSource(UITableView tableView, NSString cellIdentifier) : base(tableView, new NSString("BubbleCell"))
         {
             DeselectAutomatically = false;
+            initialScroll = true;
 
             tableView.RegisterNibForCellReuse(UINib.FromName("OutgoingCell", NSBundle.MainBundle),
                                               outgoingCellIdentifier);
@@ -24,13 +36,27 @@ namespace ProspectManagement.iOS.Sources
                                               incomingCellIdentifier);
         }
 
+        public void CreateBinding<TSource>(MvxViewController controller, Expression<Func<TSource, object>> sourceProperty)
+        {
+            controller.CreateBinding(this).To(sourceProperty).Apply();
+            LoadMoreItems();
+        }
+
+        public override void WillEndDragging(UIScrollView scrollView, CGPoint velocity, ref CGPoint targetContentOffset)
+        {
+            if ((scrollView.ContentOffset.Y + scrollView.SafeAreaInsets.Top) < 0)
+            {
+                Console.WriteLine("scrolling up past top: " + scrollView.ContentOffset.Y + scrollView.SafeAreaInsets.Top);
+                LoadMoreItems();
+            }
+        }
+
         protected override UITableViewCell GetOrCreateCellFor(UITableView tableView, NSIndexPath indexPath, object item)
         {
             var smsMessage = (SmsActivity)item;
 
-            var cell = (BubbleCell)tableView.DequeueReusableCell(GetReuseId(smsMessage));    
+            var cell = (BubbleCell)tableView.DequeueReusableCell(GetReuseId(smsMessage));
             cell.Message = smsMessage;
-            //cell.Transform = CGAffineTransform.MakeRotation(-3.14159f);
 
             return cell;
         }
@@ -38,6 +64,21 @@ namespace ProspectManagement.iOS.Sources
         NSString GetReuseId(SmsActivity msg)
         {
             return msg.Direction.Equals("outbound") ? outgoingCellIdentifier : incomingCellIdentifier;
+        }
+
+        private void LoadMoreItems()
+        {
+            NotifyTask taskCompletion = NotifyTask.Create(LoadMoreItemsAsync());
+        }
+
+        public async Task LoadMoreItemsAsync()
+        {
+            ICoreSupportIncrementalLoading source = ItemsSource as ICoreSupportIncrementalLoading;
+
+            if (source != null)
+            {
+                await source.LoadMoreItemsAsync(prependItem: true);
+            }
         }
     }
 }

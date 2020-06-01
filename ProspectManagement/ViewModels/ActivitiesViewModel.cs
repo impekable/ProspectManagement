@@ -211,7 +211,7 @@ namespace ProspectManagement.Core.ViewModels
                             {"SalesAssociate", Prospect.ProspectCommunity.SalespersonAddressNumber + " " + Prospect.ProspectCommunity.SalespersonName},
                             {"User", _user.AddressBook.AddressNumber + " " + _user.AddressBook.Name},
                         });
-                         _navigationService.Navigate<ActivityDetailViewModel, KeyValuePair<Prospect, Activity>>(new KeyValuePair<Prospect, Activity>(_prospect, activity));
+                         await _navigationService.Navigate<ActivityDetailViewModel, KeyValuePair<Prospect, Activity>>(new KeyValuePair<Prospect, Activity>(_prospect, activity));
 
                      }
                  }));

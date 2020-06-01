@@ -26,14 +26,19 @@ namespace ProspectManagement.Core.Repositories
             return await GetDataObjectFromAPI <List<Prospect>>(string.Format(_e1Uri + "Prospects?CommunityList={0}&SalespersonId={1}&Page={2}&PageSize={3}&SearchTerm={4}&Type={5}&SearchTermScope={6}", communityList, salespersonId == null ? "" : salespersonId.Value.ToString(), page, pageSize, searchTerm, type, searchTermScope), accessToken);
         }
 
-        public async Task<List<SmsActivity>> GetProspectSMSActivityAsync(int prospectId, string accessToken)
+        public async Task<List<SmsActivity>> GetProspectSMSActivityAsync(int prospectId, string accessToken, int page, int pageSize)
         {
-            return await GetDataObjectFromAPI<List<SmsActivity>>(_e1Uri + $"Prospects/{prospectId}/SMSActvity", accessToken);
+            return await GetDataObjectFromAPI<List<SmsActivity>>(_e1Uri + $"Prospects/{prospectId}/SMSActivity?Page={page}&PageSize={pageSize}", accessToken);
         }
 
         public async Task<bool> UpdateProspectAsync(Prospect prospect, string accessToken)
         {
             return await PutDataObjectToAPI(string.Format(_e1Uri + "Prospects/{0}", prospect.ProspectAddressNumber), prospect, accessToken);
+        }
+
+        public async Task<bool> UpdateProspectSMSActivityAsync(int prospectId, string accessToken)
+        {
+            return await PutDataObjectToAPI(_e1Uri + $"Prospects/{prospectId}/SMSActivity", null as object, accessToken);
         }
     }
 }

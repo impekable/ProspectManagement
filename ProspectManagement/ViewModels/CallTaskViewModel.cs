@@ -13,7 +13,7 @@ using Twilio.Rest.Api.V2010.Account;
 
 namespace ProspectManagement.Core.ViewModels
 {
-    public class CallTaskViewModel: BaseViewModel, IMvxViewModel<KeyValuePair<Activity, User>>
+    public class CallTaskViewModel : BaseViewModel, IMvxViewModel<KeyValuePair<Activity, User>>
     {
         private IMvxCommand _closeCommand;
 
@@ -44,14 +44,11 @@ namespace ProspectManagement.Core.ViewModels
             {
                 _selectedCall = value;
                 if (_selectedCall.Key.Equals("Mobile"))
-                    if (User.UsingTelephony)
-                        TwilioPhoneCallCommand.Execute(Activity.Prospect.MobilePhoneNumber.Phone);
+                    TwilioPhoneCallCommand.Execute(Activity.Prospect.MobilePhoneNumber.Phone);
                 else if (_selectedCall.Key.Equals("Home"))
-                    if (User.UsingTelephony)
-                        TwilioPhoneCallCommand.Execute(Activity.Prospect.HomePhoneNumber.Phone);
+                    TwilioPhoneCallCommand.Execute(Activity.Prospect.HomePhoneNumber.Phone);
                 else if (_selectedCall.Key.Equals("Work"))
-                    if (User.UsingTelephony)
-                        TwilioPhoneCallCommand.Execute(Activity.Prospect.WorkPhoneNumber.Phone);
+                    TwilioPhoneCallCommand.Execute(Activity.Prospect.WorkPhoneNumber.Phone);
                 RaisePropertyChanged(() => SelectedCall);
             }
         }
@@ -82,7 +79,7 @@ namespace ProspectManagement.Core.ViewModels
                             CallSid = call.Sid
                         };
                         var callActivityResult = await _activityService.LogCallAsync(Activity.Prospect.ProspectAddressNumber, callActivity);
-                        if (!string.IsNullOrEmpty(callActivityResult.ActivityID))
+                        if (callActivityResult != null && !string.IsNullOrEmpty(callActivityResult.ActivityID))
                         {
                             var phoneCallActivity = new PhoneCallActivity()
                             {

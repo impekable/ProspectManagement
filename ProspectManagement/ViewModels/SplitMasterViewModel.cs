@@ -23,6 +23,7 @@ namespace ProspectManagement.Core.ViewModels
 	{
 		public event EventHandler LoadingDataFromBackendStarted;
 		public event EventHandler LoadingDataFromBackendCompleted;
+		private event EventHandler<int> _incrementalLoadFromBackendCompleted;
 
 		private readonly IDialogService _dialogService;
 		private readonly IAuthenticator _authService;
@@ -161,6 +162,10 @@ namespace ProspectManagement.Core.ViewModels
 				{
 					if (_prospects == null)
 					{
+						_incrementalLoadFromBackendCompleted += (sender, e) =>
+						{
+							OnLoadingDataFromBackendCompleted();
+						};
 						_prospects = _collectionFactory.GetCollection(async (count, pageSize) =>
 						{
 							var authResult = await _authService.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource);
@@ -178,11 +183,10 @@ namespace ProspectManagement.Core.ViewModels
 									var salespersonId = SelectedSegment == 0 ? (int?)null : SelectedSegment == 1 ? 0 : User.AddressNumber;
 									var prospectList = await _prospectService.GetProspectsAsync(authResult.AccessToken, _communities, salespersonId, searchType, Page, pageSize, SearchTerm, ScopeFilter);
 									newProspects = prospectList.ToObservableCollection();
-									OnLoadingDataFromBackendCompleted();
 								});
 							}
 							return newProspects;
-						}, _pageSize);
+						}, _incrementalLoadFromBackendCompleted, _pageSize);
 					}
 				}
 				return _prospects;

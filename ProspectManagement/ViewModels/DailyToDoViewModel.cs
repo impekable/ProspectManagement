@@ -21,6 +21,7 @@ namespace ProspectManagement.Core.ViewModels
 	{
 		public event EventHandler LoadingDataFromBackendStarted;
 		public event EventHandler LoadingDataFromBackendCompleted;
+		private event EventHandler<int> _incrementalLoadFromBackendCompleted;
 
 		private readonly IAuthenticator _authService;
 		private readonly IActivityService _activityService;
@@ -107,6 +108,10 @@ namespace ProspectManagement.Core.ViewModels
 				{
 					if (_activities == null)
 					{
+						_incrementalLoadFromBackendCompleted += (sender, e) =>
+						{
+							OnLoadingDataFromBackendCompleted();
+						};
 						_activities = _collectionFactory.GetCollection(async (count, pageSize) =>
 						{
 							var authResult = await _authService.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource);
@@ -126,11 +131,10 @@ namespace ProspectManagement.Core.ViewModels
 									{
 										newActivities.Add(new DailyToDoTaskViewModel(Messenger, _navigationService, _activityService) { Activity = item, User = User });
 									}
-									OnLoadingDataFromBackendCompleted();
 								});
 							}
 							return newActivities;
-						}, _pageSize);
+						}, _incrementalLoadFromBackendCompleted, _pageSize);
 					}
 				}
 				return _activities;
