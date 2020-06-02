@@ -1,5 +1,6 @@
 ﻿using System;
 using Foundation;
+using ProspectManagement.Core;
 using ProspectManagement.iOS.Utility;
 using UIKit;
 
@@ -9,9 +10,9 @@ namespace ProspectManagement.iOS.Views
     {
         public event EventHandler SelectedCodeChanged;
 
-        public void OnSelectedCodeChanged()
+        public void OnSelectedCodeChanged(EventArgs value)
         {
-            SelectedCodeChanged?.Invoke(null, EventArgs.Empty);
+            SelectedCodeChanged?.Invoke(null, value);
         }
 
         private object _selectedCode;
@@ -22,7 +23,7 @@ namespace ProspectManagement.iOS.Views
             }
             set{
                 _selectedCode = value;
-                OnSelectedCodeChanged();
+                OnSelectedCodeChanged(new ObjectEventArgs(_selectedCode));
             }
         }
 

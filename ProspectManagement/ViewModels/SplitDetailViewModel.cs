@@ -337,6 +337,7 @@ namespace ProspectManagement.Core.ViewModels
             _dialogService = dialogService;
             _twilioService = twilioService;
             _activityService = activityService;
+            Phones = new ObservableCollection<KeyValuePair<string, string>>();
 
             Messenger.Subscribe<RefreshMessage>(message => _clearDetailsInteraction.Raise(), MvxReference.Strong);
             Messenger.Subscribe<ProspectChangedMessage>(message => Prepare(new KeyValuePair<Prospect, User>(message.UpdatedProspect, User)), MvxReference.Strong);
@@ -391,9 +392,9 @@ namespace ProspectManagement.Core.ViewModels
                     if (_assignedTo != null)
                     {
                         Assigned = true;
-                        RaisePropertyChanged(() => AllowTexting);
-                        RaisePropertyChanged(() => AllowCalling);
-                        RaisePropertyChanged(() => AllowEmailing);
+                        await RaisePropertyChanged(() => AllowTexting);
+                        await RaisePropertyChanged(() => AllowCalling);
+                        await RaisePropertyChanged(() => AllowEmailing);
                         Prospect.ProspectCommunity.SalespersonAddressNumber = _assignedTo.AddressNumber;
                         Prospect.ProspectCommunity.SalespersonName = _assignedTo.Name;
                         Messenger.Publish(new ProspectAssignedMessage(this) { AssignedProspect = Prospect });
@@ -522,17 +523,31 @@ namespace ProspectManagement.Core.ViewModels
         {
             Prospect = param.Key;
             User = param.Value;
-            RaisePropertyChanged(() => AllowCalling);
-            RaisePropertyChanged(() => AllowEmailing);
-            RaisePropertyChanged(() => AllowTexting);
-            Phones = new ObservableCollection<KeyValuePair<string, string>>();
+            await RaisePropertyChanged(() => AllowCalling);
+            await RaisePropertyChanged(() => AllowEmailing);
+            await RaisePropertyChanged(() => AllowTexting);
+            setPhones();
+        }
+
+        private async void setPhones()
+        {
+            for (var i = Phones.Count - 1; i >= 0; i--)
+            {
+                var pair = Phones[i];
+                if (pair.Key.Equals("Home"))
+                    Phones.Remove(pair);
+                else if (pair.Key.Equals("Mobile"))
+                    Phones.Remove(pair);
+                else if (pair.Key.Equals("Work"))
+                    Phones.Remove(pair);
+            }
             if (HomePhoneEntered)
                 Phones.Add(new KeyValuePair<string, string>("Home", Prospect.HomePhoneNumber.Phone));
             if (MobilePhoneEntered)
                 Phones.Add(new KeyValuePair<string, string>("Mobile", Prospect.MobilePhoneNumber.Phone));
             if (WorkPhoneEntered)
                 Phones.Add(new KeyValuePair<string, string>("Work", Prospect.WorkPhoneNumber.Phone));
+            await RaisePropertyChanged(() => Phones);
         }
-
     }
 }

@@ -62,7 +62,10 @@ namespace ProspectManagement.Core.Models
         public string CallSid { get; set; }
         [JsonProperty("callPlanId")]
         public int CallPlanId { get; set; }
-
+        [JsonProperty("recordingURL")]
+        public string RecordingURL { get; set; }
+        [JsonProperty("transcription")]
+        public string Transcription { get; set; }
         public Prospect Prospect { get; set; }
 
         public class EmailActivityDetail 

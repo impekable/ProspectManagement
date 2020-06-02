@@ -12,6 +12,8 @@ using ProspectManagement.iOS.Services;
 using MvvmCross.Base;
 using ProspectManagement.Core.Models.App;
 using CallKit;
+using System.Collections.Generic;
+using ProspectManagement.Core;
 
 namespace ProspectManagement.iOS.Views
 {
@@ -225,11 +227,17 @@ namespace ProspectManagement.iOS.Views
 
             _CallAlertController = new CustomAlertController("Call");
             set.Bind(_CallAlertController).For(p => p.AlertController).To(vm => vm.Phones);
-            set.Bind(_CallAlertController).For(p => p.SelectedCode).To(vm => vm.SelectedCall);
+            //set.Bind(_CallAlertController).For(p => p.SelectedCode).To(vm => vm.SelectedCall);
 
             set.Apply();
 
-            ProspectTabBar.SelectedItem = ProspectTabBar.Items[0];
+            _CallAlertController.SelectedCodeChanged += (sender, e) =>
+            {
+                var arg = e as ObjectEventArgs;
+                ViewModel.SelectedCall = (KeyValuePair<string,string>)arg.BusinessObject;
+            };
+
+                ProspectTabBar.SelectedItem = ProspectTabBar.Items[0];
             ProspectTabBar.ItemSelected += (sender, e) =>
             {
                 if (e.Item.Tag == 1)
@@ -252,6 +260,7 @@ namespace ProspectManagement.iOS.Views
                     popPresenter.SourceView = PhoneButton;
                     popPresenter.SourceRect = PhoneButton.Bounds;
                 }
+
                 PresentViewController(_CallAlertController.AlertController, true, null);
             };
         }

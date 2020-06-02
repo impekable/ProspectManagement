@@ -143,7 +143,7 @@ namespace ProspectManagement.iOS.Views
             RegisterForKeyboardNotifications();
 
             MessagesTableView.ScrollIndicatorInsets = new UIEdgeInsets(0, 0, 0, MessagesTableView.Bounds.Size.Width - 8);
-
+            MessagesTableView.AllowsSelection = false;
             MessagesTableView.TableFooterView = new UIView();
 
             var set = this.CreateBindingSet<SMSInboxDetailView, SMSInboxDetailViewModel>();

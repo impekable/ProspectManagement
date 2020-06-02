@@ -67,7 +67,16 @@ namespace ProspectManagement.Core.ViewModels
                     else return "NO EMAIL BODY";
 
                 }
-                else if (Activity.Notes != null)
+                else if (Activity.Transcription != null || Activity.RecordingURL != null)
+                {
+                    var html = size + Activity.Transcription.Replace(System.Environment.NewLine, "<br>");
+                    if (Activity.RecordingURL != null)
+                    {
+                        html += $"<br><audio controls><source src='{Activity.RecordingURL}.mp3' type='audio/mpeg'></source</audio>";
+                    }
+                    return html;
+                }
+                else if (!string.IsNullOrEmpty(Activity.Notes))
                     return size + Activity.Notes.Replace(System.Environment.NewLine, "<br>");
                 else
                     return "NO NOTES";

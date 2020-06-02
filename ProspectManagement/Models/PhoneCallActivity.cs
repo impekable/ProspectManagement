@@ -47,7 +47,7 @@ namespace ProspectManagement.Core.Models
         [JsonProperty("phoneCallActivityID")]
         public string PhoneCallActivityId { get; set; }
 
-        [JsonProperty("phoneCallinstanceID")]
+        [JsonProperty("phoneCallInstanceID")]
         public string PhoneCallInstanceId { get; set; }
 
         [JsonProperty("followUpTaskStartDate")]
