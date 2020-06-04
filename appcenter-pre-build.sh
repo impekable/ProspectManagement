@@ -22,8 +22,8 @@ sed -i '' "s/REST_RESOURCE_NAME/${REST_RESOURCE_NAME}/g" $KEYPATH/ProspectManage
 sed -i '' "s/CLIENT_ID/${CLIENT_ID}/g" $KEYPATH/ProspectManagement/Constants/PrivateKeys.cs
 sed -i '' "s/AZURE_KEY/${AZURE_KEY}/g" $KEYPATH/ProspectManagement/Constants/PrivateKeys.cs
 sed -i '' "s/APPCENTER_SECRET/${APPCENTER_SECRET}/g" $KEYPATH/ProspectManagement/Constants/PrivateKeys.cs
-sed -i '' "s/AZURE_NOTIFICATION_CONNECTION_STRING/${AZURE_NOTIFICATION_CONNECTION_STRING}/g" $KEYPATH/ProspectManagement/Constants/AzurePushConstants.cs
-sed -i '' "s/E1CRMWEBAPP_URI/${E1CRMWEBAPP_URI}/g" $KEYPATH/ProspectManagement/Constants/PrivateKeys.cs
+sed -i '' "s#E1CRMWEBAPP_URI#${E1CRMWEBAPP_URI}#g" $KEYPATH/ProspectManagement/Constants/ConnectionURIs.cs
+sed -i '' "s#AZURE_NOTIFICATION_CONNECTION_STRING#${AZURE_NOTIFICATION_CONNECTION_STRING}#g" $KEYPATH/ProspectManagement/Constants/AzurePushConstants.cs
 echo "${ENVIRONMENT}"
 if [ "${ENVIRONMENT}" == "DEV" ]; then
     plutil -replace CFBundleDisplayName -string "Prospects Dev" $KEYPATH/iOS/info.plist
