@@ -26,6 +26,7 @@ namespace ProspectManagement.Core.ViewModels
         private readonly IAuthenticator _authService;
         private readonly IActivityService _activityService;
         private readonly IProspectService _prospectService;
+        private readonly IUserService _userService;
         protected IMvxMessenger Messenger;
         private readonly IMvxNavigationService _navigationService;
         private readonly IIncrementalCollectionFactory _collectionFactory;
@@ -98,9 +99,10 @@ namespace ProspectManagement.Core.ViewModels
         {
             get
             {
-                return _homeCommand ?? (_homeCommand = new MvxCommand(() =>
+                return _homeCommand ?? (_homeCommand = new MvxCommand(async () =>
                 {
-                    _navigationService.Navigate<LandingViewModel, User>(User);
+                    User = await _userService.GetLoggedInUser();
+                    await _navigationService.Navigate<LandingViewModel, User>(User);
                 }));
             }
         }
@@ -188,7 +190,7 @@ namespace ProspectManagement.Core.ViewModels
             LoadingDataFromBackendCompleted?.Invoke(null, EventArgs.Empty);
         }
 
-        public SMSInboxViewModel(IMvxMessenger messenger, IAuthenticator authService, IProspectService prospectService, IActivityService activityService, IIncrementalCollectionFactory collectionFactory, IMvxNavigationService navigationService)
+        public SMSInboxViewModel(IUserService userService, IMvxMessenger messenger, IAuthenticator authService, IProspectService prospectService, IActivityService activityService, IIncrementalCollectionFactory collectionFactory, IMvxNavigationService navigationService)
         {
             Messenger = messenger;
             _authService = authService;
@@ -196,6 +198,7 @@ namespace ProspectManagement.Core.ViewModels
             _collectionFactory = collectionFactory;
             _navigationService = navigationService;
             _prospectService = prospectService;
+            _userService = userService;
         }
 
         public void Prepare(User parameter)

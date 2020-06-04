@@ -66,7 +66,7 @@ namespace ProspectManagement.Core.ViewModels
                         from: new Twilio.Types.PhoneNumber(Activity.Prospect.ProspectCommunity.Community.SalesOffice.TwilioPhoneNumber),
                         to: new Twilio.Types.PhoneNumber(User.MobilePhoneNumber.Phone),
                         machineDetection: "Enable",
-                        url: new Uri($"https://optoutdv.khov.com/E1CRMWebApp/Call/Connect?phoneNumber={param}")
+                        url: new Uri($"{Constants.ConnectionURIs.E1CRMWebAppBaseURI}/Call/Connect?phoneNumber={param}")
                     );
 
                     if (!string.IsNullOrEmpty(call.Sid))

@@ -8,7 +8,7 @@ using MvvmCross.Platforms.Ios.Presenters.Attributes;
 using MvvmCross.ViewModels;
 using Plugin.Media.Abstractions;
 using Plugin.Media;
-using Microsoft.ProjectOxford.Vision;
+//using Microsoft.ProjectOxford.Vision;
 using ProspectManagement.Core.Services;
 using ProspectManagement.Core.Converters;
 using ProspectManagement.iOS.Services;

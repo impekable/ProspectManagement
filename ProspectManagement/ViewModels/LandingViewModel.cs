@@ -2,16 +2,20 @@
 using System.Windows.Input;
 using MvvmCross.Commands;
 using MvvmCross.Navigation;
+using MvvmCross.Plugin.Messenger;
 using MvvmCross.ViewModels;
 using ProspectManagement.Core.Interfaces.Services;
+using ProspectManagement.Core.Messages;
 using ProspectManagement.Core.Models;
 
 namespace ProspectManagement.Core.ViewModels
 {
     public class LandingViewModel : BaseViewModel, IMvxViewModel<User>
     {
+        protected IMvxMessenger Messenger;
         private readonly IDialogService _dialogService;
         private readonly IAuthenticator _authService;
+        private readonly IUserService _userService;
         private readonly IMvxNavigationService _navigationService;
         private User _user;
 
@@ -81,11 +85,20 @@ namespace ProspectManagement.Core.ViewModels
             }
         }
 
-        public LandingViewModel(IMvxNavigationService navigationService, IDialogService dialogService, IAuthenticator authService)
+        public LandingViewModel(IMvxNavigationService navigationService, IDialogService dialogService, IAuthenticator authService, IMvxMessenger messenger, IUserService userService)
         {
             _navigationService = navigationService;
             _dialogService = dialogService;
             _authService = authService;
+            _userService = userService;
+            Messenger = messenger;
+
+            Messenger.Subscribe<SMSReceivedMessage>(message => Process(message.SMSActivityReceived), MvxReference.Strong);
+        }
+
+        private async void Process(SmsActivity smsActivityReceived)
+        {
+            User = await _userService.GetLoggedInUser();
         }
 
         public void Prepare(User parameter)

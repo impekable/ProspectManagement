@@ -31,8 +31,8 @@ namespace ProspectManagement.Core.ViewModels
 		private readonly IProspectService _prospectService;
 		protected IMvxMessenger Messenger;
 		private readonly IMvxNavigationService _navigationService;
-
-		private readonly IIncrementalCollectionFactory _collectionFactory;
+        private readonly IUserService _userService;
+        private readonly IIncrementalCollectionFactory _collectionFactory;
 		private ObservableCollection<Prospect> _prospects;
 
 		private ICommand _selectionChangedCommand;
@@ -60,9 +60,10 @@ namespace ProspectManagement.Core.ViewModels
 		{
 			get
 			{
-				return _homeCommand ?? (_homeCommand = new MvxCommand(() =>
+				return _homeCommand ?? (_homeCommand = new MvxCommand(async () =>
 				{
-					_navigationService.Navigate<LandingViewModel, User>(User);
+					User = await _userService.GetLoggedInUser();
+					await _navigationService.Navigate<LandingViewModel, User>(User);
 				}));
 			}
 		}
@@ -231,7 +232,7 @@ namespace ProspectManagement.Core.ViewModels
 			}
 		}
 
-		public SplitMasterViewModel(IMvxMessenger messenger, IDialogService dialogService, IAuthenticator authService, ICommunityService communityService, IProspectService prospectService, IIncrementalCollectionFactory collectionFactory, IMvxNavigationService navigationService)
+		public SplitMasterViewModel(IUserService userService, IMvxMessenger messenger, IDialogService dialogService, IAuthenticator authService, ICommunityService communityService, IProspectService prospectService, IIncrementalCollectionFactory collectionFactory, IMvxNavigationService navigationService)
 		{
 			Messenger = messenger;
 			_dialogService = dialogService;
@@ -240,6 +241,7 @@ namespace ProspectManagement.Core.ViewModels
 			_prospectService = prospectService;
 			_collectionFactory = collectionFactory;
 			_navigationService = navigationService;
+			_userService = userService;
 
 			Messenger.Subscribe<ProspectChangedMessage>(message => ProspectUpdated(message.UpdatedProspect), MvxReference.Strong);
 			Messenger.Subscribe<ProspectAssignedMessage>(message => ProspectAssigned(message.AssignedProspect), MvxReference.Strong);
