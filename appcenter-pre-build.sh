@@ -29,20 +29,20 @@ if [ "${ENVIRONMENT}" == "DEV" ]; then
     plutil -replace CFBundleDisplayName -string "Prospects Dev" $KEYPATH/iOS/info.plist
     plutil -replace CFBundleIdentifier -string com.khov.prospects.dev $KEYPATH/iOS/info.plist
     plutil -replace XSAppIconAssets -string Resources/Assets.xcassets/AppIcons-DEV.appiconset $KEYPATH/iOS/info.plist
-    plutil -replace aps-environment -string "development" ../iOS/entitlements.plist
+    plutil -replace aps-environment -string "development" $KEYPATH/iOS/entitlements.plist
 elif [ "${ENVIRONMENT}" == "PY" ]; then
     plutil -replace CFBundleDisplayName -string "Prospects PY" $KEYPATH/iOS/info.plist
     plutil -replace CFBundleIdentifier -string com.khov.prospects.py $KEYPATH/iOS/info.plist
     plutil -replace XSAppIconAssets -string Resources/Assets.xcassets/AppIcons-PY.appiconset $KEYPATH/iOS/info.plist
-    plutil -replace aps-environment -string "production" ../iOS/entitlements.plist
+    plutil -replace aps-environment -string "production" $KEYPATH/iOS/entitlements.plist
 elif [ "${ENVIRONMENT}" == "TRN" ]; then
     plutil -replace CFBundleDisplayName -string "Prospects TRN" $KEYPATH/iOS/info.plist
     plutil -replace CFBundleIdentifier -string com.khov.prospects.trn $KEYPATH/iOS/info.plist
     plutil -replace XSAppIconAssets -string Resources/Assets.xcassets/AppIcons-TRN.appiconset $KEYPATH/iOS/info.plist
-    plutil -replace aps-environment -string "production" ../iOS/entitlements.plist
+    plutil -replace aps-environment -string "production" $KEYPATH/iOS/entitlements.plist
 elif [ "${ENVIRONMENT}" == "PROD" ]; then
     plutil -replace CFBundleDisplayName -string "Prospects" $KEYPATH/iOS/info.plist
     plutil -replace CFBundleIdentifier -string com.khov.prospects $KEYPATH/iOS/info.plist
     plutil -replace XSAppIconAssets -string Resources/Assets.xcassets/AppIcons.appiconset $KEYPATH/iOS/info.plist
-    plutil -replace aps-environment -string "production" ../iOS/entitlements.plist
+    plutil -replace aps-environment -string "production" $KEYPATH/iOS/entitlements.plist
 fi
