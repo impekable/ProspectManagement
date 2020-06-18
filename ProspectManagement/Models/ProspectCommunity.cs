@@ -21,13 +21,19 @@ namespace ProspectManagement.Core.Models
         public string SalespersonName { get; set; }
         [JsonProperty("appointmentStatus")]
         public string AppointmentStatus { get; set; }
-        [JsonProperty("startDate")]
-		public DateTime StartDate { get; set; }
-        [JsonProperty("endDate")]
-		public DateTime EndDate { get; set; }
+        [JsonProperty("agingStartDate")]
+		public DateTime AgingStartDate { get; set; }
+        [JsonProperty("lastActivityDate")]
+		public DateTime LastActivityDate { get; set; }
         [JsonProperty("enteredDate")]
         public DateTime EnteredDate { get; set; }
-		[JsonProperty("appointmentDate")]
+        [JsonProperty("systemActivityDate")]
+        public DateTime SystemActivityDate { get; set; }
+        [JsonProperty("firstInPersonVisitDate")]
+        public DateTime FirstInPersonVisitDate { get; set; }
+        [JsonProperty("lastInPersonVisitDate")]
+        public DateTime LastInPersonVisitDate { get; set; }
+        [JsonProperty("appointmentDate")]
         public DateTime? AppointmentDate { get; set; }
         [JsonProperty("communityDetail")]
         public Community Community { get; set; }

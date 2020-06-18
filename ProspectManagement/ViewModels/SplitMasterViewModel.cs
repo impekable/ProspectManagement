@@ -258,7 +258,7 @@ namespace ProspectManagement.Core.ViewModels
 					var prospect = Prospects.FirstOrDefault(p => p.ProspectAddressNumber == activity.ProspectAddressNumber);
 					if (prospect != null)
 					{
-						prospect.ProspectCommunity.EndDate = (DateTime)activity.DateCompleted;
+						prospect.ProspectCommunity.SystemActivityDate = (DateTime)activity.DateCompleted;
 						var request = new TableRow { TableRowToUpdate = Prospects.IndexOf(prospect) };
 						_updateRowInteraction.Raise(request);
 					}
@@ -305,7 +305,7 @@ namespace ProspectManagement.Core.ViewModels
 		public void Prepare(User parameter)
 		{
 			User = parameter; 
-            ScopeFilter = "All";
+            ScopeFilter = "Name";
 		}
 
         public void OnLoadingDataFromBackendStarted()

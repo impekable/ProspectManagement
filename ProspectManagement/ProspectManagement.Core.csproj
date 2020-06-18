@@ -56,5 +56,6 @@
     <PackageReference Include="MvvmCross.Plugin.Email" Version="6.4.2" />
     <PackageReference Include="Microsoft.AspNet.SignalR.Client" Version="2.4.1" />
     <PackageReference Include="Twilio" Version="5.42.0" />
+    <PackageReference Include="Polly" Version="7.2.1" />
   </ItemGroup>
 </Project>

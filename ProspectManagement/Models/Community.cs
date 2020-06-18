@@ -13,6 +13,8 @@ namespace ProspectManagement.Core.Models
         public string CommunityNumber { get; set; }
         [JsonProperty("description")]
         public string Description { get; set; }
+        [JsonProperty("internalDescription")]
+        public string InternalDescription { get; set; }
         [JsonProperty("division")]
         public string Division { get; set; }
         [JsonProperty("salesOffice")]

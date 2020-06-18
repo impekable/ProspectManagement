@@ -55,6 +55,8 @@ namespace ProspectManagement.Core.Models
 			return (Prospect)this.MemberwiseClone();
 		}
 
+        public string MailingName { get { return FirstName + " " + LastName; } }
+
         public override string ToString()
         {
             return string.Format("{0} {1}", Name , Status.Equals("Inactive") ? "***Inactive***" : "");

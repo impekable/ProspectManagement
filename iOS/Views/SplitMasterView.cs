@@ -114,6 +114,7 @@ namespace ProspectManagement.iOS.Views
             setTableViewSource(set);
 
             FilterSearchBar.ScopeButtonTitles = new string[] { "All", "Name", "Notes", "Phone", "Email", "Address" };
+            FilterSearchBar.SelectedScopeButtonIndex = 1;
             FilterSearchBar.SelectedScopeButtonIndexChanged += (sender, e) =>
             {
                 ViewModel.ScopeFilter = FilterSearchBar.ScopeButtonTitles[(int)e.SelectedScope];

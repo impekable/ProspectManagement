@@ -83,9 +83,9 @@ namespace ProspectManagement.iOS.Views
                 var theme = e.GetOperatingSystemTheme();
 
                 var set = this.CreateBindingSet<FollowUpViewCell, DailyToDoTaskViewModel>();
-                set.Bind(ProspectLabel).To(v => v.Activity.Prospect.Name);
+                set.Bind(ProspectLabel).To(v => v.Activity.Prospect.MailingName);
                 set.Bind(ProspectLabel).For(v => v.TextColor).To(v => v.Activity).WithConversion("TaskColor", theme);
-                set.Bind(CommunityLabel).To(v => v.Activity.Prospect.ProspectCommunity.Community.Description);
+                set.Bind(CommunityLabel).To(v => v.Activity.Prospect.ProspectCommunity.Community.InternalDescription);
                 set.Bind(CommunityLabel).For(v => v.TextColor).To(v => v.Activity).WithConversion("TaskColor", theme); 
                 set.Bind(TaskLabel).To(v => v.Activity.Subject);
                 set.Bind(TaskLabel).For(v => v.TextColor).To(v => v.Activity).WithConversion("TaskColor", theme);
@@ -93,7 +93,7 @@ namespace ProspectManagement.iOS.Views
                 set.Bind(CategoryLabel).For(v => v.TextColor).To(v => v.Activity).WithConversion("TaskColor", theme);
                 set.Bind(TaskDueLabel).To(v => v.Activity.TimeDateEnd).WithConversion(new DateOnlyConverter());
                 set.Bind(TaskDueLabel).For(v => v.TextColor).To(v => v.Activity).WithConversion("TaskColor", theme);
-                set.Bind(DayCountLabel).To(v => v.Activity.Prospect.ProspectCommunity.StartDate).WithConversion(new DayCountConverter());
+                set.Bind(DayCountLabel).To(v => v.Activity.Prospect.ProspectCommunity).WithConversion(new DayCountConverter());
                 set.Bind(DayCountLabel).For(v => v.TextColor).To(v => v.Activity).WithConversion("TaskColor", theme);
                 set.Bind(SMSButton).To(v => v.SmsCommand);
                 set.Bind(EmailButton).To(v => v.ComposeEmailCommand);

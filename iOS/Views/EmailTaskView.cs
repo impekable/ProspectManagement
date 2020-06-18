@@ -17,6 +17,48 @@ namespace ProspectManagement.iOS.Views
     [MvxModalPresentation(WrapInNavigationController = true)]
     public partial class EmailTaskView : MvxViewController<EmailTaskViewModel>
     {
+        AlertOverlay alertOverlay;
+
+        private IMvxInteraction _showAlertInteraction;
+        public IMvxInteraction ShowAlertInteraction
+        {
+            get => _showAlertInteraction;
+            set
+            {
+                if (_showAlertInteraction != null)
+                    _showAlertInteraction.Requested -= OnShowAlertInteractionRequested;
+
+                _showAlertInteraction = value;
+                _showAlertInteraction.Requested += OnShowAlertInteractionRequested;
+            }
+        }
+
+        private IMvxInteraction _hideAlertInteraction;
+        public IMvxInteraction HideAlertInteraction
+        {
+            get => _hideAlertInteraction;
+            set
+            {
+                if (_hideAlertInteraction != null)
+                    _hideAlertInteraction.Requested -= OnHideAlertInteractionRequested;
+
+                _hideAlertInteraction = value;
+                _hideAlertInteraction.Requested += OnHideAlertInteractionRequested;
+            }
+        }
+
+        private void OnShowAlertInteractionRequested(object sender, EventArgs eventArgs)
+        {
+            var bounds = UIScreen.MainScreen.Bounds;
+            alertOverlay = new AlertOverlay(bounds, "Sending...");
+            View.Add(alertOverlay);
+        }
+
+        private void OnHideAlertInteractionRequested(object sender, EventArgs eventArgs)
+        {
+            alertOverlay.Hide();
+        }
+
         private IMvxInteraction _getContentInteraction;
         public IMvxInteraction GetContentInteraction
         {
@@ -56,7 +98,8 @@ namespace ProspectManagement.iOS.Views
             set.Bind(SubjectLabel).To(vm => vm.Activity.EmailSubject);
             set.Bind(SendEmailButton).To(vm => vm.GetContentCommand);
             set.Bind(this).For(view => view.GetContentInteraction).To(viewModel => viewModel.GetContentInteraction).OneWay();
-
+            set.Bind(this).For(view => view.HideAlertInteraction).To(viewModel => viewModel.HideAlertInteraction).OneWay();
+            set.Bind(this).For(view => view.ShowAlertInteraction).To(viewModel => viewModel.ShowAlertInteraction).OneWay();
             set.Apply();
 
             if (NavigationController != null)

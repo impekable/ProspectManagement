@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AppCenter.Crashes;
+using Polly;
+using Polly.Retry;
 using ProspectManagement.Core.Interfaces.Repositories;
 using ProspectManagement.Core.Interfaces.Services;
 using ProspectManagement.Core.Models;
@@ -11,7 +15,7 @@ using Twilio.Rest.Api.V2010.Account;
 
 namespace ProspectManagement.Core.Services
 {
-    public class ActivityService: IActivityService
+    public class ActivityService : IActivityService
     {
         private readonly IAuthenticator _authenticator;
         private IDialogService _dialogService;
@@ -26,6 +30,10 @@ namespace ProspectManagement.Core.Services
             {
                 _dialogService.ShowAlertAsync("Seems like there was a problem." + e.RetrievingDataFailureMessage, "Oops", "Close");
             };
+            _activityRepository.Policy = Policy.Handle<HttpRequestException>()
+                            .Or<WebException>()
+                            .Or<TaskCanceledException>()
+                            .WaitAndRetryForeverAsync(retryAttempt => TimeSpan.FromSeconds(10));
         }
 
         public async Task<Activity> AddActivityToProspectAsync(int prospectId, Activity activity)
@@ -37,7 +45,7 @@ namespace ProspectManagement.Core.Services
             }
             catch (Exception ex)
             {
-				Crashes.TrackError(ex);
+                Crashes.TrackError(ex);
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
                 await _dialogService.ShowAlertAsync("Seems like there was a problem.", "Oops", "Close");
                 return null;
@@ -69,7 +77,7 @@ namespace ProspectManagement.Core.Services
                 ProspectCommunityId = prospect.ProspectCommunity.ProspectCommunityId,
                 ProspectAddressNumber = prospect.ProspectAddressNumber,
                 SalespersonAddressNumber = prospect.ProspectCommunity.SalespersonAddressNumber,
-                Notes = note         
+                Notes = note
             };
             return await AddActivityToProspectAsync(prospect.ProspectAddressNumber, noteActivity);
         }
@@ -96,11 +104,10 @@ namespace ProspectManagement.Core.Services
                 var allActivities = await _activityRepository.GetProspectActivitiesAsync(prospectId, EmailFormat.None, authResult.AccessToken);
                 var activities = allActivities.Where(a => a.DateCompleted != null).OrderByDescending(a => a.UpdatedDate).ToList();
                 return activities;
-            } 
-
+            }
             catch (Exception ex)
             {
-				Crashes.TrackError(ex);
+                Crashes.TrackError(ex);
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
                 await _dialogService.ShowAlertAsync("Seems like there was a problem.", "Oops", "Close");
                 return null;
@@ -114,10 +121,9 @@ namespace ProspectManagement.Core.Services
                 var authResult = await _authenticator.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource);
                 return await _activityRepository.GetProspectActivityAsync(prospectId, instanceId, EmailFormat.HTML, authResult.AccessToken);
             }
-
             catch (Exception ex)
             {
-				Crashes.TrackError(ex);
+                Crashes.TrackError(ex);
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
                 await _dialogService.ShowAlertAsync("Seems like there was a problem.", "Oops", "Close");
                 return null;
@@ -130,11 +136,11 @@ namespace ProspectManagement.Core.Services
             {
                 var activities = await _activityRepository.GetDailyToDoActivitiesAsync(accessToken, salespersonId, category, dueAsOfDate, page, pageSize);
                 var a = activities?.Join(categories, a2 => a2.Prospect.Ranking, c => c.Code, (a2, c) =>
-                {
-                    a2.Prospect.Ranking = c.Description1;
-                    return a2;
+                        {
+                            a2.Prospect.Ranking = c.Description1;
+                            return a2;
 
-                }).ToList();
+                        }).ToList();
                 return a;
             }
             catch (Exception ex)
@@ -153,7 +159,6 @@ namespace ProspectManagement.Core.Services
                 var authResult = await _authenticator.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource);
                 return await _activityRepository.UpdateActivityForProspectAsync(activity, authResult.AccessToken);
             }
-
             catch (Exception ex)
             {
                 Crashes.TrackError(ex);
@@ -170,7 +175,6 @@ namespace ProspectManagement.Core.Services
                 var authResult = await _authenticator.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource);
                 return await _activityRepository.GetActivityWithTemplateDataAsync(prospectId, instanceId, templateType, authResult.AccessToken);
             }
-
             catch (Exception ex)
             {
                 Crashes.TrackError(ex);
@@ -187,10 +191,10 @@ namespace ProspectManagement.Core.Services
                 TwilioClient.Init(Constants.PrivateKeys.TwilioAccountSid, Constants.PrivateKeys.TwilioAuthToken);
 
                 var message = MessageResource.Create(
-                            body: activity.Notes,
-                            from: new Twilio.Types.PhoneNumber(activity.Prospect.ProspectCommunity.Community.SalesOffice.TwilioPhoneNumber),
-                            to: new Twilio.Types.PhoneNumber(activity.Prospect.MobilePhoneNumber.Phone)
-                        );
+                                    body: activity.Notes,
+                                    from: new Twilio.Types.PhoneNumber(activity.Prospect.ProspectCommunity.Community.SalesOffice.TwilioPhoneNumber),
+                                    to: new Twilio.Types.PhoneNumber(activity.Prospect.MobilePhoneNumber.Phone)
+                                );
                 if (message.ErrorCode == null)
                 {
                     return await AddActivityToProspectAsync(prospectId, activity);
@@ -217,10 +221,10 @@ namespace ProspectManagement.Core.Services
                 TwilioClient.Init(Constants.PrivateKeys.TwilioAccountSid, Constants.PrivateKeys.TwilioAuthToken);
 
                 var message = MessageResource.Create(
-                            body: activity.Notes,
-                            from: new Twilio.Types.PhoneNumber(activity.Prospect.ProspectCommunity.Community.SalesOffice.TwilioPhoneNumber),
-                            to: new Twilio.Types.PhoneNumber(activity.Prospect.MobilePhoneNumber.Phone)
-                        );
+                                    body: activity.Notes,
+                                    from: new Twilio.Types.PhoneNumber(activity.Prospect.ProspectCommunity.Community.SalesOffice.TwilioPhoneNumber),
+                                    to: new Twilio.Types.PhoneNumber(activity.Prospect.MobilePhoneNumber.Phone)
+                                );
                 if (message.ErrorCode == null)
                 {
                     return await UpdateActivityForProspectAsync(activity);
@@ -247,7 +251,6 @@ namespace ProspectManagement.Core.Services
                 var activities = await _activityRepository.GetSmsActivitiesAsync(accessToken, salespersonId, newOnly, page, pageSize);
                 return activities;
 
-                
             }
             catch (Exception ex)
             {
@@ -286,6 +289,35 @@ namespace ProspectManagement.Core.Services
                 Crashes.TrackError(ex);
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
                 await _dialogService.ShowAlertAsync("Seems like there was a problem.", "Oops", "Close");
+                return false;
+            }
+        }
+
+        private async Task<bool> sendEmail(int prospectId, EmailMessage email)
+        {
+            var authResult = await _authenticator.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource);
+            return await _activityRepository.SendEmail(prospectId, email, authResult.AccessToken);
+        }
+
+        public async Task<bool> SendEmailAsync(EmailMessage email, Activity activity)
+        {
+            try
+            {
+                if (await sendEmail(activity.ProspectAddressNumber, email))
+                {
+                    return await UpdateActivityForProspectAsync(activity);
+                }
+                else
+                {
+                    await _dialogService.ShowAlertAsync("Email was not sent", "Oops", "Close");
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Crashes.TrackError(ex);
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                await _dialogService.ShowAlertAsync("Seems like there was a problem. Email was not sent.", "Oops", "Close");
                 return false;
             }
         }

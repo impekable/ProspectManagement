@@ -33,13 +33,13 @@ namespace ProspectManagement.iOS.Views
             set;
         }
 
-        public CustomAlertController(string alertTitle)
+        public CustomAlertController(string alertTitle, string chooseMessage = "Choose a Value")
         {
             var attributes = new UIStringAttributes
             {
                 Font = UIFont.FromName("Raleway-Light", 18f)
             };
-            AlertController = UIAlertController.Create(alertTitle, "Choose a Value", UIAlertControllerStyle.ActionSheet);
+            AlertController = UIAlertController.Create(alertTitle, chooseMessage, UIAlertControllerStyle.ActionSheet);
             AlertController.SetValueForKey(new NSAttributedString(alertTitle, attributes), new NSString("attributedTitle"));
 
             var actionCancel = UIAlertAction.Create("Cancel", UIAlertActionStyle.Cancel, null);

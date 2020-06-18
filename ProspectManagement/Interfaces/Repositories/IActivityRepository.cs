@@ -23,6 +23,8 @@ namespace ProspectManagement.Core.Interfaces.Repositories
 
         Task<bool> UpdateActivityForProspectAsync(Activity activity, string accessToken);
 
+        Task<bool> SendEmail(int prospectId, EmailMessage email, string accessToken);
+
         Task<Activity> GetActivityWithTemplateDataAsync(int prospectId, string instanceId, string templateType, string accessToken);
 
         Task<List<SmsActivity>> GetSmsActivitiesAsync(string accessToken, int salespersonId, bool newOnly, int page, int pageSize);

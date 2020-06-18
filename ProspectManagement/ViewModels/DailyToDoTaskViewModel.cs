@@ -89,7 +89,7 @@ namespace ProspectManagement.Core.ViewModels
                     _showAlertInteraction.Raise("Getting Data...");
                     var activityWithTemplateData = await _activityService.GetActivityWithTemplateDataAsync(Activity.ProspectAddressNumber, Activity.InstanceID, "Email");
                     _hideAlertInteraction.Raise();
-                    await _navigationService.Navigate<EmailTaskViewModel, Activity>(activityWithTemplateData);
+                    await _navigationService.Navigate<EmailTaskViewModel, KeyValuePair<User, Activity>>(new KeyValuePair<User, Activity>(User, activityWithTemplateData));
                 }));
             }
         }

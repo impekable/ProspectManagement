@@ -83,6 +83,11 @@ namespace ProspectManagement.Core.Repositories
         {
             return await PutDataObjectToAPI(string.Format(_baseUri + "PhoneCallActivity/{1}", activity.ProspectAddressBook, activity.InstanceId), activity, accessToken);
         }
+
+        public async Task<bool> SendEmail(int prospectId, EmailMessage email, string accessToken)
+        {
+            return await PutDataObjectToAPI(string.Format(_baseUri + "Email", prospectId), email, accessToken);
+        }
     }
 }
 

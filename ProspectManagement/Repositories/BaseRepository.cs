@@ -13,6 +13,9 @@ using Newtonsoft.Json;
 using ProspectManagement.Core.Constants;
 using Microsoft.AppCenter.Crashes;
 using System.Collections.Generic;
+using Polly.Retry;
+using System.Net;
+using Polly;
 
 namespace ProspectManagement.Core.Repositories
 {
@@ -26,6 +29,7 @@ namespace ProspectManagement.Core.Repositories
         static readonly HttpClient _httpClientWithUserNamePassword = CreateHttpClient();
         static readonly JsonSerializer _serializer = new JsonSerializer();
         public event EventHandler<RetrievingDataFailureEventArgs> RetrievingDataFailed;
+        public AsyncRetryPolicy Policy { get; set; }
 
         private static HttpClient CreateHttpClient()
         {
@@ -36,10 +40,10 @@ namespace ProspectManagement.Core.Repositories
         private HttpClient SetAccessTokenHttpClient(string accessToken)
         {
             _httpClientWithAccessToken.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-			if (!_httpClientWithAccessToken.DefaultRequestHeaders.Contains("Ocp-Apim-Subscription-Key"))
-			{
-				_httpClientWithAccessToken.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", PrivateKeys.AzureSubscriptionKey);
-			}
+            if (!_httpClientWithAccessToken.DefaultRequestHeaders.Contains("Ocp-Apim-Subscription-Key"))
+            {
+                _httpClientWithAccessToken.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", PrivateKeys.AzureSubscriptionKey);
+            }
             return _httpClientWithAccessToken;
         }
 
@@ -65,11 +69,6 @@ namespace ProspectManagement.Core.Repositories
                             return default(T);
                         return _serializer.Deserialize<T>(json);
                     }
-                    //var json = await client.GetStringAsync(apiUrl);
-
-                    //if (string.IsNullOrWhiteSpace(json))
-                    //    return default(T);
-                    //return DeserializeObject<T>(json);
                 }
                 catch (Exception e)
                 {
@@ -79,33 +78,28 @@ namespace ProspectManagement.Core.Repositories
             });
         }
 
-		protected async Task<T> GetDataObjectFromAPI<T>(string apiUrl)
-		{
-			return await Task.Run(async () =>
-			{
-				try
-				{
-					using (var stream = await _httpClient.GetStreamAsync(apiUrl).ConfigureAwait(false))
-					using (var reader = new System.IO.StreamReader(stream))
-					using (var json = new JsonTextReader(reader))
-					{
-						if (json == null)
-							return default(T);
-						return _serializer.Deserialize<T>(json);
-					}
-					//var json = await _httpClient.GetStringAsync(apiUrl);
-
-					//if (string.IsNullOrWhiteSpace(json))
-					//    return default(T);
-					//return DeserializeObject<T>(json);
-				}
-				catch (Exception e)
-				{
-					OnRetrievingDataFailed(e.Message);
-					return default(T);
-				}
-			});
-		}
+        protected async Task<T> GetDataObjectFromAPI<T>(string apiUrl)
+        {
+            return await Task.Run(async () =>
+            {
+                try
+                {
+                    using (var stream = await _httpClient.GetStreamAsync(apiUrl).ConfigureAwait(false))
+                    using (var reader = new System.IO.StreamReader(stream))
+                    using (var json = new JsonTextReader(reader))
+                    {
+                        if (json == null)
+                            return default(T);
+                        return _serializer.Deserialize<T>(json);
+                    }
+                }
+                catch (Exception e)
+                {
+                    OnRetrievingDataFailed(e.Message);
+                    return default(T);
+                }
+            });
+        }
 
         protected async Task<String> GetFromAPI(string apiUrl)
         {
@@ -131,31 +125,38 @@ namespace ProspectManagement.Core.Repositories
 
         protected async Task<T> GetDataObjectFromAPI<T>(string apiUrl, string accessToken)
         {
-            return await Task.Run(async () =>
+            if (Policy == null)
             {
-                var client = SetAccessTokenHttpClient(accessToken);
-                try
+                Policy = Polly.Policy.Handle<HttpRequestException>()
+                            .Or<WebException>()
+                            .Or<TaskCanceledException>()
+                            .WaitAndRetryForeverAsync(retryAttempt => TimeSpan.FromSeconds(10));
+            }
+            try
+            {
+                return await Policy.ExecuteAsync(async () =>
                 {
-                    using (var stream = await client.GetStreamAsync(apiUrl).ConfigureAwait(false))
-                    using (var reader = new System.IO.StreamReader(stream))
-                    using (var json = new JsonTextReader(reader))
+                    return await Task.Run(async () =>
                     {
-                        if (json == null)
-                            return default(T);
-                        return _serializer.Deserialize<T>(json);
-                    }
-                    //var json = await _httpClient.GetStringAsync(apiUrl);
+                        var client = SetAccessTokenHttpClient(accessToken);
 
-                    //if (string.IsNullOrWhiteSpace(json))
-                    //    return default(T);
-                    //return DeserializeObject<T>(json);
-                }
-                catch (Exception e)
-                {
-                    OnRetrievingDataFailed(e.Message);
-                    return default(T);
-                }
-            });
+                        using (var stream = await client.GetStreamAsync(apiUrl).ConfigureAwait(false))
+                        using (var reader = new System.IO.StreamReader(stream))
+                        using (var json = new JsonTextReader(reader))
+                        {
+                            if (json == null)
+                                return default(T);
+                            return _serializer.Deserialize<T>(json);
+                        }
+
+                    });
+                });
+            }
+            catch (Exception e)
+            {
+                OnRetrievingDataFailed(e.Message);
+                return default(T);
+            }
         }
 
         protected async Task<bool> GetResultFromAPI(string apiUrl, string username, string password)
@@ -169,7 +170,7 @@ namespace ProspectManagement.Core.Repositories
                     if (!response.IsSuccessStatusCode)
                     {
                         try
-                        {                            
+                        {
                             using (var stream = await response.Content.ReadAsStreamAsync())
                             using (var reader = new System.IO.StreamReader(stream))
                             using (var json = new JsonTextReader(reader))
@@ -200,36 +201,103 @@ namespace ProspectManagement.Core.Repositories
 
         protected async Task<T> PostDataObjectToAPI<T>(string apiUrl, T content, string accessToken)
         {
-            return await Task.Run(async () =>
+            if (Policy == null)
             {
-                var client = SetAccessTokenHttpClient(accessToken);
-                try
-                {
-                    var json = content == null ? null : SerializeObject(content);
-                    var stringContent = content == null ? null : new StringContent(json, Encoding.UTF8, "application/json");
-                    var response = await client.PostAsync(apiUrl, stringContent);
-                    //var contentNew = await response.Content.ReadAsStringAsync();
+                Policy = Polly.Policy.Handle<HttpRequestException>()
+                            .Or<WebException>()
+                            .Or<TaskCanceledException>()
+                            .WaitAndRetryForeverAsync(retryAttempt => TimeSpan.FromSeconds(10));
+            }
 
-                    using (var stream = await response.Content.ReadAsStreamAsync())
-                    using (var reader = new System.IO.StreamReader(stream))
-                    using (var jsonReader = new JsonTextReader(reader))
+            try
+            {
+                return await Policy.ExecuteAsync(async () =>
+                {
+                    return await Task.Run(async () =>
                     {
-                        if (jsonReader == null)
-                            return default(T);
-                        if (response.IsSuccessStatusCode)
+                        var client = SetAccessTokenHttpClient(accessToken);
+
+                        var json = content == null ? null : SerializeObject(content);
+                        var stringContent = content == null ? null : new StringContent(json, Encoding.UTF8, "application/json");
+                        var response = await client.PostAsync(apiUrl, stringContent);
+
+                        using (var stream = await response.Content.ReadAsStreamAsync())
+                        using (var reader = new System.IO.StreamReader(stream))
+                        using (var jsonReader = new JsonTextReader(reader))
                         {
-                            return _serializer.Deserialize<T>(jsonReader);
+                            if (jsonReader == null)
+                                return default(T);
+                            if (response.IsSuccessStatusCode)
+                            {
+                                return _serializer.Deserialize<T>(jsonReader);
+                            }
+                            else
+                            {
+                                try
+                                {
+                                    var error = _serializer.Deserialize<ServiceError>(jsonReader);
+                                    Crashes.TrackError(new Exception(response.ToString()), new Dictionary<string, string>{
+                                                { "apiUrl", apiUrl },
+                                                { "error", error?.ErrorDescription }
+                                                });
+                                    OnRetrievingDataFailed(error.ErrorDescription);
+                                }
+                                catch (Exception e)
+                                {
+                                    Crashes.TrackError(e, new Dictionary<string, string> { { "apiUrl", apiUrl } });
+                                    OnRetrievingDataFailed("Error occurred");
+                                }
+                            }
                         }
-                        else
+                        return default(T);
+                    });
+                });
+            }
+            catch (Exception e)
+            {
+                OnRetrievingDataFailed(e.Message);
+                return default(T);
+            }
+        }
+
+        protected async Task<bool> PutDataObjectToAPI<T>(string apiUrl, T content, string accessToken)
+        {
+            if (Policy == null)
+            {
+                Policy = Polly.Policy.Handle<HttpRequestException>()
+                            .Or<WebException>()
+                            .Or<TaskCanceledException>()
+                            .WaitAndRetryForeverAsync(retryAttempt => TimeSpan.FromSeconds(10));
+            }
+
+            try
+            {
+                return await Policy.ExecuteAsync(async () =>
+                {
+                    return await Task.Run(async () =>
+                    {
+                        var client = SetAccessTokenHttpClient(accessToken);
+
+                        var json = SerializeObject(content);
+                        var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
+                        var response = await client.PutAsync(apiUrl, stringContent);
+                        if (!response.IsSuccessStatusCode)
                         {
                             try
                             {
-                                var error = _serializer.Deserialize<ServiceError>(jsonReader);
-                                Crashes.TrackError(new Exception(response.ToString()), new Dictionary<string, string>{
+                                using (var stream = await response.Content.ReadAsStreamAsync())
+                                using (var reader = new System.IO.StreamReader(stream))
+                                using (var jsonReader = new JsonTextReader(reader))
+                                {
+                                    if (jsonReader == null)
+                                        return false;
+                                    var error = _serializer.Deserialize<ServiceError>(jsonReader);
+                                    Crashes.TrackError(new Exception(response.ToString()), new Dictionary<string, string>{
                                                 { "apiUrl", apiUrl },
                                                 { "error", error?.ErrorDescription }
                                             });
-                                OnRetrievingDataFailed(error.ErrorDescription);
+                                    OnRetrievingDataFailed(error.ErrorDescription);
+                                }
                             }
                             catch (Exception e)
                             {
@@ -237,59 +305,15 @@ namespace ProspectManagement.Core.Repositories
                                 OnRetrievingDataFailed("Error occurred");
                             }
                         }
-                    }
-                    return default(T);
-                }
-                catch (Exception e)
-                {
-                    OnRetrievingDataFailed(e.Message);
-                    return default(T);
-                }
-            });
-        }
-
-        protected async Task<bool> PutDataObjectToAPI<T>(string apiUrl, T content, string accessToken)
-        {
-            return await Task.Run(async () =>
+                        return response.IsSuccessStatusCode;
+                    });
+                });
+            }
+            catch (Exception e)
             {
-                var client = SetAccessTokenHttpClient(accessToken);
-                try
-                {
-                    var json = SerializeObject(content);
-                    var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
-                    var response = await client.PutAsync(apiUrl, stringContent);
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        try
-                        {
-                            using (var stream = await response.Content.ReadAsStreamAsync())
-                            using (var reader = new System.IO.StreamReader(stream))
-                            using (var jsonReader = new JsonTextReader(reader))
-                            {
-                                if (jsonReader == null)
-                                    return false;
-                                var error = _serializer.Deserialize<ServiceError>(jsonReader);
-                                Crashes.TrackError(new Exception(response.ToString()), new Dictionary<string, string>{
-                                                { "apiUrl", apiUrl },
-                                                { "error", error?.ErrorDescription }
-                                            });
-                                OnRetrievingDataFailed(error.ErrorDescription);
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            Crashes.TrackError(e, new Dictionary<string, string> { { "apiUrl", apiUrl } });
-                            OnRetrievingDataFailed("Error occurred");
-                        }
-                    }
-                    return response.IsSuccessStatusCode;
-                }
-                catch (Exception e)
-                {
-                    OnRetrievingDataFailed(e.Message);
-                    return false;
-                }
-            });
+                OnRetrievingDataFailed(e.Message);
+                return false;
+            }
         }
 
         void OnRetrievingDataFailed(string errorMessage)

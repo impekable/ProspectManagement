@@ -23,11 +23,7 @@ namespace ProspectManagement.iOS.Views
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UILabel FirstVisitLabel { get; set; }
-
-        [Outlet]
-        [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UILabel LastVisitLabel { get; set; }
+        UIKit.UILabel SystemActivityLabel { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
@@ -57,14 +53,9 @@ namespace ProspectManagement.iOS.Views
                 DayCountLabel = null;
             }
 
-            if (FirstVisitLabel != null) {
-                FirstVisitLabel.Dispose ();
-                FirstVisitLabel = null;
-            }
-
-            if (LastVisitLabel != null) {
-                LastVisitLabel.Dispose ();
-                LastVisitLabel = null;
+            if (SystemActivityLabel != null) {
+                SystemActivityLabel.Dispose ();
+                SystemActivityLabel = null;
             }
 
             if (ProspectLabel != null) {

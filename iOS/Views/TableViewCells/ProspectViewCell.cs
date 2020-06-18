@@ -44,9 +44,8 @@ namespace ProspectManagement.iOS.Views
                 set.Bind(ProspectLabel).For(v=> v.TextColor).To(v => v).WithConversion("ProspectColor", theme);
                 set.Bind(CommunityLabel).To(v => v.ProspectCommunity.Community.Description);
                 set.Bind(SalespersonLabel).To(v => v.ProspectCommunity.SalespersonName);
-				set.Bind(FirstVisitLabel).To(v => v.ProspectCommunity.StartDate).WithConversion(new DateOnlyConverter());
-				set.Bind(LastVisitLabel).To(v => v.ProspectCommunity.EndDate).WithConversion(new DateOnlyConverter());
-                set.Bind(DayCountLabel).To(v => v.ProspectCommunity.StartDate).WithConversion(new DayCountConverter());
+				set.Bind(SystemActivityLabel).To(v => v.ProspectCommunity.SystemActivityDate).WithConversion(new DateOnlyConverter());
+                set.Bind(DayCountLabel).To(v => v.ProspectCommunity).WithConversion(new DayCountConverter());
 
                 //set.Bind(this).For(u => u.BackgroundColor).To(v => v).WithConversion(new ProspectBackgroundColorValueConverter());
 

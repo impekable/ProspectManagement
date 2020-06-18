@@ -25,7 +25,7 @@ namespace ProspectManagement.iOS.Views
         {
             base.ViewDidLoad();
 
-            _CallAlertController = new CustomAlertController("Call");
+            _CallAlertController = new CustomAlertController("Call", "Select a phone number");
 
             var set = this.CreateBindingSet<CallTaskView, CallTaskViewModel>();
             set.Bind(CallScriptTextView).To(vm => vm.Activity.TemplateData);

@@ -40,10 +40,7 @@ namespace ProspectManagement.Core.Services
         {
             try
             {
-                var authResult = await _authenticator.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource);
-                var user = await _userRepository.GetUserByIdAsync(authResult.UserInfo.DisplayableId, authResult.AccessToken);
-                //user.UsingTelephony = false;
-                return user;
+                return await getUser();
             }
             catch (Exception e)
             {
@@ -53,12 +50,20 @@ namespace ProspectManagement.Core.Services
             }
         }
 
+        private async Task<User> getUser(string userId = null)
+        {
+            var authResult = await _authenticator.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource);
+            if (userId == null)
+                userId = authResult.UserInfo.DisplayableId;
+            var user = await _userRepository.GetUserByIdAsync(userId, authResult.AccessToken);
+            return user;
+        }
+
         public async Task<User> GetUserById(string userId)
         {
             try
             {
-                var authResult = await _authenticator.AuthenticateUser(Constants.PrivateKeys.ProspectMgmtRestResource);
-                return await _userRepository.GetUserByIdAsync(userId, authResult.AccessToken);
+                return await getUser(userId);
             }
             catch (Exception e)
             {

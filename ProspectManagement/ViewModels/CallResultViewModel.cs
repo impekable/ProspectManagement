@@ -8,6 +8,7 @@ using MvvmCross.ViewModels;
 using MvvmValidation;
 using ProspectManagement.Core.Extensions;
 using ProspectManagement.Core.Interfaces.Services;
+using ProspectManagement.Core.Messages;
 using ProspectManagement.Core.Models;
 
 namespace ProspectManagement.Core.ViewModels
@@ -27,6 +28,7 @@ namespace ProspectManagement.Core.ViewModels
         private readonly IActivityService _activityService;
         private readonly IUserDefinedCodeService _userDefinedCodeService;
         private readonly IMvxNavigationService _navigationService;
+        protected IMvxMessenger Messenger;
 
         public PhoneCallActivity PhoneCallActivity
         {
@@ -81,6 +83,9 @@ namespace ProspectManagement.Core.ViewModels
                             var resultUpdated = await _activityService.UpdatePhoneCallActivityForProspectAsync(PhoneCallActivity);
                             if (resultUpdated)
                             {
+                                if (PhoneCallActivity.CallResult.Equals("V") || PhoneCallActivity.CallResult.Equals("S")){
+                                    Messenger.Publish(new TaskCompletedMessage(this) { Activity = new Activity() { ActivityID = PhoneCallActivity.ActivityId } }) ;
+                                }
                                 await _navigationService.Close(this);
                             }
                         }
@@ -100,12 +105,13 @@ namespace ProspectManagement.Core.ViewModels
                 RaisePropertyChanged(() => CallResultError);
             }
         }
-        public CallResultViewModel(IUserDefinedCodeService userDefinedCodeService, IDialogService dialogService, IActivityService activityService, IMvxNavigationService navigationService)
+        public CallResultViewModel(IMvxMessenger messenger, IUserDefinedCodeService userDefinedCodeService, IDialogService dialogService, IActivityService activityService, IMvxNavigationService navigationService)
         {
             _dialogService = dialogService;
             _activityService = activityService;
             _userDefinedCodeService = userDefinedCodeService;
             _navigationService = navigationService;
+            Messenger = messenger;
 
             ConfigureValidationRules();
             Validator.ResultChanged += OnValidationResultChanged;

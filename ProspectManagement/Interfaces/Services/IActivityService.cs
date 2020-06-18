@@ -31,6 +31,8 @@ namespace ProspectManagement.Core.Interfaces.Services
 
         Task<bool> SendSMSAsync(Activity activity);
 
+        Task<bool> SendEmailAsync(EmailMessage email, Activity activity);
+
         Task<Activity> SendAdHocSMSAsync(int prospectId, Activity activity);
 
         Task<List<SmsActivity>> GetSmsActivitiesAsync(string accessToken, int salespersonId, bool newOnly, int page, int pageSize);
