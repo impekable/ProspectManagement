@@ -508,6 +508,11 @@ namespace ProspectManagement.Core.ViewModels
             get { return Prospect.ProspectCommunity.LeadId > 0; }
         }
 
+        public bool IsBuyer
+        {
+            get { return Prospect.ProspectCommunity.AddressType.Equals("Buyer"); }
+        }
+
         public FollowUpSettings FollowUpSettings
         {
             get { return _followUpSettings; }

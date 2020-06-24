@@ -14,12 +14,6 @@ using UIKit;
 using WindowsAzure.Messaging;
 using UserNotifications;
 using ProspectManagement.Core.Interfaces.Services;
-using MvvmCross.Navigation;
-using ProspectManagement.Core.ViewModels;
-using ProspectManagement.Core.Models;
-using AudioToolbox;
-using MvvmCross.Plugin.Messenger;
-using ProspectManagement.Core.Messages;
 
 namespace ProspectManagement.iOS
 {
@@ -58,33 +52,9 @@ namespace ProspectManagement.iOS
                 UIApplication.SharedApplication.RegisterForRemoteNotificationTypes(notificationTypes);
             }
 
-            if (options != null && options.ContainsKey(UIApplication.LaunchOptionsRemoteNotificationKey))
-            {
-                var notificationData = options[UIApplication.LaunchOptionsRemoteNotificationKey] as NSDictionary;
-                // process notification data
-                navigateOnPush(notificationData);
-            }
+            UNUserNotificationCenter.Current.Delegate = new UserNotificationCenterDelegate();
 
             return result;
-        }
-
-        async void navigateOnPush(NSDictionary options)
-        {
-            Prospect prospect = null;
-            if (options.ContainsKey(new NSString("prospectId")))
-            {
-                var prospectId = (options[new NSString("prospectId")] as NSNumber).Int32Value;
-                if (prospectId > 0)
-                {
-                    var prospectService = Mvx.IoCProvider.Resolve<IProspectService>();
-                    prospect = await prospectService.GetProspectAsync(prospectId);
-                }
-            }
-            if (prospect != null)
-            {
-                var navigationService = Mvx.IoCProvider.Resolve<IMvxNavigationService>();
-                await navigationService.Navigate<ProspectSMSViewModel, Prospect>(prospect);
-            }
         }
 
         public override void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken)
@@ -112,52 +82,6 @@ namespace ProspectManagement.iOS
                     });
                 }
             });
-        }
-
-        public override void ReceivedRemoteNotification(UIApplication application, NSDictionary userInfo)
-        {
-            ProcessNotification(userInfo, false);
-        }
-
-        async void ProcessNotification(NSDictionary options, bool fromFinishedLaunching)
-        {
-            // Check to see if the dictionary has the aps key.  This is the notification payload you would have sent
-            if (null != options && options.ContainsKey(new NSString("aps")))
-            {
-                //Get the aps dictionary
-                NSDictionary aps = options.ObjectForKey(new NSString("aps")) as NSDictionary;
-                string message = string.Empty;
-                string title = string.Empty;
-
-                //Extract the alert text
-                if (aps.ContainsKey(new NSString("alert")))
-                {
-                    NSDictionary alert = aps.ObjectForKey(new NSString("alert")) as NSDictionary;
-                    if (alert.ContainsKey(new NSString("title")))
-                        title = (alert[new NSString("title")] as NSString).ToString();
-                    if (alert.ContainsKey(new NSString("body")))
-                        message = (alert[new NSString("body")] as NSString).ToString();
-                }
-
-                //If this came from the ReceivedRemoteNotification while the app was running,
-                // we of course need to manually process things like the sound, badge, and alert.
-                if (!fromFinishedLaunching)
-                {
-                    var messenger = Mvx.IoCProvider.Resolve<IMvxMessenger>();
-                    messenger.Publish(new SMSReceivedMessage(this) { SMSActivityReceived = new SmsActivity {  MessageBody = message, Direction = "inbound"} });
-
-                    //Manually show an alert
-                    if (!string.IsNullOrEmpty(message))
-                    {
-                        var dialogService = Mvx.IoCProvider.Resolve<IDialogService>();
-                        var result = await dialogService.ShowAlertAsync(title, message, "View Message", "Cancel");
-                        if (result == 0)
-                        {
-                            navigateOnPush(options);
-                        }
-                    }
-                }
-            }
         }
     }
 }

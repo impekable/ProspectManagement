@@ -40,6 +40,7 @@ namespace ProspectManagement.Core.ViewModels
         private int _page = 0;
         private int _pageSize = 10;
         private User _user;
+        private MvxSubscriptionToken messengerToken;
 
         private MvxInteraction<TableRow> _updateRowInteraction = new MvxInteraction<TableRow>();
         public IMvxInteraction<TableRow> UpdateRowInteraction => _updateRowInteraction;
@@ -199,6 +200,33 @@ namespace ProspectManagement.Core.ViewModels
             _navigationService = navigationService;
             _prospectService = prospectService;
             _userService = userService;
+            messengerToken = Messenger.Subscribe<SMSReceivedMessage>(message => AddMessage(message));
+        }
+
+        public override void ViewDisappeared()
+        {
+            base.ViewDisappeared();
+            if (messengerToken != null)
+            {
+                Messenger.Unsubscribe<SMSReceivedMessage>(messengerToken);
+                messengerToken = null;
+            }
+        }
+
+        private void AddMessage(SMSReceivedMessage message)
+        {
+            //receiving a message from prospect update the appropriate row with the new data
+            var tableRow = SMSActivities.FirstOrDefault(s => s.ProspectAddressBook == message.SMSActivityReceived.ProspectAddressBook);
+            if (tableRow != null)
+            {
+                tableRow.UnreadCount++;
+                tableRow.MessageBody = message.SMSActivityReceived.MessageBody;
+                tableRow.UpdatedDate = message.SMSActivityReceived.UpdatedDate;
+
+                var request = new TableRow { TableRowToUpdate = SMSActivities.IndexOf(tableRow) };
+                _updateRowInteraction.Raise(request);
+            }
+            
         }
 
         public void Prepare(User parameter)

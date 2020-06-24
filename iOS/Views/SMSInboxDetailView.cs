@@ -58,7 +58,7 @@ namespace ProspectManagement.iOS.Views
 
         private void OnHideAlertInteractionRequested(object sender, EventArgs eventArgs)
         {
-            alertOverlay.Hide();
+            alertOverlay?.Hide();
             MessagesTableView.ScrollToRow(NSIndexPath.FromRowSection(ViewModel.SmsMessages.Count - 1, 0), UITableViewScrollPosition.Bottom, false);
         }
 

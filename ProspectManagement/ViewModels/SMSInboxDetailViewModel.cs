@@ -9,6 +9,7 @@ using MvvmCross.ViewModels;
 using ProspectManagement.Core.Extensions;
 using ProspectManagement.Core.Interfaces.InfiniteScroll;
 using ProspectManagement.Core.Interfaces.Services;
+using ProspectManagement.Core.Messages;
 using ProspectManagement.Core.Models;
 
 namespace ProspectManagement.Core.ViewModels
@@ -18,6 +19,7 @@ namespace ProspectManagement.Core.ViewModels
         public event EventHandler LoadingDataFromBackendStarted;
         public event EventHandler<int> LoadingDataFromBackendCompleted;
         private event EventHandler<int> _incrementalLoadFromBackendCompleted;
+        private MvxSubscriptionToken messengerToken;
 
         private MvxInteraction _hideAlertInteraction = new MvxInteraction();
         public IMvxInteraction HideAlertInteraction => _hideAlertInteraction;
@@ -162,6 +164,29 @@ namespace ProspectManagement.Core.ViewModels
             _navigationService = navigationService;
             _collectionFactory = collectionFactory;
             PageSize = 20;
+            messengerToken = Messenger.Subscribe<SMSReceivedMessage>(message => AddMessage(message));
+        }
+
+        public override void ViewDisappeared()
+        {
+            base.ViewDisappeared();
+            if (messengerToken != null)
+            {
+                Messenger.Unsubscribe<SMSReceivedMessage>(messengerToken);
+                messengerToken = null;
+            }
+        }
+
+        private async void AddMessage(SMSReceivedMessage message)
+        {
+            //receiving a message from prospect whose messages are currently being viewed 
+            if (message.SMSActivityReceived.ProspectAddressBook == SmsActivity.ProspectAddressBook)
+            {
+                //_showAlertInteraction.Raise();
+                SmsMessages.Add(message.SMSActivityReceived);
+                _hideAlertInteraction.Raise();
+                var success = await _prospectService.UpdateProspectSMSActivityAsync(SmsActivity.ProspectAddressBook);
+            }
         }
 
         public void Prepare(KeyValuePair<SmsActivity, User> param)

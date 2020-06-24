@@ -9,6 +9,7 @@ using MvvmCross.ViewModels;
 using ProspectManagement.Core.Extensions;
 using ProspectManagement.Core.Interfaces.InfiniteScroll;
 using ProspectManagement.Core.Interfaces.Services;
+using ProspectManagement.Core.Messages;
 using ProspectManagement.Core.Models;
 
 namespace ProspectManagement.Core.ViewModels
@@ -38,6 +39,7 @@ namespace ProspectManagement.Core.ViewModels
         private readonly IActivityService _activityService;
         private readonly IAuthenticator _authService;
 
+        private MvxSubscriptionToken messengerToken;
         private int _page = 0;
 
         public int PageSize { get; set; }
@@ -169,6 +171,30 @@ namespace ProspectManagement.Core.ViewModels
             Messenger = messenger;
             _navigationService = navigationService;
             PageSize = 20;
+            messengerToken = Messenger.Subscribe<SMSReceivedMessage>(message => AddMessage(message));
+        }
+
+        public override void ViewDisappeared()
+        {
+            base.ViewDisappeared();
+            if (messengerToken != null)
+            {
+                Messenger.Unsubscribe<SMSReceivedMessage>(messengerToken);
+                messengerToken = null;
+            }
+        }
+
+        private async void AddMessage(SMSReceivedMessage message)
+        {
+            //receiving a message from prospect whose messages are currently being viewed 
+            if (message.SMSActivityReceived.ProspectAddressBook == Prospect.ProspectAddressNumber)
+            {
+                //_showAlertInteraction.Raise();
+                SmsMessages.Add(message.SMSActivityReceived);
+                _hideAlertInteraction.Raise();
+                var success = await _prospectService.UpdateProspectSMSActivityAsync(Prospect.ProspectAddressNumber);
+            }
+
         }
 
         public void Prepare(Prospect prospect)

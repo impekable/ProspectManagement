@@ -82,6 +82,10 @@ namespace ProspectManagement.iOS.Views
             CreatePickerViewBindings(set);
             CreateAlertViewBindings(set);
 
+            set.Bind(FirstNameTextField).For(v => v.Enabled).To(vm => vm.IsBuyer).WithConversion(new InverseValueConverter());
+            set.Bind(MiddleNameTextField).For(v => v.Enabled).To(vm => vm.IsBuyer).WithConversion(new InverseValueConverter());
+            set.Bind(LastNameTextField).For(v => v.Enabled).To(vm => vm.IsBuyer).WithConversion(new InverseValueConverter());
+
             set.Bind(PrefixTextField).To(vm => vm.ActivePrefix.Description1);
             set.Bind(FirstNameTextField).To(vm => vm.FirstName).WithConversion(new TitleCaseValueConverter());
             set.Bind(MiddleNameTextField).To(vm => vm.MiddleName).WithConversion(new TitleCaseValueConverter());

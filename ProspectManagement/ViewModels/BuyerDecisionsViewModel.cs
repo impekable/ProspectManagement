@@ -170,9 +170,18 @@ namespace ProspectManagement.Core.ViewModels
 
         public override async Task Initialize()
         {
-            Rankings = (await _userDefinedCodeService.GetRankingUserDefinedCodes()).ToObservableCollection();
+            var rankings = (await _userDefinedCodeService.GetRankingUserDefinedCodes());
+            if (Prospect.ProspectCommunity.AddressType.Equals("Buyer"))
+            {
+                var r = rankings.FirstOrDefault(ra => ra.Code.Equals("D"));
+                rankings.Remove(r);
+            }
+
+            Rankings = rankings.ToObservableCollection();
             DeactiveReasons = (await _userDefinedCodeService.GetDeactiveReasonUserDefinedCodes()).ToObservableCollection();
             BuyerDecisions = await _buyerDecisionsService.GetBuyerDecisionsAsync(Prospect.ProspectAddressNumber);
+
+            
 
             ActiveRanking = BuyerDecisions != null ? Rankings.FirstOrDefault(p => p.Code == BuyerDecisions.Ranking) : null;
             CurrentDeactiveReason = BuyerDecisions != null ? DeactiveReasons.FirstOrDefault(p => p.Code == BuyerDecisions.DeactiveReason) : null;

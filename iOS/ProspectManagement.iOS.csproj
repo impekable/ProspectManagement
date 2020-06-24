@@ -486,6 +486,7 @@
     <Compile Include="Views\CallResultView.designer.cs">
       <DependentUpon>CallResultView.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserNotificationCenterDelegate.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
