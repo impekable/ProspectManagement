@@ -113,6 +113,7 @@ namespace ProspectManagement.iOS.Views
             set.Bind(this).For(view => view.FilterInteraction).To(viewModel => viewModel.FilterInteraction).OneWay();
             setTableViewSource(set);
 
+            FilterSegmentControl.SelectedSegment = 2;
             FilterSearchBar.ScopeButtonTitles = new string[] { "All", "Name", "Notes", "Phone", "Email", "Address" };
             FilterSearchBar.SelectedScopeButtonIndex = 1;
             FilterSearchBar.SelectedScopeButtonIndexChanged += (sender, e) =>

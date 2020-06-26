@@ -306,6 +306,7 @@ namespace ProspectManagement.Core.ViewModels
 		{
 			User = parameter; 
             ScopeFilter = "Name";
+			SelectedSegment = 2;
 		}
 
         public void OnLoadingDataFromBackendStarted()
