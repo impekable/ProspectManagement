@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ProspectManagement.Core.Models;
 using ProspectManagement.Core.Interfaces.Repositories;
 using Microsoft.AppCenter.Crashes;
+using System.Threading;
 
 namespace ProspectManagement.Core.Services
 {
@@ -15,6 +16,7 @@ namespace ProspectManagement.Core.Services
 		private readonly IUserRepository _userRepository;
 		private readonly IAuthenticator _authenticator;
         private IDialogService _dialogService;
+        private static SemaphoreSlim _mutex = new SemaphoreSlim(1);
 
         public UserService(IAuthenticator authenticator, IUserRepository userRepository, IDialogService dialogService)
         {
@@ -38,13 +40,17 @@ namespace ProspectManagement.Core.Services
 
         public async Task<User> GetLoggedInUser()
         {
+            await _mutex.WaitAsync();
             try
             {
-                return await getUser();
+                var user = await getUser();
+                _mutex.Release();
+                return user;
             }
             catch (Exception e)
             {
-				Crashes.TrackError(e);
+                _mutex.Release();
+                Crashes.TrackError(e);
                 await _dialogService.ShowAlertAsync("Seems like there was a problem." + e.Message, "Oops", "Close");
                 return default(User);
             }

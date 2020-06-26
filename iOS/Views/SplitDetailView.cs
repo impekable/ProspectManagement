@@ -14,6 +14,7 @@ using ProspectManagement.Core.Models.App;
 using CallKit;
 using System.Collections.Generic;
 using ProspectManagement.Core;
+using ProspectManagement.Core.Models;
 
 namespace ProspectManagement.iOS.Views
 {
@@ -104,7 +105,6 @@ namespace ProspectManagement.iOS.Views
             }
         }
 
-
         private void OnClearDetailsInteractionRequested(object sender, EventArgs eventArgs)
         {
             DetailStackView.Hidden = true;
@@ -115,6 +115,30 @@ namespace ProspectManagement.iOS.Views
                 _EditButton.Title = "";
             }
             this.NavigationItem.Title = "";
+        }
+
+        private IMvxInteraction<EmailMessage> _emailInteraction;
+        public IMvxInteraction<EmailMessage> EmailInteraction
+        {
+            get => _emailInteraction;
+            set
+            {
+                if (_emailInteraction != null)
+                    _emailInteraction.Requested -= OnEmailInteractionRequested;
+
+                _emailInteraction = value;
+                _emailInteraction.Requested += OnEmailInteractionRequested;
+            }
+        }
+
+        private void OnEmailInteractionRequested(object sender, MvxValueEventArgs<EmailMessage> eventArgs)
+        {
+            var outlookURI = new Uri($"ms-outlook://compose?to={eventArgs.Value.ToEmailAddress}&subject={eventArgs.Value.Subject}&body={eventArgs.Value.Body}");
+            if (UIApplication.SharedApplication.CanOpenUrl(outlookURI))
+            {
+                UIApplication.SharedApplication.OpenUrl(outlookURI);
+            }
+            eventArgs.Value.EmailCallback(UIApplication.SharedApplication.CanOpenUrl(outlookURI));
         }
 
         //private IMvxInteraction<TwilioCallParameters> _makeCallInteraction;
@@ -137,7 +161,7 @@ namespace ProspectManagement.iOS.Views
         //    var config = new CXProviderConfiguration("Call Prospect");
         //    config.MaximumCallGroups = 1;
         //    config.MaximumCallsPerCallGroup = 1;
-            
+
         //    var callKitProvider = new CXProvider(config);
         //    var callKitController = new CXCallController();
 
@@ -223,6 +247,7 @@ namespace ProspectManagement.iOS.Views
             set.Bind(this).For(view => view.ShowAlertInteraction).To(viewModel => viewModel.ShowAlertInteraction).OneWay();
             set.Bind(this).For(view => view.ClearDetailsInteraction).To(viewModel => viewModel.ClearDetailsInteraction).OneWay();
             set.Bind(this).For(view => view.AssignedProspectInteraction).To(viewModel => viewModel.AssignedProspectInteraction).OneWay();
+            set.Bind(this).For(view => view.EmailInteraction).To(viewModel => viewModel.EmailInteraction).OneWay();
             //set.Bind(this).For(view => view.MakeCallInteraction).To(viewModel => viewModel.MakeCallInteraction).OneWay();
 
             _CallAlertController = new CustomAlertController("Call");

@@ -43,8 +43,7 @@ namespace ProspectManagement.Core.ViewModels
         private readonly IMvxNavigationService _navigationService;
         private readonly ITwilioService _twilioService;
         private readonly IMvxPhoneCallTask _phoneCallTask;
-        private readonly IMvxComposeEmailTaskEx _emailTask;
-
+        
         private IMvxCommand _smsCommand;
         private IMvxCommand<String> _mobilePhoneCallCommand;
         private IMvxCommand<String> _workPhoneCallCommand;
@@ -228,23 +227,29 @@ namespace ProspectManagement.Core.ViewModels
 
         private void ComposeEmailToProspect()
         {
-            if (_emailTask.CanSendEmail)
-            {
-                var activity = createAdHocActivity("Email", "Emailed from App");
-                _navigationService.Navigate<AddActivityViewModel, Activity>(activity);
-                _emailTask.ComposeEmail(_prospect.Email.EmailAddress);
-                Analytics.TrackEvent("Emailed From App", new Dictionary<string, string>
+
+            var activity = createAdHocActivity("Email", "Emailed from App");
+            _navigationService.Navigate<AddActivityViewModel, Activity>(activity);
+            var email = new EmailMessage() {
+                EmailCallback = async (ok) =>
+                {
+                    if (!ok)
+                    {
+                        await _dialogService.ShowAlertAsync("Outlook could not be launched", "Error", "Ok");
+                    }
+                    
+                },
+                ToEmailAddress = _prospect.Email.EmailAddress,
+                Subject = "",
+                Body = ""
+            };
+            _emailInteraction.Raise(email);
+            Analytics.TrackEvent("Emailed From App", new Dictionary<string, string>
                     {
                         {"SalesAssociate", _prospect.ProspectCommunity.SalespersonAddressNumber.ToString() + " " + _prospect.ProspectCommunity.SalespersonName },
                         {"Community", _prospect.ProspectCommunity.CommunityNumber + " " + _prospect.ProspectCommunity.Community.Description},
                         {"User", _user.AddressBook.AddressNumber + " " + _user.AddressBook.Name},
                 });
-
-            }
-            else
-            {
-                _dialogService.ShowAlertAsync("Please configure email on this device and then try again.", "Email Not Configured", "Close");
-            }
         }
 
         private void CallProspect(string phoneNumber)
@@ -327,13 +332,15 @@ namespace ProspectManagement.Core.ViewModels
         // need to expose it as a public property for binding (only IMvxInteraction is needed in the view)
         public IMvxInteraction<TwilioCallParameters> MakeCallInteraction => _makeCallInteraction;
 
-        public SplitDetailViewModel(IActivityService activityService, ITwilioService twilioService, IDialogService dialogService, IMvxComposeEmailTaskEx emailTask, IMvxPhoneCallTask phoneCallTask, IMvxMessenger messenger, IProspectService prospectService, IMvxNavigationService navigationService)
+        private MvxInteraction<EmailMessage> _emailInteraction = new MvxInteraction<EmailMessage>();
+        public IMvxInteraction<EmailMessage> EmailInteraction => _emailInteraction;
+
+        public SplitDetailViewModel(IActivityService activityService, ITwilioService twilioService, IDialogService dialogService, IMvxPhoneCallTask phoneCallTask, IMvxMessenger messenger, IProspectService prospectService, IMvxNavigationService navigationService)
         {
             Messenger = messenger;
             _prospectService = prospectService;
             _navigationService = navigationService;
             _phoneCallTask = phoneCallTask;
-            _emailTask = emailTask;
             _dialogService = dialogService;
             _twilioService = twilioService;
             _activityService = activityService;

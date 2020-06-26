@@ -19,5 +19,7 @@ namespace ProspectManagement.Core.Models
         public int SalespesonAddressNumber { get; set; }
         [JsonProperty("activityID")]
         public string ActivityId { get; set; }
+        [JsonIgnore]
+        public Action<bool> EmailCallback { get; set; }
     }
 }
