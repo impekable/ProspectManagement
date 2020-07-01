@@ -237,6 +237,11 @@ namespace ProspectManagement.Core.ViewModels
                     {
                         await _dialogService.ShowAlertAsync("Outlook could not be launched", "Error", "Ok");
                     }
+                    else
+                    {
+                        //give them time as outlook will launch, so don't reload app upon their return
+                        Messenger.Publish(new ExtendReloadTime(this) { ExtendMinutes = 5 });
+                    }
                     
                 },
                 ToEmailAddress = _prospect.Email.EmailAddress,

@@ -11,7 +11,7 @@ namespace ProspectManagement.Core.Converters
     {
         protected override Color Convert(Activity value, object parameter, CultureInfo culture)
         {
-            if (value.TimeDateEnd.Value.CompareTo(DateTime.UtcNow) < 0)
+            if (value.TimeDateEnd.Value.CompareTo(DateTime.Now) < 0)
                 return Color.Red;
             else
             {

@@ -41,7 +41,7 @@ namespace ProspectManagement.Core.ViewModels
         private int _pageSize = 10;
         private User _user;
         private MvxSubscriptionToken messengerToken;
-
+        private MvxSubscriptionToken messengerSentToken;
         private MvxInteraction<TableRow> _updateRowInteraction = new MvxInteraction<TableRow>();
         public IMvxInteraction<TableRow> UpdateRowInteraction => _updateRowInteraction;
 
@@ -102,6 +102,16 @@ namespace ProspectManagement.Core.ViewModels
             {
                 return _homeCommand ?? (_homeCommand = new MvxCommand(async () =>
                 {
+                    if (messengerToken != null)
+                    {
+                        Messenger.Unsubscribe<SMSReceivedMessage>(messengerToken);
+                        messengerToken = null;
+                    }
+                    if (messengerSentToken != null)
+                    {
+                        Messenger.Unsubscribe<SMSSentMessage>(messengerSentToken);
+                        messengerSentToken = null;
+                    }
                     User = await _userService.GetLoggedInUser();
                     await _navigationService.Navigate<LandingViewModel, User>(User);
                 }));
@@ -201,16 +211,22 @@ namespace ProspectManagement.Core.ViewModels
             _prospectService = prospectService;
             _userService = userService;
             messengerToken = Messenger.Subscribe<SMSReceivedMessage>(message => AddMessage(message));
+            messengerSentToken = Messenger.Subscribe<SMSSentMessage>(message => AddSentMessage(message));
         }
 
-        public override void ViewDisappeared()
+        private void AddSentMessage(SMSSentMessage message)
         {
-            base.ViewDisappeared();
-            if (messengerToken != null)
+            //receiving a message from prospect update the appropriate row with the new data
+            var tableRow = SMSActivities.FirstOrDefault(s => s.ProspectAddressBook == message.SMSActivitySent.ProspectAddressBook);
+            if (tableRow != null)
             {
-                Messenger.Unsubscribe<SMSReceivedMessage>(messengerToken);
-                messengerToken = null;
+                tableRow.MessageBody = message.SMSActivitySent.MessageBody;
+                tableRow.UpdatedDate = message.SMSActivitySent.UpdatedDate;
+
+                var request = new TableRow { TableRowToUpdate = SMSActivities.IndexOf(tableRow) };
+                _updateRowInteraction.Raise(request);
             }
+
         }
 
         private void AddMessage(SMSReceivedMessage message)

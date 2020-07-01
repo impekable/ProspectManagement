@@ -94,6 +94,12 @@ namespace ProspectManagement.Core.ViewModels
             Messenger = messenger;
 
             Messenger.Subscribe<SMSReceivedMessage>(message => Process(message.SMSActivityReceived), MvxReference.Strong);
+            Messenger.Subscribe<ExtendReloadTime>(message => Extend(message.ExtendMinutes), MvxReference.Strong);
+        }
+
+        private void Extend(int extendMinutes)
+        {
+            LoadTime = DateTime.Now.AddMinutes(extendMinutes);
         }
 
         private async void Process(SmsActivity smsActivityReceived)

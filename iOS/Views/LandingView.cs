@@ -27,7 +27,7 @@ namespace ProspectManagement.iOS.Views
         {
             System.Diagnostics.Debug.WriteLine("Being notified of ViewWillAppear " + this.Handle);
             var timeSinceLoad = DateTime.Now - ViewModel.LoadTime;
-            if (timeSinceLoad.TotalMinutes > 1)
+            if (timeSinceLoad.TotalMinutes > 5)
             {
                 ViewModel.GoHomeCommand.Execute(null);               
             }

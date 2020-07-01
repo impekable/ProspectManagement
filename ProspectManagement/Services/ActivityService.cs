@@ -209,7 +209,7 @@ namespace ProspectManagement.Core.Services
             {
                 Crashes.TrackError(ex);
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
-                await _dialogService.ShowAlertAsync("Seems like there was a problem.", "Oops", "Close");
+                await _dialogService.ShowAlertAsync("Seems like there was a problem. " + ex.Message, "Oops", "Close");
                 return null;
             }
         }

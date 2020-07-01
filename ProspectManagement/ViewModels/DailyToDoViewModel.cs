@@ -76,6 +76,16 @@ namespace ProspectManagement.Core.ViewModels
             {
                 return _homeCommand ?? (_homeCommand = new MvxCommand(() =>
                 {
+                    if (dismissedMessengerToken != null)
+                    {
+                        Messenger.Unsubscribe<TaskDismissedMessage>(dismissedMessengerToken);
+                        dismissedMessengerToken = null;
+                    }
+                    if (completedMessengerToken != null)
+                    {
+                        Messenger.Unsubscribe<TaskCompletedMessage>(completedMessengerToken);
+                        completedMessengerToken = null;
+                    }
                     _navigationService.Navigate<LandingViewModel, User>(User);
                 }));
             }
@@ -189,21 +199,6 @@ namespace ProspectManagement.Core.ViewModels
         public void Prepare(User parameter)
         {
             User = parameter;
-        }
-
-        public override void ViewDisappeared()
-        {
-            base.ViewDisappeared();
-            if (dismissedMessengerToken != null)
-            {
-                Messenger.Unsubscribe<SMSReceivedMessage>(dismissedMessengerToken);
-                dismissedMessengerToken = null;
-            }
-            if (completedMessengerToken != null)
-            {
-                Messenger.Unsubscribe<SMSReceivedMessage>(completedMessengerToken);
-                completedMessengerToken = null;
-            }
         }
 
     }

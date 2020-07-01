@@ -35,6 +35,7 @@ namespace ProspectManagement.Core.ViewModels
         protected IMvxMessenger Messenger;
         private readonly IMvxNavigationService _navigationService;
         private readonly IProspectService _prospectService;
+        private readonly IDialogService _dialogService;
         private readonly IAuthenticator _authService;
         private readonly IActivityService _activityService;
 
@@ -68,27 +69,37 @@ namespace ProspectManagement.Core.ViewModels
             {
                 return _sendSMSCommand ?? (_sendSMSCommand = new MvxCommand(async () =>
                 {
-
-                    var adhocTask = createAdHocActivity();
-                    var activity = await _activityService.SendAdHocSMSAsync(SmsActivity.Prospect.ProspectAddressNumber, adhocTask);
-                    if (activity != null)
+                    if (SmsActivity.Prospect.FollowUpSettings.ConsentToText)
                     {
-                        SmsActivity sms = new SmsActivity()
+                        var adhocTask = createAdHocActivity();
+                        var activity = await _activityService.SendAdHocSMSAsync(SmsActivity.Prospect.ProspectAddressNumber, adhocTask);
+                        if (activity != null)
                         {
-                            ActivityId = activity.ActivityID,
-                            InstanceId = activity.InstanceID,
-                            ProspectAddressBook = SmsActivity.Prospect.ProspectAddressNumber,
-                            ProspectCommunityId = SmsActivity.Prospect.ProspectCommunity.ProspectCommunityId,
-                            SalespersonAddressBook = SmsActivity.Prospect.ProspectCommunity.SalespersonAddressNumber,
-                            Direction = "outbound",
-                            UpdatedDate = DateTime.UtcNow,
-                            MessageBody = SmsMessageBody,
-                            Prospect = SmsActivity.Prospect
-                        };
-                        SmsMessages.Add(sms);
+                            SmsActivity sms = new SmsActivity()
+                            {
+                                ActivityId = activity.ActivityID,
+                                InstanceId = activity.InstanceID,
+                                ProspectAddressBook = SmsActivity.Prospect.ProspectAddressNumber,
+                                ProspectCommunityId = SmsActivity.Prospect.ProspectCommunity.ProspectCommunityId,
+                                SalespersonAddressBook = SmsActivity.Prospect.ProspectCommunity.SalespersonAddressNumber,
+                                Direction = "outbound",
+                                UpdatedDate = DateTime.UtcNow,
+                                MessageBody = SmsMessageBody,
+                                Prospect = SmsActivity.Prospect
+                            };
+                            SmsMessages.Add(sms);
 
-                        SmsMessageBody = "";
+                            SmsMessageBody = "";
+
+                            Messenger.Publish(new SMSSentMessage(this) { SMSActivitySent = sms });
+
+                        }
                     }
+                    else
+                    {
+                        await _dialogService.ShowAlertAsync("Prospect has not consented to text", "Message not Sent", "Ok");
+                    }
+                    
 
                     _hideAlertInteraction.Raise();
                 }));
@@ -155,8 +166,9 @@ namespace ProspectManagement.Core.ViewModels
 
         public SmsActivity SmsActivity { get; set; }
 
-        public SMSInboxDetailViewModel(IAuthenticator authService, IIncrementalCollectionFactory collectionFactory, IActivityService activityService, IProspectService prospectService, IMvxMessenger messenger, IMvxNavigationService navigationService)
+        public SMSInboxDetailViewModel(IAuthenticator authService, IDialogService dialogService, IIncrementalCollectionFactory collectionFactory, IActivityService activityService, IProspectService prospectService, IMvxMessenger messenger, IMvxNavigationService navigationService)
         {
+            _dialogService = dialogService;
             _authService = authService;
             _activityService = activityService;
             _prospectService = prospectService;

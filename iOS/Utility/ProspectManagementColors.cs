@@ -12,6 +12,6 @@ namespace ProspectManagement.iOS.Utility
         public static UIColor DarkTextColor = new UIColor(55 / 255f, 59 / 255f, 73 / 255f, 1);
         public static UIColor BorderColor = new UIColor(255 / 255f, 225 / 255f, 225 / 255f, 1);
         public static UIColor LabelColor = UIDevice.CurrentDevice.CheckSystemVersion(13, 0) ? UIColor.LabelColor : UIColor.Black;
-        public static UIColor MessageColorGray = UIDevice.CurrentDevice.CheckSystemVersion(13, 0) ? UIColor.SystemGray4Color : UIColor.DarkGray;
+        public static UIColor MessageColorGray = UIDevice.CurrentDevice.CheckSystemVersion(13, 0) ? UIColor.SystemGray4Color : new UIColor(229 / 255f, 229 / 255f, 229 / 255f, 1);
     }
 }
