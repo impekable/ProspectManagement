@@ -119,7 +119,7 @@ namespace ProspectManagement.iOS.Views
             MessageTextView.ScrollEnabled = false;
             MessagesTableView.ReloadData();
 
-            var width = (MessageTextView.Frame.Size.Width < 250) ? 250 : MessageTextView.Frame.Size.Width;
+            var width = UIScreen.MainScreen.Bounds.Width > 650 ? 550 : 250;
             var height = (MessageTextView.Frame.Size.Height < 50) ? 50 : MessageTextView.Frame.Size.Height;
             MessageTextView.Frame = new CGRect(x: 0, y: 0, width: width, height: height);
 
@@ -165,7 +165,7 @@ namespace ProspectManagement.iOS.Views
             textView.TranslatesAutoresizingMaskIntoConstraints = true;
             textView.SizeToFit();
             textView.ScrollEnabled = false;
-            var width = (textView.Frame.Size.Width < 250) ? 250 : textView.Frame.Size.Width;
+            var width = UIScreen.MainScreen.Bounds.Width > 650 ? 550 : 250;
             var height = (textView.Frame.Size.Height < 50) ? 50 : textView.Frame.Size.Height;
             textView.Frame = new CGRect(x: 0, y: 0, width: width, height: height);
         }
